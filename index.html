@@ -412,6 +412,60 @@
         font-size: 1.125rem;
       }
 
+      /* Mobile Menu */
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        color: var(--foreground);
+      }
+
+      .mobile-menu-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        top: 4rem;
+        left: 0;
+        right: 0;
+        background: var(--background);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        z-index: 40;
+      }
+
+      .mobile-nav.active {
+        display: block;
+      }
+
+      .mobile-nav ul {
+        list-style: none;
+        padding: 1rem;
+      }
+
+      .mobile-nav ul li {
+        margin: 0;
+      }
+
+      .mobile-nav ul li a {
+        display: block;
+        padding: 1rem;
+        color: var(--foreground);
+        text-decoration: none;
+        font-weight: 500;
+        transition: background 0.3s;
+        border-radius: calc(var(--radius) - 2px);
+      }
+
+      .mobile-nav ul li a:hover {
+        background: var(--muted);
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         nav {
@@ -420,6 +474,10 @@
 
         .nav-links {
           display: none;
+        }
+
+        .mobile-menu-btn {
+          display: block;
         }
 
         .hero {
@@ -446,6 +504,12 @@
 
         iframe {
           height: 600px;
+        }
+
+        .footer-content p {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
         }
       }
 
@@ -491,8 +555,54 @@
           <li><a href="#cv">CV</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
+        <button
+          class="mobile-menu-btn"
+          id="mobileMenuBtn"
+          aria-label="Toggle menu"
+        >
+          <svg
+            id="menuIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+          <svg
+            id="closeIcon"
+            style="display: none"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </nav>
     </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="#services" class="mobile-nav-link">Services</a></li>
+        <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
+        <li><a href="#about" class="mobile-nav-link">About</a></li>
+        <li><a href="#cv" class="mobile-nav-link">CV</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+      </ul>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -564,7 +674,7 @@
             <div class="project-header">🏥</div>
             <div class="project-content">
               <div class="subtitle">Healthcare SaaS</div>
-              <h3>Medura</h3>
+              <h3>Medura Solution</h3>
               <p>
                 A comprehensive GDPR-compliant medical practice management
                 system designed for German healthcare providers. Features
@@ -650,13 +760,43 @@
       <div class="container">
         <div class="footer-content">
           <p style="color: var(--muted-foreground)">
-            &copy; 2025 Mouchsiadis Solutions. All rights reserved.
+            <span>&copy; 2025 Mouchsiadis Solutions.</span>
+            <span>All rights reserved.</span>
           </p>
         </div>
       </div>
     </footer>
 
     <script>
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileNav = document.getElementById("mobileNav");
+      const menuIcon = document.getElementById("menuIcon");
+      const closeIcon = document.getElementById("closeIcon");
+      const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("active");
+        const isActive = mobileNav.classList.contains("active");
+
+        if (isActive) {
+          menuIcon.style.display = "none";
+          closeIcon.style.display = "block";
+        } else {
+          menuIcon.style.display = "block";
+          closeIcon.style.display = "none";
+        }
+      });
+
+      // Close mobile menu when clicking a link
+      mobileNavLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileNav.classList.remove("active");
+          menuIcon.style.display = "block";
+          closeIcon.style.display = "none";
+        });
+      });
+
       // Intersection Observer for scroll animations
       const observerOptions = {
         threshold: 0.1,
