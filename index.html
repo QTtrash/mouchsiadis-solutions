@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -38,8 +38,13 @@
       }
 
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, sans-serif;
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
         background: var(--background);
         color: var(--foreground);
         line-height: 1.6;
@@ -668,7 +673,7 @@
         <p class="section-subtitle">
           Innovative solutions built with cutting-edge technologies
         </p>
-        <div class="projects-grid">
+        <div class="projects-grid" style="grid-template-columns: 1fr">
           <!-- Medura Project -->
           <div class="project-card fade-in delay-1">
             <div class="project-header">🏥</div>
@@ -697,6 +702,53 @@
                 class="btn btn-primary"
               >
                 <span>View Live Demo</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- True Grind CS2 Project -->
+          <div class="project-card fade-in delay-2">
+            <div
+              class="project-header"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  #0b0d12 0%,
+                  #ea580c 50%,
+                  #f97316 100%
+                );
+              "
+            >
+              🎯
+            </div>
+            <div class="project-content">
+              <div class="subtitle">Gaming Analytics</div>
+              <h3>True Grind CS2</h3>
+              <p>
+                A comprehensive Counter-Strike 2 stats tracking and demo
+                analysis platform. Features Steam OpenID authentication, match
+                history tracking, advanced demo file parsing with WebAssembly,
+                2D tactical replay viewer with player positions and grenade
+                trajectories.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-badge">Next.js 16</span>
+                <span class="tech-badge">React 19</span>
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">PostgreSQL</span>
+                <span class="tech-badge">Drizzle ORM</span>
+                <span class="tech-badge">Steam OpenID</span>
+                <span class="tech-badge">WebAssembly</span>
+                <span class="tech-badge">Tailwind CSS</span>
+              </div>
+              <a
+                href="https://www.true-grind-cs2.online/"
+                target="_blank"
+                class="btn btn-primary"
+                style="background: #ea580c"
+              >
+                <span>Visit Site</span>
                 <span>→</span>
               </a>
             </div>
@@ -814,7 +866,7 @@
       // Observe all animatable elements
       document.addEventListener("DOMContentLoaded", () => {
         const elements = document.querySelectorAll(
-          ".service-card, .project-card"
+          ".service-card, .project-card",
         );
         elements.forEach((el) => observer.observe(el));
 
