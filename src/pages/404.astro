@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildLocaleAlternates } from '../lib/blog';
+import { localeSeo } from '../lib/i18n';
+---
+
+<BaseLayout locale="en" title={localeSeo.en.labels.notFoundTitle} alternates={buildLocaleAlternates()}>
+  <section class="section not-found-shell">
+    <div class="section-heading">
+      <p class="section-heading__kicker">404</p>
+      <h1>{localeSeo.en.labels.notFoundTitle}</h1>
+      <p class="section-heading__body">{localeSeo.en.labels.notFoundBody}</p>
+    </div>
+    <a class="button" href="/en">{localeSeo.en.labels.returnHome}</a>
+  </section>
+</BaseLayout>

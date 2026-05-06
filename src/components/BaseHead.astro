@@ -1,0 +1,50 @@
+---
+import { LOCALES, localeIntlCodes, localeSeo, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  alternates?: Record<Locale, string>;
+}
+
+const {
+  locale,
+  title = localeSeo[locale].title,
+  description = localeSeo[locale].description,
+  image = '/images/profile-pic.jpg',
+  article = false,
+  alternates,
+} = Astro.props;
+
+const fullTitle = title === localeSeo[locale].title ? title : `${title} | ${localeSeo[locale].title}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="canonical" href={canonicalURL} />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content="Suren Mouchsiadis" />
+
+{alternates &&
+  LOCALES.map((entry) => (
+    <link rel="alternate" hreflang={localeIntlCodes[entry]} href={new URL(alternates[entry], Astro.site)} />
+  ))}
+<link rel="alternate" hreflang="x-default" href={new URL('/en', Astro.site)} />
+
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={new URL(image, Astro.site)} />
+<meta property="og:locale" content={localeIntlCodes[locale].replace('-', '_')} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />

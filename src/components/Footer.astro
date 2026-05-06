@@ -1,0 +1,27 @@
+---
+import { localeSeo, type Locale } from '../lib/i18n';
+import { buildLocalePath } from '../lib/blog';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = localeSeo[locale];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <p>Mouchsiadis Solutions / {year}</p>
+      <p>{copy.labels.contactBody}</p>
+    </div>
+
+    <div class="site-footer__links">
+      <a href={buildLocalePath(locale)}>{copy.nav.work}</a>
+      <a href={buildLocalePath(locale, '/blog')}>{copy.nav.blog}</a>
+      <a href="/cv/Suren_Mouchsiadis_CV.pdf" target="_blank" rel="noreferrer">{copy.nav.cv}</a>
+    </div>
+  </div>
+</footer>

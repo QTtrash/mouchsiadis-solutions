@@ -1,0 +1,54 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { buildLocalePath } from '../lib/blog';
+import { localeSeo, type Locale } from '../lib/i18n';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  locale: Locale;
+  post: CollectionEntry<'blog'>;
+  formattedDate: string;
+  languageLabel: string;
+  prevPost?: CollectionEntry<'blog'> | null;
+  nextPost?: CollectionEntry<'blog'> | null;
+  alternates: Record<Locale, string>;
+}
+
+const { locale, post, formattedDate, languageLabel, prevPost, nextPost, alternates } = Astro.props;
+const copy = localeSeo[locale];
+const { title, description } = post.data;
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  article={true}
+  active="blog"
+  alternates={alternates}
+  localePathSuffix={`/blog/${post.slug}`}
+>
+  <section class="section article-shell">
+    <div class="section-heading">
+      <p class="section-heading__kicker">{copy.sections.blog}</p>
+      <h1>{title}</h1>
+      <p class="section-heading__body">{description}</p>
+      <div class="article-shell__meta">
+        <span>{formattedDate}</span>
+        <span>{copy.labels.blogLanguage}: {languageLabel}</span>
+      </div>
+    </div>
+
+    <article class="article-prose">
+      <slot />
+    </article>
+
+    <div class="article-shell__nav">
+      <a href={buildLocalePath(locale, '/blog')}>← {copy.labels.blogBack}</a>
+      <div class="article-shell__adjacent">
+        {prevPost && <a href={buildLocalePath(locale, `/blog/${prevPost.slug}`)}>{copy.labels.prevPost}: {prevPost.data.title}</a>}
+        {nextPost && <a href={buildLocalePath(locale, `/blog/${nextPost.slug}`)}>{copy.labels.nextPost}: {nextPost.data.title}</a>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

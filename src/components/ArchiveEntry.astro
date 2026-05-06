@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string;
+  eyebrow: string;
+  summary: string;
+  narrative: string;
+  details: string[];
+  stack: string[];
+  meta: string[];
+  link?: string;
+  linkLabel?: string;
+  cover: string;
+  compact?: boolean;
+  toggleLabel?: string;
+  toggleCloseLabel?: string;
+}
+
+const {
+  title,
+  eyebrow,
+  summary,
+  narrative,
+  details,
+  stack,
+  meta,
+  link,
+  linkLabel = 'Open',
+  cover,
+  compact = false,
+  toggleLabel = 'Details',
+  toggleCloseLabel = 'Close',
+} = Astro.props;
+---
+
+<details class:list={['archive-entry', compact && 'archive-entry--compact']} data-cover={cover}>
+  <summary class="archive-entry__summary">
+    <div class="archive-entry__cover" aria-hidden="true">
+      <span class="archive-entry__cover-grid"></span>
+      <span class="archive-entry__cover-ring"></span>
+      <span class="archive-entry__cover-bar"></span>
+    </div>
+
+    <div class="archive-entry__lead">
+      <p class="archive-entry__eyebrow">{eyebrow}</p>
+      <h3>{title}</h3>
+      <p class="archive-entry__summary-text">{summary}</p>
+    </div>
+
+    <div class="archive-entry__meta">
+      {meta.map((item) => <span>{item}</span>)}
+    </div>
+
+    <span class="archive-entry__toggle">
+      <span class="archive-entry__toggle-open">{toggleLabel}</span>
+      <span class="archive-entry__toggle-close">{toggleCloseLabel}</span>
+    </span>
+  </summary>
+
+  <div class="archive-entry__body">
+    <p class="archive-entry__narrative">{narrative}</p>
+
+    <ul class="archive-entry__details">
+      {details.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <div class="archive-entry__footer">
+      <div class="archive-entry__stack">
+        {stack.map((item) => <span>{item}</span>)}
+      </div>
+
+      {link && (
+        <a class="archive-entry__link" href={link} target="_blank" rel="noreferrer">
+          {linkLabel}
+        </a>
+      )}
+    </div>
+  </div>
+</details>

@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import {
+  buildLocaleAlternates,
+  buildLocalePath,
+  formatDate,
+  inferPostLanguage,
+  getPostLanguageLabel,
+  sortPosts,
+} from "../../../lib/blog";
+import { LOCALES, isLocale, localeSeo, type Locale } from "../../../lib/i18n";
+
+export async function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const localeParam = Astro.params.locale;
+
+if (!localeParam || !isLocale(localeParam)) {
+  throw new Error(`Unsupported locale: ${localeParam}`);
+}
+
+const locale: Locale = localeParam;
+const copy = localeSeo[locale];
+const posts = sortPosts(await getCollection("blog"));
+const alternates = buildLocaleAlternates("/blog");
+---
+
+<BaseLayout
+  locale={locale}
+  title={copy.sections.blog}
+  description={copy.sectionBodies.blog}
+  active="blog"
+  alternates={alternates}
+  localePathSuffix="/blog"
+>
+  <section class="section">
+    <div class="section-heading">
+      <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
+      <h1>{copy.sections.blog}</h1>
+      <p class="section-heading__body">{copy.sectionBodies.blog}</p>
+    </div>
+
+    <div class="blog-index">
+      {
+        posts.map((post) => {
+          const postLocale = inferPostLanguage(post.slug);
+          return (
+            <article class="blog-index__item">
+              <div class="blog-index__meta">
+                <span>{formatDate(post.data.date, locale)}</span>
+                <span>
+                  {copy.labels.blogLanguage}:{" "}
+                  {getPostLanguageLabel(postLocale, locale)}
+                </span>
+              </div>
+              <h2>
+                <a href={buildLocalePath(locale, `/blog/${post.slug}`)}>
+                  {post.data.title}
+                </a>
+              </h2>
+              {post.data.description && <p>{post.data.description}</p>}
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+</BaseLayout>

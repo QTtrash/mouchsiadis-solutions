@@ -1,0 +1,574 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArchiveEntry from "../../components/ArchiveEntry.astro";
+import { experiences, gameProjects, projects } from "../../lib/content";
+import { buildLocaleAlternates, buildLocalePath, sortPosts, formatDate } from "../../lib/blog";
+import {
+  LOCALES,
+  isLocale,
+  localeLabels,
+  localeSeo,
+  type Locale,
+} from "../../lib/i18n";
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const localeParam = Astro.params.locale;
+
+if (!localeParam || !isLocale(localeParam)) {
+  throw new Error(`Unsupported locale: ${localeParam}`);
+}
+
+const locale: Locale = localeParam;
+const copy = localeSeo[locale];
+const alternates = buildLocaleAlternates();
+const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
+  record[locale] ?? record.en;
+const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
+---
+
+<BaseLayout locale={locale} alternates={alternates}>
+  <section class="terminal-console section" data-terminal-console>
+    <div class="terminal-status" aria-hidden="true">
+      <span>Mouchsiadis // field terminal</span>
+      <span>LANG {localeLabels[locale]}</span>
+      <span>STATION MUC-01</span>
+    </div>
+
+    <div class="terminal-console__body">
+      <nav class="terminal-side-nav" aria-label="Terminal sections">
+        <a
+          class="is-active"
+          href="#overview"
+          data-terminal-tab
+          aria-current="page">{copy.nav.overview}</a
+        >
+        <a href="#software-work" data-terminal-tab>{copy.nav.work}</a>
+        <a href="#experience" data-terminal-tab>{copy.nav.experience}</a>
+        <a href="#game-dev" data-terminal-tab>{copy.nav.games}</a>
+        <a href="#cv" data-terminal-tab>{copy.nav.cv}</a>
+        <a href="#blog" data-terminal-tab>{copy.nav.blog}</a>
+        <a href="#contact" data-terminal-tab>{copy.nav.contact}</a>
+        <button
+          class="terminal-sound-toggle"
+          type="button"
+          data-terminal-sound
+          aria-pressed="false">snd off</button
+        >
+      </nav>
+
+      <div class="terminal-console__content">
+        <section
+          id="panel-overview"
+          class="hero-panel terminal-section is-active"
+          data-terminal-panel="overview"
+        >
+          <div class="hero-panel__grid">
+            <div class="hero-panel__copy">
+              <p class="hero-panel__kicker">
+                Suren Mouchsiadis / {localeLabels[locale]}
+              </p>
+              <h1>{copy.heroTitle}</h1>
+              <p class="hero-panel__body">{copy.heroBody}</p>
+
+              <div class="hero-panel__chips">
+                <span>{copy.labels.basedIn}</span>
+                <span>{copy.labels.studioMode}</span>
+                <span>{copy.labels.availableFor}</span>
+              </div>
+
+              <div class="hero-panel__actions">
+                <a class="button" href="#software-work" data-terminal-jump
+                  >{copy.cta.work}</a
+                >
+                <a class="button button--ghost" href="#blog" data-terminal-jump
+                  >{copy.cta.blog}</a
+                >
+                <a
+                  class="button button--ghost"
+                  href="/cv/Suren_Mouchsiadis_CV.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {copy.cta.cv}
+                </a>
+              </div>
+            </div>
+
+            <div class="hero-panel__signal">
+              <div class="signal-card signal-card--primary">
+                <img
+                  class="signal-card__portrait"
+                  src="/images/profile-pic.jpg"
+                  alt=""
+                  loading="eager"
+                />
+                <strong>{copy.labels.currentFocus}</strong>
+                <p>{copy.labels.currentFocusBody}</p>
+              </div>
+              <div class="signal-card">
+                <strong>{copy.labels.approachTitle}</strong>
+                <p>{copy.labels.approachBody}</p>
+              </div>
+              <div class="signal-card">
+                <strong>{copy.labels.writingTitle}</strong>
+                <p>{copy.labels.writingBody}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-strip">
+            <p class="section-heading__kicker">{copy.aboutTitle}</p>
+            <p>{copy.aboutBody}</p>
+          </div>
+        </section>
+
+        <section
+          id="panel-software-work"
+          class="section terminal-section"
+          data-terminal-panel="software-work"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
+            <h2>{copy.sections.work}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.work}</p>
+          </div>
+
+          <div class="archive-grid">
+            {
+              projects.map((project) => (
+                <ArchiveEntry
+                  title={project.title}
+                  eyebrow={localized(project.eyebrow)}
+                  summary={localized(project.summary)}
+                  narrative={localized(project.narrative)}
+                  details={localized(project.details)}
+                  stack={project.stack}
+                  meta={localized(project.meta)}
+                  link={project.link}
+                  linkLabel={localized(project.linkLabel)}
+                  cover={project.cover}
+                  toggleLabel={copy.labels.archiveOpen}
+                  toggleCloseLabel={copy.labels.archiveClose}
+                />
+              ))
+            }
+          </div>
+        </section>
+
+        <section
+          id="panel-experience"
+          class="section terminal-section"
+          data-terminal-panel="experience"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.experience}</p>
+            <h2>{copy.sections.experience}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.experience}</p>
+          </div>
+
+          <div class="archive-grid archive-grid--timeline">
+            {
+              experiences.map((entry) => (
+                <ArchiveEntry
+                  compact={true}
+                  title={`${localized(entry.title)} / ${entry.company}`}
+                  eyebrow={localized(entry.summary)}
+                  summary={`${entry.range} / ${entry.location}`}
+                  narrative={localized(entry.summary)}
+                  details={localized(entry.details)}
+                  stack={entry.stack}
+                  meta={[entry.range, entry.location]}
+                  cover={entry.cover}
+                  toggleLabel={copy.labels.archiveOpen}
+                  toggleCloseLabel={copy.labels.archiveClose}
+                />
+              ))
+            }
+          </div>
+        </section>
+
+        <section
+          id="panel-game-dev"
+          class="section terminal-section"
+          data-terminal-panel="game-dev"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
+            <h2>{copy.sections.games}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.games}</p>
+          </div>
+
+          <div class="archive-grid">
+            {
+              gameProjects.map((project) => (
+                <ArchiveEntry
+                  title={project.title}
+                  eyebrow={localized(project.eyebrow)}
+                  summary={localized(project.summary)}
+                  narrative={localized(project.narrative)}
+                  details={localized(project.details)}
+                  stack={project.stack}
+                  meta={localized(project.meta)}
+                  link={project.link}
+                  linkLabel={localized(project.linkLabel)}
+                  cover={project.cover}
+                  toggleLabel={copy.labels.archiveOpen}
+                  toggleCloseLabel={copy.labels.archiveClose}
+                />
+              ))
+            }
+          </div>
+        </section>
+
+        <section
+          id="panel-cv"
+          class="section terminal-section"
+          data-terminal-panel="cv"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
+            <h2>{copy.sections.cv}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.cv}</p>
+          </div>
+
+          <div class="cv-panel">
+            <div class="cv-panel__copy">
+              <p class="cv-panel__education">
+                EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019
+              </p>
+              <p>{copy.labels.cvBody}</p>
+              <div class="hero-panel__actions">
+                <a
+                  class="button"
+                  href="/cv/Suren_Mouchsiadis_CV.pdf"
+                  target="_blank"
+                  rel="noreferrer">{copy.labels.cvOpen}</a
+                >
+                <a
+                  class="button button--ghost"
+                  href="/cv/Suren_Mouchsiadis_CV.pdf"
+                  download>{copy.labels.cvDownload}</a
+                >
+              </div>
+            </div>
+
+            <div class="cv-panel__frame" aria-hidden="true">
+              <div class="cv-panel__screen">
+                <span>Suren Mouchsiadis</span>
+                <span>Systems engineering</span>
+                <span>MUC / Europe</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="panel-blog"
+          class="section terminal-section"
+          data-terminal-panel="blog"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
+            <h2>{copy.sections.blog}</h2>
+            <p class="section-heading__body">{copy.labels.blogBody}</p>
+          </div>
+
+          {recentPosts.length > 0 && (
+            <div class="blog-index blog-index--compact">
+              {recentPosts.map((post) => (
+                <article class="blog-index__item">
+                  <div class="blog-index__meta">
+                    <span>{formatDate(post.data.date, locale)}</span>
+                  </div>
+                  <h3>
+                    <a href={buildLocalePath(locale, `/blog/${post.slug}`)}>
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  {post.data.description && <p>{post.data.description}</p>}
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div class="blog-callout">
+            <p>{copy.sectionBodies.blog}</p>
+            <a class="button" href={buildLocalePath(locale, "/blog")}
+              >{copy.cta.blog}</a
+            >
+          </div>
+        </section>
+
+        <section
+          id="panel-contact"
+          class="section terminal-section"
+          data-terminal-panel="contact"
+          hidden
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.contact}</p>
+            <h2>{copy.sections.contact}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.contact}</p>
+          </div>
+
+          <div class="contact-panel">
+            <a href="mailto:suren@mouchsiadis-solutions.com"
+              >suren@mouchsiadis-solutions.com</a
+            >
+            <a href="https://github.com/QTtrash" target="_blank" rel="noreferrer"
+              >{copy.labels.githubLabel}</a
+            >
+            <a href="https://www.linkedin.com/in/surenmouchsiadis" target="_blank" rel="noreferrer"
+              >{copy.labels.linkedinLabel}</
+            >
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      const terminal = document.querySelector("[data-terminal-console]");
+      const tabs = Array.from(document.querySelectorAll("[data-terminal-tab]"));
+      const panels = Array.from(
+        document.querySelectorAll("[data-terminal-panel]"),
+      );
+      const soundButtons = Array.from(
+        document.querySelectorAll("[data-terminal-sound]"),
+      );
+      const validIds = new Set(
+        panels.map((panel) => panel.dataset.terminalPanel),
+      );
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      let activeId = "overview";
+      let transitionTimer = 0;
+      let audioContext;
+      let soundEnabled = localStorage.getItem("terminalSound") === "on";
+
+      const keepPageAtTerminal = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      };
+
+      const syncSoundButton = () => {
+        terminal?.classList.toggle("terminal-console--sound-on", soundEnabled);
+        soundButtons.forEach((button) => {
+          button.textContent = soundEnabled ? "snd on" : "snd off";
+          button.setAttribute("aria-pressed", String(soundEnabled));
+        });
+      };
+
+      const ensureAudio = () => {
+        if (!soundEnabled) return null;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return null;
+        audioContext ||= new AudioContext();
+        if (audioContext.state === "suspended") {
+          audioContext.resume();
+        }
+        return audioContext;
+      };
+
+      const beep = (frequency, duration = 0.04, delay = 0, gain = 0.025) => {
+        const context = ensureAudio();
+        if (!context) return;
+        const start = context.currentTime + delay;
+        const oscillator = context.createOscillator();
+        const volume = context.createGain();
+        oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(frequency, start);
+        volume.gain.setValueAtTime(0.0001, start);
+        volume.gain.exponentialRampToValueAtTime(gain, start + 0.008);
+        volume.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+        oscillator.connect(volume);
+        volume.connect(context.destination);
+        oscillator.start(start);
+        oscillator.stop(start + duration + 0.02);
+      };
+
+      const burst = (duration = 0.045, delay = 0) => {
+        const context = ensureAudio();
+        if (!context) return;
+        const start = context.currentTime + delay;
+        const buffer = context.createBuffer(
+          1,
+          Math.floor(context.sampleRate * duration),
+          context.sampleRate,
+        );
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < output.length; i += 1) {
+          output[i] = (Math.random() * 2 - 1) * (1 - i / output.length);
+        }
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const volume = context.createGain();
+        filter.type = "bandpass";
+        filter.frequency.value = 1200;
+        volume.gain.value = 0.018;
+        source.buffer = buffer;
+        source.connect(filter);
+        filter.connect(volume);
+        volume.connect(context.destination);
+        source.start(start);
+      };
+
+      const playSound = (type) => {
+        if (!soundEnabled) return;
+        if (type === "boot") {
+          beep(220, 0.05, 0, 0.018);
+          beep(440, 0.045, 0.07, 0.018);
+          burst(0.06, 0.13);
+          beep(880, 0.035, 0.18, 0.014);
+          return;
+        }
+        if (type === "tab") {
+          beep(520, 0.035, 0, 0.018);
+          burst(0.035, 0.035);
+          return;
+        }
+        if (type === "detail") {
+          beep(320, 0.025, 0, 0.014);
+          return;
+        }
+        beep(160, 0.05, 0, 0.012);
+      };
+
+      const setSound = (enabled) => {
+        soundEnabled = enabled;
+        localStorage.setItem("terminalSound", enabled ? "on" : "off");
+        syncSoundButton();
+        if (enabled) {
+          playSound("boot");
+        }
+      };
+
+      const finishTransition = (previousPanel, nextPanel) => {
+        if (previousPanel && previousPanel !== nextPanel) {
+          previousPanel.classList.remove("is-leaving", "is-active");
+          previousPanel.hidden = true;
+        }
+        nextPanel.classList.remove("is-entering");
+      };
+
+      const showPanel = (id, updateHash = true, initial = false) => {
+        const nextId = validIds.has(id) ? id : "overview";
+        const nextPanel = panels.find(
+          (panel) => panel.dataset.terminalPanel === nextId,
+        );
+        const previousPanel = panels.find(
+          (panel) => panel.dataset.terminalPanel === activeId && !panel.hidden,
+        );
+
+        if (!nextPanel) return;
+        if (nextId === activeId && !initial) {
+          playSound("error");
+          keepPageAtTerminal();
+          return;
+        }
+
+        window.clearTimeout(transitionTimer);
+        activeId = nextId;
+
+        panels.forEach((panel) => {
+          const isActive = panel.dataset.terminalPanel === nextId;
+          if (isActive) {
+            panel.hidden = false;
+            panel.classList.add("is-active");
+            if (!initial && !reduceMotion) {
+              panel.classList.add("is-entering");
+            }
+            panel.scrollTop = 0;
+          } else if (panel === previousPanel && !initial && !reduceMotion) {
+            panel.classList.add("is-leaving");
+          } else {
+            panel.hidden = true;
+            panel.classList.remove("is-active", "is-entering", "is-leaving");
+          }
+        });
+
+        tabs.forEach((tab) => {
+          const isActive = tab.hash === `#${nextId}`;
+          tab.classList.toggle("is-active", isActive);
+          if (isActive) {
+            tab.setAttribute("aria-current", "page");
+          } else {
+            tab.removeAttribute("aria-current");
+          }
+        });
+
+        if (updateHash && window.location.hash !== `#${nextId}`) {
+          history.replaceState(null, "", `#${nextId}`);
+        }
+
+        if (!initial) {
+          playSound("tab");
+          if (!reduceMotion) {
+            terminal?.classList.remove("terminal-console--switching");
+            terminal?.offsetWidth;
+            terminal?.classList.add("terminal-console--switching");
+            window.setTimeout(
+              () => terminal?.classList.remove("terminal-console--switching"),
+              560,
+            );
+          }
+        }
+
+        if (previousPanel && previousPanel !== nextPanel && !reduceMotion) {
+          transitionTimer = window.setTimeout(
+            () => finishTransition(previousPanel, nextPanel),
+            280,
+          );
+        } else {
+          finishTransition(previousPanel, nextPanel);
+        }
+
+        keepPageAtTerminal();
+        requestAnimationFrame(keepPageAtTerminal);
+        setTimeout(keepPageAtTerminal, 80);
+      };
+
+      const handleLink = (event) => {
+        const href = event.currentTarget.getAttribute("href") || "#overview";
+        const id = href.replace("#", "");
+        if (!validIds.has(id)) return;
+        event.preventDefault();
+        showPanel(id);
+      };
+
+      tabs.forEach((tab) => tab.addEventListener("click", handleLink));
+      document
+        .querySelectorAll("[data-terminal-jump]")
+        .forEach((link) => link.addEventListener("click", handleLink));
+      soundButtons.forEach((button) =>
+        button.addEventListener("click", () => setSound(!soundEnabled)),
+      );
+      document.querySelectorAll(".archive-entry summary").forEach((summary) => {
+        summary.addEventListener("click", () => playSound("detail"));
+      });
+
+      window.addEventListener("hashchange", () =>
+        showPanel(window.location.hash.replace("#", ""), false),
+      );
+      syncSoundButton();
+      showPanel(window.location.hash.replace("#", ""), false, true);
+      requestAnimationFrame(() =>
+        terminal?.classList.add("terminal-console--ready"),
+      );
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,69 @@
+---
+import { LOCALES, localeLabels, localeSeo, type Locale } from "../lib/i18n";
+import { buildLocalePath } from "../lib/blog";
+
+interface Props {
+  locale: Locale;
+  active?: "home" | "blog";
+  localePathSuffix?: string;
+}
+
+const { locale, active = "home", localePathSuffix = "" } = Astro.props;
+const copy = localeSeo[locale];
+const anchors = {
+  work: `${buildLocalePath(locale)}#software-work`,
+  experience: `${buildLocalePath(locale)}#experience`,
+  games: `${buildLocalePath(locale)}#game-dev`,
+  cv: `${buildLocalePath(locale)}#cv`,
+  blog: `${buildLocalePath(locale, "/blog")}`,
+  contact: `${buildLocalePath(locale)}#contact`,
+};
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__brand" href={buildLocalePath(locale)}>
+      <span class="site-header__prefix">Suren</span>
+      <span>Mouchsiadis Solutions</span>
+    </a>
+
+    {
+      active === "home" && (
+        <span class="site-header__spacer" aria-hidden="true" />
+      )
+    }
+
+    {
+      active !== "home" && (
+        <nav class="site-header__nav" aria-label="Primary">
+          <a href={anchors.work}>{copy.nav.work}</a>
+          <a href={anchors.experience}>{copy.nav.experience}</a>
+          <a href={anchors.games}>{copy.nav.games}</a>
+          <a href={anchors.cv}>{copy.nav.cv}</a>
+          <a
+            class:list={[active === "blog" && "is-active"]}
+            href={anchors.blog}
+          >
+            {copy.nav.blog}
+          </a>
+          <a href={anchors.contact}>{copy.nav.contact}</a>
+        </nav>
+      )
+    }
+
+    <div class="site-header__controls">
+      <div class="locale-switcher" aria-label="Languages">
+        {
+          LOCALES.map((entry) => (
+            <a
+              class:list={[entry === locale && "is-active"]}
+              href={buildLocalePath(entry, localePathSuffix)}
+            >
+              {localeLabels[entry]}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</header>

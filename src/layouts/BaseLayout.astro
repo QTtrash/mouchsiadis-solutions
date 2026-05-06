@@ -1,0 +1,37 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../assets/styles/global.css';
+import { localeIntlCodes, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  article?: boolean;
+  active?: 'home' | 'blog';
+  alternates?: Record<Locale, string>;
+  localePathSuffix?: string;
+}
+
+const { locale, title, description, article = false, active = 'home', alternates, localePathSuffix = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={localeIntlCodes[locale]}>
+  <head>
+    <BaseHead locale={locale} title={title} description={description} article={article} alternates={alternates} />
+  </head>
+  <body>
+    <div class="shell-noise" aria-hidden="true"></div>
+    <div class="site-shell">
+      <Header locale={locale} active={active} localePathSuffix={localePathSuffix} />
+      <main class="site-main">
+        <slot />
+      </main>
+      <Footer locale={locale} />
+    </div>
+
+  </body>
+</html>

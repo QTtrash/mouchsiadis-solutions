@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import PostLayout from "../../../layouts/PostLayout.astro";
+import {
+  buildLocaleAlternates,
+  formatDate,
+  inferPostLanguage,
+  getPostLanguageLabel,
+  sortPosts,
+} from "../../../lib/blog";
+import { LOCALES } from "../../../lib/i18n";
+
+export async function getStaticPaths() {
+  const posts = sortPosts(await getCollection("blog"));
+
+  return LOCALES.flatMap((locale) =>
+    posts.map((post, index) => ({
+      params: { locale, slug: post.slug },
+      props: {
+        locale,
+        post,
+        prevPost: posts[index + 1] || null,
+        nextPost: posts[index - 1] || null,
+      },
+    })),
+  );
+}
+
+const { locale, post, prevPost, nextPost } = Astro.props;
+const { Content } = await post.render();
+const postLocale = inferPostLanguage(post.slug);
+const formattedDate = formatDate(post.data.date, locale);
+const languageLabel = getPostLanguageLabel(postLocale, locale);
+const alternates = buildLocaleAlternates(`/blog/${post.slug}`);
+---
+
+<PostLayout
+  locale={locale}
+  post={post}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  formattedDate={formattedDate}
+  languageLabel={languageLabel}
+  alternates={alternates}
+>
+  <Content />
+</PostLayout>
