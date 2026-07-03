@@ -216,6 +216,58 @@ export const projects: ProjectEntry[] = [
 
 export const gameProjects: ProjectEntry[] = [
   {
+    slug: "silly-bazaar",
+    title: "Silly Bazaar",
+    eyebrow: {
+      en: "Night-market multiplayer arcade",
+      ru: "Мультиплеерная аркада ночного рынка",
+      de: "Nachtmarkt-Multiplayer-Arcade",
+    },
+    summary: {
+      en: "A whimsical night market of tiny browser games. The flagship, Slip Service, is a 1-4 player realtime waiter brawl: deliver dishes, throw banana peels, win the shift.",
+      ru: "Причудливый ночной рынок маленьких браузерных игр. Флагман, Slip Service, — риалтайм-потасовка официантов на 1-4 игроков: разноси блюда, кидай банановые кожурки, выигрывай смену.",
+      de: "Ein verspielter Nachtmarkt kleiner Browser-Spiele. Das Flaggschiff Slip Service ist eine Echtzeit-Kellner-Rauferei fuer 1-4 Spieler: Gerichte liefern, Bananenschalen werfen, die Schicht gewinnen.",
+    },
+    narrative: {
+      en: "Silly Bazaar is a lantern-lit game portal where every stall is a small game with real engineering underneath: a server-authoritative multiplayer simulation, shared prediction code between client and server, and a shell built to grow one stall at a time.",
+      ru: "Silly Bazaar — освещенный фонарями игровой портал, где каждая лавка — маленькая игра с настоящей инженерией внутри: server-authoritative мультиплеерная симуляция, общий код предсказания для клиента и сервера и оболочка, растущая по одной лавке за раз.",
+      de: "Silly Bazaar ist ein laternenbeleuchtetes Spieleportal, in dem jeder Stand ein kleines Spiel mit echter Technik darunter ist: eine server-autoritative Multiplayer-Simulation, geteilter Prediction-Code fuer Client und Server und eine Shell, die Stand fuer Stand waechst.",
+    },
+    details: {
+      en: [
+        "Slip Service runs on a 20Hz server-authoritative WebSocket simulation with client-side prediction and interpolation.",
+        "A shared TypeScript sim core keeps client and server physics identical by construction.",
+        "Private room links (5-letter codes) plus a solo score-attack mode; full keyboard and touch parity.",
+        "Next.js shell with per-game Phaser modules, PostgreSQL persistence, deployed behind the shared VPS proxy.",
+      ],
+      ru: [
+        "Slip Service работает на server-authoritative WebSocket-симуляции 20Hz с client-side prediction и интерполяцией.",
+        "Общее TypeScript sim-ядро делает физику клиента и сервера идентичной по построению.",
+        "Приватные комнаты по ссылке (5-буквенные коды) плюс соло-режим score-attack; полный паритет клавиатуры и тача.",
+        "Оболочка на Next.js с Phaser-модулями на игру, персистентность на PostgreSQL, деплой за общим VPS-прокси.",
+      ],
+      de: [
+        "Slip Service laeuft auf einer server-autoritativen 20Hz-WebSocket-Simulation mit Client-Prediction und Interpolation.",
+        "Ein geteilter TypeScript-Sim-Kern haelt Client- und Server-Physik konstruktionsbedingt identisch.",
+        "Private Raum-Links (5-Buchstaben-Codes) plus Solo-Score-Attack-Modus; volle Tastatur- und Touch-Paritaet.",
+        "Next.js-Shell mit Phaser-Modulen pro Spiel, PostgreSQL-Persistenz, Deployment hinter dem geteilten VPS-Proxy.",
+      ],
+    },
+    stack: ["Phaser", "Next.js", "TypeScript", "WebSockets", "PostgreSQL", "Docker"],
+    meta: {
+      en: ["live game", "realtime multiplayer", "browser arcade"],
+      ru: ["живая игра", "риалтайм-мультиплеер", "браузерная аркада"],
+      de: ["Live-Spiel", "Echtzeit-Multiplayer", "Browser-Arcade"],
+    },
+    link: "https://sillybazaar.games",
+    linkLabel: {
+      en: "enter the bazaar",
+      ru: "войти на базар",
+      de: "Basar betreten",
+    },
+    cover: "sillybazaar",
+  },
+  {
     slug: "alice-plays",
     title: "Alice Plays",
     eyebrow: {
