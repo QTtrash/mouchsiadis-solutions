@@ -1,4 +1,6 @@
 ---
+import CoverArt from './CoverArt.astro';
+
 interface Props {
   title: string;
   eyebrow: string;
@@ -35,9 +37,7 @@ const {
 <details class:list={['archive-entry', compact && 'archive-entry--compact']} data-cover={cover}>
   <summary class="archive-entry__summary">
     <div class="archive-entry__cover" aria-hidden="true">
-      <span class="archive-entry__cover-grid"></span>
-      <span class="archive-entry__cover-ring"></span>
-      <span class="archive-entry__cover-bar"></span>
+      <CoverArt slug={cover} />
     </div>
 
     <div class="archive-entry__lead">

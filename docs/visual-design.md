@@ -17,8 +17,13 @@ The site should feel like a professional software portfolio viewed through a Pip
 - Use the side navigation as the primary mode selector; labels should stay short and control-like.
 - Keep archive cards dense: compact covers, clear titles, metadata chips, and expandable detail rows.
 - Prefer flat borders, subtle inset shadows, scanlines, and modest glow over large decorative gradients.
-- Keep buttons, chips, status labels, and metadata in monospace uppercase to separate controls from editorial body text.
-- Blog and article pages should share the same phosphor visual system but prioritize comfortable reading width.
+- Keep buttons, chips, status labels, and metadata in monospace uppercase to separate controls from body text.
+- Terminal body text is monospace (IBM Plex Mono) — the screen reads as one machine. Long-form blog articles are the exception and keep the Merriweather serif for reading comfort.
+- Dual-phosphor palette: green is the system color; amber (`--amber: #ffb000`) is a scarce accent reserved for active states, kickers, cursors, status highlights, and the game lab's cover art. Never let amber dominate a panel.
+- Every project card carries unique code-drawn SVG cover art (`CoverArt.astro`) in phosphor line-art; unknown slugs fall back to a generic record-chip schematic.
+- Cinematic CRT behaviors (all gated by `prefers-reduced-motion` and implemented in `src/scripts/`): a skippable POST-style boot sequence once per session, scramble-decode on panel headings, a typed hero title after boot, blinking block cursors, and hover flicker. There is deliberately NO literal command line — fiction you feel, never fight.
+- Sound is synthesized in code (`src/scripts/sound.ts`), strictly opt-in behind the SND toggle, default off.
+- Blog and article pages share the same phosphor visual system but prioritize comfortable reading width.
 
 ## Spacing And Responsive Rules
 

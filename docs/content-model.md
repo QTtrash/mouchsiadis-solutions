@@ -38,11 +38,17 @@ Current software entries:
 - `Neopay`
 - `True Grind`
 - `Medura Solution`
+
+Current game entries (`gameProjects`):
+
+- `Silly Bazaar`
 - `Alice Plays`
+- `Bomb Town`
+- `Rifle Revolver`
+- `Incendiary Revolver`
 
 Excluded by design:
 
-- `bombtown`
 - `af-blog`
 - `vps-proxy`
 - `neo-public`

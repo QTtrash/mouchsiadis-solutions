@@ -31,7 +31,11 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
 ---
 
 <BaseLayout locale={locale} alternates={alternates}>
-  <section class="terminal-console section" data-terminal-console>
+  <section
+    class="terminal-console section"
+    data-terminal-console
+    data-terminal-lang={localeLabels[locale]}
+  >
     <div class="terminal-status" aria-hidden="true">
       <span>Mouchsiadis // field terminal</span>
       <span>LANG {localeLabels[locale]}</span>
@@ -328,7 +332,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
               >{copy.labels.githubLabel}</a
             >
             <a href="https://www.linkedin.com/in/surenmouchsiadis" target="_blank" rel="noreferrer"
-              >{copy.labels.linkedinLabel}</
+              >{copy.labels.linkedinLabel}</a
             >
           </div>
         </section>
@@ -336,239 +340,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
     </div>
   </section>
 
-  <script is:inline>
-    (() => {
-      if ("scrollRestoration" in history) {
-        history.scrollRestoration = "manual";
-      }
-
-      const terminal = document.querySelector("[data-terminal-console]");
-      const tabs = Array.from(document.querySelectorAll("[data-terminal-tab]"));
-      const panels = Array.from(
-        document.querySelectorAll("[data-terminal-panel]"),
-      );
-      const soundButtons = Array.from(
-        document.querySelectorAll("[data-terminal-sound]"),
-      );
-      const validIds = new Set(
-        panels.map((panel) => panel.dataset.terminalPanel),
-      );
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      let activeId = "overview";
-      let transitionTimer = 0;
-      let audioContext;
-      let soundEnabled = localStorage.getItem("terminalSound") === "on";
-
-      const keepPageAtTerminal = () => {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      };
-
-      const syncSoundButton = () => {
-        terminal?.classList.toggle("terminal-console--sound-on", soundEnabled);
-        soundButtons.forEach((button) => {
-          button.textContent = soundEnabled ? "snd on" : "snd off";
-          button.setAttribute("aria-pressed", String(soundEnabled));
-        });
-      };
-
-      const ensureAudio = () => {
-        if (!soundEnabled) return null;
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return null;
-        audioContext ||= new AudioContext();
-        if (audioContext.state === "suspended") {
-          audioContext.resume();
-        }
-        return audioContext;
-      };
-
-      const beep = (frequency, duration = 0.04, delay = 0, gain = 0.025) => {
-        const context = ensureAudio();
-        if (!context) return;
-        const start = context.currentTime + delay;
-        const oscillator = context.createOscillator();
-        const volume = context.createGain();
-        oscillator.type = "square";
-        oscillator.frequency.setValueAtTime(frequency, start);
-        volume.gain.setValueAtTime(0.0001, start);
-        volume.gain.exponentialRampToValueAtTime(gain, start + 0.008);
-        volume.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-        oscillator.connect(volume);
-        volume.connect(context.destination);
-        oscillator.start(start);
-        oscillator.stop(start + duration + 0.02);
-      };
-
-      const burst = (duration = 0.045, delay = 0) => {
-        const context = ensureAudio();
-        if (!context) return;
-        const start = context.currentTime + delay;
-        const buffer = context.createBuffer(
-          1,
-          Math.floor(context.sampleRate * duration),
-          context.sampleRate,
-        );
-        const output = buffer.getChannelData(0);
-        for (let i = 0; i < output.length; i += 1) {
-          output[i] = (Math.random() * 2 - 1) * (1 - i / output.length);
-        }
-        const source = context.createBufferSource();
-        const filter = context.createBiquadFilter();
-        const volume = context.createGain();
-        filter.type = "bandpass";
-        filter.frequency.value = 1200;
-        volume.gain.value = 0.018;
-        source.buffer = buffer;
-        source.connect(filter);
-        filter.connect(volume);
-        volume.connect(context.destination);
-        source.start(start);
-      };
-
-      const playSound = (type) => {
-        if (!soundEnabled) return;
-        if (type === "boot") {
-          beep(220, 0.05, 0, 0.018);
-          beep(440, 0.045, 0.07, 0.018);
-          burst(0.06, 0.13);
-          beep(880, 0.035, 0.18, 0.014);
-          return;
-        }
-        if (type === "tab") {
-          beep(520, 0.035, 0, 0.018);
-          burst(0.035, 0.035);
-          return;
-        }
-        if (type === "detail") {
-          beep(320, 0.025, 0, 0.014);
-          return;
-        }
-        beep(160, 0.05, 0, 0.012);
-      };
-
-      const setSound = (enabled) => {
-        soundEnabled = enabled;
-        localStorage.setItem("terminalSound", enabled ? "on" : "off");
-        syncSoundButton();
-        if (enabled) {
-          playSound("boot");
-        }
-      };
-
-      const finishTransition = (previousPanel, nextPanel) => {
-        if (previousPanel && previousPanel !== nextPanel) {
-          previousPanel.classList.remove("is-leaving", "is-active");
-          previousPanel.hidden = true;
-        }
-        nextPanel.classList.remove("is-entering");
-      };
-
-      const showPanel = (id, updateHash = true, initial = false) => {
-        const nextId = validIds.has(id) ? id : "overview";
-        const nextPanel = panels.find(
-          (panel) => panel.dataset.terminalPanel === nextId,
-        );
-        const previousPanel = panels.find(
-          (panel) => panel.dataset.terminalPanel === activeId && !panel.hidden,
-        );
-
-        if (!nextPanel) return;
-        if (nextId === activeId && !initial) {
-          playSound("error");
-          keepPageAtTerminal();
-          return;
-        }
-
-        window.clearTimeout(transitionTimer);
-        activeId = nextId;
-
-        panels.forEach((panel) => {
-          const isActive = panel.dataset.terminalPanel === nextId;
-          if (isActive) {
-            panel.hidden = false;
-            panel.classList.add("is-active");
-            if (!initial && !reduceMotion) {
-              panel.classList.add("is-entering");
-            }
-            panel.scrollTop = 0;
-          } else if (panel === previousPanel && !initial && !reduceMotion) {
-            panel.classList.add("is-leaving");
-          } else {
-            panel.hidden = true;
-            panel.classList.remove("is-active", "is-entering", "is-leaving");
-          }
-        });
-
-        tabs.forEach((tab) => {
-          const isActive = tab.hash === `#${nextId}`;
-          tab.classList.toggle("is-active", isActive);
-          if (isActive) {
-            tab.setAttribute("aria-current", "page");
-          } else {
-            tab.removeAttribute("aria-current");
-          }
-        });
-
-        if (updateHash && window.location.hash !== `#${nextId}`) {
-          history.replaceState(null, "", `#${nextId}`);
-        }
-
-        if (!initial) {
-          playSound("tab");
-          if (!reduceMotion) {
-            terminal?.classList.remove("terminal-console--switching");
-            terminal?.offsetWidth;
-            terminal?.classList.add("terminal-console--switching");
-            window.setTimeout(
-              () => terminal?.classList.remove("terminal-console--switching"),
-              560,
-            );
-          }
-        }
-
-        if (previousPanel && previousPanel !== nextPanel && !reduceMotion) {
-          transitionTimer = window.setTimeout(
-            () => finishTransition(previousPanel, nextPanel),
-            280,
-          );
-        } else {
-          finishTransition(previousPanel, nextPanel);
-        }
-
-        keepPageAtTerminal();
-        requestAnimationFrame(keepPageAtTerminal);
-        setTimeout(keepPageAtTerminal, 80);
-      };
-
-      const handleLink = (event) => {
-        const href = event.currentTarget.getAttribute("href") || "#overview";
-        const id = href.replace("#", "");
-        if (!validIds.has(id)) return;
-        event.preventDefault();
-        showPanel(id);
-      };
-
-      tabs.forEach((tab) => tab.addEventListener("click", handleLink));
-      document
-        .querySelectorAll("[data-terminal-jump]")
-        .forEach((link) => link.addEventListener("click", handleLink));
-      soundButtons.forEach((button) =>
-        button.addEventListener("click", () => setSound(!soundEnabled)),
-      );
-      document.querySelectorAll(".archive-entry summary").forEach((summary) => {
-        summary.addEventListener("click", () => playSound("detail"));
-      });
-
-      window.addEventListener("hashchange", () =>
-        showPanel(window.location.hash.replace("#", ""), false),
-      );
-      syncSoundButton();
-      showPanel(window.location.hash.replace("#", ""), false, true);
-      requestAnimationFrame(() =>
-        terminal?.classList.add("terminal-console--ready"),
-      );
-    })();
+  <script>
+    import "../../scripts/terminal.ts";
   </script>
 </BaseLayout>
