@@ -49,7 +49,13 @@ export function formatDate(date: Date, locale: Locale) {
 }
 
 export function buildLocalePath(locale: Locale, suffix = "") {
-  return `/${locale}${suffix}`;
+  const path = `/${locale}${suffix}`;
+
+  if (path.endsWith("/") || path.includes("#")) {
+    return path;
+  }
+
+  return `${path}/`;
 }
 
 export function sortPosts(posts: CollectionEntry<"blog">[]) {

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mouchsiadis-solutions.com/sitemap-index.xml

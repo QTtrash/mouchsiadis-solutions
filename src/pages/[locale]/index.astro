@@ -3,7 +3,13 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import { experiences, gameProjects, projects } from "../../lib/content";
-import { buildLocaleAlternates, buildLocalePath, sortPosts, formatDate } from "../../lib/blog";
+import {
+  buildLocaleAlternates,
+  buildLocalePath,
+  sortPosts,
+  formatDate,
+  inferPostLanguage,
+} from "../../lib/blog";
 import {
   LOCALES,
   isLocale,
@@ -171,7 +177,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
           hidden
         >
           <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.experience}</p>
+            <p class="section-heading__kicker">
+              {copy.sectionKickers.experience}
+            </p>
             <h2>{copy.sections.experience}</h2>
             <p class="section-heading__body">{copy.sectionBodies.experience}</p>
           </div>
@@ -286,23 +294,30 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
             <p class="section-heading__body">{copy.labels.blogBody}</p>
           </div>
 
-          {recentPosts.length > 0 && (
-            <div class="blog-index blog-index--compact">
-              {recentPosts.map((post) => (
-                <article class="blog-index__item">
-                  <div class="blog-index__meta">
-                    <span>{formatDate(post.data.date, locale)}</span>
-                  </div>
-                  <h3>
-                    <a href={buildLocalePath(locale, `/blog/${post.slug}`)}>
-                      {post.data.title}
-                    </a>
-                  </h3>
-                  {post.data.description && <p>{post.data.description}</p>}
-                </article>
-              ))}
-            </div>
-          )}
+          {
+            recentPosts.length > 0 && (
+              <div class="blog-index blog-index--compact">
+                {recentPosts.map((post) => (
+                  <article class="blog-index__item">
+                    <div class="blog-index__meta">
+                      <span>{formatDate(post.data.date, locale)}</span>
+                    </div>
+                    <h3>
+                      <a
+                        href={buildLocalePath(
+                          inferPostLanguage(post.slug),
+                          `/blog/${post.slug}`,
+                        )}
+                      >
+                        {post.data.title}
+                      </a>
+                    </h3>
+                    {post.data.description && <p>{post.data.description}</p>}
+                  </article>
+                ))}
+              </div>
+            )
+          }
 
           <div class="blog-callout">
             <p>{copy.sectionBodies.blog}</p>
@@ -328,11 +343,15 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
             <a href="mailto:suren@mouchsiadis-solutions.com"
               >suren@mouchsiadis-solutions.com</a
             >
-            <a href="https://github.com/QTtrash" target="_blank" rel="noreferrer"
-              >{copy.labels.githubLabel}</a
+            <a
+              href="https://github.com/QTtrash"
+              target="_blank"
+              rel="noreferrer">{copy.labels.githubLabel}</a
             >
-            <a href="https://www.linkedin.com/in/surenmouchsiadis" target="_blank" rel="noreferrer"
-              >{copy.labels.linkedinLabel}</a
+            <a
+              href="https://www.linkedin.com/in/surenmouchsiadis"
+              target="_blank"
+              rel="noreferrer">{copy.labels.linkedinLabel}</a
             >
           </div>
         </section>
