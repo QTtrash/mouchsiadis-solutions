@@ -2,20 +2,48 @@
 
 export type SoundType = "boot" | "tab" | "detail" | "error" | "key" | "decode";
 
+const SOUND_KEY = "terminalSound";
+
+function readSoundPreference(): boolean {
+  try {
+    return localStorage.getItem(SOUND_KEY) === "on";
+  } catch {
+    return false;
+  }
+}
+
+function writeSoundPreference(enabled: boolean): void {
+  try {
+    localStorage.setItem(SOUND_KEY, enabled ? "on" : "off");
+  } catch {
+    // Sound remains session-only when browser storage is unavailable.
+  }
+}
+
 export class SoundEngine {
   private context: AudioContext | null = null;
-  enabled = localStorage.getItem("terminalSound") === "on";
+  enabled = readSoundPreference();
 
   private ensure(): AudioContext | null {
     if (!this.enabled) return null;
-    const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const Ctx =
+      window.AudioContext ??
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
     if (!Ctx) return null;
     this.context ||= new Ctx();
     if (this.context.state === "suspended") void this.context.resume();
     return this.context;
   }
 
-  private beep(frequency: number, duration = 0.04, delay = 0, gain = 0.025, type: OscillatorType = "square", glideTo?: number): void {
+  private beep(
+    frequency: number,
+    duration = 0.04,
+    delay = 0,
+    gain = 0.025,
+    type: OscillatorType = "square",
+    glideTo?: number,
+  ): void {
     const context = this.ensure();
     if (!context) return;
     const start = context.currentTime + delay;
@@ -23,7 +51,11 @@ export class SoundEngine {
     const volume = context.createGain();
     oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, start);
-    if (glideTo) oscillator.frequency.exponentialRampToValueAtTime(glideTo, start + duration);
+    if (glideTo)
+      oscillator.frequency.exponentialRampToValueAtTime(
+        glideTo,
+        start + duration,
+      );
     volume.gain.setValueAtTime(0.0001, start);
     volume.gain.exponentialRampToValueAtTime(gain, start + 0.008);
     volume.gain.exponentialRampToValueAtTime(0.0001, start + duration);
@@ -33,11 +65,20 @@ export class SoundEngine {
     oscillator.stop(start + duration + 0.02);
   }
 
-  private burst(duration = 0.045, delay = 0, gain = 0.018, frequency = 1200): void {
+  private burst(
+    duration = 0.045,
+    delay = 0,
+    gain = 0.018,
+    frequency = 1200,
+  ): void {
     const context = this.ensure();
     if (!context) return;
     const start = context.currentTime + delay;
-    const buffer = context.createBuffer(1, Math.floor(context.sampleRate * duration), context.sampleRate);
+    const buffer = context.createBuffer(
+      1,
+      Math.floor(context.sampleRate * duration),
+      context.sampleRate,
+    );
     const output = buffer.getChannelData(0);
     for (let i = 0; i < output.length; i += 1) {
       output[i] = (Math.random() * 2 - 1) * (1 - i / output.length);
@@ -88,7 +129,7 @@ export class SoundEngine {
 
   setEnabled(enabled: boolean): void {
     this.enabled = enabled;
-    localStorage.setItem("terminalSound", enabled ? "on" : "off");
+    writeSoundPreference(enabled);
     if (enabled) this.play("boot");
   }
 }

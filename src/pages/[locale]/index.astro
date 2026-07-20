@@ -8,7 +8,8 @@ import {
   buildLocalePath,
   sortPosts,
   formatDate,
-  inferPostLanguage,
+  getPostLanguage,
+  getPostSlug,
 } from "../../lib/blog";
 import {
   LOCALES,
@@ -101,7 +102,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
                   class="button button--ghost"
                   href="/cv/Suren_Mouchsiadis_CV.pdf"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   {copy.cta.cv}
                 </a>
@@ -262,7 +263,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
                   class="button"
                   href="/cv/Suren_Mouchsiadis_CV.pdf"
                   target="_blank"
-                  rel="noreferrer">{copy.labels.cvOpen}</a
+                  rel="noopener noreferrer">{copy.labels.cvOpen}</a
                 >
                 <a
                   class="button button--ghost"
@@ -305,8 +306,8 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
                     <h3>
                       <a
                         href={buildLocalePath(
-                          inferPostLanguage(post.slug),
-                          `/blog/${post.slug}`,
+                          getPostLanguage(post),
+                          `/blog/${getPostSlug(post)}`,
                         )}
                       >
                         {post.data.title}
@@ -346,12 +347,12 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
             <a
               href="https://github.com/QTtrash"
               target="_blank"
-              rel="noreferrer">{copy.labels.githubLabel}</a
+              rel="noopener noreferrer">{copy.labels.githubLabel}</a
             >
             <a
               href="https://www.linkedin.com/in/surenmouchsiadis"
               target="_blank"
-              rel="noreferrer">{copy.labels.linkedinLabel}</a
+              rel="noopener noreferrer">{copy.labels.linkedinLabel}</a
             >
           </div>
         </section>

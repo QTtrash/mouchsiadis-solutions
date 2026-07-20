@@ -1,10 +1,11 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import PostLayout from "../../../layouts/PostLayout.astro";
 import {
   formatDate,
-  inferPostLanguage,
+  getPostLanguage,
   getPostLanguageLabel,
+  getPostSlug,
   sortPosts,
 } from "../../../lib/blog";
 
@@ -12,10 +13,10 @@ export async function getStaticPaths() {
   const posts = sortPosts(await getCollection("blog"));
 
   return posts.map((post, index) => {
-    const locale = inferPostLanguage(post.slug);
+    const locale = getPostLanguage(post);
 
     return {
-      params: { locale, slug: post.slug },
+      params: { locale, slug: getPostSlug(post) },
       props: {
         locale,
         post,
@@ -27,8 +28,8 @@ export async function getStaticPaths() {
 }
 
 const { locale, post, prevPost, nextPost } = Astro.props;
-const { Content } = await post.render();
-const postLocale = inferPostLanguage(post.slug);
+const { Content } = await render(post);
+const postLocale = getPostLanguage(post);
 const formattedDate = formatDate(post.data.date, locale);
 const languageLabel = getPostLanguageLabel(postLocale, locale);
 ---

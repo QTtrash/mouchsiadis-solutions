@@ -1,6 +1,6 @@
 ---
-import { localeSeo, type Locale } from '../lib/i18n';
-import { buildLocalePath } from '../lib/blog';
+import { localeSeo, type Locale } from "../lib/i18n";
+import { buildLocalePath } from "../lib/blog";
 
 interface Props {
   locale: Locale;
@@ -20,8 +20,12 @@ const year = new Date().getFullYear();
 
     <div class="site-footer__links">
       <a href={buildLocalePath(locale)}>{copy.nav.work}</a>
-      <a href={buildLocalePath(locale, '/blog')}>{copy.nav.blog}</a>
-      <a href="/cv/Suren_Mouchsiadis_CV.pdf" target="_blank" rel="noreferrer">{copy.nav.cv}</a>
+      <a href={buildLocalePath(locale, "/blog")}>{copy.nav.blog}</a>
+      <a
+        href="/cv/Suren_Mouchsiadis_CV.pdf"
+        target="_blank"
+        rel="noopener noreferrer">{copy.nav.cv}</a
+      >
     </div>
   </div>
 </footer>

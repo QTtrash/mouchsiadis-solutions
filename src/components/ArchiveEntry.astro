@@ -1,5 +1,5 @@
 ---
-import CoverArt from './CoverArt.astro';
+import CoverArt from "./CoverArt.astro";
 
 interface Props {
   title: string;
@@ -26,15 +26,18 @@ const {
   stack,
   meta,
   link,
-  linkLabel = 'Open',
+  linkLabel = "Open",
   cover,
   compact = false,
-  toggleLabel = 'Details',
-  toggleCloseLabel = 'Close',
+  toggleLabel = "Details",
+  toggleCloseLabel = "Close",
 } = Astro.props;
 ---
 
-<details class:list={['archive-entry', compact && 'archive-entry--compact']} data-cover={cover}>
+<details
+  class:list={["archive-entry", compact && "archive-entry--compact"]}
+  data-cover={cover}
+>
   <summary class="archive-entry__summary">
     <div class="archive-entry__cover" aria-hidden="true">
       <CoverArt slug={cover} />
@@ -68,11 +71,18 @@ const {
         {stack.map((item) => <span>{item}</span>)}
       </div>
 
-      {link && (
-        <a class="archive-entry__link" href={link} target="_blank" rel="noreferrer">
-          {linkLabel}
-        </a>
-      )}
+      {
+        link && (
+          <a
+            class="archive-entry__link"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {linkLabel}
+          </a>
+        )
+      }
     </div>
   </div>
 </details>

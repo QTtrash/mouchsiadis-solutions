@@ -1,12 +1,12 @@
 import type { CollectionEntry } from "astro:content";
 import { LOCALES, type Locale, localeIntlCodes } from "./i18n.ts";
 
-export function inferPostLanguage(slug: string): Locale {
-  if (slug.startsWith("de-")) {
-    return "de";
-  }
+export function getPostLanguage(post: CollectionEntry<"blog">): Locale {
+  return post.data.language;
+}
 
-  return "ru";
+export function getPostSlug(post: CollectionEntry<"blog">): string {
+  return post.id;
 }
 
 export function getPostLanguageLabel(postLocale: Locale, shellLocale: Locale) {

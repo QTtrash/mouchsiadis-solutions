@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import { buildLocalePath, inferPostLanguage } from "../lib/blog";
+import { buildLocalePath, getPostLanguage, getPostSlug } from "../lib/blog";
 import { localeSeo, type Locale } from "../lib/i18n";
 import type { CollectionEntry } from "astro:content";
 
@@ -58,8 +58,8 @@ const { title, description } = post.data;
           prevPost && (
             <a
               href={buildLocalePath(
-                inferPostLanguage(prevPost.slug),
-                `/blog/${prevPost.slug}`,
+                getPostLanguage(prevPost),
+                `/blog/${getPostSlug(prevPost)}`,
               )}
             >
               {copy.labels.prevPost}: {prevPost.data.title}
@@ -70,8 +70,8 @@ const { title, description } = post.data;
           nextPost && (
             <a
               href={buildLocalePath(
-                inferPostLanguage(nextPost.slug),
-                `/blog/${nextPost.slug}`,
+                getPostLanguage(nextPost),
+                `/blog/${getPostSlug(nextPost)}`,
               )}
             >
               {copy.labels.nextPost}: {nextPost.data.title}
