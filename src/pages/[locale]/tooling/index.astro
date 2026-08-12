@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { toolProjects } from "../../../lib/content";
+import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
+import { LOCALES, isLocale, type Locale } from "../../../lib/i18n";
+import "../../../assets/styles/tooling.css";
+
+export function getStaticPaths() { return LOCALES.map((locale) => ({ params: { locale } })); }
+const localeParam = Astro.params.locale;
+if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
+const locale: Locale = localeParam;
+const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => record[locale] ?? record.en;
+const copy = {
+  en: { kicker: "INSTRUMENT GALLERY / 05 ACTIVE SYSTEMS", title: "Tools for seeing what systems usually hide.", body: "These are working instruments, not concept cards: privacy-first coordination, game telemetry, personal records, and document operations.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated" },
+  de: { kicker: "INSTRUMENTENGALERIE / 05 AKTIVE SYSTEME", title: "Werkzeuge fuer Dinge, die Systeme sonst verbergen.", body: "Funktionierende Instrumente statt Konzeptkarten: private Koordination, Spieltelemetrie, persoenliche Aufzeichnungen und Dokumentablaeufe.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben" },
+  ru: { kicker: "ГАЛЕРЕЯ ИНСТРУМЕНТОВ / 05 АКТИВНЫХ СИСТЕМ", title: "Инструменты для того, что системы обычно скрывают.", body: "Рабочие инструменты, а не концепт-карточки: приватная координация, игровая телеметрия, личные записи и обработка документов.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены" },
+  ge: { kicker: "ინსტრუმენტების გალერეა / 05 აქტიური სისტემა", title: "ხელსაწყოები იმის სანახავად, რასაც სისტემები მალავენ.", body: "მოქმედი ინსტრუმენტები: პირადი კოორდინაცია, თამაშის ტელემეტრია, პერსონალური ჩანაწერები და დოკუმენტების ოპერაციები.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული" },
+}[locale];
+---
+<BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} alternates={buildLocaleAlternates("/tooling")}>
+  <section class="tooling-hero">
+    <div class="tooling-hero__copy"><a class="tooling-return" href={buildLocalePath(locale)}>← {copy.back}</a><p>{copy.kicker}</p><h1>{copy.title}</h1><span>{copy.body}</span></div>
+    <div class="tooling-field" data-tooling-field aria-hidden="true"><canvas></canvas><div class="tooling-field__readout"><span>FIELD / ONLINE</span><b>05</b></div></div>
+  </section>
+  <section class="instrument-grid" aria-label="Public tools">
+    {toolProjects.map((tool, index) => <article class="instrument-card">
+      <header><span>{String(index + 1).padStart(2, "0")} / {tool.slug.toUpperCase()}</span><i aria-hidden="true"></i></header>
+      <div><p>{localized(tool.eyebrow)}</p><h2>{tool.title}</h2><span>{localized(tool.summary)}</span></div>
+      <ul>{tool.stack.slice(0, 5).map((item) => <li>{item}</li>)}</ul>
+      <a href={tool.link} target="_blank" rel="noopener noreferrer">{copy.open} <b>↗</b></a>
+    </article>)}
+  </section>
+  <p class="tooling-note">{copy.note}</p>
+  <script>void import("../../../scripts/tooling-field");</script>
+</BaseLayout>

@@ -4,7 +4,7 @@ import { buildLocalePath } from "../lib/blog";
 
 interface Props {
   locale: Locale;
-  active?: "home" | "blog";
+  active?: "home" | "blog" | "tooling";
   localePathSuffix?: string;
 }
 
@@ -17,6 +17,7 @@ const anchors = {
   cv: `${buildLocalePath(locale)}#cv`,
   blog: `${buildLocalePath(locale, "/blog")}`,
   contact: `${buildLocalePath(locale)}#contact`,
+  tooling: buildLocalePath(locale, "/tooling"),
 };
 ---
 
@@ -42,6 +43,7 @@ const anchors = {
           <a href={anchors.work}>{copy.nav.work}</a>
           <a href={anchors.experience}>{copy.nav.experience}</a>
           <a href={anchors.games}>{copy.nav.games}</a>
+          <a class:list={[active === "tooling" && "is-active"]} href={anchors.tooling}>Tooling</a>
           <a href={anchors.cv}>{copy.nav.cv}</a>
           <a
             class:list={[active === "blog" && "is-active"]}

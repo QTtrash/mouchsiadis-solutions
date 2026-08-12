@@ -55,14 +55,6 @@ const key = ALIASES[slug] ?? slug;
     </g>
   )}
 
-  {key === "medura" && (
-    <g>
-      <path d="M18 58 H50 L58 40 L66 72 L74 30 L82 58 H142" />
-      <path d="M116 22 v16 M108 30 h16" stroke-width="4" opacity="0.75" />
-      <rect x="24" y="24" width="26" height="16" rx="2" opacity="0.35" />
-    </g>
-  )}
-
   {key === "alice" && (
     <g>
       <path d="M40 20 H120 V80 H40 Z M66 20 V80 M93 20 V80 M40 40 H120 M40 60 H120" opacity="0.7" />
@@ -136,7 +128,7 @@ const key = ALIASES[slug] ?? slug;
     </g>
   )}
 
-  {!["neopay", "truegrind", "medura", "alice", "bombtown", "rifle", "incendiary", "sillybazaar", "cloud", "analytics", "medical"].includes(key) && (
+  {!["neopay", "truegrind", "alice", "bombtown", "rifle", "incendiary", "sillybazaar", "cloud", "analytics", "medical"].includes(key) && (
     <g>
       <rect x="46" y="30" width="68" height="40" rx="3" opacity="0.8" />
       <path d="M56 30 V22 M72 30 V22 M88 30 V22 M104 30 V22 M56 78 V70 M72 78 V70 M88 78 V70 M104 78 V70" opacity="0.6" />

@@ -60,6 +60,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         <a href="#software-work" data-terminal-tab>{copy.nav.work}</a>
         <a href="#experience" data-terminal-tab>{copy.nav.experience}</a>
         <a href="#game-dev" data-terminal-tab>{copy.nav.games}</a>
+        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}>TOOLING ↗</a>
         <a href="#cv" data-terminal-tab>{copy.nav.cv}</a>
         <a href="#blog" data-terminal-tab>{copy.nav.blog}</a>
         <a href="#contact" data-terminal-tab>{copy.nav.contact}</a>

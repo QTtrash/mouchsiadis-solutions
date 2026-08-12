@@ -10,10 +10,11 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
-  active?: "home" | "blog";
+  active?: "home" | "blog" | "tooling";
   alternates?: Record<Locale, string>;
   localePathSuffix?: string;
   noindex?: boolean;
+  bodyClass?: string;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   alternates,
   localePathSuffix = "",
   noindex = false,
+  bodyClass = "",
 } = Astro.props;
 ---
 
@@ -40,7 +42,7 @@ const {
       noindex={noindex}
     />
   </head>
-  <body>
+  <body class={bodyClass}>
     <div class="shell-noise" aria-hidden="true"></div>
     <div class="site-shell">
       <Header

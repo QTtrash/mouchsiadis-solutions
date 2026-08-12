@@ -31,20 +31,20 @@ export interface ExperienceEntry {
 
 export const projects: ProjectEntry[] = [
   {
-    slug: "neopay",
-    title: "Neopay",
+    slug: "ypay",
+    title: "YPay",
     eyebrow: {
       en: "Tenant-aware payout platform",
       ru: "Мультиарендная платформа выплат",
       de: "Mandantenfaehige Auszahlungsplattform",
     },
     summary: {
-      en: "A payout platform for Yandex fleets with admin and driver flows, balance visibility, payout orchestration, and dual VPS deployment support.",
+      en: "A live tenant-aware payout platform for mobility fleets, with admin and driver experiences, balance visibility, payout orchestration, and reconciliation.",
       ru: "Платформа выплат для парков Yandex с административными и водительскими потоками, видимостью балансов, оркестрацией выплат и поддержкой двух VPS-окружений.",
       de: "Eine Auszahlungsplattform fuer Yandex-Flotten mit Admin- und Fahrerablaeufen, Saldenansicht, Auszahlungsorchestrierung und dualem VPS-Deployment.",
     },
     narrative: {
-      en: "Neopay is designed around tenant isolation, payout risk control, and infrastructure clarity. The product combines host-bound tenant routing, role-separated admin and driver surfaces, external provider integrations, and an auditable payout lifecycle.",
+      en: "YPay is designed around tenant isolation, payout risk control, and infrastructure clarity. The product combines host-bound tenant routing, role-separated admin and driver surfaces, external provider integrations, and an auditable payout lifecycle.",
       ru: "Neopay строится вокруг изоляции арендаторов, контроля рисков выплат и прозрачной инфраструктуры. Продукт сочетает host-bound маршрутизацию арендаторов, разделенные интерфейсы для админов и водителей, интеграции с внешними провайдерами и аудируемый жизненный цикл выплат.",
       de: "Neopay ist auf Mandantentrennung, Risikokontrolle bei Auszahlungen und klare Infrastruktur ausgerichtet. Das Produkt kombiniert host-gebundenes Tenant-Routing, getrennte Admin- und Fahreroberflaechen, externe Integrationen und einen auditierbaren Auszahlungsprozess.",
     },
@@ -83,7 +83,7 @@ export const projects: ProjectEntry[] = [
       ru: ["публичная платформа", "tenant routing", "платежи"],
       de: ["oeffentliche Plattform", "Tenant-Routing", "Payments"],
     },
-    link: "https://neopay.cloud",
+    link: "https://ypay.ge",
     linkLabel: {
       en: "open platform",
       ru: "открыть платформу",
@@ -92,129 +92,66 @@ export const projects: ProjectEntry[] = [
     cover: "neopay",
   },
   {
-    slug: "true-grind",
-    title: "True Grind",
+    slug: "ydesk",
+    title: "YDesk",
     eyebrow: {
-      en: "CS2 analytics and demo intelligence",
-      ru: "CS2-аналитика и анализ демок",
-      de: "CS2-Analytik und Demo-Intelligenz",
+      en: "Multi-tenant dispatch operations",
+      ru: "Мультиарендные диспетчерские операции",
+      de: "Mandantenfaehige Dispatch-Operations",
     },
     summary: {
-      en: "A Counter-Strike 2 platform for authentication, match history, replay artifacts, demo parsing, and public-facing analysis tools.",
-      ru: "Платформа Counter-Strike 2 для аутентификации, истории матчей, артефактов повторов, парсинга демок и публичных инструментов анализа.",
-      de: "Eine Counter-Strike-2-Plattform fuer Authentifizierung, Matchhistorie, Replay-Artefakte, Demo-Parsing und oeffentliche Analysewerkzeuge.",
+      en: "A production dispatch and support workspace for tenant operations, real-time workflows, notification workers, and accountable case handling.",
+      ru: "Рабочее пространство диспетчеризации и поддержки для tenant-операций, процессов в реальном времени, уведомлений и контролируемой обработки обращений.",
+      de: "Ein produktiver Dispatch- und Support-Arbeitsplatz fuer Tenant-Operations, Echtzeitablaeufe, Benachrichtigungen und nachvollziehbare Fallbearbeitung.",
     },
     narrative: {
-      en: "True Grind combines product work and systems engineering: a public landing experience, account surface, parser worker, Steam sidecar, and replay tooling that turns raw demo files into explorable match data.",
-      ru: "True Grind сочетает продуктовую разработку и системную инженерию: публичную посадочную страницу, аккаунтную часть, parser worker, Steam sidecar и replay-инструменты, превращающие сырые демки в исследуемые данные матчей.",
-      de: "True Grind verbindet Produktentwicklung mit Systems Engineering: oeffentliche Landing Page, Account-Flaeche, Parser-Worker, Steam-Sidecar und Replay-Tooling, das rohe Demodateien in analysierbare Matchdaten verwandelt.",
+      en: "YDesk turns operational traffic into a clear working surface: tenant-specific domains, role-aware queues, durable records, integrations, and background notifications under one deployment model.",
+      ru: "YDesk превращает операционный поток в понятную рабочую среду: tenant-домены, ролевые очереди, надежные записи, интеграции и фоновые уведомления.",
+      de: "YDesk macht operativen Verkehr zu einer klaren Arbeitsflaeche: Tenant-Domains, rollenbezogene Queues, dauerhafte Datensaetze, Integrationen und Hintergrundbenachrichtigungen.",
     },
     details: {
       en: [
-        "Ships as a multi-service stack with a Next.js app, Go parser worker, Steam bot sidecar, PostgreSQL, and shared-proxy deployment.",
-        "Handles Steam auth, FACEIT linking, match ingestion, generated replay assets, and public analysis surfaces.",
-        "Includes replay and canvas tooling, server-side parsing, and durable storage for artifacts and demo workflows.",
-        "Designed for both consumer-facing polish and backend operational stability.",
-      ],
-      ru: [
-        "Поставляется как мультисервисный стек: Next.js-приложение, Go parser worker, Steam bot sidecar, PostgreSQL и deployment через shared-proxy.",
-        "Обрабатывает Steam-auth, привязку FACEIT, ingestion матчей, генерацию replay-артефактов и публичные поверхности анализа.",
-        "Включает replay- и canvas-инструменты, серверный парсинг и надежное хранение артефактов и демо-процессов.",
-        "Спроектирован одновременно под consumer-facing polish и устойчивость backend-операций.",
-      ],
-      de: [
-        "Laeuft als Multi-Service-Stack mit Next.js-App, Go-Parser-Worker, Steam-Bot-Sidecar, PostgreSQL und shared-proxy-Deployment.",
-        "Uebernimmt Steam-Auth, FACEIT-Verknuepfung, Match-Ingestion, Replay-Artefakte und oeffentliche Analyseflaechen.",
-        "Beinhaltet Replay- und Canvas-Tooling, serverseitiges Parsing und dauerhafte Speicherung von Artefakten und Demo-Workflows.",
-        "Auf gleichzeitige Produktqualitaet und operative Backend-Stabilitaet ausgelegt.",
+        "Combines a Next.js operations surface, PostgreSQL, support notification worker, and tenant-aware routing.",
+        "Separates administrative and tenant workflows while keeping auditable operational records.",
+        "Runs as a production multi-service stack behind the shared VPS proxy.",
       ],
     },
-    stack: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Go",
-      "PostgreSQL",
-      "Steam OpenID",
-      "FACEIT",
-      "Docker",
-    ],
+    stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Workers", "Docker"],
     meta: {
-      en: ["public product", "multi-service", "gaming analytics"],
-      ru: ["публичный продукт", "мультисервис", "игровая аналитика"],
-      de: ["oeffentliches Produkt", "Multi-Service", "Gaming-Analytik"],
+      en: ["live platform", "multi-tenant", "operations"],
     },
-    link: "https://true-grind-cs2.online",
+    link: "https://ydesk.org",
     linkLabel: {
       en: "open site",
       ru: "открыть сайт",
       de: "Website oeffnen",
     },
-    cover: "truegrind",
-  },
-  {
-    slug: "medura",
-    title: "Medura Solution",
-    eyebrow: {
-      en: "Healthcare SaaS",
-      ru: "Healthcare SaaS",
-      de: "Healthcare SaaS",
-    },
-    summary: {
-      en: "A GDPR-compliant medical practice management system for German healthcare providers with scheduling, patient portals, dashboards, and multi-tenant access control.",
-      ru: "GDPR-совместимая система управления медицинской практикой для немецких провайдеров здравоохранения: расписание, пациентские порталы, дашборды и мультиарендный контроль доступа.",
-      de: "Ein DSGVO-konformes Praxismanagement-System fuer deutsche Gesundheitsanbieter mit Terminplanung, Patientenportal, Dashboards und mandantenfaehiger Zugriffskontrolle.",
-    },
-    narrative: {
-      en: "The Medura entry is positioned as a healthcare product case: regulated-domain UX, access boundaries, scheduling flows, and provider-facing operational tooling packaged into a cleaner SaaS surface.",
-      ru: "Запись Medura оформлена как healthcare-case: UX в регулируемой доменной области, границы доступа, процессы расписания и операционные инструменты для провайдеров внутри аккуратного SaaS-интерфейса.",
-      de: "Medura wird als Healthcare-Case positioniert: UX in einem regulierten Umfeld, Zugriffsgrenzen, Terminablaeufe und provider-seitige Operations-Tools in einer klaren SaaS-Flaeche.",
-    },
-    details: {
-      en: [
-        "Centered on appointment management, patient communication, practice dashboards, and role-specific workflows.",
-        "Highlights a product language closer to healthcare operations than a generic admin dashboard.",
-        "Uses a modern web stack and multi-tenant framing appropriate for clinics and medical teams.",
-        "Presented here as a polished public-facing case study entry with service and systems depth.",
-      ],
-      ru: [
-        "Сфокусирована на управлении расписанием, коммуникации с пациентами, кабинетах практик и ролевых рабочих сценариях.",
-        "Подчеркивает продуктовый язык, ближе к healthcare-операциям, а не к типичному админ-дашборду.",
-        "Использует современный веб-стек и мультиарендную модель, подходящую для клиник и медкоманд.",
-        "Представлена здесь как аккуратно оформленный публичный case study с глубиной сервиса и систем.",
-      ],
-      de: [
-        "Konzentriert sich auf Terminmanagement, Patientenkommunikation, Praxis-Dashboards und rollenbezogene Workflows.",
-        "Betont eine Produktsprache, die naeher an echten Healthcare-Operations liegt als an generischen Admin-Dashboards.",
-        "Setzt auf einen modernen Web-Stack und ein mandantenfaehiges Modell fuer Kliniken und medizinische Teams.",
-        "Wird hier als oeffentlich lesbare Case Study mit Produkt- und Systemtiefe praesentiert.",
-      ],
-    },
-    stack: [
-      "Next.js 15",
-      "React 19",
-      "TypeScript",
-      "PostgreSQL",
-      "Drizzle ORM",
-      "NextAuth",
-      "Tailwind CSS",
-    ],
-    meta: {
-      en: ["public showcase", "healthcare", "multi-tenant"],
-      ru: ["публичный кейс", "healthcare", "мультиарендность"],
-      de: ["oeffentliche Case Study", "Healthcare", "mandantenfaehig"],
-    },
-    link: "https://www.medura-solution.com",
-    linkLabel: {
-      en: "open site",
-      ru: "открыть сайт",
-      de: "Website oeffnen",
-    },
-    cover: "medura",
+    cover: "neopay",
   },
 ];
 
+export const toolProjects: ProjectEntry[] = [
+  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind" },
+  { slug: "raid-signal", title: "Raid Signal", eyebrow: { en: "Encrypted squad map" }, summary: { en: "A local-first Windows raid navigator with end-to-end encrypted live desktop and phone coordination." }, narrative: { en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history." }, details: { en: ["AES-256-GCM Internet rooms", "Offline maps, POIs, quests and overlay", "Hosted view-only phone companion"] }, stack: ["Tauri", "React", "Rust", "WebSockets", "Web Crypto"], meta: { en: ["free tool", "privacy-first"] }, link: "https://signal.mouchsiadis-solutions.com", linkLabel: { en: "open Raid Signal" }, cover: "truegrind" },
+  { slug: "breadmeter", title: "Breadmeter", eyebrow: { en: "Personal finance instrument" }, summary: { en: "A focused personal-finance PWA with durable tracking and private PostgreSQL-backed data." }, narrative: { en: "A deliberately small operational tool for making everyday spending legible." }, details: { en: ["Mobile-first PWA", "Private persistent records", "Production VPS deployment"] }, stack: ["Next.js", "PostgreSQL", "PWA"], meta: { en: ["live tool", "personal finance"] }, link: "https://breadmeter.com", linkLabel: { en: "open tool" }, cover: "neopay" },
+  { slug: "doublechilicheese", title: "Doublechilicheese", eyebrow: { en: "Food mindfulness journal" }, summary: { en: "A private journal for recording food decisions, context, and patterns without turning them into a generic calorie dashboard." }, narrative: { en: "A calmer instrumentation layer around eating and attention." }, details: { en: ["Private uploads and records", "Responsive journal workflow", "Production-backed persistence"] }, stack: ["Next.js", "PostgreSQL", "Docker"], meta: { en: ["live tool", "mindfulness"] }, link: "https://doublechilicheese.com", linkLabel: { en: "open tool" }, cover: "neopay" },
+  { slug: "readtry", title: "Readtry", eyebrow: { en: "Document workflow tooling" }, summary: { en: "A production document workflow with background processing, malware scanning, and durable storage." }, narrative: { en: "A systems-heavy tool that treats uploaded documents as an operational pipeline rather than a folder." }, details: { en: ["Background worker processing", "ClamAV scanning", "PostgreSQL-backed state"] }, stack: ["Next.js", "PostgreSQL", "Workers", "ClamAV"], meta: { en: ["live tool", "document systems"] }, link: "https://readtry.com", linkLabel: { en: "open tool" }, cover: "neopay" },
+];
+
 export const gameProjects: ProjectEntry[] = [
+  {
+    slug: "flygod-studios",
+    title: "FlyGod Studios",
+    eyebrow: { en: "Independent game studio" },
+    summary: { en: "A public studio home for authored games, experiments, and the systems that connect them." },
+    narrative: { en: "FlyGod Studios gives the game work a coherent release identity without hiding the engineering behind each title." },
+    details: { en: ["Independent game releases", "Studio-level presentation", "A growing catalogue of playable systems"] },
+    stack: ["Web", "Game systems", "Realtime", "Creative direction"],
+    meta: { en: ["live studio", "independent games"] },
+    link: "https://flygod.games",
+    linkLabel: { en: "open studio" },
+    cover: "sillybazaar",
+  },
   {
     slug: "silly-bazaar",
     title: "Silly Bazaar",
