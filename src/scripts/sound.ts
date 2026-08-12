@@ -1,6 +1,6 @@
 // Synthesized terminal sound engine. Strictly opt-in (default off), state in localStorage.
 
-export type SoundType = "boot" | "tab" | "detail" | "error" | "key" | "decode";
+export type SoundType = "boot" | "tab" | "detail" | "error" | "key" | "decode" | "vault" | "acquire";
 
 const SOUND_KEY = "terminalSound";
 
@@ -123,6 +123,13 @@ export class SoundEngine {
         break;
       case "error":
         this.beep(160, 0.05, 0, 0.012);
+        break;
+      case "vault":
+        this.beep(72, 0.16, 0, 0.022, "sine", 140);
+        this.burst(0.07, 0.08, 0.01, 700);
+        break;
+      case "acquire":
+        this.beep(420 + tabIndex * 55, 0.045, 0, 0.014, "sine", 650 + tabIndex * 55);
         break;
     }
   }

@@ -2,6 +2,7 @@ import type { Locale } from "./i18n.ts";
 
 type LocalizedRecord<T> = { en: T } & Partial<Record<Locale, T>>;
 type LocalizedString = LocalizedRecord<string>;
+export type InstrumentKind = "replay-lattice" | "sealed-relay" | "ledger-gauge" | "balance-journal" | "scan-gate";
 
 export interface ProjectEntry {
   slug: string;
@@ -15,6 +16,11 @@ export interface ProjectEntry {
   link: string;
   linkLabel: LocalizedString;
   cover: string;
+  instrument?: InstrumentKind;
+}
+
+export interface ToolProjectEntry extends ProjectEntry {
+  instrument: InstrumentKind;
 }
 
 export interface ExperienceEntry {
@@ -130,12 +136,12 @@ export const projects: ProjectEntry[] = [
   },
 ];
 
-export const toolProjects: ProjectEntry[] = [
-  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind" },
-  { slug: "raid-signal", title: "Raid Signal", eyebrow: { en: "Encrypted squad map" }, summary: { en: "A local-first Windows raid navigator with end-to-end encrypted live desktop and phone coordination." }, narrative: { en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history." }, details: { en: ["AES-256-GCM Internet rooms", "Offline maps, POIs, quests and overlay", "Hosted view-only phone companion"] }, stack: ["Tauri", "React", "Rust", "WebSockets", "Web Crypto"], meta: { en: ["free tool", "privacy-first"] }, link: "https://signal.mouchsiadis-solutions.com", linkLabel: { en: "open Raid Signal" }, cover: "truegrind" },
-  { slug: "breadmeter", title: "Breadmeter", eyebrow: { en: "Personal finance instrument" }, summary: { en: "A focused personal-finance PWA with durable tracking and private PostgreSQL-backed data." }, narrative: { en: "A deliberately small operational tool for making everyday spending legible." }, details: { en: ["Mobile-first PWA", "Private persistent records", "Production VPS deployment"] }, stack: ["Next.js", "PostgreSQL", "PWA"], meta: { en: ["live tool", "personal finance"] }, link: "https://breadmeter.com", linkLabel: { en: "open tool" }, cover: "neopay" },
-  { slug: "doublechilicheese", title: "Doublechilicheese", eyebrow: { en: "Food mindfulness journal" }, summary: { en: "A private journal for recording food decisions, context, and patterns without turning them into a generic calorie dashboard." }, narrative: { en: "A calmer instrumentation layer around eating and attention." }, details: { en: ["Private uploads and records", "Responsive journal workflow", "Production-backed persistence"] }, stack: ["Next.js", "PostgreSQL", "Docker"], meta: { en: ["live tool", "mindfulness"] }, link: "https://doublechilicheese.com", linkLabel: { en: "open tool" }, cover: "neopay" },
-  { slug: "readtry", title: "Readtry", eyebrow: { en: "Document workflow tooling" }, summary: { en: "A production document workflow with background processing, malware scanning, and durable storage." }, narrative: { en: "A systems-heavy tool that treats uploaded documents as an operational pipeline rather than a folder." }, details: { en: ["Background worker processing", "ClamAV scanning", "PostgreSQL-backed state"] }, stack: ["Next.js", "PostgreSQL", "Workers", "ClamAV"], meta: { en: ["live tool", "document systems"] }, link: "https://readtry.com", linkLabel: { en: "open tool" }, cover: "neopay" },
+export const toolProjects: ToolProjectEntry[] = [
+  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind", instrument: "replay-lattice" },
+  { slug: "raid-signal", title: "Raid Signal", eyebrow: { en: "Encrypted squad map" }, summary: { en: "A local-first Windows raid navigator with end-to-end encrypted live desktop and phone coordination." }, narrative: { en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history." }, details: { en: ["AES-256-GCM Internet rooms", "Offline maps, POIs, quests and overlay", "Hosted view-only phone companion"] }, stack: ["Tauri", "React", "Rust", "WebSockets", "Web Crypto"], meta: { en: ["free tool", "privacy-first"] }, link: "https://signal.mouchsiadis-solutions.com", linkLabel: { en: "open Raid Signal" }, cover: "truegrind", instrument: "sealed-relay" },
+  { slug: "breadmeter", title: "Breadmeter", eyebrow: { en: "Personal finance instrument" }, summary: { en: "A focused personal-finance PWA with durable tracking and private PostgreSQL-backed data." }, narrative: { en: "A deliberately small operational tool for making everyday spending legible." }, details: { en: ["Mobile-first PWA", "Private persistent records", "Production VPS deployment"] }, stack: ["Next.js", "PostgreSQL", "PWA"], meta: { en: ["live tool", "personal finance"] }, link: "https://breadmeter.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "ledger-gauge" },
+  { slug: "doublechilicheese", title: "Doublechilicheese", eyebrow: { en: "Food mindfulness journal" }, summary: { en: "A private journal for recording food decisions, context, and patterns without turning them into a generic calorie dashboard." }, narrative: { en: "A calmer instrumentation layer around eating and attention." }, details: { en: ["Private uploads and records", "Responsive journal workflow", "Production-backed persistence"] }, stack: ["Next.js", "PostgreSQL", "Docker"], meta: { en: ["live tool", "mindfulness"] }, link: "https://doublechilicheese.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "balance-journal" },
+  { slug: "readtry", title: "Readtry", eyebrow: { en: "Document workflow tooling" }, summary: { en: "A production document workflow with background processing, malware scanning, and durable storage." }, narrative: { en: "A systems-heavy tool that treats uploaded documents as an operational pipeline rather than a folder." }, details: { en: ["Background worker processing", "ClamAV scanning", "PostgreSQL-backed state"] }, stack: ["Next.js", "PostgreSQL", "Workers", "ClamAV"], meta: { en: ["live tool", "document systems"] }, link: "https://readtry.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "scan-gate" },
 ];
 
 export const gameProjects: ProjectEntry[] = [

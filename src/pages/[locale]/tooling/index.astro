@@ -11,24 +11,37 @@ if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale:
 const locale: Locale = localeParam;
 const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => record[locale] ?? record.en;
 const copy = {
-  en: { kicker: "INSTRUMENT GALLERY / 05 ACTIVE SYSTEMS", title: "Tools for seeing what systems usually hide.", body: "These are working instruments, not concept cards: privacy-first coordination, game telemetry, personal records, and document operations.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated" },
-  de: { kicker: "INSTRUMENTENGALERIE / 05 AKTIVE SYSTEME", title: "Werkzeuge fuer Dinge, die Systeme sonst verbergen.", body: "Funktionierende Instrumente statt Konzeptkarten: private Koordination, Spieltelemetrie, persoenliche Aufzeichnungen und Dokumentablaeufe.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben" },
-  ru: { kicker: "ГАЛЕРЕЯ ИНСТРУМЕНТОВ / 05 АКТИВНЫХ СИСТЕМ", title: "Инструменты для того, что системы обычно скрывают.", body: "Рабочие инструменты, а не концепт-карточки: приватная координация, игровая телеметрия, личные записи и обработка документов.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены" },
-  ge: { kicker: "ინსტრუმენტების გალერეა / 05 აქტიური სისტემა", title: "ხელსაწყოები იმის სანახავად, რასაც სისტემები მალავენ.", body: "მოქმედი ინსტრუმენტები: პირადი კოორდინაცია, თამაშის ტელემეტრია, პერსონალური ჩანაწერები და დოკუმენტების ოპერაციები.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული" },
+  en: { kicker: "INSTRUMENT VAULT / 05 ACTIVE SYSTEMS", title: "Working systems, given physical form.", body: "Enter a spatial index of independently designed tools for evidence, coordination, personal records, and document operations.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated", sound: "SND" },
+  de: { kicker: "INSTRUMENTENTRESOR / 05 AKTIVE SYSTEME", title: "Arbeitende Systeme in physischer Form.", body: "Ein raeumlicher Index unabhaengig entwickelter Werkzeuge fuer Evidenz, Koordination, persoenliche Aufzeichnungen und Dokumentablaeufe.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben", sound: "TON" },
+  ru: { kicker: "ХРАНИЛИЩЕ ИНСТРУМЕНТОВ / 05 СИСТЕМ", title: "Рабочие системы в физической форме.", body: "Пространственный индекс независимо созданных инструментов для анализа, координации, личных записей и документов.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены", sound: "ЗВУК" },
+  ge: { kicker: "ინსტრუმენტების საცავი / 05 აქტიური სისტემა", title: "მოქმედი სისტემები ფიზიკურ ფორმაში.", body: "დამოუკიდებლად შექმნილი ხელსაწყოების სივრცითი ინდექსი ანალიზის, კოორდინაციის, პირადი ჩანაწერებისა და დოკუმენტებისთვის.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული", sound: "ხმა" },
 }[locale];
 ---
 <BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} alternates={buildLocaleAlternates("/tooling")}>
-  <section class="tooling-hero">
-    <div class="tooling-hero__copy"><a class="tooling-return" href={buildLocalePath(locale)}>← {copy.back}</a><p>{copy.kicker}</p><h1>{copy.title}</h1><span>{copy.body}</span></div>
-    <div class="tooling-field" data-tooling-field aria-hidden="true"><canvas></canvas><div class="tooling-field__readout"><span>FIELD / ONLINE</span><b>05</b></div></div>
-  </section>
-  <section class="instrument-grid" aria-label="Public tools">
-    {toolProjects.map((tool, index) => <article class="instrument-card">
-      <header><span>{String(index + 1).padStart(2, "0")} / {tool.slug.toUpperCase()}</span><i aria-hidden="true"></i></header>
-      <div><p>{localized(tool.eyebrow)}</p><h2>{tool.title}</h2><span>{localized(tool.summary)}</span></div>
-      <ul>{tool.stack.slice(0, 5).map((item) => <li>{item}</li>)}</ul>
-      <a href={tool.link} target="_blank" rel="noopener noreferrer">{copy.open} <b>↗</b></a>
-    </article>)}
+  <section class="instrument-vault" data-instrument-vault>
+    <div class="vault-stage" aria-hidden="true">
+      <canvas></canvas>
+      <div class="vault-fallback"><i></i><i></i><i></i><span>INSTRUMENT / 01</span></div>
+      <div class="vault-reticle"><span></span><span></span><span></span><span></span></div>
+      <div class="vault-readout"><span>VAULT / ACTIVE</span><b data-vault-number>01</b><i data-vault-name>GRINDLIKE</i></div>
+    </div>
+
+    <div class="vault-content">
+      <header class="vault-hero">
+        <div><a class="tooling-return" href={buildLocalePath(locale)}>← {copy.back}</a><p>{copy.kicker}</p><h1>{copy.title}</h1><span>{copy.body}</span></div>
+        <button class="vault-sound" type="button" data-vault-sound aria-pressed="false">{copy.sound} OFF</button>
+        <p class="vault-instruction">SCROLL TO INSPECT<br />FOCUS TO ACQUIRE</p>
+      </header>
+
+      <div class="instrument-index" aria-label="Public tools">
+        {toolProjects.map((tool, index) => <article class:list={["instrument-entry", index === 0 && "is-active"]} data-vault-entry data-tool-index={index} data-instrument={tool.instrument}>
+          <header><span>{String(index + 1).padStart(2, "0")}</span><i>{tool.instrument?.replaceAll("-", " / ").toUpperCase()}</i><b>ONLINE</b></header>
+          <div class="instrument-entry__body"><p>{localized(tool.eyebrow)}</p><h2>{tool.title}</h2><span>{localized(tool.summary)}</span></div>
+          <ul>{tool.stack.slice(0, 5).map((item) => <li>{item}</li>)}</ul>
+          <a href={tool.link} target="_blank" rel="noopener noreferrer">{copy.open} <b>↗</b></a>
+        </article>)}
+      </div>
+    </div>
   </section>
   <p class="tooling-note">{copy.note}</p>
   <script>void import("../../../scripts/tooling-field");</script>
