@@ -96,6 +96,11 @@ export const localeSeo: Record<
       archiveClose: string;
       githubLabel: string;
       linkedinLabel: string;
+      openSourceKicker: string;
+      openSourceTitle: string;
+      openSourceBody: string;
+      openSourceProduct: string;
+      openSourceCode: string;
     };
   }
 > = {
@@ -178,6 +183,12 @@ export const localeSeo: Record<
       archiveClose: "close",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
+      openSourceKicker: "FIRST OPEN-SOURCE RELEASE",
+      openSourceTitle: "Raid Signal is now built in public.",
+      openSourceBody:
+        "A local-first encrypted Windows tool, released with Apache-2.0 source code and verifiable build evidence. Community map assets retain their separate licenses.",
+      openSourceProduct: "open Raid Signal",
+      openSourceCode: "view source",
     },
   },
   ru: {
@@ -260,6 +271,12 @@ export const localeSeo: Record<
       archiveClose: "закрыть",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
+      openSourceKicker: "ПЕРВЫЙ ПРОЕКТ С ОТКРЫТЫМ КОДОМ",
+      openSourceTitle: "Raid Signal теперь разрабатывается публично.",
+      openSourceBody:
+        "Локальный зашифрованный Windows-инструмент с исходным кодом Apache-2.0 и проверяемыми доказательствами сборки. Карты сообщества сохраняют отдельные лицензии.",
+      openSourceProduct: "открыть Raid Signal",
+      openSourceCode: "исходный код",
     },
   },
   de: {
@@ -342,6 +359,12 @@ export const localeSeo: Record<
       archiveClose: "schliessen",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
+      openSourceKicker: "ERSTES OPEN-SOURCE-RELEASE",
+      openSourceTitle: "Raid Signal wird jetzt oeffentlich entwickelt.",
+      openSourceBody:
+        "Ein lokales, verschluesseltes Windows-Werkzeug mit Apache-2.0-Quellcode und ueberpruefbaren Build-Nachweisen. Community-Karten behalten ihre eigenen Lizenzen.",
+      openSourceProduct: "Raid Signal oeffnen",
+      openSourceCode: "Quellcode ansehen",
     },
   },
   ge: {
@@ -425,6 +448,12 @@ export const localeSeo: Record<
       archiveClose: "დახურვა",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
+      openSourceKicker: "პირველი ღია კოდის რელიზი",
+      openSourceTitle: "Raid Signal ახლა საჯაროდ ვითარდება.",
+      openSourceBody:
+        "ლოკალური დაშიფრული Windows ხელსაწყო Apache-2.0 საწყისი კოდითა და შემოწმებადი build-მტკიცებულებებით. საზოგადოების რუკები საკუთარ ლიცენზიებს ინარჩუნებს.",
+      openSourceProduct: "Raid Signal-ის გახსნა",
+      openSourceCode: "კოდის ნახვა",
     },
   },
 };

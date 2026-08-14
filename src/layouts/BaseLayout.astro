@@ -15,6 +15,7 @@ interface Props {
   localePathSuffix?: string;
   noindex?: boolean;
   bodyClass?: string;
+  image?: string;
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   localePathSuffix = "",
   noindex = false,
   bodyClass = "",
+  image,
 } = Astro.props;
 ---
 
@@ -40,6 +42,7 @@ const {
       article={article}
       alternates={alternates}
       noindex={noindex}
+      image={image}
     />
   </head>
   <body class={bodyClass}>

@@ -15,6 +15,9 @@ export interface ProjectEntry {
   meta: LocalizedRecord<string[]>;
   link: string;
   linkLabel: LocalizedString;
+  status?: LocalizedString;
+  sourceLink?: string;
+  sourceLinkLabel?: LocalizedString;
   cover: string;
   instrument?: InstrumentKind;
 }
@@ -138,7 +141,48 @@ export const projects: ProjectEntry[] = [
 
 export const toolProjects: ToolProjectEntry[] = [
   { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind", instrument: "replay-lattice" },
-  { slug: "raid-signal", title: "Raid Signal", eyebrow: { en: "Encrypted squad map" }, summary: { en: "A local-first Windows raid navigator with end-to-end encrypted live desktop and phone coordination." }, narrative: { en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history." }, details: { en: ["AES-256-GCM Internet rooms", "Offline maps, POIs, quests and overlay", "Hosted view-only phone companion"] }, stack: ["Tauri", "React", "Rust", "WebSockets", "Web Crypto"], meta: { en: ["free tool", "privacy-first"] }, link: "https://signal.mouchsiadis-solutions.com", linkLabel: { en: "open Raid Signal" }, cover: "truegrind", instrument: "sealed-relay" },
+  {
+    slug: "raid-signal",
+    title: "Raid Signal",
+    eyebrow: {
+      en: "Encrypted open-source squad map",
+      de: "Verschluesselte Open-Source-Squad-Karte",
+      ru: "Зашифрованная карта отряда с открытым кодом",
+      ge: "დაშიფრული ღია კოდის რაზმის რუკა",
+    },
+    summary: {
+      en: "Mouchsiadis Solutions' first open-source release: a local-first Windows raid navigator with end-to-end encrypted desktop and phone coordination.",
+      de: "Das erste Open-Source-Release von Mouchsiadis Solutions: ein lokaler Windows-Raid-Navigator mit Ende-zu-Ende-verschluesselter Koordination fuer Desktop und Smartphone.",
+      ru: "Первый open-source релиз Mouchsiadis Solutions: локальный Windows-навигатор с end-to-end шифрованием координации на компьютере и телефоне.",
+      ge: "Mouchsiadis Solutions-ის პირველი ღია კოდის რელიზი: ლოკალური Windows რეიდ-ნავიგატორი ბოლომდე დაშიფრული კოორდინაციით კომპიუტერსა და ტელეფონზე.",
+    },
+    narrative: {
+      en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history. Source and release evidence are public on GitHub.",
+      de: "Koordinaten werden auf dem sendenden Geraet verschluesselt; das oeffentliche Relay leitet undurchsichtige Nachrichten ohne Positionsverlauf weiter. Quellcode und Release-Nachweise sind auf GitHub oeffentlich.",
+      ru: "Координаты шифруются на отправляющем устройстве; публичный relay передаёт непрозрачные сообщения без истории позиций. Код и доказательства сборки доступны на GitHub.",
+      ge: "კოორდინატები გამომცემ მოწყობილობაზე იშიფრება; საჯარო relay გაუშიფრავ შეტყობინებებს პოზიციების ისტორიის გარეშე გადასცემს. კოდი და რელიზის მტკიცებულებები GitHub-ზე საჯაროა.",
+    },
+    details: {
+      en: ["Apache-2.0 original source code", "AES-256-GCM Internet rooms", "Immutable releases with checksum, SBOM and provenance"],
+      de: ["Originalquellcode unter Apache-2.0", "AES-256-GCM-Internetraeume", "Unveraenderliche Releases mit Checksumme, SBOM und Provenienz"],
+      ru: ["Исходный код под Apache-2.0", "Интернет-комнаты AES-256-GCM", "Неизменяемые релизы с checksum, SBOM и provenance"],
+      ge: ["საწყისი კოდი Apache-2.0 ლიცენზიით", "AES-256-GCM ინტერნეტ-ოთახები", "უცვლელი რელიზები checksum-ით, SBOM-ით და provenance-ით"],
+    },
+    stack: ["Tauri", "React", "Rust", "WebSockets", "Web Crypto"],
+    meta: {
+      en: ["open source", "privacy-first"],
+      de: ["Open Source", "Privacy-first"],
+      ru: ["открытый код", "privacy-first"],
+      ge: ["ღია კოდი", "privacy-first"],
+    },
+    status: { en: "OPEN SOURCE", de: "OPEN SOURCE", ru: "ОТКРЫТЫЙ КОД", ge: "ღია კოდი" },
+    link: "https://signal.mouchsiadis-solutions.com",
+    linkLabel: { en: "open Raid Signal", de: "Raid Signal oeffnen", ru: "открыть Raid Signal", ge: "Raid Signal-ის გახსნა" },
+    sourceLink: "https://github.com/QTtrash/tarkov-map",
+    sourceLinkLabel: { en: "view source", de: "Quellcode ansehen", ru: "исходный код", ge: "კოდის ნახვა" },
+    cover: "truegrind",
+    instrument: "sealed-relay",
+  },
   { slug: "breadmeter", title: "Breadmeter", eyebrow: { en: "Personal finance instrument" }, summary: { en: "A focused personal-finance PWA with durable tracking and private PostgreSQL-backed data." }, narrative: { en: "A deliberately small operational tool for making everyday spending legible." }, details: { en: ["Mobile-first PWA", "Private persistent records", "Production VPS deployment"] }, stack: ["Next.js", "PostgreSQL", "PWA"], meta: { en: ["live tool", "personal finance"] }, link: "https://breadmeter.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "ledger-gauge" },
   { slug: "doublechilicheese", title: "Doublechilicheese", eyebrow: { en: "Food mindfulness journal" }, summary: { en: "A private journal for recording food decisions, context, and patterns without turning them into a generic calorie dashboard." }, narrative: { en: "A calmer instrumentation layer around eating and attention." }, details: { en: ["Private uploads and records", "Responsive journal workflow", "Production-backed persistence"] }, stack: ["Next.js", "PostgreSQL", "Docker"], meta: { en: ["live tool", "mindfulness"] }, link: "https://doublechilicheese.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "balance-journal" },
   { slug: "readtry", title: "Readtry", eyebrow: { en: "Document workflow tooling" }, summary: { en: "A production document workflow with background processing, malware scanning, and durable storage." }, narrative: { en: "A systems-heavy tool that treats uploaded documents as an operational pipeline rather than a folder." }, details: { en: ["Background worker processing", "ClamAV scanning", "PostgreSQL-backed state"] }, stack: ["Next.js", "PostgreSQL", "Workers", "ClamAV"], meta: { en: ["live tool", "document systems"] }, link: "https://readtry.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "scan-gate" },

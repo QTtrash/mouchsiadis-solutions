@@ -31,6 +31,8 @@ Each project entry includes:
 - localized `meta`
 - `link`
 - localized `linkLabel`
+- optional localized `status`
+- optional `sourceLink` and localized `sourceLinkLabel` for public-source projects
 - `cover`
 
 Current software entries:

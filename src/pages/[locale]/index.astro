@@ -132,6 +132,40 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
             </div>
           </div>
 
+          <aside
+            class="open-source-milestone"
+            aria-labelledby="open-source-title"
+          >
+            <img
+              src="/images/raid-signal-open-source.png"
+              alt=""
+              width="1280"
+              height="640"
+              loading="lazy"
+            />
+            <div>
+              <p class="section-heading__kicker">
+                {copy.labels.openSourceKicker}
+              </p>
+              <h2 id="open-source-title">{copy.labels.openSourceTitle}</h2>
+              <p>{copy.labels.openSourceBody}</p>
+            </div>
+            <nav aria-label={copy.labels.openSourceTitle}>
+              <a
+                class="button"
+                href="https://signal.mouchsiadis-solutions.com"
+                target="_blank"
+                rel="noopener noreferrer">{copy.labels.openSourceProduct}</a
+              >
+              <a
+                class="button button--ghost"
+                href="https://github.com/QTtrash/tarkov-map"
+                target="_blank"
+                rel="noopener noreferrer">{copy.labels.openSourceCode}</a
+              >
+            </nav>
+          </aside>
+
           <div class="about-strip">
             <p class="section-heading__kicker">{copy.aboutTitle}</p>
             <p>{copy.aboutBody}</p>

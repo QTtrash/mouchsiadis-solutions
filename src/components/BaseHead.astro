@@ -63,6 +63,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:type" content={article ? "article" : "website"} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:image" content={new URL(image, Astro.site)} />
+<meta property="og:image:alt" content={fullTitle} />
 <meta
   property="og:locale"
   content={localeIntlCodes[locale].replace("-", "_")}
@@ -71,3 +72,4 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, Astro.site)} />

@@ -752,6 +752,7 @@ summary:focus-visible {
 .hero-panel__copy,
 .hero-panel__signal,
 .about-strip,
+.open-source-milestone,
 .cv-panel,
 .blog-callout,
 .contact-panel,
@@ -768,6 +769,7 @@ summary:focus-visible {
 
 .hero-panel .hero-panel__copy,
 .hero-panel .hero-panel__signal,
+.hero-panel .open-source-milestone,
 .hero-panel .about-strip {
   border-color: rgba(165, 220, 113, 0.16);
   background:
@@ -782,6 +784,7 @@ summary:focus-visible {
 .hero-panel__copy,
 .hero-panel__signal,
 .about-strip,
+.open-source-milestone,
 .cv-panel,
 .blog-callout,
 .contact-panel,
@@ -999,6 +1002,43 @@ summary:focus-visible {
 
 .about-strip {
   margin-top: 0.85rem;
+}
+
+.open-source-milestone {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.55fr) minmax(0, 1fr) auto;
+  gap: 1.15rem;
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.open-source-milestone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  min-height: 8.5rem;
+  border: 1px solid rgba(255, 176, 0, 0.2);
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.open-source-milestone h2 {
+  margin: 0 0 0.6rem;
+  color: #e8ffd3;
+  font-family: var(--heading);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.05;
+}
+
+.open-source-milestone p:not(.section-heading__kicker) {
+  margin: 0;
+  color: var(--muted);
+}
+
+.open-source-milestone nav {
+  display: grid;
+  gap: 0.55rem;
 }
 
 .about-strip p:last-child {
@@ -1725,6 +1765,7 @@ summary:focus-visible {
 
   .hero-panel__grid,
   .cv-panel,
+  .open-source-milestone,
   .archive-entry__summary {
     grid-template-columns: 1fr;
   }
@@ -1827,12 +1868,21 @@ summary:focus-visible {
 
   .hero-panel .hero-panel__copy,
   .hero-panel .hero-panel__signal,
+  .hero-panel .open-source-milestone,
   .hero-panel .about-strip {
     padding: 0.9rem;
   }
 
   .signal-card__portrait {
     width: 4rem;
+  }
+
+  .open-source-milestone {
+    grid-template-columns: 1fr;
+  }
+
+  .open-source-milestone nav {
+    grid-template-columns: 1fr 1fr;
   }
 
   .section-heading h2,
