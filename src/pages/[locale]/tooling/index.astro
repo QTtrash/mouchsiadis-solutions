@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { toolProjects } from "../../../lib/content";
+import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
+import { LOCALES, isLocale, type Locale } from "../../../lib/i18n";
+import "../../../assets/styles/tooling.css";
+
+export function getStaticPaths() { return LOCALES.map((locale) => ({ params: { locale } })); }
+const localeParam = Astro.params.locale;
+if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
+const locale: Locale = localeParam;
+const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => record[locale] ?? record.en;
+const copy = {
+  en: { kicker: "INSTRUMENT ATLAS / 05 ACTIVE SYSTEMS", title: "Working systems, mapped.", body: "A compact field index of independently designed tools for evidence, coordination, personal records, and document operations.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated", sound: "SND", select: "Select a system", online: "ONLINE", atlas: "ATLAS / ACTIVE" },
+  de: { kicker: "INSTRUMENTENATLAS / 05 AKTIVE SYSTEME", title: "Arbeitende Systeme, kartiert.", body: "Ein kompakter Feldindex unabhaengig entwickelter Werkzeuge fuer Evidenz, Koordination, persoenliche Aufzeichnungen und Dokumentablaeufe.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben", sound: "TON", select: "System auswaehlen", online: "ONLINE", atlas: "ATLAS / AKTIV" },
+  ru: { kicker: "АТЛАС ИНСТРУМЕНТОВ / 05 СИСТЕМ", title: "Рабочие системы на карте.", body: "Компактный полевой индекс независимо созданных инструментов для анализа, координации, личных записей и документов.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены", sound: "ЗВУК", select: "Выберите систему", online: "В СЕТИ", atlas: "АТЛАС / АКТИВЕН" },
+  ge: { kicker: "ინსტრუმენტების ატლასი / 05 სისტემა", title: "მოქმედი სისტემების რუკა.", body: "დამოუკიდებლად შექმნილი ხელსაწყოების კომპაქტური ინდექსი ანალიზის, კოორდინაციის, პირადი ჩანაწერებისა და დოკუმენტებისთვის.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული", sound: "ხმა", select: "აირჩიეთ სისტემა", online: "ონლაინ", atlas: "ატლასი / აქტიური" },
+}[locale];
+---
+<BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} image="/images/raid-signal-open-source.png" alternates={buildLocaleAlternates("/tooling")}>
+  <section class="instrument-atlas" data-instrument-vault>
+    <div class="atlas-stage" aria-hidden="true">
+      <canvas></canvas>
+      <svg class="atlas-fallback" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="currentColor">
+          <path d="M58 511C141 422 179 480 245 405S369 326 452 382s126 43 191-23 128-47 198-117" />
+          <path d="M29 545c104-111 151-39 216-112s132-102 218-38 141 40 211-34 129-62 198-142" />
+          <path d="M7 583c115-119 174-40 240-116s139-123 232-52 151 38 226-47 126-77 180-174" />
+          <path d="M0 629c130-127 192-43 260-123s145-143 246-66 159 35 240-62 119-88 151-203" />
+          <path d="M112 350c72-67 137-93 205-68s104 16 155-30 102-51 171-24" />
+          <path d="M161 298c64-52 111-65 167-43s93 14 136-27 82-47 138-31" />
+        </g>
+        <g class="atlas-fallback__route" fill="none"><path d="M147 483 303 377 457 426 609 341 766 236" /><circle cx="147" cy="483" r="7" /><circle cx="303" cy="377" r="7" /><circle cx="457" cy="426" r="7" /><circle cx="609" cy="341" r="7" /><circle cx="766" cy="236" r="7" /></g>
+      </svg>
+      <div class="atlas-vignette"></div>
+      <div class="atlas-readout"><span>{copy.atlas}</span><b data-vault-number>01</b><i data-vault-name>GRINDLIKE</i></div>
+    </div>
+
+    <div class="atlas-interface">
+      <header class="atlas-intro">
+        <a class="tooling-return" href={buildLocalePath(locale)}>← {copy.back}</a>
+        <p>{copy.kicker}</p>
+        <h1>{copy.title}</h1>
+        <span>{copy.body}</span>
+      </header>
+
+      <div class="atlas-index" aria-label={copy.select}>
+        {toolProjects.map((tool, index) => (
+          <button class:list={["atlas-index__item", index === 0 && "is-active"]} type="button" data-vault-select data-tool-index={index} aria-pressed={index === 0 ? "true" : "false"}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{tool.title}</strong>
+            <i>{localized(tool.eyebrow)}</i>
+            <b>{tool.status ? localized(tool.status) : copy.online}</b>
+          </button>
+        ))}
+      </div>
+
+      <noscript>
+        <nav class="atlas-noscript" aria-label={copy.select}>
+          {toolProjects.map((tool, index) => <div><a href={tool.link} target="_blank" rel="noopener noreferrer"><span>{String(index + 1).padStart(2, "0")}</span>{tool.title}<b>↗</b></a>{tool.sourceLink && <a href={tool.sourceLink} target="_blank" rel="noopener noreferrer">{tool.sourceLinkLabel ? localized(tool.sourceLinkLabel) : "SOURCE"}<b>↗</b></a>}</div>)}
+        </nav>
+      </noscript>
+
+      <div class="atlas-details" aria-live="polite">
+        {toolProjects.map((tool, index) => (
+          <article class:list={["atlas-detail", index === 0 && "is-active"]} data-vault-entry data-tool-index={index} data-instrument={tool.instrument}>
+            <header><span>{String(index + 1).padStart(2, "0")} / 05</span><i>{tool.instrument?.replaceAll("-", " / ").toUpperCase()}</i></header>
+            <p>{localized(tool.eyebrow)}</p>
+            <h2>{tool.title}</h2>
+            <div>{localized(tool.summary)}</div>
+            <ul>{tool.stack.slice(0, 5).map((item) => <li>{item}</li>)}</ul>
+            <nav class="atlas-detail__links" aria-label={tool.title}>
+              <a href={tool.link} target="_blank" rel="noopener noreferrer">{localized(tool.linkLabel)} <b>↗</b></a>
+              {tool.sourceLink && <a href={tool.sourceLink} target="_blank" rel="noopener noreferrer">{tool.sourceLinkLabel ? localized(tool.sourceLinkLabel) : "SOURCE"} <b>↗</b></a>}
+            </nav>
+          </article>
+        ))}
+      </div>
+
+      <button class="atlas-sound" type="button" data-vault-sound aria-pressed="false">{copy.sound} OFF</button>
+    </div>
+  </section>
+  <p class="tooling-note">{copy.note}</p>
+  <script>void import("../../../scripts/tooling-field");</script>
+</BaseLayout>

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
+
+mkdir -p "$HOME/envs"
+
+if [[ ! -f "$env_file" ]]; then
+  cp "$repo_root/deploy/mouchsiadis-solutions.env.example" "$env_file"
+  echo "Created $env_file from deploy/mouchsiadis-solutions.env.example."
+  echo "Fill in the real values, then run ./ops/deploy."
+  exit 0
+fi
+
+echo "Env file already exists: $env_file"

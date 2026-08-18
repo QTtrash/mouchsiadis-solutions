@@ -1,0 +1,138 @@
+---
+// Per-project phosphor line-art vignettes, drawn in code (docs/visual-design.md).
+// Unknown slugs fall back to a generic "record chip" schematic.
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+// experience-category covers share a few glyphs
+const ALIASES: Record<string, string> = {
+  telemetry: "analytics",
+  platform: "chip",
+  delivery: "chip",
+  refactor: "chip",
+  consulting: "chip",
+  testing: "chip",
+  scraping: "chip",
+  support: "chip",
+  precision: "truegrind",
+  fleet: "chip",
+};
+
+const key = ALIASES[slug] ?? slug;
+---
+
+<svg
+  class="cover-art"
+  viewBox="0 0 160 100"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  aria-hidden="true"
+>
+  <!-- corner ticks, shared frame -->
+  <path d="M6 14 V6 H14 M146 6 H154 V14 M154 86 V94 H146 M14 94 H6 V86" opacity="0.5" />
+
+  {key === "neopay" && (
+    <g>
+      <path d="M22 66 H50 L58 46 L70 78 L80 34 L90 66 H138" />
+      <circle cx="122" cy="30" r="12" opacity="0.7" />
+      <path d="M117 30 H127 M122 25 V35" opacity="0.7" />
+      <path d="M30 26 h20 M30 32 h12" opacity="0.35" />
+    </g>
+  )}
+
+  {key === "truegrind" && (
+    <g>
+      <circle cx="80" cy="50" r="26" opacity="0.8" />
+      <circle cx="80" cy="50" r="12" opacity="0.5" />
+      <path d="M80 14 V34 M80 66 V86 M44 50 H64 M96 50 H116" />
+      <path d="M98 32 A 26 26 0 0 1 106 50" opacity="0.4" stroke-width="4" />
+      <circle cx="80" cy="50" r="2.5" fill="currentColor" stroke="none" />
+    </g>
+  )}
+
+  {key === "alice" && (
+    <g>
+      <path d="M40 20 H120 V80 H40 Z M66 20 V80 M93 20 V80 M40 40 H120 M40 60 H120" opacity="0.7" />
+      <text x="50" y="36" font-size="13" fill="currentColor" stroke="none" font-family="monospace">7</text>
+      <text x="103" y="56" font-size="13" fill="currentColor" stroke="none" font-family="monospace">3</text>
+      <text x="76" y="76" font-size="13" fill="currentColor" stroke="none" font-family="monospace">5</text>
+    </g>
+  )}
+
+  {key === "bombtown" && (
+    <g>
+      <path d="M20 30 H140 M20 50 H140 M20 70 H140 M40 14 V86 M70 14 V86 M100 14 V86 M130 14 V86" opacity="0.28" />
+      <circle cx="85" cy="50" r="8" />
+      <circle cx="85" cy="50" r="17" opacity="0.6" />
+      <circle cx="85" cy="50" r="27" opacity="0.3" />
+      <path d="M85 42 L88 34" opacity="0.8" />
+    </g>
+  )}
+
+  {key === "rifle" && (
+    <g>
+      <path d="M18 54 H86 L92 48 H128 L140 52 V58 H96 L90 64 H70 L64 58 H18 Z" opacity="0.85" />
+      <path d="M100 58 L96 74 H86" opacity="0.6" />
+      <path d="M30 42 h24" opacity="0.4" />
+      <circle cx="132" cy="40" r="1.6" fill="currentColor" stroke="none" />
+      <path d="M124 40 h16 M132 33 v14" opacity="0.4" />
+    </g>
+  )}
+
+  {key === "incendiary" && (
+    <g>
+      <path d="M80 22 C 96 40 100 52 92 64 C 88 72 74 74 68 64 C 62 54 68 48 72 42 C 74 52 80 54 82 48 C 84 42 82 32 80 22 Z" opacity="0.85" />
+      <path d="M40 76 h80" opacity="0.4" />
+      <path d="M48 70 v6 M60 66 v10 M112 68 v8" opacity="0.5" />
+    </g>
+  )}
+
+  {key === "sillybazaar" && (
+    <g>
+      <path d="M12 26 Q 50 44 80 34 T 148 30" opacity="0.6" />
+      <g opacity="0.9">
+        <path d="M38 36 v5" /><ellipse cx="38" cy="49" rx="7" ry="9" />
+        <path d="M78 35 v5" /><ellipse cx="78" cy="48" rx="7" ry="9" />
+        <path d="M118 32 v5" /><ellipse cx="118" cy="45" rx="7" ry="9" />
+      </g>
+      <path d="M60 78 Q 72 70 84 78" opacity="0.7" />
+      <path d="M84 78 q 4 -1 6 -5" opacity="0.7" />
+      <path d="M100 72 h22 M104 78 h14" opacity="0.35" />
+    </g>
+  )}
+
+  {key === "cloud" && (
+    <g>
+      <path d="M48 62 a14 14 0 0 1 2 -27 a18 18 0 0 1 34 -6 a13 13 0 0 1 15 21 a11 11 0 0 1 -5 12 Z" opacity="0.8" />
+      <path d="M64 74 v-14 m0 0 l-6 6 m6 -6 l6 6 M92 60 v14 m0 0 l-6 -6 m6 6 l6 -6" opacity="0.7" />
+      <path d="M116 74 h24" opacity="0.35" />
+    </g>
+  )}
+
+  {key === "analytics" && (
+    <g>
+      <path d="M28 78 V40 M52 78 V28 M76 78 V52 M100 78 V20 M124 78 V44" stroke-width="6" opacity="0.6" />
+      <path d="M20 84 H140" opacity="0.5" />
+    </g>
+  )}
+
+  {key === "medical" && (
+    <g>
+      <path d="M70 30 h20 v14 h14 v20 h-14 v14 h-20 v-14 h-14 v-20 h14 Z" opacity="0.8" />
+      <path d="M20 80 h40 l6 -10 6 10 h68" opacity="0.5" />
+    </g>
+  )}
+
+  {!["neopay", "truegrind", "alice", "bombtown", "rifle", "incendiary", "sillybazaar", "cloud", "analytics", "medical"].includes(key) && (
+    <g>
+      <rect x="46" y="30" width="68" height="40" rx="3" opacity="0.8" />
+      <path d="M56 30 V22 M72 30 V22 M88 30 V22 M104 30 V22 M56 78 V70 M72 78 V70 M88 78 V70 M104 78 V70" opacity="0.6" />
+      <path d="M56 44 h34 M56 52 h48 M56 60 h22" opacity="0.5" />
+    </g>
+  )}
+</svg>

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
+
+echo "repo: $repo_root"
+echo "env:  $env_file"
+git -C "$repo_root" status --short --branch
+
+if [[ -f "$env_file" ]]; then
+  compose_cmd \
+    --project-name "$project_name" \
+    --env-file "$env_file" \
+    -f "$compose_file" \
+    ps
+else
+  echo "Compose status skipped because the env file does not exist yet."
+fi

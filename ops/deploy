@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
+ensure_env_file
+
+export APP_ROOT="$repo_root"
+export MOUCHSIADIS_ENV_FILE="$env_file"
+
+exec bash "$repo_root/deploy/scripts/deploy.sh"

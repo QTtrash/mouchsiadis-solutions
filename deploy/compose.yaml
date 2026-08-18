@@ -1,0 +1,20 @@
+name: ${MOUCHSIADIS_PROJECT_NAME:-mouchsiadis-solutions}
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:${APP_PORT:-3105}:80
+    networks:
+      default:
+      shared-proxy:
+        aliases:
+          - ${PROXY_UPSTREAM_ALIAS:-mouchsiadis-solutions-web}
+
+networks:
+  shared-proxy:
+    name: shared-proxy
+    external: true

@@ -1,0 +1,22 @@
+{
+  "name": "mouchsiadis-solutions",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.0.6",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.4",
+    "prettier": "^3.8.0",
+    "prettier-plugin-astro": "^0.14.1"
+  }
+}
