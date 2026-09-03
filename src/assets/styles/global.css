@@ -695,11 +695,13 @@ summary:focus-visible {
   inset: 0;
   height: auto;
   padding: 1rem;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   scroll-margin-top: 6rem;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgba(165, 220, 113, 0.38) rgba(0, 0, 0, 0.22);
   transition: opacity 110ms ease-out;
@@ -2243,6 +2245,15 @@ html[data-effects="reduced"] *::before,
 html[data-effects="reduced"] *::after {
   animation: none !important;
   transition-duration: 1ms !important;
+}
+
+@media (min-width: 1120px) and (min-height: 720px) {
+  .terminal-console .hero-panel {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 1119px), (max-height: 719px) and (max-width: 1279px) {

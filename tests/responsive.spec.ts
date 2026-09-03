@@ -90,6 +90,52 @@ test("desktop tab state changes synchronously with only a short fade", async ({ 
   expect(state.duration).toBeLessThanOrEqual(120);
 });
 
+test("desktop panels scroll inside the terminal and retain their positions", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "desktop terminal scrolling");
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/en/");
+
+  const contentHeight = await page.locator(".terminal-console__content").evaluate((element) => element.clientHeight);
+  const overview = page.locator("#overview");
+  const overviewState = await overview.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    element.scrollTop = Math.min(240, element.scrollHeight - element.clientHeight);
+    return {
+      clientHeight: element.clientHeight,
+      overflowX: styles.overflowX,
+      overflowY: styles.overflowY,
+      scrollHeight: element.scrollHeight,
+      scrollTop: element.scrollTop,
+    };
+  });
+
+  expect(overviewState.clientHeight).toBe(contentHeight);
+  expect(overviewState.overflowX).toBe("hidden");
+  expect(overviewState.overflowY).toBe("auto");
+  expect(overviewState.scrollHeight).toBeGreaterThan(overviewState.clientHeight);
+  expect(overviewState.scrollTop).toBeGreaterThan(0);
+
+  await page.locator('[data-terminal-tab][href="#experience"]').click();
+  const experience = page.locator("#experience");
+  const experienceState = await experience.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    element.scrollTop = Math.min(180, element.scrollHeight - element.clientHeight);
+    return {
+      overflowX: styles.overflowX,
+      overflowY: styles.overflowY,
+      scrollTop: element.scrollTop,
+    };
+  });
+  expect(experienceState).toMatchObject({ overflowX: "hidden", overflowY: "auto" });
+  expect(experienceState.scrollTop).toBeGreaterThan(0);
+
+  await page.locator('[data-terminal-tab][href="#overview"]').click();
+  await expect.poll(() => overview.evaluate((element) => element.scrollTop)).toBe(overviewState.scrollTop);
+  await page.locator('[data-terminal-tab][href="#experience"]').click();
+  await expect.poll(() => experience.evaluate((element) => element.scrollTop)).toBe(experienceState.scrollTop);
+});
+
 test("tooling uses touch-first records on mobile", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 1280) > 720, "phone composition");
   await page.goto("/en/tooling/");
