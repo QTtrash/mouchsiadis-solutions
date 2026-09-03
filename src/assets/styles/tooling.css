@@ -1,4 +1,3 @@
-@view-transition { navigation: auto; }
 .tooling-page { --tool-bg: #080807; --tool-surface: #11110e; --tool-ivory: #e8e1d2; --tool-copper: #d77a3f; --tool-line: #34312c; color: var(--tool-ivory); background: var(--tool-bg); }
 .tooling-page .shell-noise { opacity: .045; }
 .tooling-page .site-header { background: rgba(8, 8, 7, .94); border-color: var(--tool-line); }
@@ -6,7 +5,7 @@
 .tooling-page .site-main { width: 100%; max-width: none; padding: 0; }
 .tooling-page .site-footer { position: relative; z-index: 4; background: var(--tool-bg); }
 
-.instrument-atlas { position: relative; min-height: calc(100svh - var(--header-h, 68px)); overflow: hidden; border-bottom: 1px solid var(--tool-line); view-transition-name: tooling-portal; }
+.instrument-atlas { position: relative; min-height: calc(100svh - var(--header-h, 68px)); overflow: hidden; border-bottom: 1px solid var(--tool-line); }
 .atlas-stage { position: absolute; inset: 0; overflow: hidden; background: #090908; }
 .atlas-stage::before { content: ""; position: absolute; z-index: 3; inset: 22px; border: 1px solid #28251f; pointer-events: none; }
 .atlas-stage::after { content: ""; position: absolute; z-index: 4; top: 22px; left: 22px; width: 9px; height: 9px; background: var(--tool-copper); pointer-events: none; }
@@ -69,11 +68,6 @@
 .atlas-sound[aria-pressed="true"], .atlas-sound:hover { border-color: var(--tool-copper); color: var(--tool-copper); }
 .tooling-note { position: relative; z-index: 4; margin: 0; padding: 2rem clamp(24px, 6vw, 96px) 4rem; color: #928b80; background: var(--tool-bg); font: 500 .7rem/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 
-@keyframes portal-collapse { to { opacity: 0; clip-path: inset(49.5% 0); filter: brightness(2.4); } }
-@keyframes portal-open { from { opacity: 0; clip-path: inset(49.5% 0); transform: scaleX(.82); } }
-::view-transition-old(root) { animation: 320ms cubic-bezier(.7,0,.9,.3) both portal-collapse; }
-::view-transition-new(root) { animation: 680ms 100ms cubic-bezier(.1,.72,.18,1) both portal-open; }
-
 @media (max-width: 1180px) {
   .atlas-interface { grid-template-columns: minmax(340px, 46vw) 1fr; }
   .atlas-details { width: min(390px, 40vw); margin-right: 70px; }
@@ -131,7 +125,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
   .atlas-stage canvas { display: none; }
   .atlas-fallback { display: block !important; }
   .atlas-index__item { transition: none; }

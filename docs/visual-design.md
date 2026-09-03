@@ -47,7 +47,7 @@ The balance is roughly 70% content clarity and 30% atmospheric treatment. Scanli
 
 Controls require default, hover where relevant, visible keyboard focus, pressed/selected, disabled when introduced, and loading when introduced states. Hover never changes selection. Sound defaults off and lives in Interface options. Visual effects follow the OS by default and may be explicitly reduced. Both preferences persist locally.
 
-Motion is brief and functional: 160–240ms for state transitions, longer only for the optional desktop atlas reveal. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
+Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Cross-page navigation never waits for a cinematic transition. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
 
 ## Asset And IP Rules
 

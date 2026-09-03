@@ -1,7 +1,7 @@
-// Field-terminal controller: desktop panel switching, restrained decode effects,
+// Field-terminal controller: desktop panel switching, fast opacity transitions,
 // and the opt-in sound engine. Runs on the landing page only.
 
-import { decodeText, typeText } from "./decode";
+import { typeText } from "./decode";
 import { SoundEngine } from "./sound";
 
 export function initTerminal(): void {
@@ -22,7 +22,6 @@ export function initTerminal(): void {
   ).matches;
   const sound = new SoundEngine();
   let activeId = "overview";
-  let transitionTimer = 0;
 
   const syncSoundButton = (): void => {
     terminal?.classList.toggle("terminal-console--sound-on", sound.enabled);
@@ -32,28 +31,9 @@ export function initTerminal(): void {
     });
   };
 
-  const decodePanelHeading = (panel: HTMLElement): void => {
-    if (reduceMotion) return;
-    const heading = panel.querySelector<HTMLElement>(".section-heading h2, h1");
-    if (!heading) return;
-    sound.play("decode");
-    decodeText(heading);
-  };
-
-  const finishTransition = (previousPanel: HTMLElement | undefined, nextPanel: HTMLElement): void => {
-    if (previousPanel && previousPanel !== nextPanel) {
-      previousPanel.classList.remove("is-leaving", "is-active");
-      previousPanel.hidden = true;
-    }
-    nextPanel.classList.remove("is-entering");
-  };
-
   const showPanel = (id: string, updateHash = true, initial = false): void => {
     const nextId = validIds.has(id) ? id : "overview";
     const nextPanel = panels.find((panel) => panel.dataset.terminalPanel === nextId);
-    const previousPanel = panels.find(
-      (panel) => panel.dataset.terminalPanel === activeId && !panel.hidden,
-    );
 
     if (!nextPanel) return;
     if (nextId === activeId && !initial) {
@@ -61,23 +41,17 @@ export function initTerminal(): void {
       return;
     }
 
-    window.clearTimeout(transitionTimer);
     activeId = nextId;
 
     panels.forEach((panel) => {
       const isActive = panel.dataset.terminalPanel === nextId;
+      panel.hidden = false;
+      panel.classList.toggle("is-active", isActive);
+      panel.inert = !isActive;
       if (isActive) {
-        panel.hidden = false;
-        panel.classList.add("is-active");
-        if (!initial && !reduceMotion) {
-          panel.classList.add("is-entering");
-        }
-        panel.scrollTop = 0;
-      } else if (panel === previousPanel && !initial && !reduceMotion) {
-        panel.classList.add("is-leaving");
+        panel.removeAttribute("aria-hidden");
       } else {
-        panel.hidden = true;
-        panel.classList.remove("is-active", "is-entering", "is-leaving");
+        panel.setAttribute("aria-hidden", "true");
       }
     });
 
@@ -97,21 +71,7 @@ export function initTerminal(): void {
 
     if (!initial) {
       sound.play("tab", tabs.findIndex((tab) => tab.hash === `#${nextId}`));
-      decodePanelHeading(nextPanel);
-      if (!reduceMotion) {
-        terminal?.classList.remove("terminal-console--switching");
-        void terminal?.offsetWidth;
-        terminal?.classList.add("terminal-console--switching");
-        window.setTimeout(() => terminal?.classList.remove("terminal-console--switching"), 560);
-      }
     }
-
-    if (previousPanel && previousPanel !== nextPanel && !reduceMotion) {
-      transitionTimer = window.setTimeout(() => finishTransition(previousPanel, nextPanel), 280);
-    } else {
-      finishTransition(previousPanel, nextPanel);
-    }
-
   };
 
   const handleLink = (event: Event): void => {
@@ -146,6 +106,8 @@ export function initTerminal(): void {
     panels.forEach((panel) => {
       panel.hidden = false;
       panel.classList.add("is-active");
+      panel.inert = false;
+      panel.removeAttribute("aria-hidden");
     });
     syncSoundButton();
     return;

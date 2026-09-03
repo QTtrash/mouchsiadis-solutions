@@ -29,7 +29,7 @@ const links = [
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-header__brand" href={home} aria-label="Mouchsiadis Solutions">
+    <a class="site-header__brand" href={home} aria-label="Mouchsiadis Solutions" data-astro-prefetch>
       <span class="site-header__prefix">
         <span class="site-header__led" aria-hidden="true"></span>
         Suren
@@ -46,6 +46,7 @@ const links = [
               link.key === "notes" && active === "blog" && "is-active",
             ]}
             href={link.href}
+            data-astro-prefetch
             aria-current={
               (link.key === "tooling" && active === "tooling") ||
               (link.key === "notes" && active === "blog")
@@ -93,7 +94,7 @@ const links = [
     <nav class="navigation-drawer__links" aria-label={nav.primaryLabel}>
       {
         links.map((link, index) => (
-          <a href={link.href} data-drawer-link>
+          <a href={link.href} data-drawer-link data-astro-prefetch>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <strong>{link.label}</strong>
           </a>

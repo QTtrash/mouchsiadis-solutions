@@ -9,6 +9,10 @@ const site = "https://mouchsiadis-solutions.com";
 export default defineConfig({
   site,
   trailingSlash: "always",
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: "hover",
+  },
   integrations: [
     mdx(),
     sitemap({

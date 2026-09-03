@@ -443,8 +443,8 @@ summary:focus-visible {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: min(50rem, calc((100vw - 2.5rem) * 0.64));
-  min-height: 41rem;
+  height: min(50rem, calc(100svh - 6.25rem), calc((100vw - 2.5rem) * 0.64));
+  min-height: min(41rem, calc(100svh - 6.25rem));
   margin-top: 1rem;
   padding: clamp(4.5rem, 7vw, 5.9rem) clamp(2.35rem, 6vw, 5.4rem)
     clamp(2.8rem, 5vw, 4.35rem);
@@ -697,34 +697,19 @@ summary:focus-visible {
   padding: 1rem;
   overflow: auto;
   opacity: 0;
-  filter: blur(2px);
-  transform: translateY(0.35rem);
+  visibility: hidden;
   pointer-events: none;
   scroll-margin-top: 6rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(165, 220, 113, 0.38) rgba(0, 0, 0, 0.22);
-  transition:
-    opacity 180ms ease,
-    filter 180ms ease,
-    transform 180ms ease;
+  transition: opacity 110ms ease-out;
   z-index: 1;
 }
 
 .terminal-section.is-active {
   opacity: 1;
-  filter: none;
-  transform: none;
+  visibility: visible;
   pointer-events: auto;
-}
-
-.terminal-section.is-entering {
-  animation: terminal-panel-in 280ms steps(9, end);
-}
-
-.terminal-section.is-leaving {
-  opacity: 0;
-  filter: blur(2px);
-  transform: translateY(-0.3rem);
 }
 
 .terminal-section[hidden] {
@@ -997,11 +982,13 @@ summary:focus-visible {
 .signal-card__portrait {
   display: block;
   width: 4.85rem;
+  height: 4.85rem;
   aspect-ratio: 1;
   margin-bottom: 1rem;
   border: 1px solid rgba(165, 220, 113, 0.28);
   border-radius: var(--radius-sm);
   object-fit: cover;
+  object-position: 50% 28%;
   filter: grayscale(1) sepia(1) hue-rotate(58deg) saturate(1.25) contrast(1.05)
     brightness(0.82);
 }
@@ -1762,15 +1749,6 @@ summary:focus-visible {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .terminal-console {
-    animation: terminal-wake 420ms steps(7, end) both;
-  }
-
-  .terminal-console--ready .terminal-console__content::after,
-  .terminal-console--switching .terminal-console__content::after {
-    animation: terminal-sweep 520ms cubic-bezier(0.2, 0, 0.1, 1) 1;
-  }
-
   .terminal-console__content::before {
     animation: terminal-flicker 5.4s steps(1, end) infinite;
   }
@@ -1927,6 +1905,7 @@ summary:focus-visible {
 
   .signal-card__portrait {
     width: 4rem;
+    height: 4rem;
   }
 
   .open-source-milestone {
