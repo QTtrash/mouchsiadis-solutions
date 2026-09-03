@@ -55,6 +55,8 @@ export function initTerminal(): void {
       }
     });
 
+    nextPanel.scrollTop = 0;
+
     tabs.forEach((tab) => {
       const isActive = tab.hash === `#${nextId}`;
       tab.classList.toggle("is-active", isActive);
