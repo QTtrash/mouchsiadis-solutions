@@ -18,6 +18,7 @@ import {
   localeSeo,
   type Locale,
 } from "../../lib/i18n";
+import { navigationCopy } from "../../lib/i18n";
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }));
@@ -31,10 +32,17 @@ if (!localeParam || !isLocale(localeParam)) {
 
 const locale: Locale = localeParam;
 const copy = localeSeo[locale];
+const navigation = navigationCopy[locale];
 const alternates = buildLocaleAlternates();
 const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
   record[locale] ?? record.en;
 const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
+const evidenceLabels: Record<Locale, string[]> = {
+  en: ["Role", "Contribution", "Constraints", "Outcome"],
+  ru: ["Роль", "Вклад", "Ограничения", "Результат"],
+  de: ["Rolle", "Beitrag", "Rahmenbedingungen", "Ergebnis"],
+  ge: ["როლი", "წვლილი", "შეზღუდვები", "შედეგი"],
+};
 ---
 
 <BaseLayout locale={locale} alternates={alternates}>
@@ -50,7 +58,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
     </div>
 
     <div class="terminal-console__body">
-      <nav class="terminal-side-nav" aria-label="Terminal sections">
+      <nav class="terminal-side-nav" aria-label={navigation.primaryLabel}>
         <a
           class="is-active"
           href="#overview"
@@ -58,23 +66,15 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
           aria-current="page">{copy.nav.overview}</a
         >
         <a href="#software-work" data-terminal-tab>{copy.nav.work}</a>
-        <a href="#experience" data-terminal-tab>{copy.nav.experience}</a>
-        <a href="#game-dev" data-terminal-tab>{copy.nav.games}</a>
-        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}>TOOLING ↗</a>
-        <a href="#cv" data-terminal-tab>{copy.nav.cv}</a>
-        <a href="#blog" data-terminal-tab>{copy.nav.blog}</a>
+        <a href="#experience" data-terminal-tab>{navigation.about}</a>
+        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}>{navigation.tooling} ↗</a>
+        <a href={buildLocalePath(locale, "/blog")}>{navigation.notes} ↗</a>
         <a href="#contact" data-terminal-tab>{copy.nav.contact}</a>
-        <button
-          class="terminal-sound-toggle"
-          type="button"
-          data-terminal-sound
-          aria-pressed="false">snd off</button
-        >
       </nav>
 
       <div class="terminal-console__content">
         <section
-          id="panel-overview"
+          id="overview"
           class="hero-panel terminal-section is-active"
           data-terminal-panel="overview"
         >
@@ -114,8 +114,10 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
               <div class="signal-card signal-card--primary">
                 <img
                   class="signal-card__portrait"
-                  src="/images/profile-pic.jpg"
+                  src="/images/profile-pic.webp"
                   alt=""
+                  width="640"
+                  height="497"
                   loading="eager"
                 />
                 <strong>{copy.labels.currentFocus}</strong>
@@ -137,7 +139,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
             aria-labelledby="open-source-title"
           >
             <img
-              src="/images/raid-signal-open-source.png"
+              src="/images/raid-signal-open-source.webp"
               alt=""
               width="1280"
               height="640"
@@ -173,10 +175,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-software-work"
+          id="software-work"
           class="section terminal-section"
           data-terminal-panel="software-work"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
@@ -198,6 +199,12 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
                   link={project.link}
                   linkLabel={localized(project.linkLabel)}
                   cover={project.cover}
+                  evidence={project.evidence ? [
+                    { label: evidenceLabels[locale][0], value: localized(project.evidence.role) },
+                    { label: evidenceLabels[locale][1], value: localized(project.evidence.contribution) },
+                    { label: evidenceLabels[locale][2], value: localized(project.evidence.constraints) },
+                    { label: evidenceLabels[locale][3], value: localized(project.evidence.outcomes) },
+                  ] : []}
                   toggleLabel={copy.labels.archiveOpen}
                   toggleCloseLabel={copy.labels.archiveClose}
                 />
@@ -207,10 +214,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-experience"
+          id="experience"
           class="section terminal-section"
           data-terminal-panel="experience"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">
@@ -242,10 +248,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-game-dev"
+          id="game-dev"
           class="section terminal-section"
           data-terminal-panel="game-dev"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
@@ -276,10 +281,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-cv"
+          id="cv"
           class="section terminal-section"
           data-terminal-panel="cv"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
@@ -319,10 +323,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-blog"
+          id="blog"
           class="section terminal-section"
           data-terminal-panel="blog"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
@@ -364,10 +367,9 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
         </section>
 
         <section
-          id="panel-contact"
+          id="contact"
           class="section terminal-section"
           data-terminal-panel="contact"
-          hidden
         >
           <div class="section-heading">
             <p class="section-heading__kicker">{copy.sectionKickers.contact}</p>

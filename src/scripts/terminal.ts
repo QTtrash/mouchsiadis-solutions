@@ -1,7 +1,6 @@
-// Field-terminal controller: panel switching, boot sequence, decode effects,
+// Field-terminal controller: desktop panel switching, restrained decode effects,
 // and the opt-in sound engine. Runs on the landing page only.
 
-import { hasBooted, runBoot } from "./boot";
 import { decodeText, typeText } from "./decode";
 import { SoundEngine } from "./sound";
 
@@ -11,19 +10,19 @@ export function initTerminal(): void {
   }
 
   const terminal = document.querySelector<HTMLElement>("[data-terminal-console]");
-  const content = terminal?.querySelector<HTMLElement>(".terminal-console__content") ?? null;
   const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-terminal-tab]"));
   const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-terminal-panel]"));
   const soundButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-terminal-sound]"));
   const validIds = new Set(panels.map((panel) => panel.dataset.terminalPanel));
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    document.documentElement.dataset.effects === "reduced";
+  const enhanced = window.matchMedia(
+    "(min-width: 1120px) and (min-height: 720px)",
+  ).matches;
   const sound = new SoundEngine();
   let activeId = "overview";
   let transitionTimer = 0;
-
-  const keepPageAtTerminal = (): void => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  };
 
   const syncSoundButton = (): void => {
     terminal?.classList.toggle("terminal-console--sound-on", sound.enabled);
@@ -59,7 +58,6 @@ export function initTerminal(): void {
     if (!nextPanel) return;
     if (nextId === activeId && !initial) {
       sound.play("error");
-      keepPageAtTerminal();
       return;
     }
 
@@ -114,9 +112,6 @@ export function initTerminal(): void {
       finishTransition(previousPanel, nextPanel);
     }
 
-    keepPageAtTerminal();
-    requestAnimationFrame(keepPageAtTerminal);
-    setTimeout(keepPageAtTerminal, 80);
   };
 
   const handleLink = (event: Event): void => {
@@ -146,6 +141,16 @@ export function initTerminal(): void {
     summary.addEventListener("click", () => sound.play("detail"));
   });
 
+  if (!enhanced) {
+    terminal?.classList.add("terminal-console--continuous", "terminal-console--ready");
+    panels.forEach((panel) => {
+      panel.hidden = false;
+      panel.classList.add("is-active");
+    });
+    syncSoundButton();
+    return;
+  }
+
   window.addEventListener("hashchange", () => showPanel(window.location.hash.replace("#", ""), false));
 
   const heroTitle = document.querySelector<HTMLElement>(".hero-panel h1");
@@ -155,23 +160,12 @@ export function initTerminal(): void {
     typeText(heroTitle, text, 16);
   };
 
-  const wake = (): void => {
-    syncSoundButton();
-    showPanel(window.location.hash.replace("#", ""), false, true);
-    requestAnimationFrame(() => terminal?.classList.add("terminal-console--ready"));
-  };
-
-  const langLabel = terminal?.dataset.terminalLang ?? "EN";
-  if (!reduceMotion && !hasBooted() && content) {
-    terminal?.classList.add("terminal-console--booting");
-    wake();
-    void runBoot(content, langLabel, sound).then(() => {
-      terminal?.classList.remove("terminal-console--booting");
-      typeHeroTitle();
-    });
-  } else {
-    wake();
-  }
+  syncSoundButton();
+  showPanel(window.location.hash.replace("#", ""), false, true);
+  requestAnimationFrame(() => {
+    terminal?.classList.add("terminal-console--ready");
+    typeHeroTitle();
+  });
 }
 
 initTerminal();

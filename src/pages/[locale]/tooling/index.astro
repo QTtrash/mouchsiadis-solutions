@@ -17,7 +17,7 @@ const copy = {
   ge: { kicker: "ინსტრუმენტების ატლასი / 05 სისტემა", title: "მოქმედი სისტემების რუკა.", body: "დამოუკიდებლად შექმნილი ხელსაწყოების კომპაქტური ინდექსი ანალიზის, კოორდინაციის, პირადი ჩანაწერებისა და დოკუმენტებისთვის.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული", sound: "ხმა", select: "აირჩიეთ სისტემა", online: "ონლაინ", atlas: "ატლასი / აქტიური" },
 }[locale];
 ---
-<BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} image="/images/raid-signal-open-source.png" alternates={buildLocaleAlternates("/tooling")}>
+<BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} image="/images/raid-signal-open-source.webp" alternates={buildLocaleAlternates("/tooling")}>
   <section class="instrument-atlas" data-instrument-vault>
     <div class="atlas-stage" aria-hidden="true">
       <canvas></canvas>
@@ -55,6 +55,27 @@ const copy = {
         ))}
       </div>
 
+      <div class="atlas-mobile-list">
+        {toolProjects.map((tool, index) => (
+          <details open={index === 0}>
+            <summary>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{tool.title}</strong>
+              <i>{tool.status ? localized(tool.status) : copy.online}</i>
+            </summary>
+            <div class="atlas-mobile-list__body">
+              <p>{localized(tool.eyebrow)}</p>
+              <div>{localized(tool.summary)}</div>
+              <ul>{tool.stack.slice(0, 5).map((item) => <li>{item}</li>)}</ul>
+              <nav aria-label={tool.title}>
+                <a href={tool.link} target="_blank" rel="noopener noreferrer">{localized(tool.linkLabel)} <b>↗</b></a>
+                {tool.sourceLink && <a href={tool.sourceLink} target="_blank" rel="noopener noreferrer">{tool.sourceLinkLabel ? localized(tool.sourceLinkLabel) : "SOURCE"} <b>↗</b></a>}
+              </nav>
+            </div>
+          </details>
+        ))}
+      </div>
+
       <noscript>
         <nav class="atlas-noscript" aria-label={copy.select}>
           {toolProjects.map((tool, index) => <div><a href={tool.link} target="_blank" rel="noopener noreferrer"><span>{String(index + 1).padStart(2, "0")}</span>{tool.title}<b>↗</b></a>{tool.sourceLink && <a href={tool.sourceLink} target="_blank" rel="noopener noreferrer">{tool.sourceLinkLabel ? localized(tool.sourceLinkLabel) : "SOURCE"}<b>↗</b></a>}</div>)}
@@ -77,7 +98,6 @@ const copy = {
         ))}
       </div>
 
-      <button class="atlas-sound" type="button" data-vault-sound aria-pressed="false">{copy.sound} OFF</button>
     </div>
   </section>
   <p class="tooling-note">{copy.note}</p>

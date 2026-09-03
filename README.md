@@ -27,6 +27,8 @@ The landing page is a professional portfolio inside a Pip-Boy-inspired terminal 
 - `npm ci`: installs project dependencies
 - `npm run dev`: starts the Astro dev server
 - `npm run build`: generates `dist/`
+- `npm run check`: runs Astro and TypeScript diagnostics
+- `npm run test:e2e`: checks responsive behavior and accessibility in real browsers
 - `npm run preview`: serves the built site locally
 - `./ops/setup`: creates `~/envs/mouchsiadis-solutions.env`
 - `./ops/deploy`: builds and deploys the app stack

@@ -23,6 +23,101 @@ export const localeLabels: Record<Locale, string> = {
   ge: "GE",
 };
 
+export const navigationCopy: Record<
+  Locale,
+  {
+    work: string;
+    tooling: string;
+    about: string;
+    notes: string;
+    contact: string;
+    menu: string;
+    options: string;
+    drawerLabel: string;
+    primaryLabel: string;
+    languagesLabel: string;
+    preferences: string;
+    sound: string;
+    effects: string;
+    effectsSystem: string;
+    effectsReduced: string;
+    skipToContent: string;
+  }
+> = {
+  en: {
+    work: "Work",
+    tooling: "Tooling",
+    about: "About",
+    notes: "Notes",
+    contact: "Contact",
+    menu: "Menu",
+    options: "Options",
+    drawerLabel: "Navigation and options",
+    primaryLabel: "Primary navigation",
+    languagesLabel: "Languages",
+    preferences: "Interface options",
+    sound: "Interface sound",
+    effects: "Visual effects",
+    effectsSystem: "Follow system",
+    effectsReduced: "Reduced",
+    skipToContent: "Skip to content",
+  },
+  ru: {
+    work: "Работы",
+    tooling: "Инструменты",
+    about: "Обо мне",
+    notes: "Записи",
+    contact: "Контакт",
+    menu: "Меню",
+    options: "Настройки",
+    drawerLabel: "Навигация и настройки",
+    primaryLabel: "Основная навигация",
+    languagesLabel: "Языки",
+    preferences: "Настройки интерфейса",
+    sound: "Звук интерфейса",
+    effects: "Визуальные эффекты",
+    effectsSystem: "Как в системе",
+    effectsReduced: "Минимальные",
+    skipToContent: "Перейти к содержимому",
+  },
+  de: {
+    work: "Arbeit",
+    tooling: "Werkzeuge",
+    about: "Profil",
+    notes: "Notizen",
+    contact: "Kontakt",
+    menu: "Menü",
+    options: "Optionen",
+    drawerLabel: "Navigation und Optionen",
+    primaryLabel: "Hauptnavigation",
+    languagesLabel: "Sprachen",
+    preferences: "Oberflächenoptionen",
+    sound: "Oberflächenton",
+    effects: "Visuelle Effekte",
+    effectsSystem: "Systemeinstellung",
+    effectsReduced: "Reduziert",
+    skipToContent: "Zum Inhalt springen",
+  },
+  ge: {
+    work: "ნამუშევრები",
+    tooling: "ხელსაწყოები",
+    about: "ჩემ შესახებ",
+    notes: "ჩანაწერები",
+    contact: "კონტაქტი",
+    menu: "მენიუ",
+    options: "პარამეტრები",
+    drawerLabel: "ნავიგაცია და პარამეტრები",
+    primaryLabel: "მთავარი ნავიგაცია",
+    languagesLabel: "ენები",
+    preferences: "ინტერფეისის პარამეტრები",
+    sound: "ინტერფეისის ხმა",
+    effects: "ვიზუალური ეფექტები",
+    effectsSystem: "სისტემის მიხედვით",
+    effectsReduced: "შემცირებული",
+    skipToContent: "შინაარსზე გადასვლა",
+  },
+};
+
 export const localeSeo: Record<
   Locale,
   {
@@ -107,10 +202,10 @@ export const localeSeo: Record<
   en: {
     title: "Mouchsiadis Solutions",
     description:
-      "Field terminal for Suren Mouchsiadis: software work, service record, CV, and notes.",
-    heroTitle: "Systems, tools, and field notes.",
+      "Suren Mouchsiadis is a senior systems builder creating production platforms, operational tools, and independent software.",
+    heroTitle: "Senior systems builder for products that have to work.",
     heroBody:
-      "This terminal catalogs public builds, service history, game systems, and archived notes. Select a section and inspect the record.",
+      "I design and ship production platforms, operational tooling, and independent software—from payment workflows to realtime systems. This archive shows the work, constraints, and evidence.",
     aboutTitle: "Operator note",
     aboutBody:
       "The archive keeps the useful facts close to the surface: what was built, what constraints mattered, and where to open the formal record.",
@@ -194,10 +289,10 @@ export const localeSeo: Record<
   ru: {
     title: "Mouchsiadis Solutions",
     description:
-      "Полевой терминал Сурена Мухсиадиса: софт, служебная запись, CV и заметки.",
-    heroTitle: "Системы, инструменты и полевые записи.",
+      "Сурен Мухсиадис — старший системный разработчик, создающий production-платформы, операционные инструменты и независимое ПО.",
+    heroTitle: "Старший системный разработчик продуктов, которые обязаны работать.",
     heroBody:
-      "Терминал хранит публичные сборки, служебную историю, игровые системы и архивные заметки. Выберите раздел и откройте запись.",
+      "Я проектирую и запускаю production-платформы, операционные инструменты и независимое ПО — от платежных процессов до систем реального времени. В архиве показаны работа, ограничения и подтверждения.",
     aboutTitle: "Заметка оператора",
     aboutBody:
       "Архив держит полезные факты близко к поверхности: что было построено, какие ограничения имели значение и где открыть формальное досье.",
@@ -282,10 +377,10 @@ export const localeSeo: Record<
   de: {
     title: "Mouchsiadis Solutions",
     description:
-      "Feldterminal fuer Suren Mouchsiadis: Softwarearbeit, Dienstakte, CV und Notizen.",
-    heroTitle: "Systeme, Werkzeuge und Feldnotizen.",
+      "Suren Mouchsiadis entwickelt als Senior Systems Builder produktive Plattformen, Operations-Werkzeuge und unabhaengige Software.",
+    heroTitle: "Senior Systems Builder fuer Produkte, die funktionieren muessen.",
     heroBody:
-      "Dieses Terminal katalogisiert oeffentliche Builds, Dienstverlauf, Game-Systeme und archivierte Notizen. Waehlen Sie einen Bereich und pruefen Sie den Datensatz.",
+      "Ich konzipiere und liefere produktive Plattformen, Operations-Werkzeuge und unabhaengige Software—von Zahlungsablaeufen bis zu Echtzeitsystemen. Das Archiv zeigt Arbeit, Rahmenbedingungen und Nachweise.",
     aboutTitle: "Operatornotiz",
     aboutBody:
       "Das Archiv haelt die nuetzlichen Fakten vorne: was gebaut wurde, welche Grenzen zaehlten und wo die formale Akte liegt.",
@@ -370,10 +465,10 @@ export const localeSeo: Record<
   ge: {
     title: "Mouchsiadis Solutions",
     description:
-      "სურენ მუხსიადისის საველე ტერმინალი: პროგრამული სამუშაო, სამსახურის ჩანაწერი, CV და ჩანაწერები.",
-    heroTitle: "სისტემები, ხელსაწყოები და საველე ჩანაწერები.",
+      "სურენ მუხსიადისი არის უფროსი სისტემების შემქმნელი, რომელიც ქმნის production პლატფორმებს, საოპერაციო ხელსაწყოებსა და დამოუკიდებელ პროგრამულ უზრუნველყოფას.",
+    heroTitle: "უფროსი სისტემების შემქმნელი პროდუქტებისთვის, რომლებმაც აუცილებლად უნდა იმუშაონ.",
     heroBody:
-      "ეს ტერმინალი ინახავს საჯარო ნაშენებს, სამსახურის ისტორიას, თამაშის სისტემებს და არქივირებულ ჩანაწერებს. აირჩიეთ განყოფილება და გახსენით ჩანაწერი.",
+      "ვაპროექტებ და ვუშვებ production პლატფორმებს, საოპერაციო ხელსაწყოებსა და დამოუკიდებელ პროგრამულ უზრუნველყოფას—გადახდის პროცესებიდან რეალურ დროში მოქმედ სისტემებამდე. არქივი აჩვენებს ნამუშევარს, შეზღუდვებსა და მტკიცებულებებს.",
     aboutTitle: "ოპერატორის ჩანაწერი",
     aboutBody:
       "არქივი სასარგებლო ფაქტებს ზედაპირთან ახლოს ტოვებს: რა აშენდა, რა შეზღუდვები იყო მნიშვნელოვანი და სად იხსნება ფორმალური დოსიე.",

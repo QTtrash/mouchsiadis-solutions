@@ -20,6 +20,12 @@ export interface ProjectEntry {
   sourceLinkLabel?: LocalizedString;
   cover: string;
   instrument?: InstrumentKind;
+  evidence?: {
+    role: LocalizedString;
+    contribution: LocalizedString;
+    constraints: LocalizedString;
+    outcomes: LocalizedString;
+  };
 }
 
 export interface ToolProjectEntry extends ProjectEntry {
@@ -99,6 +105,32 @@ export const projects: ProjectEntry[] = [
       de: "Plattform oeffnen",
     },
     cover: "neopay",
+    evidence: {
+      role: {
+        en: "Product and systems engineer",
+        ru: "Продуктовый и системный инженер",
+        de: "Produkt- und Systementwickler",
+        ge: "პროდუქტისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Designed and implemented the tenant model, product surfaces, payment integrations, and deployment topology.",
+        ru: "Спроектировал и реализовал tenant-модель, продуктовые интерфейсы, платежные интеграции и схему развертывания.",
+        de: "Tenant-Modell, Produktoberflaechen, Zahlungsintegrationen und Deployment-Topologie konzipiert und umgesetzt.",
+        ge: "დავაპროექტე და განვახორციელე tenant-მოდელი, პროდუქტის ინტერფეისები, გადახდის ინტეგრაციები და განთავსების ტოპოლოგია.",
+      },
+      constraints: {
+        en: "Financial operations require strict tenant isolation, auditable state changes, and resilient third-party boundaries.",
+        ru: "Финансовые операции требуют строгой изоляции арендаторов, аудируемых изменений состояния и надежных границ интеграций.",
+        de: "Finanzoperationen verlangen strikte Tenant-Trennung, auditierbare Zustandsaenderungen und robuste Integrationsgrenzen.",
+        ge: "ფინანსური ოპერაციები მოითხოვს tenant-ების მკაცრ იზოლაციას, აუდიტირებად ცვლილებებს და გამძლე ინტეგრაციის საზღვრებს.",
+      },
+      outcomes: {
+        en: "A live platform that gives fleets and drivers one traceable payout lifecycle from balance visibility to reconciliation.",
+        ru: "Рабочая платформа с единым отслеживаемым циклом выплаты — от видимости баланса до сверки.",
+        de: "Eine produktive Plattform mit einem nachvollziehbaren Auszahlungszyklus von der Saldenansicht bis zur Reconciliation.",
+        ge: "მოქმედი პლატფორმა ერთიანი, მიკვლევადი გადახდის ციკლით — ბალანსის ხილვადობიდან შეჯერებამდე.",
+      },
+    },
   },
   {
     slug: "ydesk",
@@ -136,6 +168,32 @@ export const projects: ProjectEntry[] = [
       de: "Website oeffnen",
     },
     cover: "neopay",
+    evidence: {
+      role: {
+        en: "Product and systems engineer",
+        ru: "Продуктовый и системный инженер",
+        de: "Produkt- und Systementwickler",
+        ge: "პროდუქტისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Built the operational workspace, tenant-aware routing, durable case records, worker notifications, and production stack.",
+        ru: "Создал операционное пространство, tenant-aware маршрутизацию, надежные записи обращений, уведомления и production-стек.",
+        de: "Operations-Arbeitsplatz, Tenant-Routing, dauerhafte Falldaten, Worker-Benachrichtigungen und Produktionsstack umgesetzt.",
+        ge: "შევქმენი საოპერაციო სივრცე, tenant-aware მარშრუტიზაცია, მდგრადი ჩანაწერები, შეტყობინებები და production-სტეკი.",
+      },
+      constraints: {
+        en: "Support work must remain fast under live traffic while preserving ownership, history, and tenant boundaries.",
+        ru: "Поддержка должна оставаться быстрой под живой нагрузкой, сохраняя ответственность, историю и границы арендаторов.",
+        de: "Support muss unter Live-Traffic schnell bleiben und zugleich Zustaendigkeit, Verlauf und Tenant-Grenzen bewahren.",
+        ge: "მხარდაჭერა სწრაფი უნდა დარჩეს ცოცხალი დატვირთვისას და ამავე დროს შეინარჩუნოს პასუხისმგებლობა, ისტორია და tenant-საზღვრები.",
+      },
+      outcomes: {
+        en: "A live multi-tenant operations surface with clearer queues, accountable case handling, and durable notification delivery.",
+        ru: "Рабочий мультиарендный интерфейс с понятными очередями, контролируемой обработкой обращений и надежными уведомлениями.",
+        de: "Eine produktive Multi-Tenant-Oberflaeche mit klareren Queues, verantwortlicher Fallbearbeitung und dauerhaften Benachrichtigungen.",
+        ge: "მოქმედი multi-tenant საოპერაციო ინტერფეისი მკაფიო რიგებით, პასუხისმგებლიანი დამუშავებით და მდგრადი შეტყობინებებით.",
+      },
+    },
   },
 ];
 

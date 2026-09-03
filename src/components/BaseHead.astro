@@ -15,7 +15,7 @@ const {
   locale,
   title = localeSeo[locale].title,
   description = localeSeo[locale].description,
-  image = "/images/profile-pic.jpg",
+  image = "/images/profile-pic.webp",
   article = false,
   alternates,
   noindex = false,
@@ -30,6 +30,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script is:inline>
+  try {
+    document.documentElement.classList.add("js");
+    document.documentElement.dataset.effects =
+      localStorage.getItem("interfaceEffects") === "reduced"
+        ? "reduced"
+        : "system";
+  } catch {
+    document.documentElement.classList.add("js");
+    document.documentElement.dataset.effects = "system";
+  }
+</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="canonical" href={canonicalURL} />
 

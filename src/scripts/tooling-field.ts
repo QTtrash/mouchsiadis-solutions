@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import type { BufferAttribute, LineBasicMaterial, Vector3 } from "three";
 import { SoundEngine } from "./sound";
 
 const host = document.querySelector<HTMLElement>("[data-instrument-vault]");
@@ -7,37 +7,9 @@ const entries = Array.from(host?.querySelectorAll<HTMLElement>("[data-vault-entr
 const selectors = Array.from(host?.querySelectorAll<HTMLButtonElement>("[data-vault-select]") ?? []);
 const numberReadout = host?.querySelector<HTMLElement>("[data-vault-number]");
 const nameReadout = host?.querySelector<HTMLElement>("[data-vault-name]");
-const soundButton = host?.querySelector<HTMLButtonElement>("[data-vault-sound]");
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.effects === "reduced";
 const compact = window.matchMedia("(max-width: 720px)").matches;
 const sound = new SoundEngine();
-
-const landmarks = [
-  new THREE.Vector3(-3.8, 0, 2.2),
-  new THREE.Vector3(-1.6, 0, -.8),
-  new THREE.Vector3(.7, 0, 1.6),
-  new THREE.Vector3(2.4, 0, -1.5),
-  new THREE.Vector3(4.1, 0, .8),
-];
-
-const terrainHeight = (x: number, z: number) => {
-  const ridge = Math.sin(x * .73) * .28 + Math.cos(z * .88) * .22 + Math.sin((x + z) * 1.27) * .11;
-  const authored = landmarks.reduce((total, point, index) => {
-    const distance = Math.hypot(x - point.x, z - point.z);
-    const influence = Math.exp(-distance * distance * (index === 3 ? .42 : .29));
-    return total + influence * ([.48, .72, .36, -.24, .58][index] ?? .4);
-  }, 0);
-  return ridge + authored;
-};
-
-const syncSound = () => {
-  if (!soundButton) return;
-  const prefix = soundButton.textContent?.split(" ")[0] || "SND";
-  soundButton.textContent = `${prefix} ${sound.enabled ? "ON" : "OFF"}`;
-  soundButton.setAttribute("aria-pressed", String(sound.enabled));
-};
-soundButton?.addEventListener("click", () => { sound.setEnabled(!sound.enabled); syncSound(); });
-syncSound();
 
 let selectVisual: ((index: number) => void) | null = null;
 const select = (index: number, audible = false) => {
@@ -57,7 +29,6 @@ const select = (index: number, audible = false) => {
 host?.classList.add("is-enhanced");
 selectors.forEach((selector, index) => {
   selector.addEventListener("click", () => select(index, true));
-  selector.addEventListener("pointerenter", () => select(index));
   selector.addEventListener("focus", () => select(index));
   selector.addEventListener("keydown", (event) => {
     if (event.key !== "ArrowDown" && event.key !== "ArrowRight" && event.key !== "ArrowUp" && event.key !== "ArrowLeft") return;
@@ -68,62 +39,68 @@ selectors.forEach((selector, index) => {
   });
 });
 
-function makeLine(points: THREE.Vector3[], color: number, opacity = .75) {
-  return new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({ color, transparent: true, opacity }),
-  );
-}
-
-function traced(points: Array<[number, number]>, lift = .035) {
-  return points.map(([x, z]) => new THREE.Vector3(x, terrainHeight(x, z) + lift, z));
-}
-
-function landmarkMotif(index: number) {
-  const center = landmarks[index];
-  const group = new THREE.Group();
-  group.userData.materials = [] as THREE.LineBasicMaterial[];
-  const add = (points: Array<[number, number]>, opacity = .55) => {
-    const line = makeLine(traced(points), 0xd77a3f, opacity);
-    (group.userData.materials as THREE.LineBasicMaterial[]).push(line.material as THREE.LineBasicMaterial);
-    group.add(line);
-  };
-
-  if (index === 0) {
-    for (let arm = 0; arm < 3; arm += 1) {
-      add(Array.from({ length: 54 }, (_, step) => {
-        const angle = step * .17 + arm * 2.08;
-        const radius = .06 + step * .018;
-        return [center.x + Math.cos(angle) * radius, center.z + Math.sin(angle) * radius];
-      }));
-    }
-  } else if (index === 1) {
-    add([[center.x - 1.05, center.z + .48], [center.x - .55, center.z + .15], [center.x, center.z], [center.x + .65, center.z - .36], [center.x + 1.15, center.z - .15]]);
-    add([[center.x, center.z], [center.x + .45, center.z + .56], [center.x + .95, center.z + .68]], .4);
-  } else if (index === 2) {
-    for (let level = 0; level < 5; level += 1) {
-      const width = .34 + level * .17;
-      add(Array.from({ length: 25 }, (_, step) => {
-        const t = step / 24 * Math.PI;
-        return [center.x + Math.cos(t) * width, center.z + Math.sin(t) * width * .48 - level * .07];
-      }), .34 + level * .05);
-    }
-  } else if (index === 3) {
-    add(Array.from({ length: 70 }, (_, step) => {
-      const t = step / 69 * Math.PI * 2;
-      return [center.x + Math.sin(t) * .86, center.z + Math.sin(t * 2) * .38];
-    }));
-  } else {
-    for (let gate = -2; gate <= 2; gate += 1) {
-      add([[center.x + gate * .25, center.z - .7], [center.x + gate * .25, center.z + .7]], .28 + (gate === 0 ? .35 : 0));
-    }
-    add([[center.x - .8, center.z], [center.x + .8, center.z]], .7);
-  }
-  return group;
-}
-
 if (host && canvas && entries.length && !reduced && !compact) {
   try {
+    const THREE = await import("three");
+    const landmarks = [
+      new THREE.Vector3(-3.8, 0, 2.2),
+      new THREE.Vector3(-1.6, 0, -.8),
+      new THREE.Vector3(.7, 0, 1.6),
+      new THREE.Vector3(2.4, 0, -1.5),
+      new THREE.Vector3(4.1, 0, .8),
+    ];
+    const terrainHeight = (x: number, z: number) => {
+      const ridge = Math.sin(x * .73) * .28 + Math.cos(z * .88) * .22 + Math.sin((x + z) * 1.27) * .11;
+      const authored = landmarks.reduce((total, point, index) => {
+        const distance = Math.hypot(x - point.x, z - point.z);
+        const influence = Math.exp(-distance * distance * (index === 3 ? .42 : .29));
+        return total + influence * ([.48, .72, .36, -.24, .58][index] ?? .4);
+      }, 0);
+      return ridge + authored;
+    };
+    const makeLine = (points: Vector3[], color: number, opacity = .75) => new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(points),
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity }),
+    );
+    const traced = (points: Array<[number, number]>, lift = .035) =>
+      points.map(([x, z]) => new THREE.Vector3(x, terrainHeight(x, z) + lift, z));
+    const landmarkMotif = (index: number) => {
+      const center = landmarks[index];
+      const group = new THREE.Group();
+      group.userData.materials = [] as LineBasicMaterial[];
+      const add = (points: Array<[number, number]>, opacity = .55) => {
+        const line = makeLine(traced(points), 0xd77a3f, opacity);
+        (group.userData.materials as LineBasicMaterial[]).push(line.material as LineBasicMaterial);
+        group.add(line);
+      };
+      if (index === 0) {
+        for (let arm = 0; arm < 3; arm += 1) add(Array.from({ length: 54 }, (_, step) => {
+          const angle = step * .17 + arm * 2.08;
+          const radius = .06 + step * .018;
+          return [center.x + Math.cos(angle) * radius, center.z + Math.sin(angle) * radius];
+        }));
+      } else if (index === 1) {
+        add([[center.x - 1.05, center.z + .48], [center.x - .55, center.z + .15], [center.x, center.z], [center.x + .65, center.z - .36], [center.x + 1.15, center.z - .15]]);
+        add([[center.x, center.z], [center.x + .45, center.z + .56], [center.x + .95, center.z + .68]], .4);
+      } else if (index === 2) {
+        for (let level = 0; level < 5; level += 1) {
+          const width = .34 + level * .17;
+          add(Array.from({ length: 25 }, (_, step) => {
+            const t = step / 24 * Math.PI;
+            return [center.x + Math.cos(t) * width, center.z + Math.sin(t) * width * .48 - level * .07];
+          }), .34 + level * .05);
+        }
+      } else if (index === 3) {
+        add(Array.from({ length: 70 }, (_, step) => {
+          const t = step / 69 * Math.PI * 2;
+          return [center.x + Math.sin(t) * .86, center.z + Math.sin(t * 2) * .38];
+        }));
+      } else {
+        for (let gate = -2; gate <= 2; gate += 1) add([[center.x + gate * .25, center.z - .7], [center.x + gate * .25, center.z + .7]], .28 + (gate === 0 ? .35 : 0));
+        add([[center.x - .8, center.z], [center.x + .8, center.z]], .7);
+      }
+      return group;
+    };
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     renderer.setClearColor(0x090908, 1);
@@ -135,7 +112,7 @@ if (host && canvas && entries.length && !reduced && !compact) {
     camera.position.set(7.8, 7.3, 10.8);
 
     const terrainGeometry = new THREE.PlaneGeometry(12, 8.6, 96, 72);
-    const positions = terrainGeometry.attributes.position as THREE.BufferAttribute;
+    const positions = terrainGeometry.attributes.position as BufferAttribute;
     for (let index = 0; index < positions.count; index += 1) positions.setZ(index, terrainHeight(positions.getX(index), positions.getY(index)));
     terrainGeometry.computeVertexNormals();
     const terrainMaterial = new THREE.ShaderMaterial({
@@ -186,7 +163,7 @@ if (host && canvas && entries.length && !reduced && !compact) {
       active = index;
       targetLook = landmarks[index].clone().add(terrain.position);
       motifs.forEach((motif, motifIndex) => {
-        (motif.userData.materials as THREE.LineBasicMaterial[]).forEach((material) => { material.opacity = motifIndex === index ? .92 : .18; });
+        (motif.userData.materials as LineBasicMaterial[]).forEach((material) => { material.opacity = motifIndex === index ? .92 : .18; });
       });
     };
     selectVisual(0);

@@ -1,6 +1,13 @@
 ---
-import { LOCALES, localeLabels, localeSeo, type Locale } from "../lib/i18n";
+import {
+  LOCALES,
+  localeIntlCodes,
+  localeLabels,
+  navigationCopy,
+  type Locale,
+} from "../lib/i18n";
 import { buildLocalePath } from "../lib/blog";
+import "@awesome.me/webawesome/dist/styles/themes/default.css";
 
 interface Props {
   locale: Locale;
@@ -9,21 +16,20 @@ interface Props {
 }
 
 const { locale, active = "home", localePathSuffix = "" } = Astro.props;
-const copy = localeSeo[locale];
-const anchors = {
-  work: `${buildLocalePath(locale)}#software-work`,
-  experience: `${buildLocalePath(locale)}#experience`,
-  games: `${buildLocalePath(locale)}#game-dev`,
-  cv: `${buildLocalePath(locale)}#cv`,
-  blog: `${buildLocalePath(locale, "/blog")}`,
-  contact: `${buildLocalePath(locale)}#contact`,
-  tooling: buildLocalePath(locale, "/tooling"),
-};
+const nav = navigationCopy[locale];
+const home = buildLocalePath(locale);
+const links = [
+  { key: "work", label: nav.work, href: `${home}#software-work` },
+  { key: "tooling", label: nav.tooling, href: buildLocalePath(locale, "/tooling") },
+  { key: "about", label: nav.about, href: `${home}#experience` },
+  { key: "notes", label: nav.notes, href: buildLocalePath(locale, "/blog") },
+  { key: "contact", label: nav.contact, href: `${home}#contact` },
+];
 ---
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-header__brand" href={buildLocalePath(locale)}>
+    <a class="site-header__brand" href={home} aria-label="Mouchsiadis Solutions">
       <span class="site-header__prefix">
         <span class="site-header__led" aria-hidden="true"></span>
         Suren
@@ -31,44 +37,155 @@ const anchors = {
       <span>Mouchsiadis Solutions</span>
     </a>
 
-    {
-      active === "home" && (
-        <span class="site-header__spacer" aria-hidden="true" />
-      )
-    }
-
-    {
-      active !== "home" && (
-        <nav class="site-header__nav" aria-label="Primary">
-          <a href={anchors.work}>{copy.nav.work}</a>
-          <a href={anchors.experience}>{copy.nav.experience}</a>
-          <a href={anchors.games}>{copy.nav.games}</a>
-          <a class:list={[active === "tooling" && "is-active"]} href={anchors.tooling}>Tooling</a>
-          <a href={anchors.cv}>{copy.nav.cv}</a>
+    <nav class="site-header__nav" aria-label={nav.primaryLabel}>
+      {
+        links.map((link) => (
           <a
-            class:list={[active === "blog" && "is-active"]}
-            href={anchors.blog}
+            class:list={[
+              link.key === "tooling" && active === "tooling" && "is-active",
+              link.key === "notes" && active === "blog" && "is-active",
+            ]}
+            href={link.href}
+            aria-current={
+              (link.key === "tooling" && active === "tooling") ||
+              (link.key === "notes" && active === "blog")
+                ? "page"
+                : undefined
+            }
           >
-            {copy.nav.blog}
+            {link.label}
           </a>
-          <a href={anchors.contact}>{copy.nav.contact}</a>
-        </nav>
-      )
-    }
+        ))
+      }
+    </nav>
 
     <div class="site-header__controls">
-      <div class="locale-switcher" aria-label="Languages">
+      <nav class="locale-switcher" aria-label={nav.languagesLabel}>
         {
           LOCALES.map((entry) => (
             <a
               class:list={[entry === locale && "is-active"]}
               href={buildLocalePath(entry, localePathSuffix)}
+              lang={localeIntlCodes[entry]}
+              hreflang={localeIntlCodes[entry]}
+              aria-current={entry === locale ? "page" : undefined}
+              aria-label={localeIntlCodes[entry]}
+            >
+              {localeLabels[entry]}
+            </a>
+          ))
+        }
+      </nav>
+      <button class="site-header__options" type="button" data-drawer-open>
+        <span class="site-header__options-desktop">{nav.options}</span>
+        <span class="site-header__options-mobile">{nav.menu}</span>
+      </button>
+    </div>
+  </div>
+
+  <wa-drawer
+    class="navigation-drawer"
+    label={nav.drawerLabel}
+    placement="end"
+    light-dismiss
+    data-navigation-drawer
+  >
+    <nav class="navigation-drawer__links" aria-label={nav.primaryLabel}>
+      {
+        links.map((link, index) => (
+          <a href={link.href} data-drawer-link>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{link.label}</strong>
+          </a>
+        ))
+      }
+    </nav>
+
+    <section class="navigation-drawer__languages" aria-labelledby="drawer-language-title">
+      <h2 id="drawer-language-title">{nav.languagesLabel}</h2>
+      <div>
+        {
+          LOCALES.map((entry) => (
+            <a
+              class:list={[entry === locale && "is-active"]}
+              href={buildLocalePath(entry, localePathSuffix)}
+              lang={localeIntlCodes[entry]}
+              hreflang={localeIntlCodes[entry]}
             >
               {localeLabels[entry]}
             </a>
           ))
         }
       </div>
-    </div>
-  </div>
+    </section>
+
+    <section class="navigation-drawer__preferences" aria-labelledby="drawer-options-title">
+      <h2 id="drawer-options-title">{nav.preferences}</h2>
+      <button type="button" data-sound-preference aria-pressed="false">
+        <span>{nav.sound}</span><b>OFF</b>
+      </button>
+      <button
+        type="button"
+        data-effects-preference
+        data-system-label={nav.effectsSystem}
+        data-reduced-label={nav.effectsReduced}
+        aria-pressed="false"
+      >
+        <span>{nav.effects}</span><b data-effects-label>{nav.effectsSystem}</b>
+      </button>
+    </section>
+  </wa-drawer>
 </header>
+
+<script>
+  const drawer = document.querySelector<HTMLElement & { open: boolean }>(
+    "[data-navigation-drawer]",
+  );
+  const openButton = document.querySelector<HTMLButtonElement>("[data-drawer-open]");
+
+  let drawerModule: Promise<unknown> | undefined;
+  openButton?.addEventListener("click", async () => {
+    drawerModule ??= import("@awesome.me/webawesome/dist/components/drawer/drawer.js");
+    await drawerModule;
+    if (drawer) drawer.open = true;
+  });
+  drawer?.querySelectorAll<HTMLAnchorElement>("[data-drawer-link]").forEach((link) => {
+    link.addEventListener("click", () => {
+      drawer.open = false;
+    });
+  });
+
+  const SOUND_KEY = "terminalSound";
+  const EFFECTS_KEY = "interfaceEffects";
+  const soundButton = drawer?.querySelector<HTMLButtonElement>("[data-sound-preference]");
+  const effectsButton = drawer?.querySelector<HTMLButtonElement>("[data-effects-preference]");
+  const effectsLabel = effectsButton?.querySelector<HTMLElement>("[data-effects-label]");
+
+  const syncPreferences = () => {
+    const soundOn = localStorage.getItem(SOUND_KEY) === "on";
+    const reduced = localStorage.getItem(EFFECTS_KEY) === "reduced";
+    soundButton?.setAttribute("aria-pressed", String(soundOn));
+    const soundValue = soundButton?.querySelector("b");
+    if (soundValue) soundValue.textContent = soundOn ? "ON" : "OFF";
+    effectsButton?.setAttribute("aria-pressed", String(reduced));
+    if (effectsLabel && effectsButton) {
+      effectsLabel.textContent = reduced
+        ? effectsButton.dataset.reducedLabel || "REDUCED"
+        : effectsButton.dataset.systemLabel || "SYSTEM";
+    }
+  };
+
+  soundButton?.addEventListener("click", () => {
+    const enabled = localStorage.getItem(SOUND_KEY) !== "on";
+    localStorage.setItem(SOUND_KEY, enabled ? "on" : "off");
+    window.dispatchEvent(new CustomEvent("terminal-sound-change", { detail: enabled }));
+    syncPreferences();
+  });
+  effectsButton?.addEventListener("click", () => {
+    const reduced = localStorage.getItem(EFFECTS_KEY) !== "reduced";
+    localStorage.setItem(EFFECTS_KEY, reduced ? "reduced" : "system");
+    document.documentElement.dataset.effects = reduced ? "reduced" : "system";
+    syncPreferences();
+  });
+  syncPreferences();
+</script>

@@ -33,15 +33,15 @@ Each project entry includes:
 - localized `linkLabel`
 - optional localized `status`
 - optional `sourceLink` and localized `sourceLinkLabel` for public-source projects
+- optional localized `evidence` with `role`, `contribution`, `constraints`, and `outcomes`
 - `cover`
 
-Current software entries:
+Selected professional entries:
 
-- `Neopay`
-- `True Grind`
-- `Medura Solution`
+- `YPay`
+- `YDesk`
 
-Current game entries (`gameProjects`):
+Live tools are stored separately as `toolProjects` and rendered in the Tooling atlas. Game entries are stored as `gameProjects` and remain part of the Work group in the primary information architecture.
 
 - `Silly Bazaar`
 - `Alice Plays`
@@ -49,23 +49,7 @@ Current game entries (`gameProjects`):
 - `Rifle Revolver`
 - `Incendiary Revolver`
 
-Excluded by design:
-
-- `af-blog`
-- `vps-proxy`
-- `neo-public`
-
-## Game Development Entries
-
-Game-dev entries use the same project entry shape.
-
-Current entries:
-
-- `Bomb Town`
-- `Rifle Revolver`
-- `Incendiary Revolver`
-
-Steam Workshop items are intentionally presented as custom showcase cards rather than embedded Steam widgets.
+Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
 ## Professional Experience
 
@@ -100,4 +84,4 @@ Rules used in this implementation:
 
 If future English posts are added, extend the inference logic in `src/lib/blog.ts`.
 
-Georgian shell routes are localized. Portfolio records can fall back to English where a per-entry Georgian case-study translation has not been added yet.
+Navigation, preferences, hero positioning, and evidence labels are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.

@@ -3,7 +3,14 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../assets/styles/global.css";
-import { localeIntlCodes, type Locale } from "../lib/i18n";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/noto-sans-georgian/400.css";
+import "@fontsource/noto-sans-georgian/600.css";
+import "@fontsource/noto-sans-georgian/700.css";
+import "@fontsource/noto-serif-georgian/400.css";
+import "@fontsource/noto-serif-georgian/700.css";
+import { localeIntlCodes, navigationCopy, type Locale } from "../lib/i18n";
 
 interface Props {
   locale: Locale;
@@ -46,6 +53,7 @@ const {
     />
   </head>
   <body class={bodyClass}>
+    <a class="skip-link" href="#main-content">{navigationCopy[locale].skipToContent}</a>
     <div class="shell-noise" aria-hidden="true"></div>
     <div class="site-shell">
       <Header
@@ -53,7 +61,7 @@ const {
         active={active}
         localePathSuffix={localePathSuffix}
       />
-      <main class="site-main">
+      <main class="site-main" id="main-content">
         <slot />
       </main>
       <Footer locale={locale} />

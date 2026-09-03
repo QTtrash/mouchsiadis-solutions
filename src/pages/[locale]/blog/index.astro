@@ -26,6 +26,15 @@ const locale: Locale = localeParam;
 const copy = localeSeo[locale];
 const posts = sortPosts(await getCollection("blog"));
 const alternates = buildLocaleAlternates("/blog");
+const yearGroups = Array.from(
+  posts.reduce((groups, post) => {
+    const year = post.data.date.getUTCFullYear();
+    const entries = groups.get(year) ?? [];
+    entries.push(post);
+    groups.set(year, entries);
+    return groups;
+  }, new Map<number, typeof posts>()),
+);
 ---
 
 <BaseLayout
@@ -43,33 +52,35 @@ const alternates = buildLocaleAlternates("/blog");
       <p class="section-heading__body">{copy.sectionBodies.blog}</p>
     </div>
 
-    <div class="blog-index">
+    <p class="blog-index__count">{String(posts.length).padStart(2, "0")} / ARCHIVE RECORDS</p>
+    <div class="blog-index blog-index--grouped">
       {
-        posts.map((post) => {
-          const postLocale = getPostLanguage(post);
-          return (
-            <article class="blog-index__item">
-              <div class="blog-index__meta">
-                <span>{formatDate(post.data.date, locale)}</span>
-                <span>
-                  {copy.labels.blogLanguage}:{" "}
-                  {getPostLanguageLabel(postLocale, locale)}
-                </span>
-              </div>
-              <h2>
-                <a
-                  href={buildLocalePath(
-                    postLocale,
-                    `/blog/${getPostSlug(post)}`,
-                  )}
-                >
-                  {post.data.title}
-                </a>
-              </h2>
-              {post.data.description && <p>{post.data.description}</p>}
-            </article>
-          );
-        })
+        yearGroups.map(([year, entries]) => (
+          <section class="blog-year" aria-labelledby={`year-${year}`}>
+            <h2 id={`year-${year}`}>{year}</h2>
+            <div>
+              {entries.map((post) => {
+                const postLocale = getPostLanguage(post);
+                return (
+                  <article class="blog-index__item" lang={postLocale}>
+                    <div class="blog-index__meta">
+                      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+                      <span class="blog-index__language">
+                        {getPostLanguageLabel(postLocale, locale)}
+                      </span>
+                    </div>
+                    <h3>
+                      <a href={buildLocalePath(postLocale, `/blog/${getPostSlug(post)}`)}>
+                        {post.data.title}
+                      </a>
+                    </h3>
+                    {post.data.description && <p>{post.data.description}</p>}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ))
       }
     </div>
   </section>

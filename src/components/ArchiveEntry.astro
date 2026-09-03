@@ -15,6 +15,7 @@ interface Props {
   compact?: boolean;
   toggleLabel?: string;
   toggleCloseLabel?: string;
+  evidence?: Array<{ label: string; value: string }>;
 }
 
 const {
@@ -31,6 +32,7 @@ const {
   compact = false,
   toggleLabel = "Details",
   toggleCloseLabel = "Close",
+  evidence = [],
 } = Astro.props;
 ---
 
@@ -61,6 +63,17 @@ const {
 
   <div class="archive-entry__body">
     <p class="archive-entry__narrative">{narrative}</p>
+
+    {evidence.length > 0 && (
+      <dl class="archive-entry__evidence">
+        {evidence.map((item) => (
+          <div>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
 
     <ul class="archive-entry__details">
       {details.map((item) => <li>{item}</li>)}

@@ -1,39 +1,56 @@
-# Visual Design
+# Visual Design System
 
-## Goal
+## Direction
 
-The site should feel like a professional software portfolio viewed through a Pip-Boy-inspired terminal, not a direct Fallout replica. The interface should stay readable, credible, and useful for portfolio scanning while using hardware-frame, CRT, and control-panel cues.
+The product uses **instrument-grade retro-futurist editorial UI**: a diegetic field-terminal frame combined with the clarity and evidence hierarchy of professional software tooling. It is intentionally not a Fallout replica, glassmorphism, neo-brutalism, or a generic SaaS dashboard. The machine metaphor gives the portfolio identity; readable typography, plain information architecture, and progressive disclosure make it useful.
 
-## Reference Principles
+The balance is roughly 70% content clarity and 30% atmospheric treatment. Scanlines, noise, copper/amber signals, monospace readouts, and code-drawn schematics are supporting cues. They must never delay access, reduce contrast, or become required interaction knowledge.
 
-- Pip-Boy references inform the structure: physical frame, constrained screen, compact mode buttons, monochrome display, scanlines, and utilitarian labels.
-- The Wand Company manual reinforces that navigation should feel like hardware controls: mode buttons, selectors, scroll areas, and feedback states.
-- The Pip-Boy design notes reinforce practical retro-future realism: industrial hardware should look usable, not decorative only.
-- NASRAL is a useful reference for dense game-interface rhythm: square controls, strong borders, CRT color discipline, and fitted viewport composition.
+## Product Principles
 
-## Component Rules
+1. Evidence before spectacle. Selected work explains role, contribution, constraints, and outcome before listing technology.
+2. Fast wake. Content is available immediately; there is no blocking boot sequence.
+3. One system, two compositions. Desktop may behave like a fitted instrument console. Mobile is a continuous archive with phone-native navigation and disclosure.
+4. Fiction you feel, never fight. Labels can sound operational, but navigation, links, and controls use familiar semantics.
+5. Progressive disclosure. Summaries remain scannable; implementation detail expands in place.
+6. Dark-only, accessible by design. Contrast, focus, reduced effects, and 44px touch targets are baseline requirements.
 
-- Keep the landing page as a fixed console with internal panels.
-- Use the side navigation as the primary mode selector; labels should stay short and control-like.
-- Keep archive cards dense: compact covers, clear titles, metadata chips, and expandable detail rows.
-- Prefer flat borders, subtle inset shadows, scanlines, and modest glow over large decorative gradients.
-- Keep buttons, chips, status labels, and metadata in monospace uppercase to separate controls from body text.
-- Terminal body text is monospace (IBM Plex Mono) — the screen reads as one machine. Long-form blog articles are the exception and keep the Merriweather serif for reading comfort.
-- Dual-phosphor palette: green is the system color; amber (`--amber: #ffb000`) is a scarce accent reserved for active states, kickers, cursors, status highlights, and the game lab's cover art. Never let amber dominate a panel.
-- Every project card carries unique code-drawn SVG cover art (`CoverArt.astro`) in phosphor line-art; unknown slugs fall back to a generic record-chip schematic.
-- Cinematic CRT behaviors (all gated by `prefers-reduced-motion` and implemented in `src/scripts/`): a skippable POST-style boot sequence once per session, scramble-decode on panel headings, a typed hero title after boot, blinking block cursors, and hover flicker. There is deliberately NO literal command line — fiction you feel, never fight.
-- Sound is synthesized in code (`src/scripts/sound.ts`), strictly opt-in behind the SND toggle, default off.
-- Blog and article pages share the same phosphor visual system but prioritize comfortable reading width.
+## Foundations
 
-## Spacing And Responsive Rules
+- Body/UI: IBM Plex Sans. It preserves a technical voice without forcing long copy into monospace.
+- Controls/readouts: IBM Plex Mono.
+- Georgian: Noto Sans Georgian and Noto Serif Georgian provide explicit glyph coverage.
+- Long-form articles: Merriweather; Georgian articles use Noto Serif Georgian.
+- Spacing: 4, 8, 12, 16, 24, 32, 48, 64, 96px.
+- Radius: restrained 2–8px. Hardware surfaces remain close to square.
+- Elevation: borders and inset depth first; soft shadow only for true layer separation.
+- Color: near-black chassis, phosphor green system content, amber active states, and copper in Tooling. State is never communicated by color alone.
+- Content width: 1280px default and 1360px at large desktop; article prose stays near 72ch.
 
-- Desktop content should appear fitted inside the screen frame with tight but consistent gaps.
-- Mobile keeps the frame metaphor, but navigation becomes horizontal and panel content scrolls internally.
-- Text must not overlap controls or frame edges; long localized strings should wrap inside their own panels.
-- Avoid introducing new palette modes unless the UI to select them is implemented and documented.
+## Responsive Composition
+
+- Phone, below 768px: compact header and full-screen navigation drawer; single-column archive; large touch targets; inline Tooling accordions; no WebGL or hover assumptions.
+- Small tablet, 768–1119px: continuous archive, one or two columns as content permits, normal document scrolling.
+- Desktop, 1120px and at least 720px tall: fitted console with side mode navigation and one active panel.
+- Short laptop: continuous archive avoids nested-scroll and clipped-panel failures.
+- Large desktop, 1600px+: content width grows modestly; typography and line length do not scale without limit.
+
+## Component Ownership
+
+- Custom design-system primitives: typography, tokens, buttons, badges, status markers, section headings, archive cards, panels, and code-drawn cover art.
+- Custom application components: project evidence records, career timeline, contact panel, notes archive, and Tooling instrument cards.
+- Wrapped third-party primitive: Web Awesome drawer supplies focus management, dismissal, Escape behavior, and dialog accessibility while this project owns its visual layer.
+- Specialized runtime: Three.js powers the eligible desktop Tooling terrain only. Mobile uses the authored SVG fallback.
+- Native HTML first: `details`/`summary` handles archive disclosure and mobile Tooling records.
+
+## Interaction States
+
+Controls require default, hover where relevant, visible keyboard focus, pressed/selected, disabled when introduced, and loading when introduced states. Hover never changes selection. Sound defaults off and lives in Interface options. Visual effects follow the OS by default and may be explicitly reduced. Both preferences persist locally.
+
+Motion is brief and functional: 160–240ms for state transitions, longer only for the optional desktop atlas reveal. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
 
 ## Asset And IP Rules
 
-- Do not copy official Fallout logos, exact screen labels, or protected art assets.
-- The existing terminal frame image may be used as a generic hardware texture only.
-- New visual changes should remain portfolio-first and avoid in-universe claims.
+- Do not use official Fallout logos, labels, protected artwork, or claims of affiliation.
+- Treat the frame as generic industrial hardware texture.
+- Raster assets ship in compressed WebP variants. Decorative artwork has empty alt text; meaningful images require useful alternatives and dimensions.

@@ -24,6 +24,13 @@ export class SoundEngine {
   private context: AudioContext | null = null;
   enabled = readSoundPreference();
 
+  constructor() {
+    window.addEventListener("terminal-sound-change", ((event: CustomEvent<boolean>) => {
+      this.enabled = Boolean(event.detail);
+      if (this.enabled) this.play("boot");
+    }) as EventListener);
+  }
+
   private ensure(): AudioContext | null {
     if (!this.enabled) return null;
     const Ctx =
