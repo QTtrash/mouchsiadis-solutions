@@ -143,7 +143,7 @@ test("tooling uses touch-first records on mobile", async ({ page }) => {
   await page.goto("/en/tooling/");
   await expect(page.locator(".atlas-mobile-list")).toBeVisible();
   await expect(page.locator(".atlas-index")).toBeHidden();
-  await expect(page.locator(".atlas-mobile-list details")).toHaveCount(5);
+  await expect(page.locator(".atlas-mobile-list details")).toHaveCount(2);
 });
 
 test("blog is grouped as a dated archive", async ({ page }) => {

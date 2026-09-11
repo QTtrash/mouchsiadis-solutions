@@ -45,16 +45,13 @@ if (host && canvas && entries.length && !reduced && !compact) {
     const landmarks = [
       new THREE.Vector3(-3.8, 0, 2.2),
       new THREE.Vector3(-1.6, 0, -.8),
-      new THREE.Vector3(.7, 0, 1.6),
-      new THREE.Vector3(2.4, 0, -1.5),
-      new THREE.Vector3(4.1, 0, .8),
     ];
     const terrainHeight = (x: number, z: number) => {
       const ridge = Math.sin(x * .73) * .28 + Math.cos(z * .88) * .22 + Math.sin((x + z) * 1.27) * .11;
       const authored = landmarks.reduce((total, point, index) => {
         const distance = Math.hypot(x - point.x, z - point.z);
-        const influence = Math.exp(-distance * distance * (index === 3 ? .42 : .29));
-        return total + influence * ([.48, .72, .36, -.24, .58][index] ?? .4);
+        const influence = Math.exp(-distance * distance * .29);
+        return total + influence * ([.48, .72][index] ?? .4);
       }, 0);
       return ridge + authored;
     };
@@ -82,22 +79,7 @@ if (host && canvas && entries.length && !reduced && !compact) {
       } else if (index === 1) {
         add([[center.x - 1.05, center.z + .48], [center.x - .55, center.z + .15], [center.x, center.z], [center.x + .65, center.z - .36], [center.x + 1.15, center.z - .15]]);
         add([[center.x, center.z], [center.x + .45, center.z + .56], [center.x + .95, center.z + .68]], .4);
-      } else if (index === 2) {
-        for (let level = 0; level < 5; level += 1) {
-          const width = .34 + level * .17;
-          add(Array.from({ length: 25 }, (_, step) => {
-            const t = step / 24 * Math.PI;
-            return [center.x + Math.cos(t) * width, center.z + Math.sin(t) * width * .48 - level * .07];
-          }), .34 + level * .05);
-        }
-      } else if (index === 3) {
-        add(Array.from({ length: 70 }, (_, step) => {
-          const t = step / 69 * Math.PI * 2;
-          return [center.x + Math.sin(t) * .86, center.z + Math.sin(t * 2) * .38];
-        }));
-      } else {
-        for (let gate = -2; gate <= 2; gate += 1) add([[center.x + gate * .25, center.z - .7], [center.x + gate * .25, center.z + .7]], .28 + (gate === 0 ? .35 : 0));
-        add([[center.x - .8, center.z], [center.x + .8, center.z]], .7);
+
       }
       return group;
     };
@@ -196,7 +178,7 @@ if (host && canvas && entries.length && !reduced && !compact) {
       desiredCamera.set(currentLook.x + 5.6 + pointerX * .35, 5.8 - pointerY * .22, currentLook.z + 7.8);
       camera.position.lerp(desiredCamera, .04);
       camera.lookAt(currentLook.x, currentLook.y - .18, currentLook.z);
-      const travel = (elapsed * .055 + active * .2) % 1;
+      const travel = (elapsed * .055 + active / landmarks.length) % 1;
       packet.position.copy(routeCurve.getPointAt(travel)).add(terrain.position);
       packet.rotation.y += .035;
       motifs[active].position.y = terrain.position.y + Math.sin(elapsed * 1.4) * .012;

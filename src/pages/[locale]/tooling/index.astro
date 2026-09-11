@@ -10,11 +10,12 @@ const localeParam = Astro.params.locale;
 if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
 const locale: Locale = localeParam;
 const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => record[locale] ?? record.en;
+const toolCount = String(toolProjects.length).padStart(2, "0");
 const copy = {
-  en: { kicker: "INSTRUMENT ATLAS / 05 ACTIVE SYSTEMS", title: "Working systems, mapped.", body: "A compact field index of independently designed tools for evidence, coordination, personal records, and document operations.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated", sound: "SND", select: "Select a system", online: "ONLINE", atlas: "ATLAS / ACTIVE" },
-  de: { kicker: "INSTRUMENTENATLAS / 05 AKTIVE SYSTEME", title: "Arbeitende Systeme, kartiert.", body: "Ein kompakter Feldindex unabhaengig entwickelter Werkzeuge fuer Evidenz, Koordination, persoenliche Aufzeichnungen und Dokumentablaeufe.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben", sound: "TON", select: "System auswaehlen", online: "ONLINE", atlas: "ATLAS / AKTIV" },
-  ru: { kicker: "АТЛАС ИНСТРУМЕНТОВ / 05 СИСТЕМ", title: "Рабочие системы на карте.", body: "Компактный полевой индекс независимо созданных инструментов для анализа, координации, личных записей и документов.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены", sound: "ЗВУК", select: "Выберите систему", online: "В СЕТИ", atlas: "АТЛАС / АКТИВЕН" },
-  ge: { kicker: "ინსტრუმენტების ატლასი / 05 სისტემა", title: "მოქმედი სისტემების რუკა.", body: "დამოუკიდებლად შექმნილი ხელსაწყოების კომპაქტური ინდექსი ანალიზის, კოორდინაციის, პირადი ჩანაწერებისა და დოკუმენტებისთვის.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული", sound: "ხმა", select: "აირჩიეთ სისტემა", online: "ონლაინ", atlas: "ატლასი / აქტიური" },
+  en: { kicker: `INSTRUMENT ATLAS / ${toolCount} ACTIVE SYSTEMS`, title: "Working systems, mapped.", body: "A compact field index of independently designed tools for game analysis and encrypted squad coordination.", open: "OPEN INSTRUMENT", back: "RETURN TO FIELD TERMINAL", note: "Live systems · independently designed and operated", sound: "SND", select: "Select a system", online: "ONLINE", atlas: "ATLAS / ACTIVE" },
+  de: { kicker: `INSTRUMENTENATLAS / ${toolCount} AKTIVE SYSTEME`, title: "Arbeitende Systeme, kartiert.", body: "Ein kompakter Feldindex unabhaengig entwickelter Werkzeuge fuer Spielanalyse und verschluesselte Squad-Koordination.", open: "INSTRUMENT OEFFNEN", back: "ZUM FELDTERMINAL", note: "Live-Systeme · unabhaengig entwickelt und betrieben", sound: "TON", select: "System auswaehlen", online: "ONLINE", atlas: "ATLAS / AKTIV" },
+  ru: { kicker: `АТЛАС ИНСТРУМЕНТОВ / ${toolCount} СИСТЕМЫ`, title: "Рабочие системы на карте.", body: "Компактный полевой индекс независимо созданных инструментов для анализа игр и зашифрованной координации отряда.", open: "ОТКРЫТЬ ИНСТРУМЕНТ", back: "ВЕРНУТЬСЯ В ТЕРМИНАЛ", note: "Рабочие системы · независимо спроектированы и запущены", sound: "ЗВУК", select: "Выберите систему", online: "В СЕТИ", atlas: "АТЛАС / АКТИВЕН" },
+  ge: { kicker: `ინსტრუმენტების ატლასი / ${toolCount} სისტემა`, title: "მოქმედი სისტემების რუკა.", body: "დამოუკიდებლად შექმნილი ხელსაწყოების კომპაქტური ინდექსი თამაშების ანალიზისა და რაზმის დაშიფრული კოორდინაციისთვის.", open: "ინსტრუმენტის გახსნა", back: "ტერმინალში დაბრუნება", note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული", sound: "ხმა", select: "აირჩიეთ სისტემა", online: "ონლაინ", atlas: "ატლასი / აქტიური" },
 }[locale];
 ---
 <BaseLayout locale={locale} active="tooling" localePathSuffix="/tooling" bodyClass="tooling-page" title={`Tooling · Mouchsiadis Solutions`} description={copy.body} image="/images/raid-signal-open-source.webp" alternates={buildLocaleAlternates("/tooling")}>
@@ -30,7 +31,7 @@ const copy = {
           <path d="M112 350c72-67 137-93 205-68s104 16 155-30 102-51 171-24" />
           <path d="M161 298c64-52 111-65 167-43s93 14 136-27 82-47 138-31" />
         </g>
-        <g class="atlas-fallback__route" fill="none"><path d="M147 483 303 377 457 426 609 341 766 236" /><circle cx="147" cy="483" r="7" /><circle cx="303" cy="377" r="7" /><circle cx="457" cy="426" r="7" /><circle cx="609" cy="341" r="7" /><circle cx="766" cy="236" r="7" /></g>
+        <g class="atlas-fallback__route" fill="none"><path d="M147 483 303 377" /><circle cx="147" cy="483" r="7" /><circle cx="303" cy="377" r="7" /></g>
       </svg>
       <div class="atlas-vignette"></div>
       <div class="atlas-readout"><span>{copy.atlas}</span><b data-vault-number>01</b><i data-vault-name>GRINDLIKE</i></div>
@@ -85,7 +86,7 @@ const copy = {
       <div class="atlas-details" aria-live="polite">
         {toolProjects.map((tool, index) => (
           <article class:list={["atlas-detail", index === 0 && "is-active"]} data-vault-entry data-tool-index={index} data-instrument={tool.instrument}>
-            <header><span>{String(index + 1).padStart(2, "0")} / 05</span><i>{tool.instrument?.replaceAll("-", " / ").toUpperCase()}</i></header>
+            <header><span>{String(index + 1).padStart(2, "0")} / {toolCount}</span><i>{tool.instrument?.replaceAll("-", " / ").toUpperCase()}</i></header>
             <p>{localized(tool.eyebrow)}</p>
             <h2>{tool.title}</h2>
             <div>{localized(tool.summary)}</div>

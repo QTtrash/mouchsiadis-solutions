@@ -2,7 +2,7 @@ import type { Locale } from "./i18n.ts";
 
 type LocalizedRecord<T> = { en: T } & Partial<Record<Locale, T>>;
 type LocalizedString = LocalizedRecord<string>;
-export type InstrumentKind = "replay-lattice" | "sealed-relay" | "ledger-gauge" | "balance-journal" | "scan-gate";
+export type InstrumentKind = "replay-lattice" | "sealed-relay";
 
 export interface ProjectEntry {
   slug: string;
@@ -241,9 +241,6 @@ export const toolProjects: ToolProjectEntry[] = [
     cover: "truegrind",
     instrument: "sealed-relay",
   },
-  { slug: "breadmeter", title: "Breadmeter", eyebrow: { en: "Personal finance instrument" }, summary: { en: "A focused personal-finance PWA with durable tracking and private PostgreSQL-backed data." }, narrative: { en: "A deliberately small operational tool for making everyday spending legible." }, details: { en: ["Mobile-first PWA", "Private persistent records", "Production VPS deployment"] }, stack: ["Next.js", "PostgreSQL", "PWA"], meta: { en: ["live tool", "personal finance"] }, link: "https://breadmeter.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "ledger-gauge" },
-  { slug: "doublechilicheese", title: "Doublechilicheese", eyebrow: { en: "Food mindfulness journal" }, summary: { en: "A private journal for recording food decisions, context, and patterns without turning them into a generic calorie dashboard." }, narrative: { en: "A calmer instrumentation layer around eating and attention." }, details: { en: ["Private uploads and records", "Responsive journal workflow", "Production-backed persistence"] }, stack: ["Next.js", "PostgreSQL", "Docker"], meta: { en: ["live tool", "mindfulness"] }, link: "https://doublechilicheese.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "balance-journal" },
-  { slug: "readtry", title: "Readtry", eyebrow: { en: "Document workflow tooling" }, summary: { en: "A production document workflow with background processing, malware scanning, and durable storage." }, narrative: { en: "A systems-heavy tool that treats uploaded documents as an operational pipeline rather than a folder." }, details: { en: ["Background worker processing", "ClamAV scanning", "PostgreSQL-backed state"] }, stack: ["Next.js", "PostgreSQL", "Workers", "ClamAV"], meta: { en: ["live tool", "document systems"] }, link: "https://readtry.com", linkLabel: { en: "open tool" }, cover: "neopay", instrument: "scan-gate" },
 ];
 
 export const gameProjects: ProjectEntry[] = [
