@@ -367,7 +367,7 @@ summary:focus-visible {
   align-items: center;
   gap: 0.4rem;
   color: var(--signal);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-family: var(--mono);
   font-weight: 400;
   text-transform: uppercase;
@@ -1867,7 +1867,7 @@ summary:focus-visible {
     min-width: 5.25rem;
     min-height: 2.25rem;
     padding: 0.42rem 0.5rem;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
   }
 
   .terminal-console__content {
@@ -2203,7 +2203,7 @@ summary:focus-visible {
 .archive-entry__evidence dt {
   margin-bottom: 0.4rem;
   color: var(--amber-bright);
-  font: 600 0.68rem/1.2 var(--mono);
+  font: 600 0.7rem/1.2 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -2856,4 +2856,173 @@ body {
   .terminal-chassis__screw--bl, .terminal-chassis__screw--br { bottom: 10px; }
   .terminal-chassis__screw--tl, .terminal-chassis__screw--bl { left: 10px; }
   .terminal-chassis__screw--tr, .terminal-chassis__screw--br { right: 10px; }
+}
+
+/* ---- header: terminal menu bar ---- */
+
+.site-header {
+  border-bottom: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 18, 9, 0.97), rgba(4, 9, 4, 0.94));
+  box-shadow:
+    0 2px 0 var(--chassis-hi),
+    0 4px 0 var(--chassis-lo),
+    0 12px 28px -18px rgba(0, 0, 0, 0.9);
+}
+
+.site-header__brand {
+  min-height: 2.75rem;
+  justify-content: center;
+}
+
+.site-header__prefix {
+  font-size: 0.72rem;
+}
+
+.site-header__nav a {
+  position: relative;
+}
+
+/* pixel underline marks hover and the current page */
+.site-header__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.45rem;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+}
+
+.site-header__nav a:hover::after,
+.site-header__nav a.is-active::after {
+  opacity: 1;
+}
+
+.site-header__nav a.is-active {
+  color: var(--amber-bright);
+}
+
+/* on console pages the terminal side nav is the desktop navigation */
+@media (min-width: 1120px) and (min-height: 720px) {
+  .has-console .site-header__nav {
+    visibility: hidden;
+  }
+}
+
+/* phone landscape: give the screen back to content */
+@media (max-height: 500px) {
+  .site-header {
+    position: static;
+  }
+}
+
+/* ---- footer: terminal status bar ---- */
+
+.site-footer {
+  margin-top: 1rem;
+  padding: 0;
+  border-top: 0;
+  background: linear-gradient(180deg, #060b06, #030603);
+  box-shadow:
+    0 -2px 0 var(--chassis-hi),
+    0 -4px 0 var(--chassis-lo);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding: 0.35rem 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.site-footer__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--text-subtle);
+  font: 0.72rem/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.site-footer__led {
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--signal);
+  box-shadow: 0 0 8px rgba(141, 255, 122, 0.7);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+}
+
+.site-footer__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--muted);
+  font: 0.76rem/1.2 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible {
+  color: var(--amber-bright);
+}
+
+@media (max-width: 767px) {
+  .site-footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.85rem 0 0.5rem;
+  }
+
+  .site-footer__links {
+    width: 100%;
+    gap: 0 1.1rem;
+  }
+
+  .site-footer__links a:first-child {
+    flex-basis: 100%;
+  }
+}
+
+/* ---- touch targets and minimum text size (mobile audit) ---- */
+
+.button,
+.archive-entry__link,
+.terminal-side-nav a {
+  min-height: 2.75rem;
+}
+
+.contact-panel a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+/* list titles are the tap target: give them WCAG 2.2 target height */
+.blog-index__item h2 a,
+.blog-index__item h3 a {
+  display: inline-block;
+  padding-block: 0.3rem;
+}
+
+.article-shell__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
 }

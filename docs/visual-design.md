@@ -60,6 +60,12 @@ Cards are a view over content records (`src/lib/cards.ts`); they carry no copy o
 - Color: near-black chassis, phosphor green system content, amber active states, and copper in Tooling. State is never communicated by color alone.
 - Content width: 1280px default and 1360px at large desktop; article prose stays near 72ch.
 
+## Header and Footer
+
+- Header (terminal menu bar): prompt-style brand, plain links (Work, Games, Tooling, Experience, Notes) with a pixel underline for hover and the current page, the amber Hire me, languages, and Options. It is kept because it is the only navigation on case files, notes, and posts, and it carries Hire me everywhere. On console pages at the fitted desktop size (landing, Tooling) its links step aside, because the terminal side nav is the navigation there and two identical primary navs side by side were noise. The bar sits on the chassis' two-step pixel edge. On short landscape phones (height 500px or less) it scrolls away instead of sticking.
+- Footer (terminal status bar): an online LED, MS-86, the copyright line, then real actions: email, GitHub, LinkedIn, CV (PDF), each a 44px target. It replaced a plate whose links duplicated the header ("Work" only went home) and whose email was not a link. It is kept as the end-of-page contact and legal location visitors expect.
+- Not yet present: a German Impressum. A business site operated from Germany generally needs one (§ 5 DDG); it requires the operator's legal name and postal address, which must come from the owner.
+
 ## Responsive Composition
 
 - Phone, below 768px: compact header and full-screen navigation drawer; single-column archive; large touch targets; no hover assumptions.
@@ -67,6 +73,7 @@ Cards are a view over content records (`src/lib/cards.ts`); they carry no copy o
 - Desktop, 1120px and at least 720px tall: fitted console with side mode navigation and one active panel.
 - Short laptop: continuous archive avoids nested-scroll and clipped-panel failures.
 - Large desktop, 1600px+: content width grows modestly; typography and line length do not scale without limit.
+- Checked matrix: 320x568, 360x740, 375x667, 390x844, 414x896, 844x390 (phone landscape), 768x1024, 820x1180, 1024x768, 1180x820, 1280x720, 1440x900, 1920x1080, across the landing page, Georgian landing, Tooling, a case file, the notes index, and a post. No horizontal overflow; interactive controls are at least 44px tall (list headline links at least 24px, per WCAG 2.2 AA); no text below 11px.
 
 ## Component Ownership
 

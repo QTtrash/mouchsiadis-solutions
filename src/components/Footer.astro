@@ -1,31 +1,33 @@
 ---
-import { localeSeo, type Locale } from "../lib/i18n";
-import { buildLocalePath } from "../lib/blog";
+// Terminal status bar: the last fast path on every page (contact, profiles, CV).
+import { localeSeo, navigationCopy, type Locale } from "../lib/i18n";
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const copy = localeSeo[locale];
+const labels = localeSeo[locale].labels;
+const nav = navigationCopy[locale];
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <div class="site-footer__plate">
-      <p class="site-footer__stamp">Mouchsiadis Solutions · MS-86 · {year}</p>
-      <p>{copy.labels.contactBody}</p>
-    </div>
+    <p class="site-footer__status">
+      <span class="site-footer__led" aria-hidden="true"></span>
+      <span>{nav.status}</span>
+      <span aria-hidden="true">·</span>
+      <span>MS-86</span>
+      <span aria-hidden="true">·</span>
+      <span>© {year} Suren Mouchsiadis</span>
+    </p>
 
-    <div class="site-footer__links">
-      <a href={buildLocalePath(locale)}>{copy.nav.work}</a>
-      <a href={buildLocalePath(locale, "/blog")}>{copy.nav.blog}</a>
-      <a
-        href="/cv/Suren_Mouchsiadis_CV.pdf"
-        target="_blank"
-        rel="noopener noreferrer">{copy.nav.cv}</a
-      >
-    </div>
+    <nav class="site-footer__links" aria-label={nav.contact}>
+      <a href="mailto:suren@mouchsiadis-solutions.com">suren@mouchsiadis-solutions.com</a>
+      <a href="https://github.com/QTtrash" target="_blank" rel="noopener noreferrer">{labels.githubLabel}</a>
+      <a href="https://www.linkedin.com/in/surenmouchsiadis" target="_blank" rel="noopener noreferrer">{labels.linkedinLabel}</a>
+      <a href="/cv/Suren_Mouchsiadis_CV.pdf" target="_blank" rel="noopener noreferrer">{nav.cv} (PDF)</a>
+    </nav>
   </div>
 </footer>

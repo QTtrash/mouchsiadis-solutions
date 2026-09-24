@@ -48,7 +48,7 @@ const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
 const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
 ---
 
-<BaseLayout locale={locale} alternates={alternates}>
+<BaseLayout locale={locale} alternates={alternates} bodyClass="has-console">
   <section
     class="terminal-console section"
     data-terminal-console

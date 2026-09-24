@@ -45,6 +45,7 @@ export const navigationCopy: Record<
     effectsSystem: string;
     effectsReduced: string;
     skipToContent: string;
+    status: string;
   }
 > = {
   en: {
@@ -67,6 +68,7 @@ export const navigationCopy: Record<
     effectsSystem: "Follow system",
     effectsReduced: "Reduced",
     skipToContent: "Skip to content",
+    status: "ONLINE",
   },
   ru: {
     work: "Работы",
@@ -88,6 +90,7 @@ export const navigationCopy: Record<
     effectsSystem: "Как в системе",
     effectsReduced: "Минимальные",
     skipToContent: "Перейти к содержимому",
+    status: "В СЕТИ",
   },
   de: {
     work: "Arbeit",
@@ -109,6 +112,7 @@ export const navigationCopy: Record<
     effectsSystem: "Systemeinstellung",
     effectsReduced: "Reduziert",
     skipToContent: "Zum Inhalt springen",
+    status: "ONLINE",
   },
   ge: {
     work: "ნამუშევრები",
@@ -130,6 +134,7 @@ export const navigationCopy: Record<
     effectsSystem: "სისტემის მიხედვით",
     effectsReduced: "შემცირებული",
     skipToContent: "შინაარსზე გადასვლა",
+    status: "ონლაინ",
   },
 };
 

@@ -47,7 +47,9 @@ test("menu exposes navigation, languages, and preferences", async ({ page }) => 
 test("Tooling to About uses the prefetched direct route", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1120, "desktop primary navigation");
   await page.goto("/en/tooling/");
-  const about = page.locator('.site-header__nav a[href="/en/#experience"]');
+  // on console pages the side nav is the desktop navigation (the header drops its duplicate links)
+  await expect(page.locator(".site-header__nav")).toBeHidden();
+  const about = page.locator('.terminal-side-nav a[href="/en/#experience"]');
   await expect(about).toHaveAttribute("data-astro-prefetch", "");
   await about.click();
   await expect(page).toHaveURL(/\/en\/#experience$/);
@@ -164,3 +166,35 @@ test("blog is grouped as a dated archive", async ({ page }) => {
   await expect(page.locator(".blog-year").first()).toBeVisible();
   await expect(page.locator("article[lang]").first()).toBeVisible();
 });
+
+for (const path of ["/en/", "/en/tooling/", "/ru/work/ypay/", "/ru/blog/tonight-i-cry/"]) {
+  test(`${path} is touch-friendly: 44px controls, no overflow, footer actions`, async ({ page }) => {
+    await page.goto(path);
+    const report = await page.evaluate(() => {
+      const visible = (el: Element) => {
+        const box = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        return box.width > 0 && box.height > 0 && style.visibility !== "hidden" && !el.closest("[inert], [hidden], wa-drawer");
+      };
+      const controls = [...document.querySelectorAll("a, button, summary")].filter(
+        (el) => visible(el) && !el.closest("p, dd, .article-prose, .proof-card, .skip-link"),
+      );
+      const tooSmall = controls
+        .filter((el) => {
+          const height = el.getBoundingClientRect().height;
+          // headline links in lists only need the WCAG 2.2 AA 24px target
+          return el.closest("h2, h3") ? height < 24 : height < 43.5;
+        })
+        .map((el) => `${el.textContent?.trim().slice(0, 24)} ${Math.round(el.getBoundingClientRect().height)}px`);
+      return {
+        tooSmall,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    expect(report.tooSmall).toEqual([]);
+    expect(report.overflow).toBeLessThanOrEqual(1);
+    const footer = page.locator(".site-footer");
+    await expect(footer.getByRole("link", { name: "suren@mouchsiadis-solutions.com" })).toHaveAttribute("href", "mailto:suren@mouchsiadis-solutions.com");
+    await expect(footer.getByRole("link", { name: /\(PDF\)/ })).toHaveAttribute("href", "/cv/Suren_Mouchsiadis_CV.pdf");
+  });
+}

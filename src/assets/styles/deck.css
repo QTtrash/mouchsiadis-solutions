@@ -67,7 +67,7 @@ html:not(.js) .card-deck__view {
 
 .card-deck__view button {
   min-width: 4.5rem;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid transparent;
   border-radius: 0.18rem;
@@ -181,7 +181,7 @@ html:not(.js) .card-deck__view {
   align-items: center;
   justify-content: space-between;
   gap: 0.4rem;
-  font: 600 0.62rem/1.1 var(--mono);
+  font: 600 0.7rem/1.1 var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -256,7 +256,7 @@ html:not(.js) .card-deck__view {
 .deck-card__back-kicker {
   margin: 0;
   color: var(--suit);
-  font: 0.64rem/1.3 var(--mono);
+  font: 0.7rem/1.3 var(--mono);
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
@@ -288,7 +288,7 @@ html:not(.js) .card-deck__view {
   border: 1px solid var(--line);
   border-radius: 0.15rem;
   color: var(--text-subtle);
-  font: 0.6rem/1.3 var(--mono);
+  font: 0.7rem/1.3 var(--mono);
 }
 
 .deck-card__evidence {
@@ -322,7 +322,7 @@ html:not(.js) .card-deck__view {
 .deck-card__stack {
   margin: auto 0 0;
   color: var(--text-subtle);
-  font: 0.62rem/1.4 var(--mono);
+  font: 0.7rem/1.4 var(--mono);
 }
 
 .deck-card__actions {
@@ -350,7 +350,7 @@ html:not(.js) .deck-card__actions {
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.3);
   color: var(--text);
-  font: 600 0.66rem/1.2 var(--mono);
+  font: 600 0.7rem/1.2 var(--mono);
   letter-spacing: 0.02em;
   text-align: center;
   text-decoration: none;
@@ -441,7 +441,7 @@ html:not(.js) .deck-card__actions {
 
 .card-reader__label {
   color: var(--muted);
-  font: 600 0.62rem/1.2 var(--mono);
+  font: 600 0.7rem/1.2 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -464,7 +464,7 @@ html:not(.js) .deck-card__actions {
   padding: 0.15rem 0.45rem;
   background: #030a04;
   color: var(--text-secondary);
-  font: 600 0.66rem/1.3 var(--mono);
+  font: 600 0.7rem/1.3 var(--mono);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -803,7 +803,7 @@ html:not(.js) .deck-card__actions {
 
 .case-file__adjacent span {
   color: var(--text-subtle);
-  font: 0.68rem/1.2 var(--mono);
+  font: 0.7rem/1.2 var(--mono);
   text-transform: uppercase;
 }
 
@@ -855,7 +855,7 @@ html:not(.js) .deck-card__actions {
 .tooling-note {
   margin: 1.25rem 0 0;
   color: var(--text-subtle);
-  font: 0.68rem/1.5 var(--mono);
+  font: 0.7rem/1.5 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
