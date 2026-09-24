@@ -35,6 +35,7 @@ Each project entry includes:
 - optional `sourceLink` and localized `sourceLinkLabel` for public-source projects
 - optional localized `evidence` with `role`, `contribution`, `constraints`, and `outcomes`
 - `cover`
+- optional `live` — the system runs in production; it earns the LIVE foil on its card and case file
 
 Selected professional entries:
 
@@ -48,6 +49,14 @@ Live tools are stored separately as `toolProjects` and rendered in the Tooling a
 - `Bomb Town`
 - `Rifle Revolver`
 - `Incendiary Revolver`
+
+### Cards and Case Files
+
+Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. A card's outcome sentence is `evidence.outcomes` when present, otherwise `summary`, so the strongest evidenced sentence always leads.
+
+### Proof Points
+
+`proofPoints` feeds the hero's Evidence card. Each point must restate a claim already evidenced by an entry, and targets either a case-file slug or `"experience"`.
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
@@ -84,4 +93,4 @@ Rules used in this implementation:
 
 If future English posts are added, extend the inference logic in `src/lib/blog.ts`.
 
-Navigation, preferences, hero positioning, and evidence labels are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.
+Navigation, preferences, hero positioning, evidence labels, and all card, reader, and case-file copy (`deckCopy`, `evidenceLabels` in `src/lib/i18n.ts`) are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.

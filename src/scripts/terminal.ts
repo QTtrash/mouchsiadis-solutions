@@ -4,6 +4,9 @@
 import { typeText } from "./decode";
 import { SoundEngine } from "./sound";
 
+// Retired panels whose old links should still land somewhere useful.
+const PANEL_ALIASES: Record<string, string> = { cv: "contact" };
+
 export function initTerminal(): void {
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
@@ -32,7 +35,8 @@ export function initTerminal(): void {
   };
 
   const showPanel = (id: string, updateHash = true, initial = false): void => {
-    const nextId = validIds.has(id) ? id : "overview";
+    const target = PANEL_ALIASES[id] ?? id;
+    const nextId = validIds.has(target) ? target : "overview";
     const nextPanel = panels.find((panel) => panel.dataset.terminalPanel === nextId);
 
     if (!nextPanel) return;
@@ -80,7 +84,7 @@ export function initTerminal(): void {
     const target = event.currentTarget as HTMLAnchorElement;
     const href = target.getAttribute("href") ?? "#overview";
     const id = href.replace("#", "");
-    if (!validIds.has(id)) return;
+    if (!validIds.has(PANEL_ALIASES[id] ?? id)) return;
     event.preventDefault();
     showPanel(id);
   };

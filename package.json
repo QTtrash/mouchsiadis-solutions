@@ -8,9 +8,10 @@
     "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "test:e2e": "playwright test",
     "test:a11y": "playwright test tests/accessibility.spec.ts",
-    "validate": "npm run check && npm run build && npm run test:e2e",
+    "validate": "npm run check && npm run build && npm run budget && npm run test:e2e",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro",
+    "budget": "node scripts/check-budget.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

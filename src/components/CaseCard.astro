@@ -1,0 +1,93 @@
+---
+// One record card. The front carries the hiring signal (title, outcome,
+// keywords); the back carries evidence. Both faces are real HTML; the flip and
+// drag behaviour is added by src/scripts/deck.ts.
+import CoverArt from "./CoverArt.astro";
+import { cardOutcome, casePath, localize, transitionName, type CaseRecord } from "../lib/cards";
+import { deckCopy, evidenceLabels, type Locale } from "../lib/i18n";
+
+interface Props {
+  record: CaseRecord;
+  locale: Locale;
+  index: number;
+  count: number;
+}
+
+const { record, locale, index, count } = Astro.props;
+const { entry, suit } = record;
+const copy = deckCopy[locale];
+const labels = evidenceLabels[locale];
+const href = casePath(locale, entry.slug);
+const titleId = `card-${entry.slug}-title`;
+const keywords = localize(entry.meta, locale);
+const details = localize(entry.details, locale).slice(0, 3);
+// Fan geometry: signed distance from the middle of the hand, and its square for the arc.
+const offset = index - (count - 1) / 2;
+---
+
+<li
+  class="deck-card"
+  data-card
+  data-suit={suit}
+  data-cover={entry.cover}
+  data-href={href}
+  data-title={entry.title}
+  style={`--n: ${count}; --offset: ${offset}; --arc: ${offset * offset};`}
+>
+  <article class="deck-card__body" aria-labelledby={titleId}>
+    <div class="deck-card__face deck-card__face--front" data-card-face="front">
+      <div class="deck-card__top">
+        <span class="deck-card__suit">
+          <span class="deck-card__suit-icon" aria-hidden="true"></span>
+          {copy.suits[suit]}
+        </span>
+        {entry.live && <span class="deck-card__live">{copy.live}</span>}
+      </div>
+      <div
+        class="deck-card__art"
+        style={`view-transition-name: ${transitionName(entry.slug)};`}
+        aria-hidden="true"
+      >
+        <CoverArt slug={entry.cover} />
+      </div>
+      <h3 id={titleId}>{entry.title}</h3>
+      <p class="deck-card__eyebrow">{localize(entry.eyebrow, locale)}</p>
+      <p class="deck-card__outcome">{cardOutcome(entry, locale)}</p>
+      <ul class="deck-card__keywords" role="list">
+        {keywords.map((keyword) => <li>{keyword}</li>)}
+      </ul>
+    </div>
+
+    <div class="deck-card__face deck-card__face--back" data-card-face="back" inert>
+      <p class="deck-card__back-kicker">{copy.evidenceTitle} / {entry.title}</p>
+      {
+        entry.evidence ? (
+          <dl class="deck-card__evidence">
+            <div>
+              <dt>{labels[0]}</dt>
+              <dd>{localize(entry.evidence.role, locale)}</dd>
+            </div>
+            <div>
+              <dt>{labels[2]}</dt>
+              <dd>{localize(entry.evidence.constraints, locale)}</dd>
+            </div>
+          </dl>
+        ) : (
+          <ul class="deck-card__details">
+            {details.map((item) => <li>{item}</li>)}
+          </ul>
+        )
+      }
+      <p class="deck-card__stack">{entry.stack.slice(0, 5).join(" · ")}</p>
+    </div>
+  </article>
+
+  <div class="deck-card__actions">
+    <button class="deck-card__flip" type="button" data-card-flip aria-pressed="false">
+      {copy.flip}<span class="visually-hidden">: {entry.title}</span>
+    </button>
+    <a class="deck-card__open" href={href} data-card-open>
+      {copy.open}<span class="visually-hidden">: {entry.title}</span>
+    </a>
+  </div>
+</li>

@@ -1,0 +1,81 @@
+---
+// A hand of record cards plus the plain list view of the same records.
+// Without JS the cards render as a grid of links; src/scripts/deck.ts adds the
+// Cards/List switch, flipping, and drag-to-reader on fine pointers.
+import ArchiveEntry from "./ArchiveEntry.astro";
+import CaseCard from "./CaseCard.astro";
+import { casePath, localize, type CaseRecord } from "../lib/cards";
+import { deckCopy, evidenceLabels, localeSeo, type Locale } from "../lib/i18n";
+
+interface Props {
+  records: CaseRecord[];
+  locale: Locale;
+}
+
+const { records, locale } = Astro.props;
+const copy = deckCopy[locale];
+const seo = localeSeo[locale];
+const labels = evidenceLabels[locale];
+---
+
+<div class="card-deck" data-deck>
+  <div class="card-deck__view" role="group" aria-label={copy.viewLabel}>
+    <button type="button" data-deck-view="cards" aria-pressed="true">{copy.viewCards}</button>
+    <button type="button" data-deck-view="list" aria-pressed="false">{copy.viewList}</button>
+  </div>
+
+  <div class="card-deck__table" data-deck-cards>
+    <div class="card-reader" data-card-reader aria-hidden="true">
+      <span class="card-reader__led"></span>
+      <span class="card-reader__label">{copy.readerLabel}</span>
+      <span class="card-reader__slot">
+        <strong data-reader-status data-idle={copy.readerIdle} data-reading={copy.readerReading}
+          >{copy.readerIdle}</strong
+        >
+      </span>
+      <span class="card-reader__hint">{copy.readerHint}</span>
+    </div>
+
+    <ul class="card-hand" role="list" data-card-hand>
+      {
+        records.map((record, index) => (
+          <CaseCard record={record} locale={locale} index={index} count={records.length} />
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="archive-grid card-deck__list" data-deck-list hidden>
+    {
+      records.map(({ entry }) => (
+        <ArchiveEntry
+          title={entry.title}
+          eyebrow={localize(entry.eyebrow, locale)}
+          summary={localize(entry.summary, locale)}
+          narrative={localize(entry.narrative, locale)}
+          details={localize(entry.details, locale)}
+          stack={entry.stack}
+          meta={localize(entry.meta, locale)}
+          link={casePath(locale, entry.slug)}
+          linkLabel={copy.open}
+          external={false}
+          cover={entry.cover}
+          evidence={
+            entry.evidence
+              ? [
+                  { label: labels[0], value: localize(entry.evidence.role, locale) },
+                  { label: labels[1], value: localize(entry.evidence.contribution, locale) },
+                  { label: labels[2], value: localize(entry.evidence.constraints, locale) },
+                  { label: labels[3], value: localize(entry.evidence.outcomes, locale) },
+                ]
+              : []
+          }
+          toggleLabel={seo.labels.archiveOpen}
+          toggleCloseLabel={seo.labels.archiveClose}
+        />
+      ))
+    }
+  </div>
+
+  <p class="visually-hidden" aria-live="polite" data-deck-announcer data-template={copy.announcePlayed}></p>
+</div>

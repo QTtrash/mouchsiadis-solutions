@@ -18,13 +18,16 @@ interface Props {
 const { locale, active = "home", localePathSuffix = "" } = Astro.props;
 const nav = navigationCopy[locale];
 const home = buildLocalePath(locale);
+const contactHref = `${home}#contact`;
+const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
 const links = [
   { key: "work", label: nav.work, href: `${home}#software-work` },
+  { key: "games", label: nav.games, href: `${home}#game-dev` },
   { key: "tooling", label: nav.tooling, href: buildLocalePath(locale, "/tooling") },
-  { key: "about", label: nav.about, href: `${home}#experience` },
+  { key: "experience", label: nav.experience, href: `${home}#experience` },
   { key: "notes", label: nav.notes, href: buildLocalePath(locale, "/blog") },
-  { key: "contact", label: nav.contact, href: `${home}#contact` },
 ];
+const drawerLinks = [...links, { key: "contact", label: nav.contact, href: contactHref }];
 ---
 
 <header class="site-header">
@@ -77,6 +80,7 @@ const links = [
           ))
         }
       </nav>
+      <a class="site-header__hire" href={contactHref} data-astro-prefetch>{nav.hireMe}</a>
       <button class="site-header__options" type="button" data-drawer-open>
         <span class="site-header__options-desktop">{nav.options}</span>
         <span class="site-header__options-mobile">{nav.menu}</span>
@@ -93,13 +97,17 @@ const links = [
   >
     <nav class="navigation-drawer__links" aria-label={nav.primaryLabel}>
       {
-        links.map((link, index) => (
+        drawerLinks.map((link, index) => (
           <a href={link.href} data-drawer-link data-astro-prefetch>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <strong>{link.label}</strong>
           </a>
         ))
       }
+      <a href={cvHref} target="_blank" rel="noopener noreferrer">
+        <span>{String(drawerLinks.length + 1).padStart(2, "0")}</span>
+        <strong>{nav.cv} (PDF)</strong>
+      </a>
     </nav>
 
     <section class="navigation-drawer__languages" aria-labelledby="drawer-language-title">

@@ -4,7 +4,40 @@
 
 The product uses **instrument-grade retro-futurist editorial UI**: a diegetic field-terminal frame combined with the clarity and evidence hierarchy of professional software tooling. It is intentionally not a Fallout replica, glassmorphism, neo-brutalism, or a generic SaaS dashboard. The machine metaphor gives the portfolio identity; readable typography, plain information architecture, and progressive disclosure make it useful.
 
-The balance is roughly 70% content clarity and 30% atmospheric treatment. Scanlines, noise, copper/amber signals, monospace readouts, and code-drawn schematics are supporting cues. They must never delay access, reduce contrast, or become required interaction knowledge.
+The balance is **60% content clarity and 40% play** across the site, and **80/20 in the first viewport**. The first screen is the hiring pitch: who, what, proof, and the contact/CV actions. Play lives one layer down, in the card deck and (later) minigames, and is always optional. Scanlines, noise, copper/amber signals, monospace readouts, and code-drawn schematics remain supporting cues. None of it may delay access, reduce contrast, or become required interaction knowledge.
+
+## Two Audiences, One Site
+
+1. People hiring: within 30 seconds, and without playing anything, they see the role, three evidenced proof points, and the Contact and CV actions.
+2. Curious and technical visitors: they get a card game that runs inside the terminal, where each card is a real project record.
+
+## Fast Path
+
+- Header: an amber **Hire me** button on every page (it links to Contact) next to plain navigation: Work, Games, Tooling, Experience, Notes.
+- Hero: headline, one paragraph, then **Contact me** (primary, amber), **CV (PDF)**, and **Play the card deck**, all in the first viewport at phone, tablet, and desktop sizes.
+- Hero proof card: three claims already evidenced in `src/lib/content.ts`, each linking to its case file or the experience record.
+- Every deck has a **Cards | List** switch. List is the plain archive. The choice persists per visitor and applies to every deck.
+- Every card has a visible **Open case file** link; the case file ends with Hire me and CV actions.
+
+## Card System
+
+Cards are a view over content records (`src/lib/cards.ts`); they carry no copy of their own.
+
+- Anatomy (5:7 proportion): suit mark and name, LIVE foil when the system runs in production, art window, title, eyebrow, one plain **outcome sentence** (the evidenced outcome, or the summary when there is no evidence block), and keywords.
+- Back: evidence (role and constraints) or the first details, plus the stack.
+- Suits extend the palette: Platform = phosphor green, Tool = copper, Game = amber. Suit shape (diamond, square, circle) repeats the colour so suit is never colour-only.
+- The LIVE foil is earned, not decorative: it marks `live: true` records only.
+- Semantics: each card is `li > article` with a real heading. Flip is a toggle button (`aria-pressed`); the hidden face is `inert`. Card links name the project for screen readers.
+
+### Interactions by input
+
+- Fine pointer on the fitted desktop console: a fanned hand under a **card reader**. Drag a card into the reader to open its case file. Clicking a card flips it. Actions surface when a card is hovered or holds keyboard focus.
+- Keyboard: Tab to Flip and Open case file on every card; nothing requires dragging.
+- Touch (phone): a horizontal scroll-snap row; tap flips; Open case file is always visible. No drag, no hover dependence.
+- Tablet: a grid of cards with visible actions.
+- Reduced motion (OS setting or the in-product Reduced option): the hand stays flat, flips are instant, the foil sheen and page morph are off. Drag still works but never animates.
+- The card art and the case-file cover share a `view-transition-name`, so supporting browsers morph one into the other in 240ms. Others navigate normally.
+
 
 ## Product Principles
 
@@ -38,7 +71,7 @@ The balance is roughly 70% content clarity and 30% atmospheric treatment. Scanli
 ## Component Ownership
 
 - Custom design-system primitives: typography, tokens, buttons, badges, status markers, section headings, archive cards, panels, and code-drawn cover art.
-- Custom application components: project evidence records, career timeline, contact panel, notes archive, and Tooling instrument cards.
+- Custom application components: record cards and the card deck, card reader, case files, project evidence records, career timeline, contact panel, notes archive, and Tooling instrument cards.
 - Wrapped third-party primitive: Web Awesome drawer supplies focus management, dismissal, Escape behavior, and dialog accessibility while this project owns its visual layer.
 - Specialized runtime: Three.js powers the eligible desktop Tooling terrain only. Mobile uses the authored SVG fallback.
 - Native HTML first: `details`/`summary` handles archive disclosure and mobile Tooling records.
@@ -47,10 +80,19 @@ The balance is roughly 70% content clarity and 30% atmospheric treatment. Scanli
 
 Controls require default, hover where relevant, visible keyboard focus, pressed/selected, disabled when introduced, and loading when introduced states. Hover never changes selection. Sound defaults off and lives in Interface options. Visual effects follow the OS by default and may be explicitly reduced. Both preferences persist locally.
 
-Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Cross-page navigation never waits for a cinematic transition. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
+Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Card flips take 320ms; a card seats in the reader in 180ms before navigation; the card-to-case-file morph is 240ms. Cross-page navigation never waits for anything longer. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
 
 ## Asset And IP Rules
 
 - Do not use official Fallout logos, labels, protected artwork, or claims of affiliation.
 - Treat the frame as generic industrial hardware texture.
 - Raster assets ship in compressed WebP variants. Decorative artwork has empty alt text; meaningful images require useful alternatives and dimensions.
+
+## Performance Budget
+
+Enforced by `npm run budget` (part of `npm run validate`) against the built `/en/` page:
+
+- Landing JS loaded before any interaction: at most 15 KB gzipped (5.7 KB at Phase 1).
+- Landing CSS: at most 32 KB gzipped (28.1 KB at Phase 1).
+- Lazy only: the Web Awesome drawer (on first open), Three.js (Tooling, eligible desktops), and future minigames (on their own route or on Start).
+- No new runtime dependencies for cards: Pointer Events, CSS transforms, the Web Animations API, and cross-document View Transitions do the work.

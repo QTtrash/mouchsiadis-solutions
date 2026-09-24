@@ -19,6 +19,8 @@ export interface ProjectEntry {
   sourceLink?: string;
   sourceLinkLabel?: LocalizedString;
   cover: string;
+  /** Running in production: earns the LIVE foil on its card. */
+  live?: boolean;
   instrument?: InstrumentKind;
   evidence?: {
     role: LocalizedString;
@@ -43,6 +45,43 @@ export interface ExperienceEntry {
   stack: string[];
   cover: string;
 }
+
+/** Hero proof points: each one is a claim already evidenced by an entry below. */
+export interface ProofPoint {
+  label: LocalizedString;
+  /** Case-file slug, or "experience" for the service record. */
+  target: string;
+}
+
+export const proofPoints: ProofPoint[] = [
+  {
+    target: "ypay",
+    label: {
+      en: "YPay: a live multi-tenant payout platform with provider integrations and reconciliation.",
+      ru: "YPay: рабочая мультитенантная платформа выплат с интеграциями провайдеров и сверкой.",
+      de: "YPay: eine live betriebene, mandantenfähige Auszahlungsplattform mit Provider-Integrationen und Abgleich.",
+      ge: "YPay: მოქმედი მრავალმოიჯარიანი გადახდების პლატფორმა პროვაიდერების ინტეგრაციითა და შეჯერებით.",
+    },
+  },
+  {
+    target: "experience",
+    label: {
+      en: "NEO TAXI: led a driver and fleet management system for 10,000+ active drivers.",
+      ru: "NEO TAXI: руководил разработкой системы управления водителями и флотом для 10 000+ активных водителей.",
+      de: "NEO TAXI: Leitung eines Fahrer- und Flottenmanagement-Systems für mehr als 10.000 aktive Fahrer.",
+      ge: "NEO TAXI: ვხელმძღვანელობდი მძღოლებისა და ავტოპარკის მართვის სისტემას 10 000+ აქტიური მძღოლისთვის.",
+    },
+  },
+  {
+    target: "raid-signal",
+    label: {
+      en: "Raid Signal: open-source, end-to-end encrypted, with verifiable releases.",
+      ru: "Raid Signal: открытый код, сквозное шифрование и проверяемые релизы.",
+      de: "Raid Signal: Open Source, Ende-zu-Ende-verschlüsselt, mit überprüfbaren Releases.",
+      ge: "Raid Signal: ღია კოდი, ბოლომდე დაშიფვრა და შემოწმებადი რელიზები.",
+    },
+  },
+];
 
 export const projects: ProjectEntry[] = [
   {
@@ -105,6 +144,7 @@ export const projects: ProjectEntry[] = [
       de: "Plattform oeffnen",
     },
     cover: "neopay",
+    live: true,
     evidence: {
       role: {
         en: "Product and systems engineer",
@@ -168,6 +208,7 @@ export const projects: ProjectEntry[] = [
       de: "Website oeffnen",
     },
     cover: "neopay",
+    live: true,
     evidence: {
       role: {
         en: "Product and systems engineer",
@@ -198,7 +239,7 @@ export const projects: ProjectEntry[] = [
 ];
 
 export const toolProjects: ToolProjectEntry[] = [
-  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind", instrument: "replay-lattice" },
+  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind", live: true, instrument: "replay-lattice" },
   {
     slug: "raid-signal",
     title: "Raid Signal",
@@ -239,6 +280,7 @@ export const toolProjects: ToolProjectEntry[] = [
     sourceLink: "https://github.com/QTtrash/tarkov-map",
     sourceLinkLabel: { en: "view source", de: "Quellcode ansehen", ru: "исходный код", ge: "კოდის ნახვა" },
     cover: "truegrind",
+    live: true,
     instrument: "sealed-relay",
   },
 ];
@@ -256,6 +298,7 @@ export const gameProjects: ProjectEntry[] = [
     link: "https://flygod.games",
     linkLabel: { en: "open studio" },
     cover: "sillybazaar",
+    live: true,
   },
   {
     slug: "silly-bazaar",
@@ -308,6 +351,7 @@ export const gameProjects: ProjectEntry[] = [
       de: "Basar betreten",
     },
     cover: "sillybazaar",
+    live: true,
   },
   {
     slug: "alice-plays",
@@ -369,6 +413,7 @@ export const gameProjects: ProjectEntry[] = [
       de: "Plattform oeffnen",
     },
     cover: "alice",
+    live: true,
   },
   {
     slug: "bomb-town",
@@ -421,6 +466,7 @@ export const gameProjects: ProjectEntry[] = [
       de: "Spiel oeffnen",
     },
     cover: "bombtown",
+    live: true,
   },
   {
     slug: "rifle-revolver",

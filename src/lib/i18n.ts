@@ -27,10 +27,13 @@ export const navigationCopy: Record<
   Locale,
   {
     work: string;
+    games: string;
     tooling: string;
-    about: string;
+    experience: string;
     notes: string;
     contact: string;
+    hireMe: string;
+    cv: string;
     menu: string;
     options: string;
     drawerLabel: string;
@@ -46,10 +49,13 @@ export const navigationCopy: Record<
 > = {
   en: {
     work: "Work",
+    games: "Games",
     tooling: "Tooling",
-    about: "About",
+    experience: "Experience",
     notes: "Notes",
     contact: "Contact",
+    hireMe: "Hire me",
+    cv: "CV",
     menu: "Menu",
     options: "Options",
     drawerLabel: "Navigation and options",
@@ -64,10 +70,13 @@ export const navigationCopy: Record<
   },
   ru: {
     work: "Работы",
+    games: "Игры",
     tooling: "Инструменты",
-    about: "Обо мне",
+    experience: "Опыт",
     notes: "Записи",
     contact: "Контакт",
+    hireMe: "Нанять меня",
+    cv: "Резюме",
     menu: "Меню",
     options: "Настройки",
     drawerLabel: "Навигация и настройки",
@@ -82,10 +91,13 @@ export const navigationCopy: Record<
   },
   de: {
     work: "Arbeit",
+    games: "Spiele",
     tooling: "Werkzeuge",
-    about: "Profil",
+    experience: "Erfahrung",
     notes: "Notizen",
     contact: "Kontakt",
+    hireMe: "Anfragen",
+    cv: "CV",
     menu: "Menü",
     options: "Optionen",
     drawerLabel: "Navigation und Optionen",
@@ -100,10 +112,13 @@ export const navigationCopy: Record<
   },
   ge: {
     work: "ნამუშევრები",
+    games: "თამაშები",
     tooling: "ხელსაწყოები",
-    about: "ჩემ შესახებ",
+    experience: "გამოცდილება",
     notes: "ჩანაწერები",
     contact: "კონტაქტი",
+    hireMe: "დამიქირავეთ",
+    cv: "CV",
     menu: "მენიუ",
     options: "პარამეტრები",
     drawerLabel: "ნავიგაცია და პარამეტრები",
@@ -125,8 +140,6 @@ export const localeSeo: Record<
     description: string;
     heroTitle: string;
     heroBody: string;
-    aboutTitle: string;
-    aboutBody: string;
     nav: {
       overview: string;
       work: string;
@@ -140,6 +153,8 @@ export const localeSeo: Record<
       work: string;
       blog: string;
       cv: string;
+      contact: string;
+      play: string;
     };
     sections: {
       work: string;
@@ -175,10 +190,6 @@ export const localeSeo: Record<
       cvBody: string;
       currentFocus: string;
       currentFocusBody: string;
-      approachTitle: string;
-      approachBody: string;
-      writingTitle: string;
-      writingBody: string;
       contactBody: string;
       blogBody: string;
       blogLanguage: string;
@@ -206,30 +217,29 @@ export const localeSeo: Record<
     heroTitle: "Senior systems builder for products that have to work.",
     heroBody:
       "I design and ship production platforms, operational tooling, and independent software—from payment workflows to realtime systems. This archive shows the work, constraints, and evidence.",
-    aboutTitle: "Operator note",
-    aboutBody:
-      "The archive keeps the useful facts close to the surface: what was built, what constraints mattered, and where to open the formal record.",
     nav: {
-      overview: "status",
-      work: "work logs",
-      experience: "service record",
-      games: "game lab",
-      cv: "dossier",
-      blog: "notes",
-      contact: "signal",
+      overview: "Overview",
+      work: "Work",
+      experience: "Experience",
+      games: "Games",
+      cv: "CV",
+      blog: "Notes",
+      contact: "Contact",
     },
     cta: {
-      work: "open work logs",
-      blog: "read field notes",
-      cv: "view dossier",
+      work: "See work",
+      blog: "Read notes",
+      cv: "CV (PDF)",
+      contact: "Contact me",
+      play: "Play the card deck",
     },
     sections: {
-      work: "work logs",
-      experience: "service record",
-      games: "game lab",
-      cv: "dossier",
-      blog: "field notes",
-      contact: "signal channel",
+      work: "Selected work",
+      experience: "Experience",
+      games: "Games",
+      cv: "CV",
+      blog: "Notes",
+      contact: "Contact",
     },
     sectionKickers: {
       work: "SW // WORK LOG",
@@ -240,14 +250,13 @@ export const localeSeo: Record<
       contact: "TX // CONTACT",
     },
     sectionBodies: {
-      work: "Public project records. Open an entry for scope, constraints, stack, and external link.",
+      work: "Production platforms and tools. Every card opens a case file with role, constraints, and outcome.",
       experience:
         "Service history translated from the formal CV into a readable terminal record.",
-      games:
-        "Game systems and mods filed by rules, balance, feedback loops, and release surface.",
+      games: "Live multiplayer games, a puzzle platform, and RimWorld mods. Every card opens a case file.",
       cv: "Formal identification file and PDF dossier.",
       blog: "Older notes preserved in original language. Filed as recovered text, not brand copy.",
-      contact: "Open channel. Send a direct transmission.",
+      contact: "Email is the fastest route. The CV is one click away.",
     },
     labels: {
       basedIn: "station: Munich / Europe",
@@ -261,11 +270,6 @@ export const localeSeo: Record<
       currentFocus: "Active loadout",
       currentFocusBody:
         "Cloud infrastructure, product systems, platform tooling, internal operators, and game logic.",
-      approachTitle: "Build protocol",
-      approachBody: "Readable interfaces. Stable machinery. No wasted motion.",
-      writingTitle: "Recovered notes",
-      writingBody:
-        "Unpolished entries kept in the language and state they were written.",
       contactBody: "Signal channel: suren@mouchsiadis-solutions.com",
       blogBody: "Original-language notes, archived without translation pass.",
       blogLanguage: "source language",
@@ -293,30 +297,29 @@ export const localeSeo: Record<
     heroTitle: "Старший системный разработчик продуктов, которые обязаны работать.",
     heroBody:
       "Я проектирую и запускаю production-платформы, операционные инструменты и независимое ПО — от платежных процессов до систем реального времени. В архиве показаны работа, ограничения и подтверждения.",
-    aboutTitle: "Заметка оператора",
-    aboutBody:
-      "Архив держит полезные факты близко к поверхности: что было построено, какие ограничения имели значение и где открыть формальное досье.",
     nav: {
-      overview: "статус",
-      work: "журнал работ",
-      experience: "служба",
-      games: "игровой отсек",
-      cv: "досье",
-      blog: "записи",
-      contact: "сигнал",
+      overview: "Обзор",
+      work: "Работы",
+      experience: "Опыт",
+      games: "Игры",
+      cv: "Резюме",
+      blog: "Записи",
+      contact: "Контакт",
     },
     cta: {
-      work: "открыть журнал",
-      blog: "читать записи",
-      cv: "смотреть досье",
+      work: "Смотреть работы",
+      blog: "Читать записи",
+      cv: "Резюме (PDF)",
+      contact: "Написать мне",
+      play: "Разыграть колоду",
     },
     sections: {
-      work: "журнал работ",
-      experience: "служебная запись",
-      games: "игровой отсек",
-      cv: "досье",
-      blog: "полевые записи",
-      contact: "канал связи",
+      work: "Избранные работы",
+      experience: "Опыт",
+      games: "Игры",
+      cv: "Резюме",
+      blog: "Записи",
+      contact: "Контакт",
     },
     sectionKickers: {
       work: "SW // WORK LOG",
@@ -327,14 +330,13 @@ export const localeSeo: Record<
       contact: "TX // CONTACT",
     },
     sectionBodies: {
-      work: "Публичные записи проектов. Откройте элемент, чтобы увидеть рамки, ограничения, стек и внешнюю ссылку.",
+      work: "Production-платформы и инструменты. Каждая карта открывает дело проекта: роль, ограничения и результат.",
       experience:
         "Служебная история из формального CV, переложенная в читаемый терминальный журнал.",
-      games:
-        "Игровые системы и моды: правила, баланс, обратная связь и релизная поверхность.",
+      games: "Мультиплеерные игры, платформа головоломок и моды для RimWorld. Каждая карта открывает дело проекта.",
       cv: "Формальный идентификационный файл и PDF-досье.",
       blog: "Старые заметки сохранены на языке оригинала. Это архивный текст, не рекламная витрина.",
-      contact: "Канал открыт. Отправьте прямую передачу.",
+      contact: "Быстрее всего — по почте. Резюме в один клик.",
     },
     labels: {
       basedIn: "станция: Мюнхен / Европа",
@@ -348,12 +350,6 @@ export const localeSeo: Record<
       currentFocus: "Активная загрузка",
       currentFocusBody:
         "Облачная инфраструктура, продуктовые системы, платформенные инструменты, внутренние операторы и игровая логика.",
-      approachTitle: "Протокол сборки",
-      approachBody:
-        "Читаемые интерфейсы. Стабильный механизм. Никаких лишних движений.",
-      writingTitle: "Найденные записи",
-      writingBody:
-        "Неполированные записи оставлены на том языке и в том состоянии, в котором были написаны.",
       contactBody: "Канал связи: suren@mouchsiadis-solutions.com",
       blogBody: "Записи на языке оригинала, без прохода перевода.",
       blogLanguage: "язык источника",
@@ -381,30 +377,29 @@ export const localeSeo: Record<
     heroTitle: "Senior Systems Builder fuer Produkte, die funktionieren muessen.",
     heroBody:
       "Ich konzipiere und liefere produktive Plattformen, Operations-Werkzeuge und unabhaengige Software—von Zahlungsablaeufen bis zu Echtzeitsystemen. Das Archiv zeigt Arbeit, Rahmenbedingungen und Nachweise.",
-    aboutTitle: "Operatornotiz",
-    aboutBody:
-      "Das Archiv haelt die nuetzlichen Fakten vorne: was gebaut wurde, welche Grenzen zaehlten und wo die formale Akte liegt.",
     nav: {
-      overview: "status",
-      work: "arbeitslog",
-      experience: "dienstakte",
-      games: "game-lab",
-      cv: "dossier",
-      blog: "notizen",
-      contact: "signal",
+      overview: "Überblick",
+      work: "Arbeit",
+      experience: "Erfahrung",
+      games: "Spiele",
+      cv: "CV",
+      blog: "Notizen",
+      contact: "Kontakt",
     },
     cta: {
-      work: "arbeitslog oeffnen",
-      blog: "feldnotizen lesen",
-      cv: "dossier ansehen",
+      work: "Arbeiten ansehen",
+      blog: "Notizen lesen",
+      cv: "CV (PDF)",
+      contact: "Kontakt aufnehmen",
+      play: "Kartendeck spielen",
     },
     sections: {
-      work: "arbeitslog",
-      experience: "dienstakte",
-      games: "game-lab",
-      cv: "dossier",
-      blog: "feldnotizen",
-      contact: "signalkanal",
+      work: "Ausgewählte Arbeiten",
+      experience: "Erfahrung",
+      games: "Spiele",
+      cv: "CV",
+      blog: "Notizen",
+      contact: "Kontakt",
     },
     sectionKickers: {
       work: "SW // WORK LOG",
@@ -415,14 +410,13 @@ export const localeSeo: Record<
       contact: "TX // CONTACT",
     },
     sectionBodies: {
-      work: "Oeffentliche Projektdatensaetze. Oeffnen Sie einen Eintrag fuer Umfang, Grenzen, Stack und externen Link.",
+      work: "Produktive Plattformen und Werkzeuge. Jede Karte öffnet eine Fallakte mit Rolle, Rahmenbedingungen und Ergebnis.",
       experience:
         "Dienstverlauf aus dem formalen CV, als lesbarer Terminaldatensatz abgelegt.",
-      games:
-        "Game-Systeme und Mods, abgelegt nach Regeln, Balance, Feedback-Loops und Release-Flaeche.",
+      games: "Live-Multiplayer-Spiele, eine Puzzle-Plattform und RimWorld-Mods. Jede Karte öffnet eine Fallakte.",
       cv: "Formale Identifikationsdatei und PDF-Dossier.",
       blog: "Aeltere Notizen in Originalsprache. Als geborgener Text abgelegt, nicht als Markenstimme.",
-      contact: "Kanal offen. Senden Sie eine direkte Uebertragung.",
+      contact: "Per E-Mail geht es am schnellsten. Der CV ist einen Klick entfernt.",
     },
     labels: {
       basedIn: "station: Muenchen / Europa",
@@ -436,12 +430,6 @@ export const localeSeo: Record<
       currentFocus: "Aktives Loadout",
       currentFocusBody:
         "Cloud-Infrastruktur, Produktsysteme, Plattformwerkzeuge, interne Operatoren und Game Logic.",
-      approachTitle: "Bauprotokoll",
-      approachBody:
-        "Lesbare Interfaces. Stabile Maschine. Keine unnoetige Bewegung.",
-      writingTitle: "Geborgene Notizen",
-      writingBody:
-        "Unpolierte Eintraege bleiben in Sprache und Zustand der Originalfassung.",
       contactBody: "Signalkanal: suren@mouchsiadis-solutions.com",
       blogBody: "Originalsprachige Notizen, ohne Uebersetzungsdurchlauf.",
       blogLanguage: "quellsprache",
@@ -469,30 +457,29 @@ export const localeSeo: Record<
     heroTitle: "უფროსი სისტემების შემქმნელი პროდუქტებისთვის, რომლებმაც აუცილებლად უნდა იმუშაონ.",
     heroBody:
       "ვაპროექტებ და ვუშვებ production პლატფორმებს, საოპერაციო ხელსაწყოებსა და დამოუკიდებელ პროგრამულ უზრუნველყოფას—გადახდის პროცესებიდან რეალურ დროში მოქმედ სისტემებამდე. არქივი აჩვენებს ნამუშევარს, შეზღუდვებსა და მტკიცებულებებს.",
-    aboutTitle: "ოპერატორის ჩანაწერი",
-    aboutBody:
-      "არქივი სასარგებლო ფაქტებს ზედაპირთან ახლოს ტოვებს: რა აშენდა, რა შეზღუდვები იყო მნიშვნელოვანი და სად იხსნება ფორმალური დოსიე.",
     nav: {
-      overview: "სტატუსი",
-      work: "სამუშაო ჟურნალი",
-      experience: "სამსახურის ჩანაწერი",
-      games: "თამაშის ლაბი",
-      cv: "დოსიე",
+      overview: "მიმოხილვა",
+      work: "ნამუშევრები",
+      experience: "გამოცდილება",
+      games: "თამაშები",
+      cv: "CV",
       blog: "ჩანაწერები",
-      contact: "სიგნალი",
+      contact: "კონტაქტი",
     },
     cta: {
-      work: "ჟურნალის გახსნა",
+      work: "ნამუშევრების ნახვა",
       blog: "ჩანაწერების კითხვა",
-      cv: "დოსიეს ნახვა",
+      cv: "CV (PDF)",
+      contact: "დამიკავშირდით",
+      play: "ბარათების დასტის თამაში",
     },
     sections: {
-      work: "სამუშაო ჟურნალი",
-      experience: "სამსახურის ჩანაწერი",
-      games: "თამაშის ლაბი",
-      cv: "დოსიე",
-      blog: "საველე ჩანაწერები",
-      contact: "სიგნალის არხი",
+      work: "რჩეული ნამუშევრები",
+      experience: "გამოცდილება",
+      games: "თამაშები",
+      cv: "CV",
+      blog: "ჩანაწერები",
+      contact: "კონტაქტი",
     },
     sectionKickers: {
       work: "SW // WORK LOG",
@@ -503,14 +490,13 @@ export const localeSeo: Record<
       contact: "TX // CONTACT",
     },
     sectionBodies: {
-      work: "საჯარო პროექტების ჩანაწერები. გახსენით ელემენტი ფარგლების, შეზღუდვების, სტეკისა და გარე ბმულის სანახავად.",
+      work: "Production პლატფორმები და ხელსაწყოები. ყოველი ბარათი ხსნის პროექტის საქმეს: როლი, შეზღუდვები და შედეგი.",
       experience:
         "ფორმალური CV-დან გადმოტანილი სამსახურის ისტორია, წაკითხვადი ტერმინალის ჩანაწერად.",
-      games:
-        "თამაშის სისტემები და მოდები, დალაგებული წესებით, ბალანსით, უკუკავშირის ციკლებით და გამოშვების ზედაპირით.",
+      games: "მრავალმოთამაშიანი თამაშები, თავსატეხების პლატფორმა და RimWorld-ის მოდები. ყოველი ბარათი ხსნის პროექტის საქმეს.",
       cv: "ფორმალური იდენტიფიკაციის ფაილი და PDF დოსიე.",
       blog: "ძველი ჩანაწერები ინახება საწყის ენაზე. ეს არის აღდგენილი ტექსტი, არა ბრენდის ტექსტი.",
-      contact: "არხი ღიაა. გაგზავნეთ პირდაპირი გადაცემა.",
+      contact: "ყველაზე სწრაფი გზა ელფოსტაა. CV ერთი დაწკაპებითაა ხელმისაწვდომი.",
     },
     labels: {
       basedIn: "სადგური: მიუნხენი / ევროპა",
@@ -524,12 +510,6 @@ export const localeSeo: Record<
       currentFocus: "აქტიური აღჭურვა",
       currentFocusBody:
         "Cloud ინფრასტრუქტურა, პროდუქტის სისტემები, პლატფორმის ხელსაწყოები, შიდა ოპერატორები და თამაშის ლოგიკა.",
-      approachTitle: "აწყობის პროტოკოლი",
-      approachBody:
-        "წაკითხვადი ინტერფეისები. სტაბილური მექანიკა. ზედმეტი მოძრაობის გარეშე.",
-      writingTitle: "აღდგენილი ჩანაწერები",
-      writingBody:
-        "დაუპრიალებელი ჩანაწერები რჩება იმ ენასა და მდგომარეობაში, რომელშიც დაიწერა.",
       contactBody: "სიგნალის არხი: suren@mouchsiadis-solutions.com",
       blogBody:
         "საწყის ენაზე არსებული ჩანაწერები, თარგმნის დამატებითი გავლის გარეშე.",
@@ -550,6 +530,139 @@ export const localeSeo: Record<
       openSourceProduct: "Raid Signal-ის გახსნა",
       openSourceCode: "კოდის ნახვა",
     },
+  },
+};
+
+export const evidenceLabels: Record<Locale, [string, string, string, string]> = {
+  en: ["Role", "Contribution", "Constraints", "Outcome"],
+  ru: ["Роль", "Вклад", "Ограничения", "Результат"],
+  de: ["Rolle", "Beitrag", "Rahmenbedingungen", "Ergebnis"],
+  ge: ["როლი", "წვლილი", "შეზღუდვები", "შედეგი"],
+};
+
+// Card deck, card reader, and case-file copy. {title} is replaced at runtime.
+export const deckCopy: Record<
+  Locale,
+  {
+    evidenceTitle: string;
+    viewLabel: string;
+    viewCards: string;
+    viewList: string;
+    suits: { platform: string; tool: string; game: string };
+    live: string;
+    flip: string;
+    open: string;
+    readerLabel: string;
+    readerIdle: string;
+    readerHint: string;
+    readerReading: string;
+    announcePlayed: string;
+    caseKicker: string;
+    backToWork: string;
+    backToGames: string;
+    built: string;
+    stack: string;
+    prevCase: string;
+    nextCase: string;
+    hireTitle: string;
+    hireBody: string;
+  }
+> = {
+  en: {
+    evidenceTitle: "Evidence",
+    viewLabel: "View",
+    viewCards: "Cards",
+    viewList: "List",
+    suits: { platform: "Platform", tool: "Tool", game: "Game" },
+    live: "LIVE",
+    flip: "Flip",
+    open: "Open case file",
+    readerLabel: "Card reader",
+    readerIdle: "Drop a card here",
+    readerHint: "or choose Open case file on any card",
+    readerReading: "Reading {title}…",
+    announcePlayed: "{title} played. Opening case file.",
+    caseKicker: "CASE FILE",
+    backToWork: "Back to work",
+    backToGames: "Back to games",
+    built: "What was built",
+    stack: "Stack",
+    prevCase: "Previous case",
+    nextCase: "Next case",
+    hireTitle: "Need a system like this built?",
+    hireBody: "Email is the fastest route. The CV has the full record.",
+  },
+  ru: {
+    evidenceTitle: "Подтверждения",
+    viewLabel: "Вид",
+    viewCards: "Карты",
+    viewList: "Список",
+    suits: { platform: "Платформа", tool: "Инструмент", game: "Игра" },
+    live: "В РАБОТЕ",
+    flip: "Перевернуть",
+    open: "Открыть дело",
+    readerLabel: "Считыватель карт",
+    readerIdle: "Перетащите карту сюда",
+    readerHint: "или нажмите «Открыть дело» на любой карте",
+    readerReading: "Чтение: {title}…",
+    announcePlayed: "{title} разыграна. Открываю дело.",
+    caseKicker: "ДЕЛО",
+    backToWork: "Назад к работам",
+    backToGames: "Назад к играм",
+    built: "Что построено",
+    stack: "Стек",
+    prevCase: "Предыдущее дело",
+    nextCase: "Следующее дело",
+    hireTitle: "Нужна такая система?",
+    hireBody: "Быстрее всего — по почте. Полная история — в резюме.",
+  },
+  de: {
+    evidenceTitle: "Nachweise",
+    viewLabel: "Ansicht",
+    viewCards: "Karten",
+    viewList: "Liste",
+    suits: { platform: "Plattform", tool: "Werkzeug", game: "Spiel" },
+    live: "LIVE",
+    flip: "Umdrehen",
+    open: "Fallakte öffnen",
+    readerLabel: "Kartenleser",
+    readerIdle: "Karte hier ablegen",
+    readerHint: "oder „Fallakte öffnen“ auf einer Karte wählen",
+    readerReading: "Lese {title} …",
+    announcePlayed: "{title} ausgespielt. Fallakte wird geöffnet.",
+    caseKicker: "FALLAKTE",
+    backToWork: "Zurück zur Arbeit",
+    backToGames: "Zurück zu den Spielen",
+    built: "Was gebaut wurde",
+    stack: "Stack",
+    prevCase: "Vorherige Akte",
+    nextCase: "Nächste Akte",
+    hireTitle: "Brauchen Sie ein solches System?",
+    hireBody: "Per E-Mail geht es am schnellsten. Der CV enthält den vollständigen Werdegang.",
+  },
+  ge: {
+    evidenceTitle: "მტკიცებულებები",
+    viewLabel: "ხედი",
+    viewCards: "ბარათები",
+    viewList: "სია",
+    suits: { platform: "პლატფორმა", tool: "ხელსაწყო", game: "თამაში" },
+    live: "აქტიური",
+    flip: "გადაბრუნება",
+    open: "საქმის გახსნა",
+    readerLabel: "ბარათის წამკითხველი",
+    readerIdle: "ჩააგდეთ ბარათი აქ",
+    readerHint: "ან აირჩიეთ „საქმის გახსნა“ ნებისმიერ ბარათზე",
+    readerReading: "იკითხება {title}…",
+    announcePlayed: "{title} გათამაშდა. იხსნება საქმე.",
+    caseKicker: "საქმე",
+    backToWork: "ნამუშევრებზე დაბრუნება",
+    backToGames: "თამაშებზე დაბრუნება",
+    built: "რა შეიქმნა",
+    stack: "სტეკი",
+    prevCase: "წინა საქმე",
+    nextCase: "შემდეგი საქმე",
+    hireTitle: "გჭირდებათ მსგავსი სისტემა?",
+    hireBody: "ყველაზე სწრაფი გზა ელფოსტაა. სრული ისტორია CV-შია.",
   },
 };
 

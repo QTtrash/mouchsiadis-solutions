@@ -2,7 +2,9 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
-import { experiences, gameProjects, projects } from "../../lib/content";
+import CardDeck from "../../components/CardDeck.astro";
+import { experiences, proofPoints } from "../../lib/content";
+import { casePath, gameRecords, localize, workRecords } from "../../lib/cards";
 import {
   buildLocaleAlternates,
   buildLocalePath,
@@ -13,12 +15,14 @@ import {
 } from "../../lib/blog";
 import {
   LOCALES,
+  deckCopy,
   isLocale,
   localeLabels,
   localeSeo,
+  navigationCopy,
   type Locale,
 } from "../../lib/i18n";
-import { navigationCopy } from "../../lib/i18n";
+import "../../assets/styles/deck.css";
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }));
@@ -33,16 +37,11 @@ if (!localeParam || !isLocale(localeParam)) {
 const locale: Locale = localeParam;
 const copy = localeSeo[locale];
 const navigation = navigationCopy[locale];
+const deck = deckCopy[locale];
 const alternates = buildLocaleAlternates();
-const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
-  record[locale] ?? record.en;
+const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => localize(record, locale);
 const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
-const evidenceLabels: Record<Locale, string[]> = {
-  en: ["Role", "Contribution", "Constraints", "Outcome"],
-  ru: ["Роль", "Вклад", "Ограничения", "Результат"],
-  de: ["Rolle", "Beitrag", "Rahmenbedingungen", "Ergebnis"],
-  ge: ["როლი", "წვლილი", "შეზღუდვები", "შედეგი"],
-};
+const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
 ---
 
 <BaseLayout locale={locale} alternates={alternates}>
@@ -66,9 +65,10 @@ const evidenceLabels: Record<Locale, string[]> = {
           aria-current="page">{copy.nav.overview}</a
         >
         <a href="#software-work" data-terminal-tab>{copy.nav.work}</a>
-        <a href="#experience" data-terminal-tab>{navigation.about}</a>
+        <a href="#game-dev" data-terminal-tab>{copy.nav.games}</a>
+        <a href="#experience" data-terminal-tab>{copy.nav.experience}</a>
         <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}>{navigation.tooling} ↗</a>
-        <a href={buildLocalePath(locale, "/blog")}>{navigation.notes} ↗</a>
+        <a href="#blog" data-terminal-tab>{copy.nav.blog}</a>
         <a href="#contact" data-terminal-tab>{copy.nav.contact}</a>
       </nav>
 
@@ -86,27 +86,25 @@ const evidenceLabels: Record<Locale, string[]> = {
               <h1>{copy.heroTitle}</h1>
               <p class="hero-panel__body">{copy.heroBody}</p>
 
+              <div class="hero-panel__actions" data-fast-path>
+                <a class="button button--primary" href="#contact" data-terminal-jump
+                  >{copy.cta.contact}</a
+                >
+                <a
+                  class="button"
+                  href={cvHref}
+                  target="_blank"
+                  rel="noopener noreferrer">{copy.cta.cv}</a
+                >
+                <a class="button button--ghost" href="#software-work" data-terminal-jump
+                  >{copy.cta.play}</a
+                >
+              </div>
+
               <div class="hero-panel__chips">
                 <span>{copy.labels.basedIn}</span>
                 <span>{copy.labels.studioMode}</span>
                 <span>{copy.labels.availableFor}</span>
-              </div>
-
-              <div class="hero-panel__actions">
-                <a class="button" href="#software-work" data-terminal-jump
-                  >{copy.cta.work}</a
-                >
-                <a class="button button--ghost" href="#blog" data-terminal-jump
-                  >{copy.cta.blog}</a
-                >
-                <a
-                  class="button button--ghost"
-                  href="/cv/Suren_Mouchsiadis_CV.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {copy.cta.cv}
-                </a>
               </div>
             </div>
 
@@ -123,14 +121,22 @@ const evidenceLabels: Record<Locale, string[]> = {
                 <strong>{copy.labels.currentFocus}</strong>
                 <p>{copy.labels.currentFocusBody}</p>
               </div>
-              <div class="signal-card">
-                <strong>{copy.labels.approachTitle}</strong>
-                <p>{copy.labels.approachBody}</p>
-              </div>
-              <div class="signal-card">
-                <strong>{copy.labels.writingTitle}</strong>
-                <p>{copy.labels.writingBody}</p>
-              </div>
+              <section class="signal-card proof-card" aria-labelledby="proof-title">
+                <h2 id="proof-title">{deck.evidenceTitle}</h2>
+                <ul role="list">
+                  {
+                    proofPoints.map((point) => (
+                      <li>
+                        {point.target === "experience" ? (
+                          <a href="#experience" data-terminal-jump>{localized(point.label)}</a>
+                        ) : (
+                          <a href={casePath(locale, point.target)}>{localized(point.label)}</a>
+                        )}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </section>
             </div>
           </div>
 
@@ -167,11 +173,6 @@ const evidenceLabels: Record<Locale, string[]> = {
               >
             </nav>
           </aside>
-
-          <div class="about-strip">
-            <p class="section-heading__kicker">{copy.aboutTitle}</p>
-            <p>{copy.aboutBody}</p>
-          </div>
         </section>
 
         <section
@@ -185,32 +186,21 @@ const evidenceLabels: Record<Locale, string[]> = {
             <p class="section-heading__body">{copy.sectionBodies.work}</p>
           </div>
 
-          <div class="archive-grid">
-            {
-              projects.map((project) => (
-                <ArchiveEntry
-                  title={project.title}
-                  eyebrow={localized(project.eyebrow)}
-                  summary={localized(project.summary)}
-                  narrative={localized(project.narrative)}
-                  details={localized(project.details)}
-                  stack={project.stack}
-                  meta={localized(project.meta)}
-                  link={project.link}
-                  linkLabel={localized(project.linkLabel)}
-                  cover={project.cover}
-                  evidence={project.evidence ? [
-                    { label: evidenceLabels[locale][0], value: localized(project.evidence.role) },
-                    { label: evidenceLabels[locale][1], value: localized(project.evidence.contribution) },
-                    { label: evidenceLabels[locale][2], value: localized(project.evidence.constraints) },
-                    { label: evidenceLabels[locale][3], value: localized(project.evidence.outcomes) },
-                  ] : []}
-                  toggleLabel={copy.labels.archiveOpen}
-                  toggleCloseLabel={copy.labels.archiveClose}
-                />
-              ))
-            }
+          <CardDeck records={workRecords} locale={locale} />
+        </section>
+
+        <section
+          id="game-dev"
+          class="section terminal-section"
+          data-terminal-panel="game-dev"
+        >
+          <div class="section-heading">
+            <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
+            <h2>{copy.sections.games}</h2>
+            <p class="section-heading__body">{copy.sectionBodies.games}</p>
           </div>
+
+          <CardDeck records={gameRecords} locale={locale} />
         </section>
 
         <section
@@ -244,81 +234,6 @@ const evidenceLabels: Record<Locale, string[]> = {
                 />
               ))
             }
-          </div>
-        </section>
-
-        <section
-          id="game-dev"
-          class="section terminal-section"
-          data-terminal-panel="game-dev"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
-            <h2>{copy.sections.games}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.games}</p>
-          </div>
-
-          <div class="archive-grid">
-            {
-              gameProjects.map((project) => (
-                <ArchiveEntry
-                  title={project.title}
-                  eyebrow={localized(project.eyebrow)}
-                  summary={localized(project.summary)}
-                  narrative={localized(project.narrative)}
-                  details={localized(project.details)}
-                  stack={project.stack}
-                  meta={localized(project.meta)}
-                  link={project.link}
-                  linkLabel={localized(project.linkLabel)}
-                  cover={project.cover}
-                  toggleLabel={copy.labels.archiveOpen}
-                  toggleCloseLabel={copy.labels.archiveClose}
-                />
-              ))
-            }
-          </div>
-        </section>
-
-        <section
-          id="cv"
-          class="section terminal-section"
-          data-terminal-panel="cv"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
-            <h2>{copy.sections.cv}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.cv}</p>
-          </div>
-
-          <div class="cv-panel">
-            <div class="cv-panel__copy">
-              <p class="cv-panel__education">
-                EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019
-              </p>
-              <p>{copy.labels.cvBody}</p>
-              <div class="hero-panel__actions">
-                <a
-                  class="button"
-                  href="/cv/Suren_Mouchsiadis_CV.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer">{copy.labels.cvOpen}</a
-                >
-                <a
-                  class="button button--ghost"
-                  href="/cv/Suren_Mouchsiadis_CV.pdf"
-                  download>{copy.labels.cvDownload}</a
-                >
-              </div>
-            </div>
-
-            <div class="cv-panel__frame" aria-hidden="true">
-              <div class="cv-panel__screen">
-                <span>Suren Mouchsiadis</span>
-                <span>Systems engineering</span>
-                <span>MUC / Europe</span>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -392,6 +307,27 @@ const evidenceLabels: Record<Locale, string[]> = {
               rel="noopener noreferrer">{copy.labels.linkedinLabel}</a
             >
           </div>
+
+          <div class="cv-panel" id="cv">
+            <div class="cv-panel__copy">
+              <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
+              <p class="cv-panel__education">
+                EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019
+              </p>
+              <p>{copy.labels.cvBody}</p>
+              <div class="hero-panel__actions">
+                <a
+                  class="button"
+                  href={cvHref}
+                  target="_blank"
+                  rel="noopener noreferrer">{copy.labels.cvOpen}</a
+                >
+                <a class="button button--ghost" href={cvHref} download
+                  >{copy.labels.cvDownload}</a
+                >
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </div>
@@ -399,5 +335,6 @@ const evidenceLabels: Record<Locale, string[]> = {
 
   <script>
     import "../../scripts/terminal.ts";
+    import "../../scripts/deck.ts";
   </script>
 </BaseLayout>

@@ -13,6 +13,8 @@ Multilingual portfolio, blog, and CV site for `mouchsiadis-solutions.com`.
 ## Site Structure
 
 - [src/pages/[locale]/index.astro](/home/truegrind/projects/mouchsiadis-solutions/src/pages/[locale]/index.astro): landing archive source
+- [src/pages/[locale]/work/[slug].astro](/home/truegrind/projects/mouchsiadis-solutions/src/pages/[locale]/work/[slug].astro): case file per project, tool, and game
+- [src/lib/cards.ts](/home/truegrind/projects/mouchsiadis-solutions/src/lib/cards.ts): card deck derived from content
 - [src/pages/[locale]/blog/index.astro](/home/truegrind/projects/mouchsiadis-solutions/src/pages/[locale]/blog/index.astro): localized blog index source
 - [src/pages/[locale]/blog/[...slug].astro](/home/truegrind/projects/mouchsiadis-solutions/src/pages/[locale]/blog/[...slug].astro): locale-aware post route source
 - [src/lib/content.ts](/home/truegrind/projects/mouchsiadis-solutions/src/lib/content.ts): portfolio, game-dev, and experience data
@@ -20,7 +22,7 @@ Multilingual portfolio, blog, and CV site for `mouchsiadis-solutions.com`.
 
 ## Visual Direction
 
-The landing page is a professional portfolio inside a Pip-Boy-inspired terminal console. It uses a fixed hardware frame, internal section panels, phosphor-green CRT styling, compact controls, and dense archive cards while avoiding direct Fallout asset or logo reuse.
+The landing page is a playable portfolio inside a retro field-terminal console. Visitors who are hiring get a fast path (Hire me, CV, three evidenced proof points) on the first screen. Everyone else can play the work: projects and games are record cards you flip and drag into the terminal's card reader to open a shareable case file. Every card interaction has a plain equivalent (a List view and an Open case file link). The design avoids direct Fallout asset or logo reuse.
 
 ## Command Summary
 
@@ -28,7 +30,9 @@ The landing page is a professional portfolio inside a Pip-Boy-inspired terminal 
 - `npm run dev`: starts the Astro dev server
 - `npm run build`: generates `dist/`
 - `npm run check`: runs Astro and TypeScript diagnostics
-- `npm run test:e2e`: checks responsive behavior and accessibility in real browsers
+- `npm run budget`: checks landing-page JS/CSS against the performance budget (run after `build`)
+- `npm run test:e2e`: checks responsive behavior, card interactions, and accessibility in real browsers
+- `npm run validate`: check, build, budget, and the full e2e suite
 - `npm run preview`: serves the built site locally
 - `./ops/setup`: creates `~/envs/mouchsiadis-solutions.env`
 - `./ops/deploy`: builds and deploys the app stack

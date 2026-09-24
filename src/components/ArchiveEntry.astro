@@ -11,6 +11,7 @@ interface Props {
   meta: string[];
   link?: string;
   linkLabel?: string;
+  external?: boolean;
   cover: string;
   compact?: boolean;
   toggleLabel?: string;
@@ -28,6 +29,7 @@ const {
   meta,
   link,
   linkLabel = "Open",
+  external = true,
   cover,
   compact = false,
   toggleLabel = "Details",
@@ -89,8 +91,8 @@ const {
           <a
             class="archive-entry__link"
             href={link}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
           >
             {linkLabel}
           </a>

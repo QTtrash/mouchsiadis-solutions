@@ -1,0 +1,115 @@
+---
+// Case file: the shareable, full record behind each card.
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CoverArt from "../../../components/CoverArt.astro";
+import { buildLocalePath } from "../../../lib/blog";
+import { caseRecords, cardOutcome, casePath, localize, transitionName } from "../../../lib/cards";
+import { LOCALES, deckCopy, evidenceLabels, isLocale, localeSeo, navigationCopy, type Locale } from "../../../lib/i18n";
+import "../../../assets/styles/deck.css";
+
+export function getStaticPaths() {
+  return LOCALES.flatMap((locale) =>
+    caseRecords.map(({ entry }) => ({ params: { locale, slug: entry.slug } })),
+  );
+}
+
+const { locale: localeParam, slug } = Astro.params;
+if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
+const locale: Locale = localeParam;
+const index = caseRecords.findIndex(({ entry }) => entry.slug === slug);
+if (index < 0) throw new Error(`Unknown case file: ${slug}`);
+
+const { entry, suit } = caseRecords[index]!;
+const copy = deckCopy[locale];
+const seo = localeSeo[locale];
+const nav = navigationCopy[locale];
+const labels = evidenceLabels[locale];
+const t = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => localize(record, locale);
+const home = buildLocalePath(locale);
+const back = suit === "game"
+  ? { href: `${home}#game-dev`, label: copy.backToGames }
+  : { href: `${home}#software-work`, label: copy.backToWork };
+const prev = caseRecords[(index - 1 + caseRecords.length) % caseRecords.length]!.entry;
+const next = caseRecords[(index + 1) % caseRecords.length]!.entry;
+const alternates = Object.fromEntries(LOCALES.map((entryLocale) => [entryLocale, casePath(entryLocale, entry.slug)])) as Record<Locale, string>;
+const evidence = entry.evidence
+  ? [entry.evidence.role, entry.evidence.contribution, entry.evidence.constraints, entry.evidence.outcomes].map(
+      (value, position) => ({ label: labels[position]!, value: t(value) }),
+    )
+  : [];
+---
+
+<BaseLayout
+  locale={locale}
+  title={entry.title}
+  description={t(entry.summary)}
+  alternates={alternates}
+  localePathSuffix={`/work/${entry.slug}`}
+>
+  <article class="case-file" data-suit={suit} data-cover={entry.cover}>
+    <a class="case-file__back" href={back.href}>← {back.label}</a>
+
+    <header class="case-file__header">
+      <div class="case-file__cover" style={`view-transition-name: ${transitionName(entry.slug)};`} aria-hidden="true">
+        <CoverArt slug={entry.cover} />
+      </div>
+      <div class="case-file__lead">
+        <p class="section-heading__kicker">
+          {copy.caseKicker} / {copy.suits[suit]}{entry.live && ` / ${copy.live}`}
+        </p>
+        <h1>{entry.title}</h1>
+        <p class="case-file__eyebrow">{t(entry.eyebrow)}</p>
+        <p class="case-file__outcome">{cardOutcome(entry, locale)}</p>
+        <div class="hero-panel__actions">
+          <a class="button button--primary" href={entry.link} target="_blank" rel="noopener noreferrer">{t(entry.linkLabel)} ↗</a>
+          {entry.sourceLink && entry.sourceLinkLabel && (
+            <a class="button" href={entry.sourceLink} target="_blank" rel="noopener noreferrer">{t(entry.sourceLinkLabel)} ↗</a>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <div class="case-file__body">
+      <p class="case-file__narrative">{t(entry.narrative)}</p>
+
+      {evidence.length > 0 && (
+        <dl class="archive-entry__evidence">
+          {evidence.map((item) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      <section aria-labelledby="case-built">
+        <h2 id="case-built">{copy.built}</h2>
+        <ul class="case-file__details">
+          {t(entry.details).map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+
+      <section aria-labelledby="case-stack">
+        <h2 id="case-stack">{copy.stack}</h2>
+        <ul class="case-file__stack" role="list">
+          {entry.stack.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+    </div>
+
+    <aside class="case-file__hire" aria-labelledby="case-hire">
+      <h2 id="case-hire">{copy.hireTitle}</h2>
+      <p>{copy.hireBody}</p>
+      <div class="hero-panel__actions">
+        <a class="button button--primary" href={`${home}#contact`}>{nav.hireMe}</a>
+        <a class="button" href="/cv/Suren_Mouchsiadis_CV.pdf" target="_blank" rel="noopener noreferrer">{seo.cta.cv}</a>
+      </div>
+    </aside>
+
+    <nav class="case-file__adjacent" aria-label={`${copy.prevCase} / ${copy.nextCase}`}>
+      <a href={casePath(locale, prev.slug)} rel="prev"><span>{copy.prevCase}</span><strong>{prev.title}</strong></a>
+      <a href={casePath(locale, next.slug)} rel="next"><span>{copy.nextCase}</span><strong>{next.title}</strong></a>
+    </nav>
+  </article>
+</BaseLayout>
