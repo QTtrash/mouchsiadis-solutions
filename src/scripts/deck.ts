@@ -76,6 +76,29 @@ function enableDrag(deck: HTMLElement): void {
   if (!reduced()) deck.classList.add("is-fanned");
 
   let drag: { card: HTMLElement; x: number; y: number; active: boolean; over: boolean } | null = null;
+  let tilted: HTMLElement | null = null;
+
+  // Hovered cards lean up to 6 degrees toward the pointer.
+  const tilt = (event: PointerEvent): void => {
+    if (reduced()) return;
+    const body = (event.target as Element).closest<HTMLElement>(".deck-card__body");
+    if (tilted && tilted !== body) {
+      tilted.style.removeProperty("--tilt-x");
+      tilted.style.removeProperty("--tilt-y");
+    }
+    tilted = body;
+    if (!body) return;
+    const rect = body.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    body.style.setProperty("--tilt-x", `${(x * 12).toFixed(1)}deg`);
+    body.style.setProperty("--tilt-y", `${(-y * 12).toFixed(1)}deg`);
+  };
+  hand.addEventListener("pointerleave", () => {
+    tilted?.style.removeProperty("--tilt-x");
+    tilted?.style.removeProperty("--tilt-y");
+    tilted = null;
+  });
 
   const overReader = (event: PointerEvent): boolean => {
     const rect = reader.getBoundingClientRect();
@@ -144,7 +167,10 @@ function enableDrag(deck: HTMLElement): void {
   });
 
   hand.addEventListener("pointermove", (event) => {
-    if (!drag) return;
+    if (!drag) {
+      tilt(event);
+      return;
+    }
     const dx = event.clientX - drag.x;
     const dy = event.clientY - drag.y;
     if (!drag.active) {
@@ -212,6 +238,14 @@ decks.forEach((deck) => {
 });
 
 applyView(readView());
+
+// The hero avatar is a card too: flip between the pixel sprite and the photo.
+document.querySelectorAll<HTMLButtonElement>("[data-avatar-flip]").forEach((button) => {
+  button.addEventListener("click", () => {
+    button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
+    sound.play("detail");
+  });
+});
 
 // Coming back from a case file restores this page from the back/forward cache
 // with the played card still seated in the reader.

@@ -29,6 +29,10 @@ The site has four public concerns:
   The card hand, card reader, and the List view of the same records. Server-rendered HTML; `src/scripts/deck.ts` adds behaviour.
 - `src/lib/cards.ts`
   Derives cards from `content.ts`: suit per collection, case-file paths, outcome text, and shared view-transition names.
+- `src/lib/pixel.ts`, `src/lib/sprites.ts`, `src/components/PixelArt.astro`
+  Pixel art: a small raster canvas (rect, line, disc, ring, dither, glyph), the sprite library (project art by slug, category covers, suits, nav icons, monogram), and build-time SVG rendering with one path per palette key. `CoverArt.astro` picks record art, then the category cover.
+- `src/lib/avatar.ts`
+  Generated 32x32 avatar sprite; regenerate with `node scripts/pixelate-avatar.mjs` after changing `public/images/profile-pic.webp`.
 - `src/scripts/deck.ts`
   Cards/List switch (persisted as `deckView` in localStorage), flip, drag-to-reader on fine pointers, and back/forward-cache reset.
 - `src/pages/[locale]/blog/index.astro`

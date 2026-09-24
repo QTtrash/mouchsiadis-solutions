@@ -13,6 +13,8 @@ interface Props {
   linkLabel?: string;
   external?: boolean;
   cover: string;
+  /** Record slug for project-specific pixel art. */
+  art?: string;
   compact?: boolean;
   toggleLabel?: string;
   toggleCloseLabel?: string;
@@ -31,6 +33,7 @@ const {
   linkLabel = "Open",
   external = true,
   cover,
+  art,
   compact = false,
   toggleLabel = "Details",
   toggleCloseLabel = "Close",
@@ -44,7 +47,7 @@ const {
 >
   <summary class="archive-entry__summary">
     <div class="archive-entry__cover" aria-hidden="true">
-      <CoverArt slug={cover} />
+      <CoverArt slug={cover} record={art} />
     </div>
 
     <div class="archive-entry__lead">

@@ -3,6 +3,9 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
+import PixelArt from "../../components/PixelArt.astro";
+import { avatarSprite } from "../../lib/avatar";
+import { navSprites } from "../../lib/sprites";
 import { experiences, proofPoints } from "../../lib/content";
 import { casePath, gameRecords, localize, workRecords } from "../../lib/cards";
 import {
@@ -62,14 +65,14 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
           class="is-active"
           href="#overview"
           data-terminal-tab
-          aria-current="page">{copy.nav.overview}</a
+          aria-current="page"><PixelArt grid={navSprites.overview} class="terminal-side-nav__icon" />{copy.nav.overview}</a
         >
-        <a href="#software-work" data-terminal-tab>{copy.nav.work}</a>
-        <a href="#game-dev" data-terminal-tab>{copy.nav.games}</a>
-        <a href="#experience" data-terminal-tab>{copy.nav.experience}</a>
-        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}>{navigation.tooling} ↗</a>
-        <a href="#blog" data-terminal-tab>{copy.nav.blog}</a>
-        <a href="#contact" data-terminal-tab>{copy.nav.contact}</a>
+        <a href="#software-work" data-terminal-tab><PixelArt grid={navSprites.work} class="terminal-side-nav__icon" />{copy.nav.work}</a>
+        <a href="#game-dev" data-terminal-tab><PixelArt grid={navSprites.games} class="terminal-side-nav__icon" />{copy.nav.games}</a>
+        <a href="#experience" data-terminal-tab><PixelArt grid={navSprites.experience} class="terminal-side-nav__icon" />{copy.nav.experience}</a>
+        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}><PixelArt grid={navSprites.tooling} class="terminal-side-nav__icon" />{navigation.tooling} ↗</a>
+        <a href="#blog" data-terminal-tab><PixelArt grid={navSprites.notes} class="terminal-side-nav__icon" />{copy.nav.blog}</a>
+        <a href="#contact" data-terminal-tab><PixelArt grid={navSprites.contact} class="terminal-side-nav__icon" />{copy.nav.contact}</a>
       </nav>
 
       <div class="terminal-console__content">
@@ -110,14 +113,23 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
 
             <div class="hero-panel__signal">
               <div class="signal-card signal-card--primary">
-                <img
-                  class="signal-card__portrait"
-                  src="/images/profile-pic.webp"
-                  alt=""
-                  width="640"
-                  height="497"
-                  loading="eager"
-                />
+                <button
+                  class="signal-card__portrait avatar-card"
+                  type="button"
+                  data-avatar-flip
+                  aria-pressed="false"
+                >
+                  <PixelArt grid={avatarSprite} class="avatar-card__pixel" />
+                  <img
+                    class="avatar-card__photo"
+                    src="/images/profile-pic.webp"
+                    alt=""
+                    width="640"
+                    height="640"
+                    loading="lazy"
+                  />
+                  <span class="visually-hidden">{deck.avatarPhoto}</span>
+                </button>
                 <strong>{copy.labels.currentFocus}</strong>
                 <p>{copy.labels.currentFocusBody}</p>
               </div>

@@ -3,6 +3,8 @@
 // keywords); the back carries evidence. Both faces are real HTML; the flip and
 // drag behaviour is added by src/scripts/deck.ts.
 import CoverArt from "./CoverArt.astro";
+import PixelArt from "./PixelArt.astro";
+import { monogram, suitSprites } from "../lib/sprites";
 import { cardOutcome, casePath, localize, transitionName, type CaseRecord } from "../lib/cards";
 import { deckCopy, evidenceLabels, type Locale } from "../lib/i18n";
 
@@ -38,7 +40,7 @@ const offset = index - (count - 1) / 2;
     <div class="deck-card__face deck-card__face--front" data-card-face="front">
       <div class="deck-card__top">
         <span class="deck-card__suit">
-          <span class="deck-card__suit-icon" aria-hidden="true"></span>
+          <PixelArt grid={suitSprites[suit]} class="deck-card__suit-icon" />
           {copy.suits[suit]}
         </span>
         {entry.live && <span class="deck-card__live">{copy.live}</span>}
@@ -48,7 +50,7 @@ const offset = index - (count - 1) / 2;
         style={`view-transition-name: ${transitionName(entry.slug)};`}
         aria-hidden="true"
       >
-        <CoverArt slug={entry.cover} />
+        <CoverArt slug={entry.cover} record={entry.slug} />
       </div>
       <h3 id={titleId}>{entry.title}</h3>
       <p class="deck-card__eyebrow">{localize(entry.eyebrow, locale)}</p>
@@ -79,6 +81,7 @@ const offset = index - (count - 1) / 2;
         )
       }
       <p class="deck-card__stack">{entry.stack.slice(0, 5).join(" · ")}</p>
+      <PixelArt grid={monogram} class="deck-card__monogram" />
     </div>
   </article>
 

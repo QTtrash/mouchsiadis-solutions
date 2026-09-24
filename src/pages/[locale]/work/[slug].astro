@@ -51,7 +51,7 @@ const evidence = entry.evidence
 
     <header class="case-file__header">
       <div class="case-file__cover" style={`view-transition-name: ${transitionName(entry.slug)};`} aria-hidden="true">
-        <CoverArt slug={entry.cover} />
+        <CoverArt slug={entry.cover} record={entry.slug} />
       </div>
       <div class="case-file__lead">
         <p class="section-heading__kicker">

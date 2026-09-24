@@ -1212,11 +1212,11 @@ summary:focus-visible {
 
 .cover-art {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  color: var(--cover-accent);
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--cover-accent) 40%, transparent));
+  inset: 8% 5%;
+  width: 90%;
+  height: 84%;
+  --px-accent: var(--cover-accent);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--cover-accent) 35%, transparent));
 }
 
 /* cover accents: green system default, amber for the game lab, dim for service records */
@@ -2624,5 +2624,94 @@ html[lang^="ka"] .hero-panel h1 {
 @media (max-width: 767px) {
   html[lang^="ka"] .hero-panel h1 {
     font-size: clamp(1.6rem, 7.4vw, 2.4rem);
+  }
+}
+
+/* ---- pixel art palette (src/lib/pixel.ts): tinted by --px-accent ---- */
+
+.pixel-art {
+  display: block;
+}
+
+/* zero-specificity default so any context (suit, cover, nav) can tint a sprite */
+:where(.pixel-art) {
+  --px-accent: var(--signal);
+}
+
+.px-k { fill: #020602; }
+.px-c { fill: color-mix(in srgb, var(--px-accent) 22%, #020602); }
+.px-b { fill: color-mix(in srgb, var(--px-accent) 55%, #020602); }
+.px-a { fill: var(--px-accent); }
+.px-h { fill: color-mix(in srgb, var(--px-accent) 35%, #eefbe9); }
+.px-w { fill: #eefbe9; }
+.px-y { fill: var(--amber); }
+.px-o { fill: var(--atlas-copper); }
+
+/* terminal side-nav sprites */
+.terminal-side-nav a {
+  gap: 0.45rem;
+}
+
+.terminal-side-nav__icon {
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  --px-accent: currentColor;
+}
+
+.terminal-side-nav a.is-active::before {
+  content: none;
+}
+
+/* hero avatar: a pixel sprite that flips to the photo */
+.avatar-card {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  padding: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(141, 255, 122, 0.12), transparent 70%),
+    #041006;
+  cursor: pointer;
+  filter: none;
+}
+
+.avatar-card__pixel,
+.avatar-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 160ms steps(4, end);
+}
+
+.avatar-card__photo {
+  object-fit: cover;
+  opacity: 0;
+  filter: grayscale(1) sepia(1) hue-rotate(58deg) saturate(1.25) contrast(1.05) brightness(0.85);
+}
+
+.avatar-card[aria-pressed="true"] .avatar-card__photo {
+  opacity: 1;
+}
+
+.avatar-card[aria-pressed="true"] .avatar-card__pixel {
+  opacity: 0;
+}
+
+.avatar-card:hover,
+.avatar-card:focus-visible {
+  border-color: var(--amber-line);
+}
+
+html:not(.js) .avatar-card {
+  cursor: default;
+}
+
+@media (max-width: 767px) {
+  .avatar-card {
+    width: 4rem;
+    height: 4rem;
   }
 }

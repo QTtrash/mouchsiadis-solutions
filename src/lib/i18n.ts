@@ -566,6 +566,7 @@ export const deckCopy: Record<
     nextCase: string;
     hireTitle: string;
     hireBody: string;
+    avatarPhoto: string;
   }
 > = {
   en: {
@@ -591,6 +592,7 @@ export const deckCopy: Record<
     nextCase: "Next case",
     hireTitle: "Need a system like this built?",
     hireBody: "Email is the fastest route. The CV has the full record.",
+    avatarPhoto: "Show photo",
   },
   ru: {
     evidenceTitle: "Подтверждения",
@@ -615,6 +617,7 @@ export const deckCopy: Record<
     nextCase: "Следующее дело",
     hireTitle: "Нужна такая система?",
     hireBody: "Быстрее всего — по почте. Полная история — в резюме.",
+    avatarPhoto: "Показать фото",
   },
   de: {
     evidenceTitle: "Nachweise",
@@ -639,6 +642,7 @@ export const deckCopy: Record<
     nextCase: "Nächste Akte",
     hireTitle: "Brauchen Sie ein solches System?",
     hireBody: "Per E-Mail geht es am schnellsten. Der CV enthält den vollständigen Werdegang.",
+    avatarPhoto: "Foto zeigen",
   },
   ge: {
     evidenceTitle: "მტკიცებულებები",
@@ -663,6 +667,7 @@ export const deckCopy: Record<
     nextCase: "შემდეგი საქმე",
     hireTitle: "გჭირდებათ მსგავსი სისტემა?",
     hireBody: "ყველაზე სწრაფი გზა ელფოსტაა. სრული ისტორია CV-შია.",
+    avatarPhoto: "ფოტოს ჩვენება",
   },
 };
 

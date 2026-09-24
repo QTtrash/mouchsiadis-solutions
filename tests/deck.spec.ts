@@ -144,3 +144,27 @@ test("desktop console reaches Games, and old CV links land on Contact", async ({
   await expect(page.locator("#contact")).not.toHaveAttribute("inert", "");
   await expect(page.locator("#contact").getByRole("link", { name: "open pdf" })).toBeVisible();
 });
+
+test("cards carry suit-tinted pixel art and a pixel suit mark", async ({ page }) => {
+  await page.goto("/en/");
+  const card = (title: string) => page.locator(`[data-card][data-title="${title}"]`);
+  for (const title of ["YPay", "Grindlike", "Bomb Town"]) {
+    await expect(card(title).locator(".deck-card__art svg.pixel-art path").first()).toBeAttached();
+    await expect(card(title).locator(".deck-card__suit svg.pixel-art")).toBeAttached();
+  }
+  const accent = (title: string) =>
+    card(title).locator(".deck-card__art .px-a").first().evaluate((node) => getComputedStyle(node).fill);
+  const [platform, tool, game] = await Promise.all([accent("YPay"), accent("Grindlike"), accent("Bomb Town")]);
+  expect(new Set([platform, tool, game]).size).toBe(3);
+});
+
+test("the hero avatar flips between the pixel sprite and the photo", async ({ page }) => {
+  await page.goto("/en/");
+  const avatar = page.locator("[data-avatar-flip]");
+  await expect(avatar).toHaveAccessibleName("Show photo");
+  await expect(avatar).toHaveAttribute("aria-pressed", "false");
+  await expect(avatar.locator(".avatar-card__photo")).toHaveCSS("opacity", "0");
+  await avatar.click();
+  await expect(avatar).toHaveAttribute("aria-pressed", "true");
+  await expect(avatar.locator(".avatar-card__photo")).toHaveCSS("opacity", "1");
+});

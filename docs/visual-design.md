@@ -88,11 +88,26 @@ Motion is brief and functional: terminal panels use a 110ms opacity-only fade, w
 - Treat the frame as generic industrial hardware texture.
 - Raster assets ship in compressed WebP variants. Decorative artwork has empty alt text; meaningful images require useful alternatives and dimensions.
 
+## Art Direction: Code-Drawn Pixel Sprites
+
+One art style everywhere it adds meaning: pixel sprites drawn in code and rendered to inline SVG at build time (no runtime JS, no raster files).
+
+- Grids: 40x20 for card art and covers (fits the 2:1 card window and letterboxes into other frames), 9x9 nav icons, 7x7 suit marks, 15x7 card-back monogram, 32x32 avatar.
+- Palette keys, not colours: `k` ink, `c`/`b`/`a`/`h` a four-step ramp of the current accent, `w` white phosphor, `y` amber, `o` copper. Each key is a `.px-*` class whose fill derives from `--px-accent`, so one sprite takes the suit colour of its card (Platform green, Tool copper, Game amber), the cover accent in the archive, or `currentColor` in the nav.
+- Every drawing says what the record does: payouts reconciling into a ledger (YPay), tickets riding tenant lanes to a desk with a notification bell (YDesk), a replay heat-map and match timeline (Grindlike), squad members linked through a sealed relay (Raid Signal), and so on. Experience records use category covers (cloud, analytics, medical, fleet, precision, chip).
+- Shading uses 4x4 ordered (Bayer) dithering; no anti-aliasing (`shape-rendering: crispEdges`).
+- Sizes stay at whole multiples where it matters (the 32px avatar renders at 96px, 3x).
+- The avatar is generated from the profile photo by `scripts/pixelate-avatar.mjs`: head-and-shoulders crop, backdrop flood-fill, gamma, the five-step ramp with a soft dither, and a rim light so dark hair keeps its silhouette. Output is committed as `src/lib/avatar.ts`. In the hero it is itself a card: pressing it flips to the photo.
+- The LIVE foil sheen moves in stepped increments, like the art. Hovered cards in the desktop hand lean up to 6 degrees toward the pointer (off with reduced motion).
+- No pixel font: it would break Cyrillic and Georgian coverage. Text stays in Plex Sans and Plex Mono.
+- Three.js stays on Tooling only; nothing 3D ships on the landing page.
+
 ## Performance Budget
 
 Enforced by `npm run budget` (part of `npm run validate`) against the built `/en/` page:
 
 - Landing JS loaded before any interaction: at most 15 KB gzipped (5.7 KB at Phase 1).
 - Landing CSS: at most 32 KB gzipped (28.1 KB at Phase 1).
+- Inline pixel art: at most 20 KB gzipped per page. At Phase 2 the whole `/en/` HTML, art included, is about 19 KB gzipped.
 - Lazy only: the Web Awesome drawer (on first open), Three.js (Tooling, eligible desktops), and future minigames (on their own route or on Start).
 - No new runtime dependencies for cards: Pointer Events, CSS transforms, the Web Animations API, and cross-document View Transitions do the work.

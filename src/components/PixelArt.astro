@@ -1,0 +1,24 @@
+---
+// Renders a palette-indexed sprite grid as crisp SVG (see src/lib/pixel.ts).
+// Colours come from .px-* classes, tinted by --px-accent on any ancestor.
+import { gridToPaths, type Grid } from "../lib/pixel";
+
+interface Props {
+  grid: Grid;
+  class?: string;
+}
+
+const { grid, class: className } = Astro.props;
+const width = grid[0]?.length ?? 0;
+const height = grid.length;
+---
+
+<svg
+  class:list={["pixel-art", className]}
+  viewBox={`0 0 ${width} ${height}`}
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  focusable="false"
+>
+  {gridToPaths(grid).map(({ key, d }) => <path class={`px-${key}`} d={d} />)}
+</svg>
