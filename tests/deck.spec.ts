@@ -28,7 +28,7 @@ test("every card opens a localized case file", async ({ page, request }) => {
   await page.goto("/en/");
   const links = page.locator("[data-card-open]");
   const hrefs = await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  expect(hrefs.length).toBe(10);
+  expect(hrefs.length).toBe(8);
   for (const href of hrefs) {
     expect(href).toMatch(/^\/en\/work\/[a-z-]+\/$/);
     for (const locale of ["en", "ru", "de", "ge"]) {
@@ -148,13 +148,13 @@ test("desktop console reaches Games, and old CV links land on Contact", async ({
 test("cards carry suit-tinted pixel art and a pixel suit mark", async ({ page }) => {
   await page.goto("/en/");
   const card = (title: string) => page.locator(`[data-card][data-title="${title}"]`);
-  for (const title of ["YPay", "Grindlike", "Bomb Town"]) {
+  for (const title of ["YPay", "Grindlike", "Alice Plays"]) {
     await expect(card(title).locator(".deck-card__art svg.pixel-art path").first()).toBeAttached();
     await expect(card(title).locator(".deck-card__suit svg.pixel-art")).toBeAttached();
   }
   const accent = (title: string) =>
     card(title).locator(".deck-card__art .px-a").first().evaluate((node) => getComputedStyle(node).fill);
-  const [platform, tool, game] = await Promise.all([accent("YPay"), accent("Grindlike"), accent("Bomb Town")]);
+  const [platform, tool, game] = await Promise.all([accent("YPay"), accent("Grindlike"), accent("Alice Plays")]);
   expect(new Set([platform, tool, game]).size).toBe(3);
 });
 

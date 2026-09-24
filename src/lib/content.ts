@@ -301,59 +301,6 @@ export const gameProjects: ProjectEntry[] = [
     live: true,
   },
   {
-    slug: "silly-bazaar",
-    title: "Silly Bazaar",
-    eyebrow: {
-      en: "Night-market multiplayer arcade",
-      ru: "Мультиплеерная аркада ночного рынка",
-      de: "Nachtmarkt-Multiplayer-Arcade",
-    },
-    summary: {
-      en: "A whimsical night market of tiny browser games. The flagship, Slip Service, is a 1-4 player realtime waiter brawl: deliver dishes, throw banana peels, win the shift.",
-      ru: "Причудливый ночной рынок маленьких браузерных игр. Флагман, Slip Service, — риалтайм-потасовка официантов на 1-4 игроков: разноси блюда, кидай банановые кожурки, выигрывай смену.",
-      de: "Ein verspielter Nachtmarkt kleiner Browser-Spiele. Das Flaggschiff Slip Service ist eine Echtzeit-Kellner-Rauferei fuer 1-4 Spieler: Gerichte liefern, Bananenschalen werfen, die Schicht gewinnen.",
-    },
-    narrative: {
-      en: "Silly Bazaar is a lantern-lit game portal where every stall is a small game with real engineering underneath: a server-authoritative multiplayer simulation, shared prediction code between client and server, and a shell built to grow one stall at a time.",
-      ru: "Silly Bazaar — освещенный фонарями игровой портал, где каждая лавка — маленькая игра с настоящей инженерией внутри: server-authoritative мультиплеерная симуляция, общий код предсказания для клиента и сервера и оболочка, растущая по одной лавке за раз.",
-      de: "Silly Bazaar ist ein laternenbeleuchtetes Spieleportal, in dem jeder Stand ein kleines Spiel mit echter Technik darunter ist: eine server-autoritative Multiplayer-Simulation, geteilter Prediction-Code fuer Client und Server und eine Shell, die Stand fuer Stand waechst.",
-    },
-    details: {
-      en: [
-        "Slip Service runs on a 20Hz server-authoritative WebSocket simulation with client-side prediction and interpolation.",
-        "A shared TypeScript sim core keeps client and server physics identical by construction.",
-        "Private room links (5-letter codes) plus a solo score-attack mode; full keyboard and touch parity.",
-        "Next.js shell with per-game Phaser modules, PostgreSQL persistence, deployed behind the shared VPS proxy.",
-      ],
-      ru: [
-        "Slip Service работает на server-authoritative WebSocket-симуляции 20Hz с client-side prediction и интерполяцией.",
-        "Общее TypeScript sim-ядро делает физику клиента и сервера идентичной по построению.",
-        "Приватные комнаты по ссылке (5-буквенные коды) плюс соло-режим score-attack; полный паритет клавиатуры и тача.",
-        "Оболочка на Next.js с Phaser-модулями на игру, персистентность на PostgreSQL, деплой за общим VPS-прокси.",
-      ],
-      de: [
-        "Slip Service laeuft auf einer server-autoritativen 20Hz-WebSocket-Simulation mit Client-Prediction und Interpolation.",
-        "Ein geteilter TypeScript-Sim-Kern haelt Client- und Server-Physik konstruktionsbedingt identisch.",
-        "Private Raum-Links (5-Buchstaben-Codes) plus Solo-Score-Attack-Modus; volle Tastatur- und Touch-Paritaet.",
-        "Next.js-Shell mit Phaser-Modulen pro Spiel, PostgreSQL-Persistenz, Deployment hinter dem geteilten VPS-Proxy.",
-      ],
-    },
-    stack: ["Phaser", "Next.js", "TypeScript", "WebSockets", "PostgreSQL", "Docker"],
-    meta: {
-      en: ["live game", "realtime multiplayer", "browser arcade"],
-      ru: ["живая игра", "риалтайм-мультиплеер", "браузерная аркада"],
-      de: ["Live-Spiel", "Echtzeit-Multiplayer", "Browser-Arcade"],
-    },
-    link: "https://sillybazaar.games",
-    linkLabel: {
-      en: "enter the bazaar",
-      ru: "войти на базар",
-      de: "Basar betreten",
-    },
-    cover: "sillybazaar",
-    live: true,
-  },
-  {
     slug: "alice-plays",
     title: "Alice Plays",
     eyebrow: {
@@ -413,59 +360,6 @@ export const gameProjects: ProjectEntry[] = [
       de: "Plattform oeffnen",
     },
     cover: "alice",
-    live: true,
-  },
-  {
-    slug: "bomb-town",
-    title: "Bomb Town",
-    eyebrow: {
-      en: "Persistent multiplayer warfare",
-      ru: "Персистентная мультиплеерная война",
-      de: "Persistente Multiplayer-Kriegsfuehrung",
-    },
-    summary: {
-      en: "A persistent multiplayer grid warfare game with a Phaser world renderer, React HUD, authoritative WebSocket server, and PostgreSQL-backed persistence.",
-      ru: "Персистентная многопользовательская стратегия на сетке с Phaser-рендером мира, React HUD, authoritative WebSocket server и PostgreSQL-персистентностью.",
-      de: "Ein persistentes Multiplayer-Grid-Warfare-Spiel mit Phaser-Renderer, React-HUD, autoritativem WebSocket-Server und PostgreSQL-Persistenz.",
-    },
-    narrative: {
-      en: "Bomb Town sits at the intersection of product design and game systems: live multiplayer state, deterministic rules, server authority, and an intentionally sharp visual identity around territory and escalation.",
-      ru: "Bomb Town находится на пересечении продуктового дизайна и игровых систем: живое мультиплеерное состояние, детерминированные правила, server authority и намеренно резкая визуальная идентичность вокруг территории и эскалации.",
-      de: "Bomb Town liegt an der Schnittstelle von Produktdesign und Game Systems: Live-Multiplayer-State, deterministische Regeln, Server-Authority und eine scharfe visuelle Sprache rund um Territorium und Eskalation.",
-    },
-    details: {
-      en: [
-        "Uses Phaser for the world layer, React for HUD and menus, and a Node.js authoritative game server.",
-        "Backed by PostgreSQL with versioned migrations and a deployment path behind the shared VPS proxy.",
-        "The project is framed as a systems-heavy game product, not just a front-end prototype.",
-        "Case-study emphasis: multiplayer state handling, rules orchestration, and production deployment.",
-      ],
-      ru: [
-        "Использует Phaser для мира, React для HUD и меню и Node.js authoritative game server.",
-        "Опирается на PostgreSQL с versioned migrations и deployment-путем за shared VPS proxy.",
-        "Проект подается как системно тяжелый игровой продукт, а не просто front-end prototype.",
-        "Фокус кейса: обработка мультиплеерного состояния, оркестрация правил и production deployment.",
-      ],
-      de: [
-        "Nutzt Phaser fuer die Welt, React fuer HUD und Menues und einen autoritativen Node.js-Game-Server.",
-        "Basiert auf PostgreSQL mit versionierten Migrationen und einem Deployment-Pfad hinter dem gemeinsamen VPS-Proxy.",
-        "Das Projekt wird als systems-lastiges Spieleprodukt gezeigt, nicht nur als Frontend-Prototyp.",
-        "Case-Study-Fokus: Multiplayer-State-Handling, Regelorchestrierung und produktives Deployment.",
-      ],
-    },
-    stack: ["Phaser", "React", "Node.js", "WebSockets", "PostgreSQL", "Docker"],
-    meta: {
-      en: ["live game", "authoritative server", "persistent world"],
-      ru: ["живая игра", "authoritative server", "персистентный мир"],
-      de: ["Live-Spiel", "autoritativer Server", "persistente Welt"],
-    },
-    link: "https://bomb.town",
-    linkLabel: {
-      en: "enter game",
-      ru: "открыть игру",
-      de: "Spiel oeffnen",
-    },
-    cover: "bombtown",
     live: true,
   },
   {
@@ -548,19 +442,16 @@ export const gameProjects: ProjectEntry[] = [
       en: [
         "Built as a custom showcase card rather than a raw workshop embed.",
         "Centers on incendiary personality, weapon readability, and combat flavor inside RimWorld.",
-        "Complements Bomb Town by showing a different scale of game work: focused modding instead of full-stack multiplayer systems.",
         "Linked directly to Steam Workshop for the original release page.",
       ],
       ru: [
         "Оформлен как кастомная showcase-карточка, а не сырой workshop-embed.",
         "Сосредоточен на зажигательной личности оружия, читаемости и боевом вкусе внутри RimWorld.",
-        "Дополняет Bomb Town, показывая другой масштаб game work: сфокусированный моддинг вместо full-stack multiplayer systems.",
         "Ссылается напрямую на Steam Workshop со страницей оригинального релиза.",
       ],
       de: [
         "Als eigene Showcase-Karte statt als roher Workshop-Embed aufgebaut.",
         "Fokussiert auf Brand-Persoenlichkeit, Waffenlesbarkeit und Combat-Flavour in RimWorld.",
-        "Ergaenzt Bomb Town, indem es eine andere Groessenordnung von Game Work zeigt: fokussiertes Modding statt Full-Stack-Multiplayer-Systeme.",
         "Direkt mit der Steam-Workshop-Seite des Original-Releases verlinkt.",
       ],
     },

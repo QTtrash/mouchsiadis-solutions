@@ -253,7 +253,7 @@ export const localeSeo: Record<
       work: "Production platforms and tools. Every card opens a case file with role, constraints, and outcome.",
       experience:
         "Service history translated from the formal CV into a readable terminal record.",
-      games: "Live multiplayer games, a puzzle platform, and RimWorld mods. Every card opens a case file.",
+      games: "An independent game studio, a puzzle platform, and RimWorld mods. Every card opens a case file.",
       cv: "Formal identification file and PDF dossier.",
       blog: "Older notes preserved in original language. Filed as recovered text, not brand copy.",
       contact: "Email is the fastest route. The CV is one click away.",
@@ -333,7 +333,7 @@ export const localeSeo: Record<
       work: "Production-платформы и инструменты. Каждая карта открывает дело проекта: роль, ограничения и результат.",
       experience:
         "Служебная история из формального CV, переложенная в читаемый терминальный журнал.",
-      games: "Мультиплеерные игры, платформа головоломок и моды для RimWorld. Каждая карта открывает дело проекта.",
+      games: "Независимая игровая студия, платформа головоломок и моды для RimWorld. Каждая карта открывает дело проекта.",
       cv: "Формальный идентификационный файл и PDF-досье.",
       blog: "Старые заметки сохранены на языке оригинала. Это архивный текст, не рекламная витрина.",
       contact: "Быстрее всего — по почте. Резюме в один клик.",
@@ -413,7 +413,7 @@ export const localeSeo: Record<
       work: "Produktive Plattformen und Werkzeuge. Jede Karte öffnet eine Fallakte mit Rolle, Rahmenbedingungen und Ergebnis.",
       experience:
         "Dienstverlauf aus dem formalen CV, als lesbarer Terminaldatensatz abgelegt.",
-      games: "Live-Multiplayer-Spiele, eine Puzzle-Plattform und RimWorld-Mods. Jede Karte öffnet eine Fallakte.",
+      games: "Ein unabhängiges Spielestudio, eine Puzzle-Plattform und RimWorld-Mods. Jede Karte öffnet eine Fallakte.",
       cv: "Formale Identifikationsdatei und PDF-Dossier.",
       blog: "Aeltere Notizen in Originalsprache. Als geborgener Text abgelegt, nicht als Markenstimme.",
       contact: "Per E-Mail geht es am schnellsten. Der CV ist einen Klick entfernt.",
@@ -493,7 +493,7 @@ export const localeSeo: Record<
       work: "Production პლატფორმები და ხელსაწყოები. ყოველი ბარათი ხსნის პროექტის საქმეს: როლი, შეზღუდვები და შედეგი.",
       experience:
         "ფორმალური CV-დან გადმოტანილი სამსახურის ისტორია, წაკითხვადი ტერმინალის ჩანაწერად.",
-      games: "მრავალმოთამაშიანი თამაშები, თავსატეხების პლატფორმა და RimWorld-ის მოდები. ყოველი ბარათი ხსნის პროექტის საქმეს.",
+      games: "დამოუკიდებელი თამაშების სტუდია, თავსატეხების პლატფორმა და RimWorld-ის მოდები. ყოველი ბარათი ხსნის პროექტის საქმეს.",
       cv: "ფორმალური იდენტიფიკაციის ფაილი და PDF დოსიე.",
       blog: "ძველი ჩანაწერები ინახება საწყის ენაზე. ეს არის აღდგენილი ტექსტი, არა ბრენდის ტექსტი.",
       contact: "ყველაზე სწრაფი გზა ელფოსტაა. CV ერთი დაწკაპებითაა ხელმისაწვდომი.",
@@ -560,6 +560,7 @@ export const deckCopy: Record<
     caseKicker: string;
     backToWork: string;
     backToGames: string;
+    backToTooling: string;
     built: string;
     stack: string;
     prevCase: string;
@@ -586,6 +587,7 @@ export const deckCopy: Record<
     caseKicker: "CASE FILE",
     backToWork: "Back to work",
     backToGames: "Back to games",
+    backToTooling: "Back to tooling",
     built: "What was built",
     stack: "Stack",
     prevCase: "Previous case",
@@ -611,6 +613,7 @@ export const deckCopy: Record<
     caseKicker: "ДЕЛО",
     backToWork: "Назад к работам",
     backToGames: "Назад к играм",
+    backToTooling: "Назад к инструментам",
     built: "Что построено",
     stack: "Стек",
     prevCase: "Предыдущее дело",
@@ -636,6 +639,7 @@ export const deckCopy: Record<
     caseKicker: "FALLAKTE",
     backToWork: "Zurück zur Arbeit",
     backToGames: "Zurück zu den Spielen",
+    backToTooling: "Zurück zu den Werkzeugen",
     built: "Was gebaut wurde",
     stack: "Stack",
     prevCase: "Vorherige Akte",
@@ -661,6 +665,7 @@ export const deckCopy: Record<
     caseKicker: "საქმე",
     backToWork: "ნამუშევრებზე დაბრუნება",
     backToGames: "თამაშებზე დაბრუნება",
+    backToTooling: "ხელსაწყოებზე დაბრუნება",
     built: "რა შეიქმნა",
     stack: "სტეკი",
     prevCase: "წინა საქმე",
@@ -668,6 +673,34 @@ export const deckCopy: Record<
     hireTitle: "გჭირდებათ მსგავსი სისტემა?",
     hireBody: "ყველაზე სწრაფი გზა ელფოსტაა. სრული ისტორია CV-შია.",
     avatarPhoto: "ფოტოს ჩვენება",
+  },
+};
+
+// Tooling page: the instrument atlas panel. {count} is the number of live tools.
+export const toolingCopy: Record<Locale, { kicker: string; title: string; body: string; note: string }> = {
+  en: {
+    kicker: "TL // INSTRUMENT ATLAS / {count} ACTIVE SYSTEMS",
+    title: "Working systems, mapped.",
+    body: "Independently designed and operated tools for game analysis and encrypted squad coordination. Every card opens a case file.",
+    note: "Live systems · independently designed and operated",
+  },
+  ru: {
+    kicker: "TL // АТЛАС ИНСТРУМЕНТОВ / {count} СИСТЕМЫ",
+    title: "Рабочие системы на карте.",
+    body: "Независимо созданные и поддерживаемые инструменты для анализа игр и зашифрованной координации отряда. Каждая карта открывает дело проекта.",
+    note: "Рабочие системы · независимо спроектированы и запущены",
+  },
+  de: {
+    kicker: "TL // INSTRUMENTENATLAS / {count} AKTIVE SYSTEME",
+    title: "Arbeitende Systeme, kartiert.",
+    body: "Unabhängig entwickelte und betriebene Werkzeuge für Spielanalyse und verschlüsselte Squad-Koordination. Jede Karte öffnet eine Fallakte.",
+    note: "Live-Systeme · unabhängig entwickelt und betrieben",
+  },
+  ge: {
+    kicker: "TL // ინსტრუმენტების ატლასი / {count} სისტემა",
+    title: "მოქმედი სისტემების რუკა.",
+    body: "დამოუკიდებლად შექმნილი და მართული ხელსაწყოები თამაშების ანალიზისა და რაზმის დაშიფრული კოორდინაციისთვის. ყოველი ბარათი ხსნის პროექტის საქმეს.",
+    note: "მოქმედი სისტემები · დამოუკიდებლად შექმნილი და მართული",
   },
 };
 

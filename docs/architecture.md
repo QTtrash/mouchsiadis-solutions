@@ -40,7 +40,7 @@ The site has four public concerns:
 - `src/pages/[locale]/blog/[...slug].astro`
   Source for all blog-post pages across all locales.
 - `src/pages/[locale]/tooling/index.astro`
-  Responsive atlas of live tools. Mobile renders native disclosure records; eligible desktops progressively load the Three.js terrain.
+  The instrument atlas as a field-terminal panel: the Tool card deck (reader, drag, flip, List view) with a side nav that links back into the landing panels.
 - `src/layouts/BaseLayout.astro`
   Global shell, metadata, header/footer, CRT noise layer, and shared stylesheet import.
 - `src/layouts/PostLayout.astro`
@@ -74,7 +74,7 @@ The site uses a shared CSS system in `src/assets/styles/global.css` with:
 - phosphor-green CRT color tokens, scanline/noise treatment, and screen vignette
 - a fitted desktop console and continuous document-flow mobile/tablet composition
 - archive cards tuned for dense portfolio scanning
-- a Web Awesome navigation drawer and dynamically gated Three.js desktop enhancement
+- a Web Awesome navigation drawer; no WebGL or 3D runtime
 
 ## Validation
 

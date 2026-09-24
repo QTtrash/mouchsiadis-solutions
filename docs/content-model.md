@@ -42,11 +42,10 @@ Selected professional entries:
 - `YPay`
 - `YDesk`
 
-Live tools are stored separately as `toolProjects` and rendered in the Tooling atlas. Game entries are stored as `gameProjects` and remain part of the Work group in the primary information architecture.
+Live tools are stored separately as `toolProjects` and rendered as Tool cards on the landing Work deck and the Tooling page. Game entries are stored as `gameProjects` and render as the Games deck.
 
-- `Silly Bazaar`
+- `FlyGod Studios`
 - `Alice Plays`
-- `Bomb Town`
 - `Rifle Revolver`
 - `Incendiary Revolver`
 

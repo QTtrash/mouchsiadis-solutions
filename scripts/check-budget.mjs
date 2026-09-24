@@ -1,7 +1,7 @@
 // Landing-page weight budget (docs/visual-design.md, "Performance budget").
 // Counts the gzipped JS a first visit to /en/ downloads before any interaction
 // (entry module scripts plus their static imports) and the page's stylesheets.
-// Lazy chunks (the options drawer, Three.js on Tooling, future minigames) are excluded.
+// Lazy chunks (the options drawer, future minigames) are excluded.
 import { readFileSync } from "node:fs";
 import { dirname, join, posix } from "node:path";
 import { gzipSync } from "node:zlib";

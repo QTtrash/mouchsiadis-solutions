@@ -26,9 +26,11 @@ const nav = navigationCopy[locale];
 const labels = evidenceLabels[locale];
 const t = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => localize(record, locale);
 const home = buildLocalePath(locale);
-const back = suit === "game"
-  ? { href: `${home}#game-dev`, label: copy.backToGames }
-  : { href: `${home}#software-work`, label: copy.backToWork };
+const back = {
+  platform: { href: `${home}#software-work`, label: copy.backToWork },
+  tool: { href: buildLocalePath(locale, "/tooling"), label: copy.backToTooling },
+  game: { href: `${home}#game-dev`, label: copy.backToGames },
+}[suit];
 const prev = caseRecords[(index - 1 + caseRecords.length) % caseRecords.length]!.entry;
 const next = caseRecords[(index + 1) % caseRecords.length]!.entry;
 const alternates = Object.fromEntries(LOCALES.map((entryLocale) => [entryLocale, casePath(entryLocale, entry.slug)])) as Record<Locale, string>;

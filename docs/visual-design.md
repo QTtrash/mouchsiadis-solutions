@@ -62,7 +62,7 @@ Cards are a view over content records (`src/lib/cards.ts`); they carry no copy o
 
 ## Responsive Composition
 
-- Phone, below 768px: compact header and full-screen navigation drawer; single-column archive; large touch targets; inline Tooling accordions; no WebGL or hover assumptions.
+- Phone, below 768px: compact header and full-screen navigation drawer; single-column archive; large touch targets; no hover assumptions.
 - Small tablet, 768–1119px: continuous archive, one or two columns as content permits, normal document scrolling.
 - Desktop, 1120px and at least 720px tall: fitted console with side mode navigation and one active panel.
 - Short laptop: continuous archive avoids nested-scroll and clipped-panel failures.
@@ -73,14 +73,14 @@ Cards are a view over content records (`src/lib/cards.ts`); they carry no copy o
 - Custom design-system primitives: typography, tokens, buttons, badges, status markers, section headings, archive cards, panels, and code-drawn cover art.
 - Custom application components: record cards and the card deck, card reader, case files, project evidence records, career timeline, contact panel, notes archive, and Tooling instrument cards.
 - Wrapped third-party primitive: Web Awesome drawer supplies focus management, dismissal, Escape behavior, and dialog accessibility while this project owns its visual layer.
-- Specialized runtime: Three.js powers the eligible desktop Tooling terrain only. Mobile uses the authored SVG fallback.
+- Tooling: the instrument atlas is one more panel of the field terminal, showing the Tool card deck with the same reader, pixel art, and case files. There is no WebGL on the site.
 - Native HTML first: `details`/`summary` handles archive disclosure and mobile Tooling records.
 
 ## Interaction States
 
 Controls require default, hover where relevant, visible keyboard focus, pressed/selected, disabled when introduced, and loading when introduced states. Hover never changes selection. Sound defaults off and lives in Interface options. Visual effects follow the OS by default and may be explicitly reduced. Both preferences persist locally.
 
-Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Card flips take 320ms; a card seats in the reader in 180ms before navigation; the card-to-case-file morph is 240ms. Cross-page navigation never waits for anything longer. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation and WebGL.
+Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Card flips take 320ms; a card seats in the reader in 180ms before navigation; the card-to-case-file morph is 240ms. Cross-page navigation never waits for anything longer. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation.
 
 ## Asset And IP Rules
 
@@ -100,7 +100,7 @@ One art style everywhere it adds meaning: pixel sprites drawn in code and render
 - The avatar is generated from the profile photo by `scripts/pixelate-avatar.mjs`: head-and-shoulders crop, backdrop flood-fill, gamma, the five-step ramp with a soft dither, and a rim light so dark hair keeps its silhouette. Output is committed as `src/lib/avatar.ts`. In the hero it is itself a card: pressing it flips to the photo.
 - The LIVE foil sheen moves in stepped increments, like the art. Hovered cards in the desktop hand lean up to 6 degrees toward the pointer (off with reduced motion).
 - No pixel font: it would break Cyrillic and Georgian coverage. Text stays in Plex Sans and Plex Mono.
-- Three.js stays on Tooling only; nothing 3D ships on the landing page.
+- No 3D or WebGL anywhere: the Tooling atlas moved from a Three.js terrain to the card deck so the whole site shares one art style.
 
 ## Performance Budget
 
@@ -109,5 +109,5 @@ Enforced by `npm run budget` (part of `npm run validate`) against the built `/en
 - Landing JS loaded before any interaction: at most 15 KB gzipped (5.7 KB at Phase 1).
 - Landing CSS: at most 32 KB gzipped (28.1 KB at Phase 1).
 - Inline pixel art: at most 20 KB gzipped per page. At Phase 2 the whole `/en/` HTML, art included, is about 19 KB gzipped.
-- Lazy only: the Web Awesome drawer (on first open), Three.js (Tooling, eligible desktops), and future minigames (on their own route or on Start).
+- Lazy only: the Web Awesome drawer (on first open) and future minigames (on their own route or on Start).
 - No new runtime dependencies for cards: Pointer Events, CSS transforms, the Web Animations API, and cross-document View Transitions do the work.

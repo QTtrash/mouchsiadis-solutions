@@ -73,20 +73,6 @@ const projectArt: Record<string, Grid> = {
     c.set(23, 10, "y").set(24, 11, "a").set(22, 11, "a");
   }),
 
-  // a lantern string over two night-market stalls
-  "silly-bazaar": art((c) => {
-    for (let x = 0; x < ART_W; x += 1) c.set(x, 1 + 3 * (1 - ((x - 20) / 20) ** 2), "b");
-    for (const x of [8, 20, 32]) {
-      const top = Math.round(1 + 3 * (1 - ((x - 20) / 20) ** 2)) + 1;
-      c.set(x, top, "b").hline(x - 1, top + 1, 3, "b").rect(x - 1, top + 2, 3, 3, "y").set(x, top + 3, "w").hline(x - 1, top + 5, 3, "b");
-    }
-    for (const x0 of [3, 22]) {
-      for (let x = x0; x < x0 + 15; x += 1) c.vline(x, 12, 2, Math.floor((x - x0) / 2) % 2 ? "c" : "a");
-      c.box(x0 + 1, 14, 13, 5, "b").hline(x0 + 1, 16, 13, "a");
-      c.set(x0 + 4, 15, "y").set(x0 + 7, 15, "y").set(x0 + 10, 15, "o");
-    }
-  }),
-
   // a sudoku board with one selected cell, synced to the cloud
   "alice-plays": art((c) => {
     c.rect(11, 1, 17, 17, "c").box(10, 0, 19, 19, "a").vline(16, 1, 17, "b").vline(22, 1, 17, "b");
@@ -98,16 +84,6 @@ const projectArt: Record<string, Grid> = {
     c.disc(33, 8, 2, "b").disc(36, 9, 1.5, "b").rect(31, 9, 7, 2, "b");
     c.vline(34, 11, 4, "a").set(33, 12, "a").set(35, 12, "a");
     c.glyph(3, 7, [".y.", "yyy", ".y."]).glyph(5, 12, [".y.", "yyy", ".y."]);
-  }),
-
-  // claimed territory, a lit bomb, and its blast radius
-  "bomb-town": art((c) => {
-    for (let y = 1; y < ART_H; y += 4) for (let x = 1; x < ART_W; x += 4) c.set(x, y, "c");
-    c.dither(0, 0, 13, ART_H, "c", 0.3);
-    c.ring(22, 11, 9, "c", 0.6).ring(22, 11, 7, "y", 0.5);
-    c.disc(22, 11, 4, "b").ring(22, 11, 4, "a").set(20, 9, "w").set(21, 9, "h");
-    c.set(24, 7, "h").set(25, 6, "h").set(25, 5, "h").set(26, 4, "h");
-    c.glyph(26, 1, [".y.", "yoy", ".y."]);
   }),
 
   // the rifle-revolver hybrid in profile

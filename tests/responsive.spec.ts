@@ -138,12 +138,25 @@ test("desktop panels scroll inside the terminal and reset on tab changes", async
   await expect.poll(() => experience.evaluate((element) => element.scrollTop)).toBe(0);
 });
 
-test("tooling uses touch-first records on mobile", async ({ page }) => {
-  test.skip((page.viewportSize()?.width ?? 1280) > 720, "phone composition");
+test("tooling is a terminal panel with the tool card deck", async ({ page }) => {
   await page.goto("/en/tooling/");
-  await expect(page.locator(".atlas-mobile-list")).toBeVisible();
-  await expect(page.locator(".atlas-index")).toBeHidden();
-  await expect(page.locator(".atlas-mobile-list details")).toHaveCount(2);
+  await expect(page.locator("h1")).toHaveText("Working systems, mapped.");
+  const cards = page.locator("#tooling [data-card]");
+  await expect(cards).toHaveCount(2);
+  await expect(cards.first()).toHaveAttribute("data-suit", "tool");
+  await expect(page.locator("#tooling [data-card-open]").first()).toHaveAttribute("href", "/en/work/grindlike/");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  if ((page.viewportSize()?.width ?? 0) >= 1120) {
+    await expect(page.locator('.terminal-side-nav a[aria-current="page"]')).toHaveText(/Tooling/);
+    await expect(page.locator("#tooling [data-deck]")).toHaveClass(/is-draggable/);
+  }
+});
+
+test("tool case files lead back to Tooling", async ({ page }) => {
+  await page.goto("/en/work/raid-signal/");
+  await page.getByRole("link", { name: "← Back to tooling" }).click();
+  await expect(page).toHaveURL(/\/en\/tooling\/$/);
 });
 
 test("blog is grouped as a dated archive", async ({ page }) => {

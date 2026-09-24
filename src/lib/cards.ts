@@ -21,6 +21,7 @@ export const caseRecords: CaseRecord[] = [
 
 export const workRecords = caseRecords.filter((record) => record.suit !== "game");
 export const gameRecords = caseRecords.filter((record) => record.suit === "game");
+export const toolRecords = caseRecords.filter((record) => record.suit === "tool");
 
 export function localize<T>(record: { en: T } & Partial<Record<Locale, T>>, locale: Locale): T {
   return record[locale] ?? record.en;

@@ -834,3 +834,21 @@ html:not(.js) .deck-card__actions {
     text-align: left;
   }
 }
+
+/* ---- Tooling: the atlas as a terminal panel (its heading is the page h1) ---- */
+
+.terminal-console .section-heading h1 {
+  margin-bottom: 0;
+  font-size: clamp(1.75rem, 2.8vw, 2.35rem);
+  text-shadow:
+    0 0 12px rgba(141, 255, 122, 0.2),
+    0 0 34px rgba(141, 255, 122, 0.09);
+}
+
+.tooling-note {
+  margin: 1.25rem 0 0;
+  color: var(--text-subtle);
+  font: 0.68rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
