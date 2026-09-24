@@ -385,27 +385,28 @@ html:not(.js) .deck-card__actions {
   .deck-card:has(.deck-card__live) .deck-card__face--front::after {
     content: "";
     position: absolute;
-    inset: 0;
+    inset: 0 auto 0 0;
+    width: 300%;
     background: linear-gradient(
       115deg,
-      transparent 35%,
-      rgba(255, 207, 102, 0.09) 47%,
-      rgba(141, 255, 122, 0.07) 53%,
-      transparent 65%
+      transparent 40%,
+      rgba(255, 207, 102, 0.09) 48%,
+      rgba(141, 255, 122, 0.07) 52%,
+      transparent 60%
     );
-    background-size: 260% 100%;
-    /* stepped, so the sheen moves in pixel increments like the rest of the art */
-    animation: card-foil 6s steps(48, end) infinite;
+    /* transform-only, so the sheen runs on the compositor without repainting the card */
+    animation: card-foil 6s linear infinite;
+    will-change: transform;
     pointer-events: none;
   }
 }
 
 @keyframes card-foil {
   from {
-    background-position: 130% 0;
+    transform: translateX(0);
   }
   to {
-    background-position: -130% 0;
+    transform: translateX(-66.667%);
   }
 }
 
@@ -529,7 +530,13 @@ html:not(.js) .deck-card__actions {
 /* the hovered card leans toward the pointer (deck.ts sets --tilt-x/y) */
 .card-deck.is-fanned .deck-card:not(.is-flipped) .deck-card__body {
   transform: rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
-  transition: transform 120ms ease-out;
+  transition: transform 160ms ease-out;
+}
+
+/* while the pointer is on a card the tilt tracks it 1:1 (a transition here
+   restarts on every pointermove and makes the card lag behind the cursor) */
+.card-deck.is-fanned .deck-card:not(.is-flipped) .deck-card__body.is-tracking {
+  transition: none;
 }
 
 /* a fanned hand keeps cards even: two keywords each (the case file lists them all) */
@@ -553,7 +560,7 @@ html:not(.js) .deck-card__actions {
   width: var(--card-w);
   transform: translateY(calc(var(--arc) * 0.3rem)) rotate(calc(var(--offset) * 1.8deg));
   transform-origin: 50% 100%;
-  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 130ms cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 /* overlap only as much as the hand needs to fit, leaving room for the edge cards' tilt */

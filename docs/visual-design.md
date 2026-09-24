@@ -80,12 +80,14 @@ Cards are a view over content records (`src/lib/cards.ts`); they carry no copy o
 
 Controls require default, hover where relevant, visible keyboard focus, pressed/selected, disabled when introduced, and loading when introduced states. Hover never changes selection. Sound defaults off and lives in Interface options. Visual effects follow the OS by default and may be explicitly reduced. Both preferences persist locally.
 
-Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. Card flips take 320ms; a card seats in the reader in 180ms before navigation; the card-to-case-file morph is 240ms. Cross-page navigation never waits for anything longer. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation.
+Performance rule for motion: nothing may sit above moving content with a blend mode. The panel's scanline overlay uses normal blending on its own compositor layer (a `mix-blend-mode: screen` overlay halved the frame rate while cards moved). Card tilt tracks the pointer 1:1 once per animation frame (no chasing transition), and the LIVE foil animates `transform`, not `background-position`.
+
+Motion is brief and functional: terminal panels use a 110ms opacity-only fade, while ordinary control states stay in the 160–240ms range. The fanned-hand lift takes 130ms; card flips take 320ms; a card seats in the reader in 180ms before navigation; the card-to-case-file morph is 240ms. Cross-page navigation never waits for anything longer. `prefers-reduced-motion` and the in-product Reduced setting disable decorative animation.
 
 ## Asset And IP Rules
 
 - Do not use official Fallout logos, labels, protected artwork, or claims of affiliation.
-- Treat the frame as generic industrial hardware texture.
+- The terminal chassis is code-drawn pixel hardware (`TerminalChassis.astro` + `chassisSprites`): a dithered olive-graphite casing with a hard two-step pixel bevel, corner screws, vents, an MS-86 name plate with a power LED, and two knobs. It replaced a stretched photographic frame. The header brand reads as a prompt (`suren@ms-86:~$`) and the page behind the monitor is a dim phosphor dot grid.
 - Raster assets ship in compressed WebP variants. Decorative artwork has empty alt text; meaningful images require useful alternatives and dimensions.
 
 ## Art Direction: Code-Drawn Pixel Sprites
@@ -98,7 +100,7 @@ One art style everywhere it adds meaning: pixel sprites drawn in code and render
 - Shading uses 4x4 ordered (Bayer) dithering; no anti-aliasing (`shape-rendering: crispEdges`).
 - Sizes stay at whole multiples where it matters (the 32px avatar renders at 96px, 3x).
 - The avatar is generated from the profile photo by `scripts/pixelate-avatar.mjs`: head-and-shoulders crop, backdrop flood-fill, gamma, the five-step ramp with a soft dither, and a rim light so dark hair keeps its silhouette. Output is committed as `src/lib/avatar.ts`. In the hero it is itself a card: pressing it flips to the photo.
-- The LIVE foil sheen moves in stepped increments, like the art. Hovered cards in the desktop hand lean up to 6 degrees toward the pointer (off with reduced motion).
+- The LIVE foil sheen glides across production cards. Hovered cards in the desktop hand lean up to 6 degrees toward the pointer (off with reduced motion).
 - No pixel font: it would break Cyrillic and Georgian coverage. Text stays in Plex Sans and Plex Mono.
 - No 3D or WebGL anywhere: the Tooling atlas moved from a Three.js terrain to the card deck so the whole site shares one art style.
 

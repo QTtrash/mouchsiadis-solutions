@@ -5,6 +5,7 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CardDeck from "../../../components/CardDeck.astro";
 import PixelArt from "../../../components/PixelArt.astro";
+import TerminalChassis from "../../../components/TerminalChassis.astro";
 import { toolRecords } from "../../../lib/cards";
 import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
 import { navSprites } from "../../../lib/sprites";
@@ -44,6 +45,7 @@ const tabs = [
   alternates={buildLocaleAlternates("/tooling")}
 >
   <section class="terminal-console section tooling-console" data-terminal-lang={localeLabels[locale]}>
+    <TerminalChassis />
     <div class="terminal-status" aria-hidden="true">
       <span>Mouchsiadis // field terminal</span>
       <span>LANG {localeLabels[locale]}</span>

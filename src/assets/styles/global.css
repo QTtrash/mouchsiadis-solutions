@@ -469,16 +469,6 @@ summary:focus-visible {
   pointer-events: none;
 }
 
-.terminal-console::before {
-  background-image: url("/images/terminal-frame-bg.webp");
-  background-size: 100% 100%;
-  background-position: center;
-  opacity: 0.5;
-  filter: grayscale(1) sepia(1) hue-rotate(58deg) saturate(1.25)
-    brightness(0.58) contrast(1.08);
-  z-index: 0;
-}
-
 .terminal-console::after {
   inset: clamp(3.15rem, 6vw, 5.15rem) clamp(2.1rem, 5vw, 4.65rem)
     clamp(2.35rem, 5vw, 4.1rem);
@@ -666,20 +656,15 @@ summary:focus-visible {
       rgba(141, 255, 122, 0.052) 0 1px,
       transparent 1px 4px
     );
-  mix-blend-mode: screen;
+  /* Normal blending on its own compositor layer: a screen-blended overlay made
+     the browser re-blend the whole panel every frame a card moved under it. */
   opacity: 0.38;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .terminal-console__content::after {
-  z-index: 4;
-  transform: translateY(-105%);
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(215, 255, 208, 0.2),
-    transparent
-  );
-  opacity: 0;
+  content: none;
 }
 
 .terminal-console .section {
@@ -2713,4 +2698,162 @@ html:not(.js) .avatar-card {
     width: 4rem;
     height: 4rem;
   }
+}
+
+/* ---- pixel chassis: the hardware around the screen (TerminalChassis.astro) ----
+   Replaces the stretched photographic frame with the site's pixel language:
+   a dithered olive-graphite casing, a hard two-step bevel, and code-drawn parts. */
+
+:root {
+  --chassis: #1a2216;
+  --chassis-hi: #34422b;
+  --chassis-lit: #4a5a3c;
+  --chassis-lo: #070a06;
+  --chassis-accent: #8a9c74;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(141, 255, 122, 0.07), transparent 70%),
+    radial-gradient(rgba(141, 255, 122, 0.055) 1px, transparent 1.4px) 0 0 / 12px 12px,
+    linear-gradient(180deg, #010301 0%, var(--bg) 48%, #010201 100%);
+}
+
+.terminal-console {
+  border: 0;
+  border-radius: 0;
+  background-color: var(--chassis);
+  /* 4x4 ordered-dither tile, 2px per pixel */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23232d1d' d='M0 0h1v1H0zM2 2h1v1H2z'/%3E%3Cpath fill='%23121810' d='M2 0h1v1H2zM0 2h1v1H0z'/%3E%3C/svg%3E");
+  background-size: 8px 8px;
+  image-rendering: pixelated;
+  box-shadow:
+    inset 4px 4px 0 var(--chassis-lit),
+    inset 8px 8px 0 var(--chassis-hi),
+    inset -4px -4px 0 var(--chassis-lo),
+    inset -8px -8px 0 #0e130c,
+    0 0 0 4px #030503,
+    0 40px 120px -40px #000,
+    0 0 110px -30px rgba(141, 255, 122, 0.16);
+}
+
+.terminal-console::before {
+  content: none;
+}
+
+/* the CRT glass sits in a hard pixel recess */
+.terminal-console::after {
+  border: 0;
+  box-shadow:
+    0 0 0 4px #020402,
+    0 0 0 8px var(--chassis-lo),
+    -4px -4px 0 8px var(--chassis-lo),
+    4px 4px 0 8px var(--chassis-hi),
+    inset 0 0 82px rgba(0, 0, 0, 0.72),
+    inset 0 0 0 1px rgba(165, 220, 113, 0.12);
+}
+
+.terminal-chassis {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  --px-accent: var(--chassis-accent);
+}
+
+.terminal-chassis__screw {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+}
+
+.terminal-chassis__screw--tl { top: 16px; left: 16px; }
+.terminal-chassis__screw--tr { top: 16px; right: 16px; transform: rotate(90deg); }
+.terminal-chassis__screw--bl { bottom: 16px; left: 16px; transform: rotate(90deg); }
+.terminal-chassis__screw--br { bottom: 16px; right: 16px; }
+
+/* bottom bezel parts sit centred in the band below the glass */
+.terminal-chassis__vents,
+.terminal-chassis__badge,
+.terminal-chassis__knobs {
+  position: absolute;
+  bottom: calc(clamp(2.35rem, 5vw, 4.1rem) / 2);
+  transform: translateY(50%);
+}
+
+.terminal-chassis__vents {
+  left: clamp(3.5rem, 7vw, 6rem);
+  width: 7.5rem;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--chassis-lo) 0 8px, transparent 8px 14px);
+  box-shadow: 0 2px 0 var(--chassis-hi);
+}
+
+.terminal-chassis__badge {
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translate(-50%, 50%);
+}
+
+.terminal-chassis__plate {
+  width: 105px;
+  height: 33px;
+  --px-accent: #b9c9a2;
+}
+
+.terminal-chassis__led {
+  width: 8px;
+  height: 8px;
+  background: var(--signal);
+  box-shadow: 0 0 0 2px #030503, 0 0 10px 1px rgba(141, 255, 122, 0.8);
+}
+
+.terminal-chassis__knobs {
+  right: clamp(3.5rem, 7vw, 6rem);
+  display: flex;
+  gap: 12px;
+}
+
+.terminal-chassis__knob {
+  width: 27px;
+  height: 27px;
+}
+
+.terminal-chassis__knob--turned {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .terminal-chassis__led {
+    animation: chassis-led 3.2s steps(1, end) infinite;
+  }
+}
+
+@keyframes chassis-led {
+  0%, 92% { opacity: 1; }
+  94% { opacity: 0.35; }
+  96% { opacity: 1; }
+}
+
+/* continuous layouts: no glass band at the bottom, so only the screws remain */
+@media (max-width: 1119px), (max-height: 719px) and (max-width: 1279px) {
+  .terminal-chassis__vents,
+  .terminal-chassis__badge,
+  .terminal-chassis__knobs {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .terminal-chassis__screw {
+    width: 14px;
+    height: 14px;
+  }
+
+  .terminal-chassis__screw--tl, .terminal-chassis__screw--tr { top: 10px; }
+  .terminal-chassis__screw--bl, .terminal-chassis__screw--br { bottom: 10px; }
+  .terminal-chassis__screw--tl, .terminal-chassis__screw--bl { left: 10px; }
+  .terminal-chassis__screw--tr, .terminal-chassis__screw--br { right: 10px; }
 }

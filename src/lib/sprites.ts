@@ -203,3 +203,47 @@ export const monogram: Grid = [
   "a...a........a.",
   "a...a....aaaa..",
 ];
+
+// ---- terminal chassis (drawn in the casing's own olive-graphite accent) ----
+
+export const chassisSprites = {
+  screw: ["..ccc..", ".chbbc.", "chbbkbc", "cbbkbbc", "cbkbbbc", ".cbbbc.", "..ccc.."],
+  knob: [
+    "..ccccc..",
+    ".cbhhbbc.",
+    "cbhbhbbkc",
+    "cbbbhbbkc",
+    "cbbbbbbkc",
+    "cbbbbbbkc",
+    "cbbbbbkkc",
+    ".ckkkkkc.",
+    "..ccccc..",
+  ],
+  // "MS-86" name plate: bevelled plate, 5x7 glyphs
+  plate: (() => {
+    const glyphs: Record<string, string[]> = {
+      M: ["h...h", "hh.hh", "h.h.h", "h...h", "h...h", "h...h", "h...h"],
+      S: [".hhhh", "h....", "h....", ".hhh.", "....h", "....h", "hhhh."],
+      "-": [".....", ".....", ".....", ".hhh.", ".....", ".....", "....."],
+      "8": [".hhh.", "h...h", "h...h", ".hhh.", "h...h", "h...h", ".hhh."],
+      "6": ["..hh.", ".h...", "h....", "hhhh.", "h...h", "h...h", ".hhh."],
+    };
+    const text = "MS-86";
+    const width = text.length * 6 + 5;
+    const rows: string[][] = Array.from({ length: 11 }, (_, y) =>
+      Array.from({ length: width }, (_, x): string => {
+        if (y === 0 || x === 0) return "b";
+        if (y === 10 || x === width - 1) return "c";
+        return "k";
+      }),
+    );
+    [...text].forEach((char, index) =>
+      glyphs[char]!.forEach((row, dy) =>
+        [...row].forEach((key, dx) => {
+          if (key !== ".") rows[2 + dy]![3 + index * 6 + dx] = key;
+        }),
+      ),
+    );
+    return rows.map((row) => row.join(""));
+  })(),
+};

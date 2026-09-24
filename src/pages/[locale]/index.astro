@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
 import PixelArt from "../../components/PixelArt.astro";
+import TerminalChassis from "../../components/TerminalChassis.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
 import { experiences, proofPoints } from "../../lib/content";
@@ -53,6 +54,7 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
     data-terminal-console
     data-terminal-lang={localeLabels[locale]}
   >
+    <TerminalChassis />
     <div class="terminal-status" aria-hidden="true">
       <span>Mouchsiadis // field terminal</span>
       <span>LANG {localeLabels[locale]}</span>

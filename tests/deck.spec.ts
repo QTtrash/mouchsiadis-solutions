@@ -168,3 +168,13 @@ test("the hero avatar flips between the pixel sprite and the photo", async ({ pa
   await expect(avatar).toHaveAttribute("aria-pressed", "true");
   await expect(avatar.locator(".avatar-card__photo")).toHaveCSS("opacity", "1");
 });
+
+test("nothing above the cards blends with them (keeps the hand at frame rate)", async ({ page }) => {
+  await page.goto("/en/");
+  const overlay = await page.locator(".terminal-console__content").evaluate((node) => {
+    const style = getComputedStyle(node, "::before");
+    return { blend: style.mixBlendMode, after: getComputedStyle(node, "::after").content };
+  });
+  expect(overlay.blend).toBe("normal");
+  expect(overlay.after).toBe("none");
+});

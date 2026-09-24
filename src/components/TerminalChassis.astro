@@ -1,0 +1,23 @@
+---
+// Pixel hardware around the terminal screen: corner screws, vents, the MS-86
+// name plate with its power LED, and two knobs. Purely decorative.
+import PixelArt from "./PixelArt.astro";
+import { chassisSprites } from "../lib/sprites";
+---
+
+<div class="terminal-chassis" aria-hidden="true">
+  {
+    ["tl", "tr", "bl", "br"].map((corner) => (
+      <PixelArt grid={chassisSprites.screw} class={`terminal-chassis__screw terminal-chassis__screw--${corner}`} />
+    ))
+  }
+  <span class="terminal-chassis__vents"></span>
+  <span class="terminal-chassis__badge">
+    <PixelArt grid={chassisSprites.plate} class="terminal-chassis__plate" />
+    <span class="terminal-chassis__led"></span>
+  </span>
+  <span class="terminal-chassis__knobs">
+    <PixelArt grid={chassisSprites.knob} class="terminal-chassis__knob" />
+    <PixelArt grid={chassisSprites.knob} class="terminal-chassis__knob terminal-chassis__knob--turned" />
+  </span>
+</div>

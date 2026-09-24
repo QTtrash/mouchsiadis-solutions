@@ -78,25 +78,39 @@ function enableDrag(deck: HTMLElement): void {
   let drag: { card: HTMLElement; x: number; y: number; active: boolean; over: boolean } | null = null;
   let tilted: HTMLElement | null = null;
 
-  // Hovered cards lean up to 6 degrees toward the pointer.
-  const tilt = (event: PointerEvent): void => {
-    if (reduced()) return;
+  // Hovered cards lean up to 6 degrees toward the pointer, updated once per frame.
+  let tiltFrame = 0;
+  let tiltEvent: PointerEvent | null = null;
+  const untilt = (body: HTMLElement | null): void => {
+    body?.classList.remove("is-tracking");
+    body?.style.removeProperty("--tilt-x");
+    body?.style.removeProperty("--tilt-y");
+  };
+  const applyTilt = (): void => {
+    tiltFrame = 0;
+    const event = tiltEvent;
+    if (!event) return;
     const body = (event.target as Element).closest<HTMLElement>(".deck-card__body");
-    if (tilted && tilted !== body) {
-      tilted.style.removeProperty("--tilt-x");
-      tilted.style.removeProperty("--tilt-y");
-    }
+    if (tilted !== body) untilt(tilted);
     tilted = body;
     if (!body) return;
     const rect = body.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
+    body.classList.add("is-tracking");
     body.style.setProperty("--tilt-x", `${(x * 12).toFixed(1)}deg`);
     body.style.setProperty("--tilt-y", `${(-y * 12).toFixed(1)}deg`);
   };
+  const tilt = (event: PointerEvent): void => {
+    if (reduced()) return;
+    tiltEvent = event;
+    tiltFrame ||= requestAnimationFrame(applyTilt);
+  };
   hand.addEventListener("pointerleave", () => {
-    tilted?.style.removeProperty("--tilt-x");
-    tilted?.style.removeProperty("--tilt-y");
+    cancelAnimationFrame(tiltFrame);
+    tiltFrame = 0;
+    tiltEvent = null;
+    untilt(tilted);
     tilted = null;
   });
 
