@@ -53,10 +53,6 @@ Live tools are stored separately as `toolProjects` and rendered as Tool cards on
 
 Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. A card's outcome sentence is `evidence.outcomes` when present, otherwise `summary`, so the strongest evidenced sentence always leads.
 
-### Proof Points
-
-`proofPoints` feeds the hero's Evidence card. Each point must restate a claim already evidenced by an entry, and targets either a case-file slug or `"experience"`.
-
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
 ## Professional Experience

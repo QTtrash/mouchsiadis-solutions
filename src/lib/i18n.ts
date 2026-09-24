@@ -709,6 +709,82 @@ export const toolingCopy: Record<Locale, { kicker: string; title: string; body: 
   },
 };
 
+// Backlog Breaker, the hero mini-game.
+export const arcadeCopy: Record<
+  Locale,
+  {
+    title: string;
+    help: string;
+    start: string;
+    pause: string;
+    resume: string;
+    again: string;
+    score: string;
+    lives: string;
+    serve: string;
+    won: string;
+    lost: string;
+    label: string;
+  }
+> = {
+  en: {
+    title: "Backlog Breaker",
+    help: "Drag or use ← →. Tap, click, or Space launches the ball.",
+    start: "Start",
+    pause: "Pause",
+    resume: "Resume",
+    again: "Play again",
+    score: "Score",
+    lives: "Lives",
+    serve: "Launch the ball",
+    won: "Backlog cleared. Ship it.",
+    lost: "Out of lives. The backlog wins this round.",
+    label: "Backlog Breaker: bounce the ball off the paddle to clear the ticket wall.",
+  },
+  ru: {
+    title: "Разгреби бэклог",
+    help: "Тяните или жмите ← →. Касание, клик или пробел запускает мяч.",
+    start: "Старт",
+    pause: "Пауза",
+    resume: "Продолжить",
+    again: "Ещё раз",
+    score: "Счёт",
+    lives: "Жизни",
+    serve: "Запустите мяч",
+    won: "Бэклог разобран. Выкатываем.",
+    lost: "Жизни кончились. В этот раз победил бэклог.",
+    label: "Разгреби бэклог: отбивайте мяч платформой, чтобы разбить стену задач.",
+  },
+  de: {
+    title: "Backlog-Brecher",
+    help: "Ziehen oder ← → nutzen. Tippen, Klick oder Leertaste startet den Ball.",
+    start: "Start",
+    pause: "Pause",
+    resume: "Weiter",
+    again: "Nochmal",
+    score: "Punkte",
+    lives: "Leben",
+    serve: "Ball starten",
+    won: "Backlog leer. Ausliefern.",
+    lost: "Keine Leben mehr. Diese Runde gewinnt der Backlog.",
+    label: "Backlog-Brecher: den Ball mit dem Schläger zurückspielen und die Ticketwand abräumen.",
+  },
+  ge: {
+    title: "ბექლოგის მსხვრეველი",
+    help: "გადაათრიეთ ან გამოიყენეთ ← →. შეხება, დაწკაპება ან Space ისვრის ბურთს.",
+    start: "დაწყება",
+    pause: "პაუზა",
+    resume: "გაგრძელება",
+    again: "თავიდან",
+    score: "ქულა",
+    lives: "სიცოცხლე",
+    serve: "გაისროლეთ ბურთი",
+    won: "ბექლოგი გასუფთავდა. გავუშვათ.",
+    lost: "სიცოცხლე ამოიწურა. ამ რაუნდში ბექლოგმა მოიგო.",
+    label: "ბექლოგის მსხვრეველი: აისხლიტეთ ბურთი ფიცრით და დაანგრიეთ დავალებების კედელი.",
+  },
+};
+
 export function isLocale(value: string): value is Locale {
   return LOCALES.includes(value as Locale);
 }

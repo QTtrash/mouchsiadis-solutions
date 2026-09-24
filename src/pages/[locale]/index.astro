@@ -3,12 +3,13 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
+import BacklogBreaker from "../../components/BacklogBreaker.astro";
 import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
-import { experiences, proofPoints } from "../../lib/content";
-import { casePath, gameRecords, localize, workRecords } from "../../lib/cards";
+import { experiences } from "../../lib/content";
+import { gameRecords, localize, workRecords } from "../../lib/cards";
 import {
   buildLocaleAlternates,
   buildLocalePath,
@@ -124,10 +125,10 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                   <PixelArt grid={avatarSprite} class="avatar-card__pixel" />
                   <img
                     class="avatar-card__photo"
-                    src="/images/profile-pic.webp"
+                    src="/images/suren-portrait.webp"
                     alt=""
-                    width="640"
-                    height="640"
+                    width="480"
+                    height="480"
                     loading="lazy"
                   />
                   <span class="visually-hidden">{deck.avatarPhoto}</span>
@@ -135,22 +136,7 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                 <strong>{copy.labels.currentFocus}</strong>
                 <p>{copy.labels.currentFocusBody}</p>
               </div>
-              <section class="signal-card proof-card" aria-labelledby="proof-title">
-                <h2 id="proof-title">{deck.evidenceTitle}</h2>
-                <ul role="list">
-                  {
-                    proofPoints.map((point) => (
-                      <li>
-                        {point.target === "experience" ? (
-                          <a href="#experience" data-terminal-jump>{localized(point.label)}</a>
-                        ) : (
-                          <a href={casePath(locale, point.target)}>{localized(point.label)}</a>
-                        )}
-                      </li>
-                    ))
-                  }
-                </ul>
-              </section>
+              <BacklogBreaker locale={locale} />
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 // The pixel sprite library. Art is 40x20 (card/cover windows), icons 9x9,
 // suits 7x7. Each drawing illustrates what the record actually does.
 import { Canvas, type Grid } from "./pixel.ts";
+import { BALL, BOARD, BRICKS, PADDLE, ROW_KEYS, brickRect } from "./breaker-layout.ts";
 
 export const ART_W = 40;
 export const ART_H = 20;
@@ -247,3 +248,18 @@ export const chassisSprites = {
     return rows.map((row) => row.join(""));
   })(),
 };
+
+// ---- Backlog Breaker poster: the board before the game code loads ----
+
+export const breakerPoster: Grid = (() => {
+  const c = new Canvas(BOARD.width, BOARD.height);
+  for (let row = 0; row < BRICKS.rows; row += 1)
+    for (let col = 0; col < BRICKS.cols; col += 1) {
+      const { x, y, w, h } = brickRect(col, row);
+      c.rect(x, y, w, h, ROW_KEYS[row]!).hline(x, y, w, "w");
+    }
+  const paddleX = (BOARD.width - PADDLE.width) / 2;
+  c.rect(paddleX, PADDLE.y, PADDLE.width, PADDLE.height, "w");
+  c.rect(paddleX + PADDLE.width / 2 - 1, PADDLE.y - BALL - 1, BALL, BALL, "y");
+  return c.toGrid();
+})();

@@ -31,6 +31,8 @@ The site has four public concerns:
   Derives cards from `content.ts`: suit per collection, case-file paths, outcome text, and shared view-transition names.
 - `src/lib/pixel.ts`, `src/lib/sprites.ts`, `src/components/PixelArt.astro`
   Pixel art: a small raster canvas (rect, line, disc, ring, dither, glyph), the sprite library (project art by slug, category covers, suits, nav icons, monogram), and build-time SVG rendering with one path per palette key. `CoverArt.astro` picks record art, then the category cover.
+- `src/components/BacklogBreaker.astro`, `src/scripts/breaker.ts`, `src/lib/breaker-layout.ts`
+  The hero mini-game: build-time pixel poster and Start button, a lazy canvas engine loaded on Start, and the geometry both share.
 - `src/lib/avatar.ts`
   Generated 32x32 avatar sprite; regenerate with `node scripts/pixelate-avatar.mjs` after changing `public/images/profile-pic.webp`.
 - `src/scripts/deck.ts`

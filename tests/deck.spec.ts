@@ -163,7 +163,10 @@ test("the hero avatar flips between the pixel sprite and the photo", async ({ pa
   const avatar = page.locator("[data-avatar-flip]");
   await expect(avatar).toHaveAccessibleName("Show photo");
   await expect(avatar).toHaveAttribute("aria-pressed", "false");
-  await expect(avatar.locator(".avatar-card__photo")).toHaveCSS("opacity", "0");
+  const photo = avatar.locator(".avatar-card__photo");
+  await expect(photo).toHaveAttribute("src", "/images/suren-portrait.webp");
+  await expect(photo).toHaveCSS("filter", "none");
+  await expect(photo).toHaveCSS("opacity", "0");
   await avatar.click();
   await expect(avatar).toHaveAttribute("aria-pressed", "true");
   await expect(avatar.locator(".avatar-card__photo")).toHaveCSS("opacity", "1");
@@ -177,4 +180,34 @@ test("nothing above the cards blends with them (keeps the hand at frame rate)", 
   });
   expect(overlay.blend).toBe("normal");
   expect(overlay.after).toBe("none");
+});
+
+test("Backlog Breaker loads on Start and plays with the keyboard", async ({ page }) => {
+  const engineRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/\/breaker\.[\w-]+\.js$/.test(request.url())) engineRequests.push(request.url());
+  });
+  await page.goto("/en/");
+  const arcade = page.locator("[data-arcade]");
+  await arcade.scrollIntoViewIfNeeded();
+  await expect(arcade.locator(".arcade__poster")).toBeVisible();
+  expect(engineRequests).toEqual([]);
+
+  await arcade.getByRole("button", { name: "Start" }).click();
+  await expect(arcade.locator("canvas")).toBeVisible();
+  await expect(arcade.locator("[data-arcade-message]")).toHaveText("Launch the ball");
+  expect(engineRequests).toHaveLength(1);
+
+  const stage = arcade.locator("[data-arcade-stage]");
+  await expect(stage).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(arcade.locator("[data-arcade-overlay]")).toBeHidden();
+  const pause = arcade.getByRole("button", { name: "Pause" });
+  await expect(pause).toBeVisible();
+
+  await page.keyboard.press("p");
+  await expect(pause).toHaveAttribute("aria-pressed", "true");
+  await expect(arcade.getByRole("button", { name: "Resume" })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(arcade.locator("[data-arcade-overlay]")).toBeHidden();
 });

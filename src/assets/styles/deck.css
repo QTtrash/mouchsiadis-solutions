@@ -859,3 +859,136 @@ html:not(.js) .deck-card__actions {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+/* ---- Backlog Breaker (hero mini-game) ---- */
+
+.arcade {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.arcade__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+}
+
+.arcade h2 {
+  margin: 0;
+  color: var(--amber-bright);
+  font: 600 0.72rem/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.arcade__hud {
+  display: flex;
+  gap: 0.9rem;
+  margin: 0;
+  color: var(--text-subtle);
+  font: 0.72rem/1.2 var(--mono);
+  text-transform: uppercase;
+}
+
+.arcade__hud b {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.arcade__pause {
+  min-height: 2.75rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--muted);
+  font: 600 0.7rem/1 var(--mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.arcade__pause:hover,
+.arcade__pause:focus-visible {
+  border-color: var(--amber-line);
+  color: var(--amber-bright);
+}
+
+.arcade__stage {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: #031005;
+  box-shadow: inset 0 0 0 3px #010401;
+  cursor: pointer;
+}
+
+.arcade__stage:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* while playing, finger drags steer the paddle instead of scrolling the page */
+.arcade__stage.is-playing {
+  touch-action: none;
+}
+
+.arcade__poster,
+.arcade__stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.arcade__poster {
+  --px-accent: var(--signal);
+}
+
+.arcade__stage canvas[hidden],
+.arcade__overlay[hidden],
+.arcade__overlay [hidden] {
+  display: none;
+}
+
+.arcade__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  background: rgba(2, 6, 2, 0.5);
+  text-align: center;
+}
+
+.arcade__overlay p {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--text-strong);
+  font: 600 0.78rem/1.35 var(--mono);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.arcade__overlay p:empty {
+  display: none;
+}
+
+.arcade__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.arcade__help {
+  margin: 0;
+  color: var(--text-subtle);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}

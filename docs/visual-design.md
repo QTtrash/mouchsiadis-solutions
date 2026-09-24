@@ -15,7 +15,7 @@ The balance is **60% content clarity and 40% play** across the site, and **80/20
 
 - Header: an amber **Hire me** button on every page (it links to Contact) next to plain navigation: Work, Games, Tooling, Experience, Notes.
 - Hero: headline, one paragraph, then **Contact me** (primary, amber), **CV (PDF)**, and **Play the card deck**, all in the first viewport at phone, tablet, and desktop sizes.
-- Hero proof card: three claims already evidenced in `src/lib/content.ts`, each linking to its case file or the experience record.
+- Hero right column: the pixel avatar (press it for the real photo, `/images/suren-portrait.webp`, in natural colour) and **Backlog Breaker**, a brick-breaker mini-game. Evidence lives in the Raid Signal milestone below the hero, every case file, and the experience record.
 - Every deck has a **Cards | List** switch. List is the plain archive. The choice persists per visitor and applies to every deck.
 - Every card has a visible **Open case file** link; the case file ends with Hire me and CV actions.
 
@@ -111,6 +111,16 @@ One art style everywhere it adds meaning: pixel sprites drawn in code and render
 - No pixel font: it would break Cyrillic and Georgian coverage. Text stays in Plex Sans and Plex Mono.
 - No 3D or WebGL anywhere: the Tooling atlas moved from a Three.js terrain to the card deck so the whole site shares one art style.
 
+## Backlog Breaker
+
+A brick-breaker in the hero, themed as clearing a wall of backlog tickets.
+
+- Chosen over Tetris and a Tamagotchi: it fits the hero's small, near-square slot; it plays with one control on every input (mouse, finger drag, arrow keys) where Tetris needs a tall well and several buttons; and it reads instantly in the pixel style.
+- 96x64 logical canvas scaled with `image-rendering: pixelated`; geometry is shared by the build-time poster and the engine (`src/lib/breaker-layout.ts`), so the board looks identical before and after Start.
+- The engine (`src/scripts/breaker.ts`, about 2 KB gzipped) downloads only when Start is pressed.
+- Controls: drag or move the pointer, or ← →; click, tap, Space, or Enter launches; P or Escape pauses; a visible Pause button covers the rest. Touch-drags steer the paddle only while a game is running, so the page still scrolls otherwise.
+- It pauses itself when the tab is hidden or another terminal panel is shown, never plays sound unless interface sound is on, and only moves after the visitor presses Start. Results are announced politely.
+
 ## Performance Budget
 
 Enforced by `npm run budget` (part of `npm run validate`) against the built `/en/` page:
@@ -118,5 +128,5 @@ Enforced by `npm run budget` (part of `npm run validate`) against the built `/en
 - Landing JS loaded before any interaction: at most 15 KB gzipped (5.7 KB at Phase 1).
 - Landing CSS: at most 32 KB gzipped (28.1 KB at Phase 1).
 - Inline pixel art: at most 20 KB gzipped per page. At Phase 2 the whole `/en/` HTML, art included, is about 19 KB gzipped.
-- Lazy only: the Web Awesome drawer (on first open) and future minigames (on their own route or on Start).
+- Lazy only: the Web Awesome drawer (on first open) and the Backlog Breaker engine (on Start).
 - No new runtime dependencies for cards: Pointer Events, CSS transforms, the Web Animations API, and cross-document View Transitions do the work.

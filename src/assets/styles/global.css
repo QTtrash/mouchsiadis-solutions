@@ -2503,7 +2503,7 @@ html:not(.js) .terminal-section {
   :root { --max: 1360px; }
 }
 
-/* ---- fast path: primary action, header hire button, hero proof ---- */
+/* ---- fast path: primary action and header hire button ---- */
 
 .visually-hidden {
   position: absolute !important;
@@ -2555,38 +2555,6 @@ html:not(.js) .terminal-section {
   box-shadow: 0 0 16px rgba(255, 176, 0, 0.22);
 }
 
-.proof-card h2 {
-  margin: 0 0 0.6rem;
-  color: var(--amber-bright);
-  font: 600 0.72rem/1.2 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.proof-card ul {
-  display: grid;
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.proof-card a {
-  display: block;
-  padding-left: 0.9rem;
-  border-left: 2px solid var(--line-strong);
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  line-height: 1.4;
-  text-decoration: none;
-}
-
-.proof-card a:hover,
-.proof-card a:focus-visible {
-  border-left-color: var(--amber);
-  color: var(--text-strong);
-}
-
 .contact-panel + .cv-panel {
   margin-top: 0.85rem;
   grid-template-columns: 1fr;
@@ -2598,7 +2566,7 @@ html:not(.js) .terminal-section {
     font-size: 0.72rem;
   }
 
-  .hero-panel .signal-card.proof-card {
+  .hero-panel .signal-card.arcade {
     display: block;
   }
 }
@@ -2684,10 +2652,10 @@ html[lang^="ka"] .hero-panel h1 {
   transition: opacity 160ms steps(4, end);
 }
 
+/* the real photo, in natural colour: pressing the pixel avatar reveals it */
 .avatar-card__photo {
   object-fit: cover;
   opacity: 0;
-  filter: grayscale(1) sepia(1) hue-rotate(58deg) saturate(1.25) contrast(1.05) brightness(0.85);
 }
 
 .avatar-card[aria-pressed="true"] .avatar-card__photo {

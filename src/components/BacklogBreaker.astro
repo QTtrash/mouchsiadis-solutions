@@ -1,0 +1,74 @@
+---
+// Backlog Breaker: a brick-breaker in the hero. The board is a build-time pixel
+// poster until someone presses Start; only then is the engine
+// (src/scripts/breaker.ts) downloaded, so the landing page stays within budget.
+import PixelArt from "./PixelArt.astro";
+import { BOARD } from "../lib/breaker-layout";
+import { breakerPoster } from "../lib/sprites";
+import { arcadeCopy, type Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = arcadeCopy[locale];
+---
+
+<section
+  class="signal-card arcade"
+  aria-labelledby="arcade-title"
+  data-arcade
+  data-copy={JSON.stringify({
+    start: copy.start,
+    pause: copy.pause,
+    resume: copy.resume,
+    again: copy.again,
+    serve: copy.serve,
+    won: copy.won,
+    lost: copy.lost,
+  })}
+>
+  <div class="arcade__bar">
+    <h2 id="arcade-title">{copy.title}</h2>
+    <p class="arcade__hud" aria-hidden="true">
+      <span>{copy.score} <b data-arcade-score>0000</b></span>
+      <span>{copy.lives} <b data-arcade-lives>■■■</b></span>
+    </p>
+  </div>
+
+  <div
+    class="arcade__stage"
+    data-arcade-stage
+    tabindex="0"
+    role="application"
+    aria-label={copy.label}
+    aria-describedby="arcade-help"
+  >
+    <PixelArt grid={breakerPoster} class="arcade__poster" />
+    <canvas width={BOARD.width} height={BOARD.height} hidden></canvas>
+    <div class="arcade__overlay" data-arcade-overlay>
+      <p data-arcade-message></p>
+      <button class="button button--primary" type="button" data-arcade-start>{copy.start}</button>
+    </div>
+  </div>
+
+  <div class="arcade__foot">
+    <p class="arcade__help" id="arcade-help">{copy.help}</p>
+    <button class="arcade__pause" type="button" data-arcade-pause hidden>{copy.pause}</button>
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-arcade-live></p>
+</section>
+
+<script>
+  // Load the engine on first Start only.
+  document.querySelectorAll<HTMLElement>("[data-arcade]").forEach((root) => {
+    const start = root.querySelector<HTMLButtonElement>("[data-arcade-start]");
+    // After mounting, the engine handles the button itself (resume, play again).
+    start?.addEventListener(
+      "click",
+      async () => (await import("../scripts/breaker")).mountBreaker(root),
+      { once: true },
+    );
+  });
+</script>

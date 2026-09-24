@@ -46,43 +46,6 @@ export interface ExperienceEntry {
   cover: string;
 }
 
-/** Hero proof points: each one is a claim already evidenced by an entry below. */
-export interface ProofPoint {
-  label: LocalizedString;
-  /** Case-file slug, or "experience" for the service record. */
-  target: string;
-}
-
-export const proofPoints: ProofPoint[] = [
-  {
-    target: "ypay",
-    label: {
-      en: "YPay: a live multi-tenant payout platform with provider integrations and reconciliation.",
-      ru: "YPay: рабочая мультитенантная платформа выплат с интеграциями провайдеров и сверкой.",
-      de: "YPay: eine live betriebene, mandantenfähige Auszahlungsplattform mit Provider-Integrationen und Abgleich.",
-      ge: "YPay: მოქმედი მრავალმოიჯარიანი გადახდების პლატფორმა პროვაიდერების ინტეგრაციითა და შეჯერებით.",
-    },
-  },
-  {
-    target: "experience",
-    label: {
-      en: "NEO TAXI: led a driver and fleet management system for 10,000+ active drivers.",
-      ru: "NEO TAXI: руководил разработкой системы управления водителями и флотом для 10 000+ активных водителей.",
-      de: "NEO TAXI: Leitung eines Fahrer- und Flottenmanagement-Systems für mehr als 10.000 aktive Fahrer.",
-      ge: "NEO TAXI: ვხელმძღვანელობდი მძღოლებისა და ავტოპარკის მართვის სისტემას 10 000+ აქტიური მძღოლისთვის.",
-    },
-  },
-  {
-    target: "raid-signal",
-    label: {
-      en: "Raid Signal: open-source, end-to-end encrypted, with verifiable releases.",
-      ru: "Raid Signal: открытый код, сквозное шифрование и проверяемые релизы.",
-      de: "Raid Signal: Open Source, Ende-zu-Ende-verschlüsselt, mit überprüfbaren Releases.",
-      ge: "Raid Signal: ღია კოდი, ბოლომდე დაშიფვრა და შემოწმებადი რელიზები.",
-    },
-  },
-];
-
 export const projects: ProjectEntry[] = [
   {
     slug: "ypay",
