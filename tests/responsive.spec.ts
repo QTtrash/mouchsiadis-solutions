@@ -198,3 +198,16 @@ for (const path of ["/en/", "/en/tooling/", "/ru/work/ypay/", "/ru/blog/tonight-
     await expect(footer.getByRole("link", { name: /\(PDF\)/ })).toHaveAttribute("href", "/cv/Suren_Mouchsiadis_CV.pdf");
   });
 }
+
+for (const path of ["/en/", "/en/tooling/", "/404.html"]) {
+  test(`${path} footer sits on the bottom edge, never mid-page`, async ({ page }) => {
+    await page.goto(path);
+    const { footerBottom, docHeight, viewport } = await page.evaluate(() => ({
+      footerBottom: document.querySelector(".site-footer")!.getBoundingClientRect().bottom + scrollY,
+      docHeight: document.documentElement.scrollHeight,
+      viewport: innerHeight,
+    }));
+    expect(docHeight).toBeGreaterThanOrEqual(viewport);
+    expect(Math.abs(docHeight - footerBottom)).toBeLessThanOrEqual(1);
+  });
+}

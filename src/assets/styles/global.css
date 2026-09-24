@@ -314,9 +314,15 @@ summary:focus-visible {
   );
 }
 
+/* sticky footer: the shell is at least one screen tall and main takes the
+   slack, so the footer sits on the bottom edge even on short pages */
 .site-shell {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .site-main,
@@ -327,7 +333,15 @@ summary:focus-visible {
 }
 
 .site-main {
+  flex: 1 0 auto;
   padding-bottom: 1.25rem;
+}
+
+/* console pages centre the terminal in the space between header and footer */
+.has-console .site-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .site-header {
@@ -3025,4 +3039,8 @@ body {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
+}
+
+.not-found-shell {
+  margin-top: 1.5rem;
 }
