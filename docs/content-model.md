@@ -9,7 +9,7 @@ Supported locales:
 - `de`
 - `ge`
 
-The visible language switcher uses `EN / RU / DE / GE`.
+The visible language switcher uses `EN / RU / DE / GE`. The Georgian route remains `/ge/`, while HTML language metadata uses `ka-GE` through `localeIntlCodes`.
 
 ## Portfolio Content
 
@@ -25,6 +25,7 @@ Each project entry includes:
 - `title`
 - localized `eyebrow`
 - localized `summary`
+- optional localized `cardSummary` — concise, authored copy shared by cards, homepage proof links, and the open-source showcase
 - localized `narrative`
 - localized `details`
 - `stack`
@@ -42,7 +43,7 @@ Selected professional entries:
 - `YPay`
 - `YDesk`
 
-Live tools are stored separately as `toolProjects` and rendered as Tool cards on the landing Work deck and the Tooling page. Game entries are stored as `gameProjects` and render as the Games deck.
+Tools are stored separately as `toolProjects` and rendered as Tool cards on the landing Work deck and the Tooling page. This collection includes production systems and prereleases; membership does not imply LIVE status. The Tooling count is the record count. Game entries are stored as `gameProjects` and render as the Games deck.
 
 - `FlyGod Studios`
 - `Alice Plays`
@@ -51,7 +52,7 @@ Live tools are stored separately as `toolProjects` and rendered as Tool cards on
 
 ### Cards and Case Files
 
-Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. A card's outcome sentence is `evidence.outcomes` when present, otherwise `summary`, so the strongest evidenced sentence always leads.
+Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files retain the full outcome, summary, and evidence.
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
@@ -82,10 +83,19 @@ Rules used in this implementation:
 - shell/navigation/metadata are localized
 - posts are listed across all locale shells
 - original post language is labeled on listings and detail pages
-- language inference currently uses filename/slug convention:
-  - `de-*` => German
-  - everything else => Russian
+- each post declares `language` in frontmatter, validated against the supported locale keys by `src/content.config.ts`
+- each article has one original-language URL, `/<post.language>/blog/<slug>/`; localized indices link to that URL
+- title, excerpt, and body language metadata uses `localeIntlCodes`; localized dates and interface labels retain the shell language
+- switching an article’s interface language leads to that locale’s blog index
 
-If future English posts are added, extend the inference logic in `src/lib/blog.ts`.
+New English or Georgian posts need the corresponding frontmatter value; no filename inference or translation pass is required.
 
 Navigation, preferences, hero positioning, evidence labels, and all card, reader, and case-file copy (`deckCopy`, `evidenceLabels` in `src/lib/i18n.ts`) are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.
+
+## Open-Source Showcase
+
+The landing showcase derives `openSourceRecords` from Tool records that have a `sourceLink`. Keep project descriptions, links, source links, status, stack, and cover selection there; `i18n.ts` supplies only generic showcase/interface labels. Raid Signal and Regrind appear in the same collection without duplicating their project copy in the page template.
+
+Regrind is an MIT-licensed Windows desktop application for solo Counter-Strike 2 practice, managing a separate local dedicated server. Its current prerelease is distinct from a deployed production service: it does not set `live: true`. Describe implemented capabilities separately from planned features, and link release evidence through the public project/source links. Recheck release status when revising the record.
+
+New featured work must supply all four locale values. Georgian interface terms use “ინსტრუმენტები” for tools and “პროექტის ნახვა” for the direct project action. Technical names remain unchanged where translation would obscure the product or technology. A native Georgian editorial review remains useful for nuance; do not rewrite historical blog bodies as part of that review.

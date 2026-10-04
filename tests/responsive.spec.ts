@@ -142,9 +142,9 @@ test("desktop panels scroll inside the terminal and reset on tab changes", async
 
 test("tooling is a terminal panel with the tool card deck", async ({ page }) => {
   await page.goto("/en/tooling/");
-  await expect(page.locator("h1")).toHaveText("Working systems, mapped.");
+  await expect(page.locator("h1")).toHaveText("Tools built for practice.");
   const cards = page.locator("#tooling [data-card]");
-  await expect(cards).toHaveCount(2);
+  await expect(cards).toHaveCount(3);
   await expect(cards.first()).toHaveAttribute("data-suit", "tool");
   await expect(page.locator("#tooling [data-card-open]").first()).toHaveAttribute("href", "/en/work/grindlike/");
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

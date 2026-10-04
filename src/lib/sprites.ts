@@ -63,6 +63,19 @@ const projectArt: Record<string, Grid> = {
     c.glyph(17, 5, ["..aaa..", ".a...a.", ".a...a.", "aaaaaaa", "aayyyaa", "aaayaaa", "aaaaaaa"]);
   }),
 
+  // one local server linked to a practice target; no hosted or multiplayer motif
+  regrind: art((c) => {
+    c.rect(3, 4, 10, 12, "c").box(2, 3, 12, 14, "a");
+    for (const y of [6, 10, 14]) {
+      c.hline(4, y, 6, "b").set(11, y, "y");
+    }
+    c.hline(15, 10, 7, "b").set(21, 9, "a").set(21, 11, "a");
+    c.ring(30, 10, 6, "b").ring(30, 10, 3, "a").set(30, 10, "y");
+    c.hline(22, 10, 3, "h").hline(36, 10, 3, "h");
+    c.vline(30, 2, 3, "h").vline(30, 16, 3, "h");
+    c.hline(3, 19, 11, "c").hline(25, 19, 11, "c");
+  }),
+
   // a winged controller under a halo
   "flygod-studios": art((c) => {
     const wing = ["aaaa......", ".abbaa....", "..abbbaa..", "...abbbbaa", ".....abbba", ".......aab"];

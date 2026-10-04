@@ -28,7 +28,7 @@ test("every card opens a localized case file", async ({ page, request }) => {
   await page.goto("/en/");
   const links = page.locator("[data-card-open]");
   const hrefs = await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  expect(hrefs.length).toBe(8);
+  expect(hrefs).toHaveLength(9);
   for (const href of hrefs) {
     expect(href).toMatch(/^\/en\/work\/[a-z-]+\/$/);
     for (const locale of ["en", "ru", "de", "ge"]) {
@@ -80,7 +80,7 @@ test("desktop: dragging a card into the reader opens its case file", async ({ pa
   await openWorkPanel(page);
   const deck = page.locator("#software-work [data-deck]");
   await expect(deck).toHaveClass(/is-draggable/);
-  await expect(deck).toHaveClass(/is-fanned/);
+  await expect(deck).not.toHaveClass(/is-fanned/);
 
   const art = deck.locator('[data-card][data-title="YDesk"] .deck-card__art');
   const from = (await art.boundingBox())!;

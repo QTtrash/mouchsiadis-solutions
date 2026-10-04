@@ -22,7 +22,9 @@ Multilingual portfolio, blog, and CV site for `mouchsiadis-solutions.com`.
 
 ## Visual Direction
 
-The landing page is a playable portfolio inside a retro field-terminal console. Visitors who are hiring get a fast path (Hire me, CV, three evidenced proof points) on the first screen. Everyone else can play the work: projects and games are record cards you flip and drag into the terminal's card reader to open a shareable case file. All art is code-drawn pixel sprites rendered to SVG at build time, including a pixel avatar generated from the profile photo. Every card interaction has a plain equivalent (a List view and an Open case file link). The design avoids direct Fallout asset or logo reuse.
+The landing page is a portfolio inside a retro field-terminal console. Hiring visitors get immediate Contact and CV access, followed by project evidence. Technical visitors can explore complete card summaries, List views, shareable case files, and optional card/game interactions. Cards wrap without overlapping and keep their direct actions visible. All project art is code-drawn pixel SVG, including a pixel avatar generated from the profile photo. The open-source showcase shares content records with Work and Tooling, including Raid Signal and the Regrind Windows prerelease. Georgian text has explicit Noto glyph coverage alongside IBM Plex typography. The design avoids direct Fallout asset or logo reuse.
+
+The fitted console is a progressive enhancement for viewports at least 1120×720. Phones, tablets, short laptops, and JavaScript-disabled browsers use continuous document flow. Blog bodies and original-language article routes are preserved. Research principles, the responsive matrix, and review boundaries are documented in [docs/visual-design.md](./docs/visual-design.md).
 
 ## Command Summary
 
@@ -30,11 +32,12 @@ The landing page is a playable portfolio inside a retro field-terminal console. 
 - `npm run dev`: starts the Astro dev server
 - `npm run build`: generates `dist/`
 - `npm run check`: runs Astro and TypeScript diagnostics
-- `npm run budget`: checks landing-page JS/CSS against the performance budget (run after `build`)
+- `npm run budget`: checks landing-page JS/CSS and every generated page's inline SVG against the performance budgets (run after `build`)
 - `npm run test:e2e`: checks responsive behavior, card interactions, and accessibility in real browsers
 - `npm run validate`: check, build, budget, and the full e2e suite
 - `node scripts/pixelate-avatar.mjs`: regenerates the pixel avatar from `public/images/profile-pic.webp`
 - `npm run preview`: serves the built site locally
+- `node scripts/capture-design-audit.mjs`: captures the four-locale visual matrix from a running local preview
 - `./ops/setup`: creates `~/envs/mouchsiadis-solutions.env`
 - `./ops/deploy`: builds and deploys the app stack
 - `./ops/status`: shows git and compose status

@@ -81,7 +81,7 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
         }
       </nav>
       <a class="site-header__hire" href={contactHref} data-astro-prefetch>{nav.hireMe}</a>
-      <button class="site-header__options" type="button" data-drawer-open>
+      <button class="site-header__options" type="button" data-drawer-open aria-haspopup="dialog" aria-expanded="false">
         <span class="site-header__options-desktop">{nav.options}</span>
         <span class="site-header__options-mobile">{nav.menu}</span>
       </button>
@@ -155,9 +155,17 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
   let drawerModule: Promise<unknown> | undefined;
   openButton?.addEventListener("click", async () => {
     drawerModule ??= import("@awesome.me/webawesome/dist/components/drawer/drawer.js");
-    await drawerModule;
-    if (drawer) drawer.open = true;
+    try {
+      await drawerModule;
+      if (drawer) drawer.open = true;
+    } catch {
+      // Keep real navigation available if the optional drawer cannot download.
+      drawerModule = undefined;
+      document.documentElement.classList.add("drawer-unavailable");
+    }
   });
+  drawer?.addEventListener("wa-show", () => openButton?.setAttribute("aria-expanded", "true"));
+  drawer?.addEventListener("wa-hide", () => openButton?.setAttribute("aria-expanded", "false"));
   drawer?.querySelectorAll<HTMLAnchorElement>("[data-drawer-link]").forEach((link) => {
     link.addEventListener("click", () => {
       drawer.open = false;
@@ -170,9 +178,15 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
   const effectsButton = drawer?.querySelector<HTMLButtonElement>("[data-effects-preference]");
   const effectsLabel = effectsButton?.querySelector<HTMLElement>("[data-effects-label]");
 
+  const readPreference = (key: string): string | null => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  };
+  const writePreference = (key: string, value: string): void => {
+    try { localStorage.setItem(key, value); } catch { /* Keep the current page usable without storage. */ }
+  };
+  let soundOn = readPreference(SOUND_KEY) === "on";
+  let reduced = document.documentElement.dataset.effects === "reduced";
   const syncPreferences = () => {
-    const soundOn = localStorage.getItem(SOUND_KEY) === "on";
-    const reduced = localStorage.getItem(EFFECTS_KEY) === "reduced";
     soundButton?.setAttribute("aria-pressed", String(soundOn));
     const soundValue = soundButton?.querySelector("b");
     if (soundValue) soundValue.textContent = soundOn ? "ON" : "OFF";
@@ -185,14 +199,14 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
   };
 
   soundButton?.addEventListener("click", () => {
-    const enabled = localStorage.getItem(SOUND_KEY) !== "on";
-    localStorage.setItem(SOUND_KEY, enabled ? "on" : "off");
-    window.dispatchEvent(new CustomEvent("terminal-sound-change", { detail: enabled }));
+    soundOn = !soundOn;
+    writePreference(SOUND_KEY, soundOn ? "on" : "off");
+    window.dispatchEvent(new CustomEvent("terminal-sound-change", { detail: soundOn }));
     syncPreferences();
   });
   effectsButton?.addEventListener("click", () => {
-    const reduced = localStorage.getItem(EFFECTS_KEY) !== "reduced";
-    localStorage.setItem(EFFECTS_KEY, reduced ? "reduced" : "system");
+    reduced = !reduced;
+    writePreference(EFFECTS_KEY, reduced ? "reduced" : "system");
     document.documentElement.dataset.effects = reduced ? "reduced" : "system";
     syncPreferences();
   });

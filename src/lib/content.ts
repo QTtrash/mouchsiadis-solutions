@@ -2,13 +2,14 @@ import type { Locale } from "./i18n.ts";
 
 type LocalizedRecord<T> = { en: T } & Partial<Record<Locale, T>>;
 type LocalizedString = LocalizedRecord<string>;
-export type InstrumentKind = "replay-lattice" | "sealed-relay";
 
 export interface ProjectEntry {
   slug: string;
   title: string;
   eyebrow: LocalizedString;
   summary: LocalizedString;
+  /** Concise card copy; the full summary and evidence remain in the case file. */
+  cardSummary?: LocalizedString;
   narrative: LocalizedString;
   details: LocalizedRecord<string[]>;
   stack: string[];
@@ -21,17 +22,12 @@ export interface ProjectEntry {
   cover: string;
   /** Running in production: earns the LIVE foil on its card. */
   live?: boolean;
-  instrument?: InstrumentKind;
   evidence?: {
     role: LocalizedString;
     contribution: LocalizedString;
     constraints: LocalizedString;
     outcomes: LocalizedString;
   };
-}
-
-export interface ToolProjectEntry extends ProjectEntry {
-  instrument: InstrumentKind;
 }
 
 export interface ExperienceEntry {
@@ -50,10 +46,17 @@ export const projects: ProjectEntry[] = [
   {
     slug: "ypay",
     title: "YPay",
+    cardSummary: {
+      en: "Fleet payouts with tenant isolation, balance visibility and reconciliation.",
+      ru: "Выплаты автопаркам: изоляция клиентов, балансы и сверка платежей.",
+      de: "Flottenauszahlungen mit Mandantentrennung, Salden und Zahlungsabgleich.",
+      ge: "ავტოპარკების გადახდები, კლიენტების იზოლაცია და ბალანსების შეჯერება.",
+    },
     eyebrow: {
       en: "Tenant-aware payout platform",
       ru: "Мультиарендная платформа выплат",
-      de: "Mandantenfaehige Auszahlungsplattform",
+      de: "Mandantenfähige Auszahlungsplattform",
+      ge: "ავტოპარკების გადახდის პლატფორმა",
     },
     summary: {
       en: "A live tenant-aware payout platform for mobility fleets, with admin and driver experiences, balance visibility, payout orchestration, and reconciliation.",
@@ -99,6 +102,7 @@ export const projects: ProjectEntry[] = [
       en: ["public platform", "tenant routing", "payments"],
       ru: ["публичная платформа", "tenant routing", "платежи"],
       de: ["oeffentliche Plattform", "Tenant-Routing", "Payments"],
+      ge: ["პლატფორმა", "ავტოპარკები", "გადახდები"],
     },
     link: "https://ypay.ge",
     linkLabel: {
@@ -138,10 +142,17 @@ export const projects: ProjectEntry[] = [
   {
     slug: "ydesk",
     title: "YDesk",
+    cardSummary: {
+      en: "Dispatch and support with clear queues, case ownership and reliable notifications.",
+      ru: "Диспетчеризация и поддержка: очереди, ответственные и надёжные уведомления.",
+      de: "Disposition und Support mit klaren Warteschlangen, Zuständigkeiten und Benachrichtigungen.",
+      ge: "დისპეტჩერიზაცია და მხარდაჭერა: რიგები, პასუხისმგებელი პირები და შეტყობინებები.",
+    },
     eyebrow: {
       en: "Multi-tenant dispatch operations",
       ru: "Мультиарендные диспетчерские операции",
-      de: "Mandantenfaehige Dispatch-Operations",
+      de: "Mandantenfähige Disposition",
+      ge: "დისპეტჩერიზაცია და მხარდაჭერა",
     },
     summary: {
       en: "A production dispatch and support workspace for tenant operations, real-time workflows, notification workers, and accountable case handling.",
@@ -163,6 +174,9 @@ export const projects: ProjectEntry[] = [
     stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Workers", "Docker"],
     meta: {
       en: ["live platform", "multi-tenant", "operations"],
+      ru: ["действующая платформа", "изоляция клиентов", "операции"],
+      de: ["im Einsatz", "Mandantentrennung", "Betrieb"],
+      ge: ["მოქმედი პლატფორმა", "იზოლაცია", "ოპერაციები"],
     },
     link: "https://ydesk.org",
     linkLabel: {
@@ -201,22 +215,47 @@ export const projects: ProjectEntry[] = [
   },
 ];
 
-export const toolProjects: ToolProjectEntry[] = [
-  { slug: "grindlike", title: "Grindlike", eyebrow: { en: "CS2 demo intelligence" }, summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." }, narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." }, details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] }, stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"], meta: { en: ["live tool", "gaming analytics"] }, link: "https://grindlike.pro", linkLabel: { en: "open tool" }, cover: "truegrind", live: true, instrument: "replay-lattice" },
+export const toolProjects: ProjectEntry[] = [
+  {
+    slug: "grindlike",
+    title: "Grindlike",
+    eyebrow: { en: "CS2 demo intelligence", ru: "Аналитика демозаписей CS2", de: "CS2-Demoanalyse", ge: "CS2-ის ჩანაწერების ანალიზი" },
+    cardSummary: {
+      en: "Match demos become match history, replays and interactive CS2 analysis.",
+      ru: "Демозаписи матчей превращаются в историю, повторы и интерактивную аналитику CS2.",
+      de: "Match-Demos werden zu Spielverlauf, Replays und interaktiver CS2-Analyse.",
+      ge: "მატჩების ჩანაწერები, გამეორებები და CS2-ის ინტერაქტიული ანალიზი.",
+    },
+    summary: { en: "Match history, replay artifacts, server-side demo parsing, and explorable Counter-Strike analysis." },
+    narrative: { en: "A multi-service analytics system that turns raw match demos into durable, interactive evidence." },
+    details: { en: ["Steam and FACEIT identity flows", "Go parser and replay pipeline", "Public and account analysis surfaces"] },
+    stack: ["Next.js", "Go", "PostgreSQL", "Steam", "FACEIT"],
+    meta: { en: ["live tool", "gaming analytics"], ru: ["действующий продукт", "аналитика игр"], de: ["im Einsatz", "Spielanalyse"], ge: ["მოქმედი პროდუქტი", "თამაშის ანალიზი"] },
+    link: "https://grindlike.pro",
+    linkLabel: { en: "open tool", ru: "открыть сервис", de: "Anwendung öffnen", ge: "სერვისის გახსნა" },
+    cover: "truegrind",
+    live: true,
+  },
   {
     slug: "raid-signal",
     title: "Raid Signal",
+    cardSummary: {
+      en: "A Windows squad map with encrypted coordination between desktop and phone.",
+      ru: "Карта отряда для Windows с зашифрованной связью между компьютером и телефоном.",
+      de: "Eine Windows-Teamkarte mit verschlüsselter Abstimmung zwischen PC und Smartphone.",
+      ge: "რაზმის რუკა Windows-ისთვის, დაშიფრული კავშირით კომპიუტერსა და ტელეფონს შორის.",
+    },
     eyebrow: {
       en: "Encrypted open-source squad map",
-      de: "Verschluesselte Open-Source-Squad-Karte",
+      de: "Verschlüsselte Open-Source-Teamkarte",
       ru: "Зашифрованная карта отряда с открытым кодом",
-      ge: "დაშიფრული ღია კოდის რაზმის რუკა",
+      ge: "რაზმის დაშიფრული რუკა",
     },
     summary: {
-      en: "Mouchsiadis Solutions' first open-source release: a local-first Windows raid navigator with end-to-end encrypted desktop and phone coordination.",
-      de: "Das erste Open-Source-Release von Mouchsiadis Solutions: ein lokaler Windows-Raid-Navigator mit Ende-zu-Ende-verschluesselter Koordination fuer Desktop und Smartphone.",
-      ru: "Первый open-source релиз Mouchsiadis Solutions: локальный Windows-навигатор с end-to-end шифрованием координации на компьютере и телефоне.",
-      ge: "Mouchsiadis Solutions-ის პირველი ღია კოდის რელიზი: ლოკალური Windows რეიდ-ნავიგატორი ბოლომდე დაშიფრული კოორდინაციით კომპიუტერსა და ტელეფონზე.",
+      en: "An open-source Windows raid navigator with local maps and end-to-end encrypted coordination between desktop and phone.",
+      de: "Ein quelloffener Windows-Raid-Navigator mit lokalen Karten und Ende-zu-Ende-verschlüsselter Abstimmung zwischen PC und Smartphone.",
+      ru: "Windows-навигатор с открытым кодом, локальными картами и сквозным шифрованием связи между компьютером и телефоном.",
+      ge: "ღია კოდის რეიდ-ნავიგატორი Windows-ისთვის, ლოკალური რუკებითა და გამჭოლი დაშიფვრით დაცული კავშირით კომპიუტერსა და ტელეფონს შორის.",
     },
     narrative: {
       en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history. Source and release evidence are public on GitHub.",
@@ -235,7 +274,7 @@ export const toolProjects: ToolProjectEntry[] = [
       en: ["open source", "privacy-first"],
       de: ["Open Source", "Privacy-first"],
       ru: ["открытый код", "privacy-first"],
-      ge: ["ღია კოდი", "privacy-first"],
+      ge: ["ღია კოდი", "პირადი მონაცემების დაცვა"],
     },
     status: { en: "OPEN SOURCE", de: "OPEN SOURCE", ru: "ОТКРЫТЫЙ КОД", ge: "ღია კოდი" },
     link: "https://signal.mouchsiadis-solutions.com",
@@ -244,7 +283,77 @@ export const toolProjects: ToolProjectEntry[] = [
     sourceLinkLabel: { en: "view source", de: "Quellcode ansehen", ru: "исходный код", ge: "კოდის ნახვა" },
     cover: "truegrind",
     live: true,
-    instrument: "sealed-relay",
+  },
+  {
+    slug: "regrind",
+    title: "Regrind",
+    eyebrow: {
+      en: "Solo CS2 practice on Windows",
+      ru: "Одиночные тренировки в CS2 на Windows",
+      de: "Solo-Training für CS2 unter Windows",
+      ge: "ინდივიდუალური ვარჯიში CS2-ში",
+    },
+    cardSummary: {
+      en: "A local CS2 practice server with map discovery, Steam joining and session controls.",
+      ru: "Локальный сервер CS2: выбор карт, подключение через Steam и настройки тренировки.",
+      de: "Ein lokaler CS2-Trainingsserver mit Kartenauswahl, Steam-Beitritt und Sitzungssteuerung.",
+      ge: "CS2-ის ლოკალური სერვერი, რუკების არჩევა და Steam-ით დაკავშირება.",
+    },
+    summary: {
+      en: "A Windows desktop app that manages a separate local CS2 server for solo practice, with official and Workshop maps and practical session controls.",
+      ru: "Приложение для Windows, которое управляет отдельным локальным сервером CS2 для одиночных тренировок: официальные карты, Workshop и настройки сессии.",
+      de: "Eine Windows-App, die einen separaten lokalen CS2-Server für Solo-Training verwaltet – mit offiziellen Karten, Workshop-Karten und direkter Sitzungssteuerung.",
+      ge: "Windows-ის აპლიკაცია ინდივიდუალური ვარჯიშისთვის: ცალკე ლოკალური CS2 სერვერი, ოფიციალური და Workshop-ის რუკები და სავარჯიშო სესიის მართვა.",
+    },
+    narrative: {
+      en: "Regrind brings server setup, map selection, Steam joining and practice controls into one desktop interface. Rust manages the server lifecycle while React presents verified state. It works independently of True Grind accounts and services.",
+      ru: "Regrind объединяет установку сервера, выбор карты, подключение через Steam и управление тренировкой в одном приложении. Rust управляет жизненным циклом сервера, а React отображает его проверенное состояние. Аккаунт и сервисы True Grind не требуются.",
+      de: "Regrind vereint Serverinstallation, Kartenauswahl, Steam-Verbindung und Trainingseinstellungen in einer Desktop-App. Rust verwaltet den Server; React zeigt den überprüften Zustand an. Ein Konto oder Dienste von True Grind sind nicht erforderlich.",
+      ge: "Regrind ერთ აპლიკაციაში აერთიანებს სერვერის დაყენებას, რუკის არჩევას, Steam-ით დაკავშირებასა და ვარჯიშის პარამეტრებს. სერვერს Rust მართავს, React კი მის შემოწმებულ მდგომარეობას აჩვენებს. True Grind-ის ანგარიში და სერვისები საჭირო არ არის.",
+    },
+    details: {
+      en: [
+        "MIT-licensed application built with Tauri, React, TypeScript and Rust, with a native Win32 process bridge.",
+        "Official maps, a curated Workshop library with search and filters, individual map imports and local favorites.",
+        "Round, ammunition, grenade and bot controls, with server and map readiness checked before joining.",
+        "Windows x64 prerelease with an unsigned installer; Windows 11 is the tested platform. Setup needs Steam, CS2, internet and 90 GB free for a separate server installation.",
+        "Solo sessions only. Workshop training belongs to each map; multiplayer, saved lineups and original drills remain planned work. Offline play is not promised.",
+      ],
+      ru: [
+        "Приложение с лицензией MIT на Tauri, React, TypeScript и Rust с нативным мостом Win32 для управления процессами.",
+        "Официальные карты, подборка Workshop с поиском и фильтрами, импорт отдельных карт и локальное избранное.",
+        "Настройки раундов, боеприпасов, гранат и ботов; готовность сервера и карты проверяется до подключения.",
+        "Предварительная версия для Windows x64 с неподписанным установщиком; проверена на Windows 11. Для настройки нужны Steam, CS2, интернет и 90 ГБ свободного места под отдельный сервер.",
+        "Только одиночные сессии. Возможности тренировки в Workshop зависят от карты; мультиплеер, сохранённые раскидки и собственные упражнения пока в планах. Игра без интернета не гарантируется.",
+      ],
+      de: [
+        "MIT-lizenzierte Anwendung mit Tauri, React, TypeScript und Rust sowie einer nativen Win32-Anbindung für die Prozessverwaltung.",
+        "Offizielle Karten, kuratierte Workshop-Bibliothek mit Suche und Filtern, Kartenimport und lokale Favoriten.",
+        "Steuerung für Runden, Munition, Granaten und Bots; Server und Karte werden vor dem Beitritt auf Bereitschaft geprüft.",
+        "Vorabversion für Windows x64 mit unsigniertem Installer; getestet unter Windows 11. Die Einrichtung benötigt Steam, CS2, Internet und 90 GB freien Speicher für einen separaten Server.",
+        "Nur Solo-Sitzungen. Workshop-Training stammt von der jeweiligen Karte; Mehrspieler, gespeicherte Granatenwürfe und eigene Übungen sind geplant. Offline-Spiel wird nicht zugesichert.",
+      ],
+      ge: [
+        "MIT ლიცენზიის მქონე აპლიკაცია Tauri-ზე, React-ზე, TypeScript-სა და Rust-ზე; პროცესებს Win32-ის ინტერფეისით მართავს.",
+        "ოფიციალური რუკები, Workshop-ის შერჩეული კატალოგი ძიებითა და ფილტრებით, რუკების დამატება და რჩეულების ლოკალურად შენახვა.",
+        "რაუნდების, საბრძოლო მასალის, ყუმბარებისა და ბოტების მართვა; დაკავშირებამდე სერვერისა და რუკის მზადყოფნა მოწმდება.",
+        "წინასწარი ვერსია Windows x64-ისთვის, ციფრული ხელმოწერის გარეშე; შემოწმებულია Windows 11-ზე. დაყენებას სჭირდება Steam, CS2, ინტერნეტი და 90 გბ თავისუფალი ადგილი ცალკე სერვერისთვის.",
+        "მხოლოდ ინდივიდუალური სესიები. Workshop-ში ვარჯიშის შესაძლებლობებს რუკა განსაზღვრავს; მრავალმოთამაშიანი რეჟიმი, შენახული ყუმბარის პოზიციები და საკუთარი სავარჯიშოები ჯერ დაგეგმილია. ინტერნეტის გარეშე თამაში გარანტირებული არ არის.",
+      ],
+    },
+    stack: ["Tauri 2", "React", "TypeScript", "Rust", "Win32", "SteamCMD"],
+    meta: {
+      en: ["MIT open source", "Windows x64", "solo practice"],
+      ru: ["открытый код · MIT", "Windows x64", "одиночная практика"],
+      de: ["Open Source · MIT", "Windows x64", "Solo-Training"],
+      ge: ["ღია კოდი · MIT", "Windows x64", "ინდივიდუალური ვარჯიში"],
+    },
+    status: { en: "Prerelease", ru: "Предварительная версия", de: "Vorabversion", ge: "წინასწარი ვერსია" },
+    link: "https://grindlike.pro/regrind",
+    linkLabel: { en: "explore Regrind", ru: "о Regrind", de: "Regrind entdecken", ge: "Regrind-ის ნახვა" },
+    sourceLink: "https://github.com/QTtrash/regrind",
+    sourceLinkLabel: { en: "view source", ru: "исходный код", de: "Quellcode ansehen", ge: "კოდის ნახვა" },
+    cover: "regrind",
   },
 ];
 
@@ -252,12 +361,23 @@ export const gameProjects: ProjectEntry[] = [
   {
     slug: "flygod-studios",
     title: "FlyGod Studios",
-    eyebrow: { en: "Independent game studio" },
+    eyebrow: { en: "Independent game studio", ru: "Независимая игровая студия", de: "Unabhängiges Spielestudio", ge: "დამოუკიდებელი თამაშების სტუდია" },
+    cardSummary: {
+      en: "An independent studio for original games, experiments and playable systems.",
+      ru: "Независимая студия авторских игр, экспериментов и игровых систем.",
+      de: "Ein unabhängiges Studio für eigene Spiele, Experimente und spielbare Systeme.",
+      ge: "დამოუკიდებელი სტუდია ორიგინალური თამაშებისა და ექსპერიმენტებისთვის.",
+    },
     summary: { en: "A public studio home for authored games, experiments, and the systems that connect them." },
     narrative: { en: "FlyGod Studios gives the game work a coherent release identity without hiding the engineering behind each title." },
     details: { en: ["Independent game releases", "Studio-level presentation", "A growing catalogue of playable systems"] },
     stack: ["Web", "Game systems", "Realtime", "Creative direction"],
-    meta: { en: ["live studio", "independent games"] },
+    meta: {
+      en: ["live studio", "independent games"],
+      ru: ["действующая студия", "независимые игры"],
+      de: ["aktives Studio", "unabhängige Spiele"],
+      ge: ["მოქმედი სტუდია", "დამოუკიდებელი თამაშები"],
+    },
     link: "https://flygod.games",
     linkLabel: { en: "open studio" },
     cover: "sillybazaar",
@@ -266,10 +386,17 @@ export const gameProjects: ProjectEntry[] = [
   {
     slug: "alice-plays",
     title: "Alice Plays",
+    cardSummary: {
+      en: "Mobile puzzles with social sign-in, cloud saves and leaderboards, starting with Sudoku.",
+      ru: "Мобильные головоломки с входом через соцсети, облачными сохранениями и рейтингом.",
+      de: "Mobile Rätsel mit Social Login, Cloud-Spielständen und Ranglisten – beginnend mit Sudoku.",
+      ge: "მობილური თავსატეხები, ღრუბელში შენახული პროგრესი და მოთამაშეთა რეიტინგი.",
+    },
     eyebrow: {
       en: "Puzzle platform",
       ru: "Платформа головоломок",
       de: "Puzzle-Plattform",
+      ge: "თავსატეხების პლატფორმა",
     },
     summary: {
       en: "A multi-game puzzle platform starting with Sudoku, built with social sign-in, cloud saves, leaderboards, PWA behavior, and mobile-first play.",
@@ -315,6 +442,7 @@ export const gameProjects: ProjectEntry[] = [
       en: ["public product", "games", "mobile-first"],
       ru: ["публичный продукт", "игры", "mobile-first"],
       de: ["oeffentliches Produkt", "Games", "mobile-first"],
+      ge: ["თავსატეხები", "მობილური", "თამაშები"],
     },
     link: "https://www.alice-plays.online/",
     linkLabel: {
@@ -328,10 +456,17 @@ export const gameProjects: ProjectEntry[] = [
   {
     slug: "rifle-revolver",
     title: "Rifle Revolver",
+    cardSummary: {
+      en: "A RimWorld weapon mod combining a rifle silhouette with revolver mechanics.",
+      ru: "Оружейный мод для RimWorld: силуэт винтовки и механика револьвера.",
+      de: "Ein RimWorld-Waffenmod mit Gewehrsilhouette und Revolvermechanik.",
+      ge: "RimWorld-ის მოდი, რომელიც შაშხანასა და რევოლვერს აერთიანებს.",
+    },
     eyebrow: {
       en: "RimWorld weapon mod",
       ru: "Мод оружия для RimWorld",
       de: "RimWorld-Waffenmod",
+      ge: "იარაღის მოდი RimWorld-ისთვის",
     },
     summary: {
       en: "A RimWorld weapon mod centered on a rifle-revolver hybrid silhouette, tuning weapon feel, item identity, and battlefield role inside the game’s mod ecosystem.",
@@ -374,6 +509,7 @@ export const gameProjects: ProjectEntry[] = [
       en: ["workshop release", "weapon design", "modding"],
       ru: ["workshop-релиз", "weapon design", "моддинг"],
       de: ["Workshop-Release", "Weapon Design", "Modding"],
+      ge: ["Workshop", "იარაღის დიზაინი", "მოდები"],
     },
     link: "https://steamcommunity.com/sharedfiles/filedetails/?id=2612445210",
     linkLabel: {
@@ -386,10 +522,17 @@ export const gameProjects: ProjectEntry[] = [
   {
     slug: "incendiary-revolver",
     title: "Incendiary Revolver",
+    cardSummary: {
+      en: "A RimWorld revolver mod with incendiary rounds and a distinct combat role.",
+      ru: "Револьвер для RimWorld с зажигательными боеприпасами и особой ролью в бою.",
+      de: "Ein RimWorld-Revolvermod mit Brandmunition und eigener taktischer Rolle.",
+      ge: "RimWorld-ის რევოლვერის მოდი ცეცხლგამჩენი საბრძოლო მასალით.",
+    },
     eyebrow: {
       en: "RimWorld weapon mod",
       ru: "Мод оружия для RimWorld",
       de: "RimWorld-Waffenmod",
+      ge: "იარაღის მოდი RimWorld-ისთვის",
     },
     summary: {
       en: "A RimWorld revolver mod built around incendiary identity, emphasizing fire-driven combat flavor, encounter shaping, and the theatrical side of weapon design.",
@@ -429,6 +572,7 @@ export const gameProjects: ProjectEntry[] = [
       en: ["workshop release", "incendiary theme", "modding"],
       ru: ["workshop-релиз", "огненная тема", "моддинг"],
       de: ["Workshop-Release", "Brand-Thema", "Modding"],
+      ge: ["Workshop", "ცეცხლგამჩენი იარაღი", "მოდები"],
     },
     link: "https://steamcommunity.com/sharedfiles/filedetails/?id=2615335684",
     linkLabel: {

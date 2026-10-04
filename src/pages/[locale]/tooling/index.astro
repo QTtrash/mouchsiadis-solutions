@@ -9,7 +9,15 @@ import TerminalChassis from "../../../components/TerminalChassis.astro";
 import { toolRecords } from "../../../lib/cards";
 import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
 import { navSprites } from "../../../lib/sprites";
-import { LOCALES, isLocale, localeLabels, localeSeo, navigationCopy, toolingCopy, type Locale } from "../../../lib/i18n";
+import {
+  LOCALES,
+  isLocale,
+  localeLabels,
+  localeSeo,
+  navigationCopy,
+  toolingCopy,
+  type Locale,
+} from "../../../lib/i18n";
 import "../../../assets/styles/deck.css";
 
 export function getStaticPaths() {
@@ -17,19 +25,28 @@ export function getStaticPaths() {
 }
 
 const localeParam = Astro.params.locale;
-if (!localeParam || !isLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
+if (!localeParam || !isLocale(localeParam))
+  throw new Error(`Unsupported locale: ${localeParam}`);
 const locale: Locale = localeParam;
 const copy = toolingCopy[locale];
 const seo = localeSeo[locale];
 const navigation = navigationCopy[locale];
 const home = buildLocalePath(locale);
-const kicker = copy.kicker.replace("{count}", String(toolRecords.length).padStart(2, "0"));
+const kicker = copy.kicker.replace(
+  "{count}",
+  String(toolRecords.length).padStart(2, "0"),
+);
 const tabs = [
   { key: "overview", href: `${home}#overview`, label: seo.nav.overview },
   { key: "work", href: `${home}#software-work`, label: seo.nav.work },
   { key: "games", href: `${home}#game-dev`, label: seo.nav.games },
   { key: "experience", href: `${home}#experience`, label: seo.nav.experience },
-  { key: "tooling", href: buildLocalePath(locale, "/tooling"), label: navigation.tooling, current: true },
+  {
+    key: "tooling",
+    href: buildLocalePath(locale, "/tooling"),
+    label: navigation.tooling,
+    current: true,
+  },
   { key: "notes", href: `${home}#blog`, label: seo.nav.blog },
   { key: "contact", href: `${home}#contact`, label: seo.nav.contact },
 ] as const;
@@ -41,11 +58,13 @@ const tabs = [
   localePathSuffix="/tooling"
   title={navigation.tooling}
   description={copy.body}
-  image="/images/raid-signal-open-source.webp"
   alternates={buildLocaleAlternates("/tooling")}
   bodyClass="has-console"
 >
-  <section class="terminal-console section tooling-console" data-terminal-lang={localeLabels[locale]}>
+  <section
+    class="terminal-console section tooling-console"
+    data-terminal-lang={localeLabels[locale]}
+  >
     <TerminalChassis />
     <div class="terminal-status" aria-hidden="true">
       <span>Mouchsiadis // field terminal</span>
@@ -63,7 +82,10 @@ const tabs = [
               aria-current={"current" in tab ? "page" : undefined}
               data-astro-prefetch
             >
-              <PixelArt grid={navSprites[tab.key]!} class="terminal-side-nav__icon" />
+              <PixelArt
+                grid={navSprites[tab.key]!}
+                class="terminal-side-nav__icon"
+              />
               {tab.label}
             </a>
           ))

@@ -3,19 +3,27 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
+import OpenSourceShowcase from "../../components/OpenSourceShowcase.astro";
 import BacklogBreaker from "../../components/BacklogBreaker.astro";
 import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
 import { experiences } from "../../lib/content";
-import { gameRecords, localize, workRecords } from "../../lib/cards";
+import {
+  cardSummary,
+  casePath,
+  gameRecords,
+  localize,
+  workRecords,
+} from "../../lib/cards";
 import {
   buildLocaleAlternates,
   buildLocalePath,
   sortPosts,
   formatDate,
   getPostLanguage,
+  getPostLanguageLabel,
   getPostSlug,
 } from "../../lib/blog";
 import {
@@ -23,6 +31,7 @@ import {
   deckCopy,
   isLocale,
   localeLabels,
+  localeIntlCodes,
   localeSeo,
   navigationCopy,
   type Locale,
@@ -44,8 +53,12 @@ const copy = localeSeo[locale];
 const navigation = navigationCopy[locale];
 const deck = deckCopy[locale];
 const alternates = buildLocaleAlternates();
-const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) => localize(record, locale);
+const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
+  localize(record, locale);
 const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
+const proofRecords = workRecords.filter(({ entry }) =>
+  ["ypay", "ydesk", "raid-signal"].includes(entry.slug),
+);
 const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
 ---
 
@@ -68,14 +81,47 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
           class="is-active"
           href="#overview"
           data-terminal-tab
-          aria-current="page"><PixelArt grid={navSprites.overview} class="terminal-side-nav__icon" />{copy.nav.overview}</a
+          aria-current="page"
+          ><PixelArt
+            grid={navSprites.overview}
+            class="terminal-side-nav__icon"
+          />{copy.nav.overview}</a
         >
-        <a href="#software-work" data-terminal-tab><PixelArt grid={navSprites.work} class="terminal-side-nav__icon" />{copy.nav.work}</a>
-        <a href="#game-dev" data-terminal-tab><PixelArt grid={navSprites.games} class="terminal-side-nav__icon" />{copy.nav.games}</a>
-        <a href="#experience" data-terminal-tab><PixelArt grid={navSprites.experience} class="terminal-side-nav__icon" />{copy.nav.experience}</a>
-        <a class="tooling-portal-link" href={buildLocalePath(locale, "/tooling")}><PixelArt grid={navSprites.tooling} class="terminal-side-nav__icon" />{navigation.tooling} ↗</a>
-        <a href="#blog" data-terminal-tab><PixelArt grid={navSprites.notes} class="terminal-side-nav__icon" />{copy.nav.blog}</a>
-        <a href="#contact" data-terminal-tab><PixelArt grid={navSprites.contact} class="terminal-side-nav__icon" />{copy.nav.contact}</a>
+        <a href="#software-work" data-terminal-tab
+          ><PixelArt grid={navSprites.work} class="terminal-side-nav__icon" />{
+            copy.nav.work
+          }</a
+        >
+        <a href="#game-dev" data-terminal-tab
+          ><PixelArt grid={navSprites.games} class="terminal-side-nav__icon" />{
+            copy.nav.games
+          }</a
+        >
+        <a href="#experience" data-terminal-tab
+          ><PixelArt
+            grid={navSprites.experience}
+            class="terminal-side-nav__icon"
+          />{copy.nav.experience}</a
+        >
+        <a
+          class="tooling-portal-link"
+          href={buildLocalePath(locale, "/tooling")}
+          ><PixelArt
+            grid={navSprites.tooling}
+            class="terminal-side-nav__icon"
+          />{navigation.tooling}</a
+        >
+        <a href="#blog" data-terminal-tab
+          ><PixelArt grid={navSprites.notes} class="terminal-side-nav__icon" />{
+            copy.nav.blog
+          }</a
+        >
+        <a href="#contact" data-terminal-tab
+          ><PixelArt
+            grid={navSprites.contact}
+            class="terminal-side-nav__icon"
+          />{copy.nav.contact}</a
+        >
       </nav>
 
       <div class="terminal-console__content">
@@ -93,8 +139,10 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
               <p class="hero-panel__body">{copy.heroBody}</p>
 
               <div class="hero-panel__actions" data-fast-path>
-                <a class="button button--primary" href="#contact" data-terminal-jump
-                  >{copy.cta.contact}</a
+                <a
+                  class="button button--primary"
+                  href="#contact"
+                  data-terminal-jump>{copy.cta.contact}</a
                 >
                 <a
                   class="button"
@@ -102,14 +150,31 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                   target="_blank"
                   rel="noopener noreferrer">{copy.cta.cv}</a
                 >
-                <a class="button button--ghost" href="#software-work" data-terminal-jump
-                  >{copy.cta.play}</a
+                <a
+                  class="button button--ghost"
+                  href="#software-work"
+                  data-terminal-jump>{copy.cta.play}</a
                 >
               </div>
 
+              <ul class="hero-proof" role="list">
+                {
+                  proofRecords.map(({ entry }) => (
+                    <li>
+                      <a href={casePath(locale, entry.slug)}>
+                        <>
+                          <strong>
+                            {entry.title} <span aria-hidden="true">↗</span>
+                          </strong>
+                          <span>{cardSummary(entry, locale)}</span>
+                        </>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
               <div class="hero-panel__chips">
                 <span>{copy.labels.basedIn}</span>
-                <span>{copy.labels.studioMode}</span>
                 <span>{copy.labels.availableFor}</span>
               </div>
             </div>
@@ -140,39 +205,12 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
             </div>
           </div>
 
-          <aside
-            class="open-source-milestone"
-            aria-labelledby="open-source-title"
-          >
-            <img
-              src="/images/raid-signal-open-source.webp"
-              alt=""
-              width="1280"
-              height="640"
-              loading="lazy"
-            />
-            <div>
-              <p class="section-heading__kicker">
-                {copy.labels.openSourceKicker}
-              </p>
-              <h2 id="open-source-title">{copy.labels.openSourceTitle}</h2>
-              <p>{copy.labels.openSourceBody}</p>
-            </div>
-            <nav aria-label={copy.labels.openSourceTitle}>
-              <a
-                class="button"
-                href="https://signal.mouchsiadis-solutions.com"
-                target="_blank"
-                rel="noopener noreferrer">{copy.labels.openSourceProduct}</a
-              >
-              <a
-                class="button button--ghost"
-                href="https://github.com/QTtrash/tarkov-map"
-                target="_blank"
-                rel="noopener noreferrer">{copy.labels.openSourceCode}</a
-              >
-            </nav>
-          </aside>
+          <OpenSourceShowcase
+            locale={locale}
+            kicker={copy.labels.openSourceKicker}
+            title={copy.labels.openSourceTitle}
+            body={copy.labels.openSourceBody}
+          />
         </section>
 
         <section
@@ -222,9 +260,9 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                 <ArchiveEntry
                   compact={true}
                   title={`${localized(entry.title)} / ${entry.company}`}
-                  eyebrow={localized(entry.summary)}
-                  summary={`${entry.range} / ${entry.location}`}
-                  narrative={localized(entry.summary)}
+                  eyebrow=""
+                  summary={localized(entry.summary)}
+                  narrative=""
                   details={localized(entry.details)}
                   stack={entry.stack}
                   meta={[entry.range, entry.location]}
@@ -255,8 +293,11 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                   <article class="blog-index__item">
                     <div class="blog-index__meta">
                       <span>{formatDate(post.data.date, locale)}</span>
+                      <span class="blog-index__language">
+                        {getPostLanguageLabel(getPostLanguage(post), locale)}
+                      </span>
                     </div>
-                    <h3>
+                    <h3 lang={localeIntlCodes[getPostLanguage(post)]}>
                       <a
                         href={buildLocalePath(
                           getPostLanguage(post),
@@ -266,7 +307,11 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                         {post.data.title}
                       </a>
                     </h3>
-                    {post.data.description && <p>{post.data.description}</p>}
+                    {post.data.description && (
+                      <p lang={localeIntlCodes[getPostLanguage(post)]}>
+                        {post.data.description}
+                      </p>
+                    )}
                   </article>
                 ))}
               </div>

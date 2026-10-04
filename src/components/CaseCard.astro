@@ -5,7 +5,13 @@
 import CoverArt from "./CoverArt.astro";
 import PixelArt from "./PixelArt.astro";
 import { monogram, suitSprites } from "../lib/sprites";
-import { cardOutcome, casePath, localize, transitionName, type CaseRecord } from "../lib/cards";
+import {
+  cardSummary,
+  casePath,
+  localize,
+  transitionName,
+  type CaseRecord,
+} from "../lib/cards";
 import { deckCopy, evidenceLabels, type Locale } from "../lib/i18n";
 
 interface Props {
@@ -54,13 +60,22 @@ const offset = index - (count - 1) / 2;
       </div>
       <h3 id={titleId}>{entry.title}</h3>
       <p class="deck-card__eyebrow">{localize(entry.eyebrow, locale)}</p>
-      <p class="deck-card__outcome">{cardOutcome(entry, locale)}</p>
+      <p class="deck-card__outcome">{cardSummary(entry, locale)}</p>
+      {
+        entry.status && (
+          <p class="project-status">{localize(entry.status, locale)}</p>
+        )
+      }
       <ul class="deck-card__keywords" role="list">
         {keywords.map((keyword) => <li>{keyword}</li>)}
       </ul>
     </div>
 
-    <div class="deck-card__face deck-card__face--back" data-card-face="back" inert>
+    <div
+      class="deck-card__face deck-card__face--back"
+      data-card-face="back"
+      inert
+    >
       <p class="deck-card__back-kicker">{copy.evidenceTitle} / {entry.title}</p>
       {
         entry.evidence ? (
@@ -76,7 +91,9 @@ const offset = index - (count - 1) / 2;
           </dl>
         ) : (
           <ul class="deck-card__details">
-            {details.map((item) => <li>{item}</li>)}
+            {details.map((item) => (
+              <li>{item}</li>
+            ))}
           </ul>
         )
       }
@@ -86,7 +103,12 @@ const offset = index - (count - 1) / 2;
   </article>
 
   <div class="deck-card__actions">
-    <button class="deck-card__flip" type="button" data-card-flip aria-pressed="false">
+    <button
+      class="deck-card__flip"
+      type="button"
+      data-card-flip
+      aria-pressed="false"
+    >
       {copy.flip}<span class="visually-hidden">: {entry.title}</span>
     </button>
     <a class="deck-card__open" href={href} data-card-open>

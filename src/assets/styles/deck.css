@@ -23,7 +23,7 @@ html[data-effects="reduced"]::view-transition-new(*) {
 }
 
 .card-deck {
-  --card-w: 12.5rem;
+  --card-w: 15rem;
   position: relative;
   display: grid;
   gap: 0.85rem;
@@ -52,7 +52,28 @@ html[data-effects="reduced"]::view-transition-new(*) {
 
 /* ---- Cards / List switch ---- */
 
+.card-deck__toolbar {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+}
+
+.card-deck.is-draggable .card-deck__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  padding-block: 0.5rem;
+  background: var(--screen);
+}
+
+.card-deck.is-draggable .deck-card {
+  scroll-margin-block-start: 5rem;
+}
+
 .card-deck__view {
+  order: 2;
+  flex: none;
+  margin-left: auto;
   display: inline-flex;
   justify-self: end;
   padding: 0.15rem;
@@ -73,9 +94,9 @@ html:not(.js) .card-deck__view {
   border-radius: 0.18rem;
   background: transparent;
   color: var(--text-subtle);
-  font: 600 0.72rem/1 var(--mono);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font: 600 0.8125rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
   cursor: pointer;
 }
 
@@ -98,22 +119,16 @@ html:not(.js) .card-deck__view {
   min-width: 0;
 }
 
-.card-deck.is-draggable .card-deck__view {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.card-deck.is-draggable[data-view="list"] {
-  padding-top: 3.4rem;
-}
-
 .card-hand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-w)), 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, var(--card-w)), 17.5rem)
+  );
+  justify-content: space-between;
+  gap: 1.25rem;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem;
   list-style: none;
 }
 
@@ -124,17 +139,15 @@ html:not(.js) .card-deck__view {
   display: grid;
   gap: 0.4rem;
   min-width: 0;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto 1fr;
   perspective: 1100px;
   container-type: inline-size;
 }
 
-/* 5:7 is a minimum (140% of the card's width): the front face stays in flow,
-   so long copy grows the card instead of being clipped */
+/* Both faces share one grid cell. The longer face determines height; 5:7 is a minimum. */
 .deck-card__body {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   min-height: 140cqw;
   transform-style: preserve-3d;
   transition: transform 320ms cubic-bezier(0.3, 0.7, 0.2, 1);
@@ -145,35 +158,35 @@ html:not(.js) .card-deck__view {
 }
 
 .deck-card__face {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  grid-area: 1 / 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  padding: 0.7rem;
+  gap: 0.65rem;
+  padding: 1rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--suit) 42%, transparent);
-  border-radius: 0.6rem;
+  border-radius: var(--radius);
   background:
-    linear-gradient(180deg, var(--suit-soft), transparent 38%),
-    linear-gradient(160deg, #081a0a, #030b04 70%);
-  box-shadow:
-    inset 0 0 0 3px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 4px color-mix(in srgb, var(--suit) 16%, transparent),
-    0 18px 40px -26px rgba(0, 0, 0, 0.95);
+    linear-gradient(180deg, var(--suit-soft), transparent 45%), var(--panel);
+  box-shadow: inset 0 2px var(--suit);
   backface-visibility: hidden;
 }
 
 .deck-card__face--front {
-  position: relative;
-  flex: 1;
+  opacity: 1;
 }
 
 .deck-card__face--back {
   transform: rotateY(180deg);
-  background:
-    repeating-linear-gradient(45deg, rgba(141, 255, 122, 0.035) 0 2px, transparent 2px 6px),
-    linear-gradient(160deg, #081a0a, #030b04 70%);
+  opacity: 0;
+}
+.deck-card.is-flipped .deck-card__face--front {
+  opacity: 0;
+}
+.deck-card.is-flipped .deck-card__face--back {
+  opacity: 1;
 }
 
 .deck-card__top {
@@ -181,9 +194,9 @@ html:not(.js) .card-deck__view {
   align-items: center;
   justify-content: space-between;
   gap: 0.4rem;
-  font: 600 0.7rem/1.1 var(--mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font: 600 0.75rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .deck-card__suit {
@@ -248,30 +261,24 @@ html:not(.js) .card-deck__view {
   margin: 0.1rem 0 0;
   color: var(--text-strong);
   font-family: var(--heading);
-  font-size: 1.05rem;
-  line-height: 1.1;
+  font-size: 1.375rem;
+  line-height: 1.25;
 }
 
 .deck-card__eyebrow,
 .deck-card__back-kicker {
   margin: 0;
   color: var(--suit);
-  font: 0.7rem/1.3 var(--mono);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font: 0.8125rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .deck-card__outcome {
-  display: -webkit-box;
-  flex: none;
   margin: 0;
-  overflow: hidden;
   color: var(--text-secondary);
-  font-size: 0.8rem;
-  line-height: 1.38;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
+  font-size: 0.9375rem;
+  line-height: 1.55;
 }
 
 .deck-card__keywords {
@@ -288,7 +295,7 @@ html:not(.js) .card-deck__view {
   border: 1px solid var(--line);
   border-radius: 0.15rem;
   color: var(--text-subtle);
-  font: 0.7rem/1.3 var(--mono);
+  font: 0.8125rem/1.5 var(--body);
 }
 
 .deck-card__evidence {
@@ -300,17 +307,17 @@ html:not(.js) .card-deck__view {
 
 .deck-card__evidence dt {
   color: var(--amber-bright);
-  font: 600 0.6rem/1.2 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 0.75rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .deck-card__evidence dd,
 .deck-card__details {
   margin: 0.2rem 0 0;
   color: var(--text-secondary);
-  font-size: 0.76rem;
-  line-height: 1.35;
+  font-size: 0.9375rem;
+  line-height: 1.55;
 }
 
 .deck-card__details {
@@ -326,6 +333,7 @@ html:not(.js) .card-deck__view {
 }
 
 .deck-card__actions {
+  grid-row: 1;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.35rem;
@@ -350,11 +358,11 @@ html:not(.js) .deck-card__actions {
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.3);
   color: var(--text);
-  font: 600 0.7rem/1.2 var(--mono);
-  letter-spacing: 0.02em;
+  font: 600 0.8125rem/1.5 var(--body);
+  letter-spacing: normal;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: none;
   cursor: pointer;
 }
 
@@ -416,13 +424,19 @@ html:not(.js) .deck-card__actions {
   display: none;
 }
 
-.card-deck.is-draggable .card-reader {
+.card-deck.is-draggable[data-view="list"] .card-reader {
+  display: none;
+}
+
+.card-deck.is-draggable:not([data-view="list"]) .card-reader {
+  flex: 1;
+  min-width: 0;
   display: grid;
-  grid-template-columns: auto auto minmax(10rem, 1fr) minmax(0, 14rem);
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: center;
   gap: 0.85rem;
   min-height: 2.9rem;
-  margin-right: 11rem;
+  margin-right: 0;
   padding: 0.35rem 0.75rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
@@ -441,9 +455,9 @@ html:not(.js) .deck-card__actions {
 
 .card-reader__label {
   color: var(--muted);
-  font: 600 0.7rem/1.2 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 0.8125rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
   white-space: nowrap;
 }
 
@@ -455,9 +469,16 @@ html:not(.js) .deck-card__actions {
   border: 1px dashed var(--line-strong);
   border-radius: 0.3rem;
   background:
-    linear-gradient(180deg, transparent 44%, rgba(0, 0, 0, 0.95) 44% 56%, transparent 56%),
+    linear-gradient(
+      180deg,
+      transparent 44%,
+      rgba(0, 0, 0, 0.95) 44% 56%,
+      transparent 56%
+    ),
     rgba(0, 0, 0, 0.35);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .card-reader__slot strong {
@@ -465,11 +486,12 @@ html:not(.js) .deck-card__actions {
   background: #030a04;
   color: var(--text-secondary);
   font: 600 0.7rem/1.3 var(--mono);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .card-reader__hint {
+  display: none;
   color: var(--text-subtle);
   font-size: 0.72rem;
   line-height: 1.3;
@@ -479,7 +501,9 @@ html:not(.js) .deck-card__actions {
 .card-reader.is-reading .card-reader__slot {
   border-color: var(--amber);
   border-style: solid;
-  box-shadow: 0 0 22px rgba(255, 176, 0, 0.22), inset 0 0 18px rgba(255, 176, 0, 0.12);
+  box-shadow:
+    0 0 22px rgba(255, 176, 0, 0.22),
+    inset 0 0 18px rgba(255, 176, 0, 0.12);
 }
 
 .card-reader.is-armed .card-reader__slot strong,
@@ -493,7 +517,7 @@ html:not(.js) .deck-card__actions {
   box-shadow: 0 0 8px var(--amber);
 }
 
-/* ---- drag and fan (desktop console) ---- */
+/* ---- optional drag (fitted desktop console) ---- */
 
 .deck-card__body {
   cursor: pointer;
@@ -519,86 +543,28 @@ html:not(.js) .deck-card__actions {
     0 0 26px color-mix(in srgb, var(--suit) 25%, transparent);
 }
 
-.card-deck.is-fanned {
-  --card-w: 12rem;
-}
-
-.card-deck.is-fanned .deck-card__art {
-  aspect-ratio: 5 / 2;
-}
-
-/* the hovered card leans toward the pointer (deck.ts sets --tilt-x/y) */
-.card-deck.is-fanned .deck-card:not(.is-flipped) .deck-card__body {
-  transform: rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
-  transition: transform 160ms ease-out;
-}
-
-/* while the pointer is on a card the tilt tracks it 1:1 (a transition here
-   restarts on every pointermove and makes the card lag behind the cursor) */
-.card-deck.is-fanned .deck-card:not(.is-flipped) .deck-card__body.is-tracking {
-  transition: none;
-}
-
-/* a fanned hand keeps cards even: two keywords each (the case file lists them all) */
-.card-deck.is-fanned .deck-card__keywords li:nth-child(n + 3) {
-  display: none;
-}
-
-.card-deck.is-fanned .deck-card__outcome {
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
-
-.card-deck.is-fanned .card-hand {
-  display: flex;
-  justify-content: center;
-  padding: 0.9rem 1rem 0;
-}
-
-.card-deck.is-fanned .deck-card {
-  flex: none;
-  width: var(--card-w);
-  transform: translateY(calc(var(--arc) * 0.3rem)) rotate(calc(var(--offset) * 1.8deg));
-  transform-origin: 50% 100%;
-  transition: transform 130ms cubic-bezier(0.2, 0.9, 0.3, 1);
-}
-
-/* overlap only as much as the hand needs to fit, leaving room for the edge cards' tilt */
-.card-deck.is-fanned .deck-card + .deck-card {
-  margin-inline-start: min(0.75rem, calc((100% - 2.5rem - var(--n) * var(--card-w)) / (var(--n) - 1)));
-}
-
-/* in a fanned hand the actions surface with the lifted card (hover or keyboard focus) */
-.card-deck.is-fanned .deck-card__actions {
-  opacity: 0;
-  transition: opacity 140ms ease;
-}
-
-.card-deck.is-fanned .deck-card:hover,
-.card-deck.is-fanned .deck-card:focus-within {
-  z-index: 10;
-  transform: translateY(-0.9rem) rotate(0deg);
-}
-
-.card-deck.is-fanned .deck-card:hover .deck-card__actions,
-.card-deck.is-fanned .deck-card:focus-within .deck-card__actions {
-  opacity: 1;
-}
-
-.card-deck.is-fanned .deck-card.is-dragging {
-  z-index: 20;
-  transform: rotate(-2deg);
-  transition: none;
-}
-
-.card-deck.is-fanned .deck-card.is-dragging .deck-card__actions {
-  opacity: 0;
+/* Optional fine-pointer tilt never changes the resting layout. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-effects="reduced"])
+    .card-deck.is-draggable
+    .deck-card:not(.is-flipped)
+    .deck-card__body {
+    transform: rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+  }
+  .deck-card__body.is-tracking {
+    transition: none;
+  }
 }
 
 /* ---- phone: a swipeable row instead of drag ---- */
 
 @media (max-width: 767px) {
+  .card-deck__toolbar {
+    display: block;
+  }
+
   .card-deck__view {
+    display: flex;
     justify-self: stretch;
   }
 
@@ -619,7 +585,7 @@ html:not(.js) .deck-card__actions {
   }
 
   .deck-card {
-    flex: 0 0 min(78%, 17rem);
+    flex: 0 0 min(90%, 19rem);
     scroll-snap-align: start;
   }
 
@@ -628,7 +594,7 @@ html:not(.js) .deck-card__actions {
   }
 
   .deck-card__outcome {
-    font-size: 0.86rem;
+    font-size: 0.9375rem;
   }
 }
 
@@ -647,9 +613,9 @@ html:not(.js) .deck-card__actions {
   align-items: center;
   min-height: 2.75rem;
   color: var(--muted);
-  font: 600 0.76rem/1 var(--mono);
+  font: 600 0.875rem/1.5 var(--body);
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .case-file__back:hover,
@@ -666,8 +632,7 @@ html:not(.js) .deck-card__actions {
   border: 1px solid color-mix(in srgb, var(--suit) 32%, transparent);
   border-radius: var(--radius);
   background:
-    linear-gradient(180deg, var(--suit-soft), transparent 50%),
-    var(--panel);
+    linear-gradient(180deg, var(--suit-soft), transparent 50%), var(--panel);
 }
 
 .case-file__cover {
@@ -687,14 +652,14 @@ html:not(.js) .deck-card__actions {
   color: #e8ffd3;
   font-family: var(--heading);
   font-size: clamp(2.2rem, 5vw, 3.3rem);
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .case-file__eyebrow {
   margin: 0 0 1rem;
   color: var(--suit);
   font: 0.8rem/1.4 var(--mono);
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .case-file__outcome {
@@ -727,9 +692,9 @@ html:not(.js) .deck-card__actions {
 .case-file h2 {
   margin: 0 0 0.6rem;
   color: var(--amber-bright);
-  font: 600 0.74rem/1.2 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 0.875rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .case-file__details {
@@ -763,14 +728,13 @@ html:not(.js) .deck-card__actions {
   border: 1px solid var(--amber-line);
   border-radius: var(--radius);
   background:
-    linear-gradient(180deg, var(--amber-soft), transparent 70%),
-    var(--panel);
+    linear-gradient(180deg, var(--amber-soft), transparent 70%), var(--panel);
 }
 
 .case-file__hire h2 {
   margin-bottom: 0.4rem;
   color: var(--text-strong);
-  font: 700 1.35rem/1.15 var(--heading);
+  font: 600 1.35rem/1.3 var(--heading);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -804,7 +768,7 @@ html:not(.js) .deck-card__actions {
 .case-file__adjacent span {
   color: var(--text-subtle);
   font: 0.7rem/1.2 var(--mono);
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .case-file__adjacent strong {
@@ -844,20 +808,12 @@ html:not(.js) .deck-card__actions {
 
 /* ---- Tooling: the atlas as a terminal panel (its heading is the page h1) ---- */
 
-.terminal-console .section-heading h1 {
-  margin-bottom: 0;
-  font-size: clamp(1.75rem, 2.8vw, 2.35rem);
-  text-shadow:
-    0 0 12px rgba(141, 255, 122, 0.2),
-    0 0 34px rgba(141, 255, 122, 0.09);
-}
-
 .tooling-note {
   margin: 1.25rem 0 0;
   color: var(--text-subtle);
-  font: 0.7rem/1.5 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 0.8125rem/1.6 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 /* ---- Backlog Breaker (hero mini-game) ---- */
@@ -878,9 +834,9 @@ html:not(.js) .deck-card__actions {
 .arcade h2 {
   margin: 0;
   color: var(--amber-bright);
-  font: 600 0.72rem/1.2 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 0.75rem/1.5 var(--body);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .arcade__hud {
@@ -888,8 +844,8 @@ html:not(.js) .deck-card__actions {
   gap: 0.9rem;
   margin: 0;
   color: var(--text-subtle);
-  font: 0.72rem/1.2 var(--mono);
-  text-transform: uppercase;
+  font: 0.75rem/1.5 var(--body);
+  text-transform: none;
 }
 
 .arcade__hud b {
@@ -904,8 +860,8 @@ html:not(.js) .deck-card__actions {
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.3);
   color: var(--muted);
-  font: 600 0.7rem/1 var(--mono);
-  text-transform: uppercase;
+  font: 600 0.8125rem/1.5 var(--body);
+  text-transform: none;
   cursor: pointer;
 }
 

@@ -19,6 +19,7 @@ interface Props {
   toggleLabel?: string;
   toggleCloseLabel?: string;
   evidence?: Array<{ label: string; value: string }>;
+  status?: string;
 }
 
 const {
@@ -38,69 +39,100 @@ const {
   toggleLabel = "Details",
   toggleCloseLabel = "Close",
   evidence = [],
+  status,
 } = Astro.props;
 ---
 
-<details
+<article
   class:list={["archive-entry", compact && "archive-entry--compact"]}
   data-cover={cover}
 >
-  <summary class="archive-entry__summary">
+  <div class="archive-entry__summary">
     <div class="archive-entry__cover" aria-hidden="true">
       <CoverArt slug={cover} record={art} />
     </div>
 
     <div class="archive-entry__lead">
-      <p class="archive-entry__eyebrow">{eyebrow}</p>
-      <h3>{title}</h3>
+      {eyebrow && <p class="archive-entry__eyebrow">{eyebrow}</p>}
+      <h3>
+        {
+          link ? (
+            <a
+              class="archive-entry__title-link"
+              href={link}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+            >
+              {title}
+              <span class="visually-hidden"> — {linkLabel}</span>
+            </a>
+          ) : (
+            title
+          )
+        }
+      </h3>
+      {status && <p class="project-status">{status}</p>}
       <p class="archive-entry__summary-text">{summary}</p>
     </div>
 
-    <div class="archive-entry__meta">
-      {meta.map((item) => <span>{item}</span>)}
-    </div>
+    {
+      meta.length > 0 && (
+        <div class="archive-entry__meta">
+          {meta.map((item) => (
+            <span>{item}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
 
-    <span class="archive-entry__toggle">
-      <span class="archive-entry__toggle-open">{toggleLabel}</span>
-      <span class="archive-entry__toggle-close">{toggleCloseLabel}</span>
-    </span>
-  </summary>
+  <details class="archive-entry__disclosure">
+    <summary>
+      <span class="archive-entry__toggle">
+        <span class="archive-entry__toggle-open">{toggleLabel}</span>
+        <span class="archive-entry__toggle-close">{toggleCloseLabel}</span>
+      </span>
+      <span class="visually-hidden">: {title}</span>
+    </summary>
 
-  <div class="archive-entry__body">
-    <p class="archive-entry__narrative">{narrative}</p>
-
-    {evidence.length > 0 && (
-      <dl class="archive-entry__evidence">
-        {evidence.map((item) => (
-          <div>
-            <dt>{item.label}</dt>
-            <dd>{item.value}</dd>
-          </div>
-        ))}
-      </dl>
-    )}
-
-    <ul class="archive-entry__details">
-      {details.map((item) => <li>{item}</li>)}
-    </ul>
-
-    <div class="archive-entry__footer">
-      <div class="archive-entry__stack">
-        {stack.map((item) => <span>{item}</span>)}
-      </div>
+    <div class="archive-entry__body">
+      <p class="archive-entry__narrative">{narrative}</p>
 
       {
-        link && (
-          <a
-            class="archive-entry__link"
-            href={link}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
-          >
-            {linkLabel}
-          </a>
+        evidence.length > 0 && (
+          <dl class="archive-entry__evidence">
+            {evidence.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
         )
       }
+
+      <ul class="archive-entry__details">
+        {details.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <div class="archive-entry__footer">
+        <div class="archive-entry__stack">
+          {stack.map((item) => <span>{item}</span>)}
+        </div>
+
+        {
+          link && (
+            <a
+              class="archive-entry__link"
+              href={link}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+            >
+              {linkLabel}
+            </a>
+          )
+        }
+      </div>
     </div>
-  </div>
-</details>
+  </details>
+</article>

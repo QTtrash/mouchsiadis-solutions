@@ -19,27 +19,40 @@ const labels = evidenceLabels[locale];
 ---
 
 <div class="card-deck" data-deck>
-  <div class="card-deck__view" role="group" aria-label={copy.viewLabel}>
-    <button type="button" data-deck-view="cards" aria-pressed="true">{copy.viewCards}</button>
-    <button type="button" data-deck-view="list" aria-pressed="false">{copy.viewList}</button>
-  </div>
+  <div class="card-deck__toolbar">
+    <div class="card-deck__view" role="group" aria-label={copy.viewLabel}>
+      <button type="button" data-deck-view="cards" aria-pressed="true"
+        >{copy.viewCards}</button
+      >
+      <button type="button" data-deck-view="list" aria-pressed="false"
+        >{copy.viewList}</button
+      >
+    </div>
 
-  <div class="card-deck__table" data-deck-cards>
     <div class="card-reader" data-card-reader aria-hidden="true">
       <span class="card-reader__led"></span>
       <span class="card-reader__label">{copy.readerLabel}</span>
       <span class="card-reader__slot">
-        <strong data-reader-status data-idle={copy.readerIdle} data-reading={copy.readerReading}
-          >{copy.readerIdle}</strong
+        <strong
+          data-reader-status
+          data-idle={copy.readerIdle}
+          data-reading={copy.readerReading}>{copy.readerIdle}</strong
         >
       </span>
       <span class="card-reader__hint">{copy.readerHint}</span>
     </div>
+  </div>
 
+  <div class="card-deck__table" data-deck-cards>
     <ul class="card-hand" role="list" data-card-hand>
       {
         records.map((record, index) => (
-          <CaseCard record={record} locale={locale} index={index} count={records.length} />
+          <CaseCard
+            record={record}
+            locale={locale}
+            index={index}
+            count={records.length}
+          />
         ))
       }
     </ul>
@@ -52,6 +65,7 @@ const labels = evidenceLabels[locale];
           title={entry.title}
           eyebrow={localize(entry.eyebrow, locale)}
           summary={localize(entry.summary, locale)}
+          status={entry.status ? localize(entry.status, locale) : undefined}
           narrative={localize(entry.narrative, locale)}
           details={localize(entry.details, locale)}
           stack={entry.stack}
@@ -64,10 +78,22 @@ const labels = evidenceLabels[locale];
           evidence={
             entry.evidence
               ? [
-                  { label: labels[0], value: localize(entry.evidence.role, locale) },
-                  { label: labels[1], value: localize(entry.evidence.contribution, locale) },
-                  { label: labels[2], value: localize(entry.evidence.constraints, locale) },
-                  { label: labels[3], value: localize(entry.evidence.outcomes, locale) },
+                  {
+                    label: labels[0],
+                    value: localize(entry.evidence.role, locale),
+                  },
+                  {
+                    label: labels[1],
+                    value: localize(entry.evidence.contribution, locale),
+                  },
+                  {
+                    label: labels[2],
+                    value: localize(entry.evidence.constraints, locale),
+                  },
+                  {
+                    label: labels[3],
+                    value: localize(entry.evidence.outcomes, locale),
+                  },
                 ]
               : []
           }
@@ -78,5 +104,11 @@ const labels = evidenceLabels[locale];
     }
   </div>
 
-  <p class="visually-hidden" aria-live="polite" data-deck-announcer data-template={copy.announcePlayed}></p>
+  <p
+    class="visually-hidden"
+    aria-live="polite"
+    data-deck-announcer
+    data-template={copy.announcePlayed}
+  >
+  </p>
 </div>

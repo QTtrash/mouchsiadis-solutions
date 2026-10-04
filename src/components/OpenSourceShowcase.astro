@@ -1,0 +1,84 @@
+---
+import CoverArt from "./CoverArt.astro";
+import {
+  cardSummary,
+  casePath,
+  localize,
+  openSourceRecords,
+} from "../lib/cards";
+import { deckCopy, type Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  kicker: string;
+  title: string;
+  body: string;
+  id?: string;
+}
+
+const { locale, kicker, title, body, id = "open-source-title" } = Astro.props;
+const copy = deckCopy[locale];
+---
+
+<section class="open-source-showcase" aria-labelledby={id}>
+  <div class="open-source-showcase__heading">
+    <p class="section-heading__kicker">{kicker}</p>
+    <h2 id={id}>{title}</h2>
+    <p>{body}</p>
+  </div>
+
+  <div class="open-source-showcase__grid">
+    {
+      openSourceRecords.map(({ entry }) => (
+        <article
+          class="open-source-showcase__project"
+          data-project={entry.slug}
+          data-cover={entry.cover}
+          aria-labelledby={`${id}-${entry.slug}`}
+        >
+          <div class="open-source-showcase__art" aria-hidden="true">
+            <CoverArt slug={entry.cover} record={entry.slug} />
+          </div>
+          <div class="open-source-showcase__body">
+            {entry.status && (
+              <p class="open-source-showcase__status">
+                {localize(entry.status, locale)}
+              </p>
+            )}
+            <h3 id={`${id}-${entry.slug}`}>
+              <a href={casePath(locale, entry.slug)}>{entry.title}</a>
+            </h3>
+            <p>{cardSummary(entry, locale)}</p>
+          </div>
+          <nav class="open-source-showcase__actions" aria-label={entry.title}>
+            <a class="button" href={casePath(locale, entry.slug)}>
+              {copy.open}
+              <span class="visually-hidden">: {entry.title}</span>
+            </a>
+            <a
+              class="button button--ghost"
+              href={entry.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {localize(entry.linkLabel, locale)}{" "}
+              <span aria-hidden="true">↗</span>
+            </a>
+            {entry.sourceLink && entry.sourceLinkLabel && (
+              <a
+                class="button button--ghost"
+                href={entry.sourceLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {localize(entry.sourceLinkLabel, locale)}
+                <span class="visually-hidden">: {entry.title}</span>{" "}
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </nav>
+        </article>
+      ))
+    }
+  </div>
+</section>

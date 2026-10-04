@@ -10,7 +10,7 @@ import {
   getPostSlug,
   sortPosts,
 } from "../../../lib/blog";
-import { LOCALES, isLocale, localeSeo, type Locale } from "../../../lib/i18n";
+import { LOCALES, isLocale, localeIntlCodes, localeSeo, type Locale } from "../../../lib/i18n";
 
 export async function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }));
@@ -52,7 +52,7 @@ const yearGroups = Array.from(
       <p class="section-heading__body">{copy.sectionBodies.blog}</p>
     </div>
 
-    <p class="blog-index__count">{String(posts.length).padStart(2, "0")} / ARCHIVE RECORDS</p>
+    <p class="blog-index__count">{copy.labels.blogCount.replace("{count}", String(posts.length))}</p>
     <div class="blog-index blog-index--grouped">
       {
         yearGroups.map(([year, entries]) => (
@@ -62,8 +62,8 @@ const yearGroups = Array.from(
               {entries.map((post) => {
                 const postLocale = getPostLanguage(post);
                 return (
-                  <article class="blog-index__item" lang={postLocale}>
-                    <div class="blog-index__meta">
+                  <article class="blog-index__item" lang={localeIntlCodes[postLocale]}>
+                    <div class="blog-index__meta" lang={localeIntlCodes[locale]}>
                       <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
                       <span class="blog-index__language">
                         {getPostLanguageLabel(postLocale, locale)}

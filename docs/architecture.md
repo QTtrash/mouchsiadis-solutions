@@ -8,7 +8,7 @@ The site has four public concerns:
 
 - multilingual portfolio landing experience
 - integrated blog using imported AF Blog MDX content
-- independent Tooling atlas for live systems
+- independent Tooling collection for production and prerelease tools
 - static production runtime behind the shared `vps-proxy` repo
 
 ## Routing
@@ -17,7 +17,7 @@ The site has four public concerns:
 - `/en`, `/ru`, `/de`, `/ge` render the main archive landing page
 - `/<locale>/work/<slug>/` renders a case file for every project, tool, and game record (shareable URLs behind each card)
 - `/en/blog`, `/ru/blog`, `/de/blog`, `/ge/blog` render localized blog index shells
-- `/en/blog/<slug>`, `/ru/blog/<slug>`, `/de/blog/<slug>`, `/ge/blog/<slug>` render original-language posts inside a localized shell
+- `/<original-locale>/blog/<slug>/` renders each post only under its frontmatter `language` value; article links preserve that original-language route. Language switches from an article lead to the selected locale’s blog index.
 
 ## Source Files
 
@@ -26,11 +26,13 @@ The site has four public concerns:
 - `src/pages/[locale]/work/[slug].astro`
   Case file per record: outcome, evidence, what was built, stack, external links, hire actions, previous/next case.
 - `src/components/CardDeck.astro`, `src/components/CaseCard.astro`
-  The card hand, card reader, and the List view of the same records. Server-rendered HTML; `src/scripts/deck.ts` adds behaviour.
+  Wrapping card rows and a List view of the same records. Cards/List and the optional card reader share a compact toolbar. Each card places its visible Flip and Open case file controls above the faces, so long cards can be flipped before reading. Server-rendered HTML; `src/scripts/deck.ts` adds behaviour.
 - `src/lib/cards.ts`
-  Derives cards from `content.ts`: suit per collection, case-file paths, outcome text, and shared view-transition names.
+  Derives cards from `content.ts`: suit per collection, case-file paths, outcome text, and shared view-transition names. `cardSummary` selects authored concise copy for cards, homepage proof links, and the showcase; List uses the full summary and case-file evidence stays complete. `openSourceRecords` selects Tool records with a public source link.
 - `src/lib/pixel.ts`, `src/lib/sprites.ts`, `src/components/PixelArt.astro`
   Pixel art: a small raster canvas (rect, line, disc, ring, dither, glyph), the sprite library (project art by slug, category covers, suits, nav icons, monogram), and build-time SVG rendering with one path per palette key. `CoverArt.astro` picks record art, then the category cover.
+- `src/components/OpenSourceShowcase.astro`
+  Shared record-driven showcase with project artwork, release status, case-file, product, and source links.
 - `src/components/BacklogBreaker.astro`, `src/scripts/breaker.ts`, `src/lib/breaker-layout.ts`
   The hero mini-game: build-time pixel poster and Start button, a lazy canvas engine loaded on Start, and the geometry both share.
 - `src/lib/avatar.ts`
@@ -40,11 +42,11 @@ The site has four public concerns:
 - `src/pages/[locale]/blog/index.astro`
   Source for the localized blog listing page.
 - `src/pages/[locale]/blog/[...slug].astro`
-  Source for all blog-post pages across all locales.
+  Source for blog-post pages under each post’s original language, read from frontmatter.
 - `src/pages/[locale]/tooling/index.astro`
-  The instrument atlas as a field-terminal panel: the Tool card deck (reader, drag, flip, List view) with a side nav that links back into the landing panels.
+  The Tool collection as a field-terminal panel: wrapping Tool cards, optional reader/drag, flip, and List view, with navigation back into the landing panels. Counts include production tools and prereleases; they are not a count of LIVE systems.
 - `src/layouts/BaseLayout.astro`
-  Global shell, metadata, header/footer, CRT noise layer, and shared stylesheet import.
+  Global shell, metadata, header/footer, decorative terminal layer, and shared stylesheet/font imports. Georgian font imports are script subsets; language codes map the `/ge/` route to `ka-GE`.
 - `src/layouts/PostLayout.astro`
   Blog-post layout with metadata, original-language label, and adjacent navigation.
 - `src/components/ArchiveEntry.astro`
@@ -73,8 +75,10 @@ The site has four public concerns:
 The site uses a shared CSS system in `src/assets/styles/global.css` with:
 
 - an instrument-grade retro-futurist editorial direction
-- phosphor-green CRT color tokens, scanline/noise treatment, and screen vignette
-- a fitted desktop console and continuous document-flow mobile/tablet composition
+- quiet near-black and olive surfaces, green/copper/amber accent roles, and a code-drawn pixel chassis
+- continuous document flow by default; JavaScript enhances viewports at least 1120×720 into a fitted console
+- shared IBM Plex heading/body/control typography with explicit Noto Georgian glyph coverage
+- non-overlapping cards with visible direct actions and full summary text
 - archive cards tuned for dense portfolio scanning
 - a Web Awesome navigation drawer; no WebGL or 3D runtime
 
@@ -83,7 +87,7 @@ The site uses a shared CSS system in `src/assets/styles/global.css` with:
 - `npm run check` performs Astro/TypeScript diagnostics.
 - `npm run build` verifies all static locale routes.
 - `npm run test:e2e` runs responsive browser checks at phone, tablet, and desktop sizes.
-- `npm run budget` checks the landing page's gzipped JS and CSS against the performance budget.
+- `npm run budget` checks the landing page's gzipped JS and CSS, plus inline SVG on every generated HTML page, against the performance budget.
 - `npm run test:a11y` runs axe WCAG A/AA checks on the primary surfaces, including case files.
 - `tests/deck.spec.ts` covers the fast path, case files, the Cards/List switch, flipping, drag-to-reader, touch layout, and reduced motion.
 

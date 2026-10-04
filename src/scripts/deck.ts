@@ -1,39 +1,25 @@
-// Card deck controller: Cards/List view switch, card flipping, and
-// drag-to-reader on fine pointers. Every interaction here has a plain
-// equivalent in the markup: the List view and each card's "Open case file" link.
-
+// Flat, readable project cards with optional mouse/pen drag to the reader.
+// Native links, the Flip button, and List provide equivalent access.
 import { SoundEngine } from "./sound";
 
 type View = "cards" | "list";
-
 const VIEW_KEY = "deckView";
-const DRAG_THRESHOLD = 6;
-
+const DRAG_THRESHOLD = 8;
 const decks = Array.from(document.querySelectorAll<HTMLElement>("[data-deck]"));
 const sound = new SoundEngine();
-const reduced = (): boolean =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-  document.documentElement.dataset.effects === "reduced";
-const canDrag = window.matchMedia("(pointer: fine) and (min-width: 1120px) and (min-height: 720px)").matches;
+const dragMedia = window.matchMedia("(pointer: fine) and (min-width: 1120px) and (min-height: 720px)");
+const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+const reduced = (): boolean => motionMedia.matches || document.documentElement.dataset.effects === "reduced";
+const controllers = new Map<HTMLElement, () => void>();
 
 function readView(): View {
-  try {
-    return localStorage.getItem(VIEW_KEY) === "list" ? "list" : "cards";
-  } catch {
-    return "cards";
-  }
-}
-
-function writeView(view: View): void {
-  try {
-    localStorage.setItem(VIEW_KEY, view);
-  } catch {
-    // The choice then lasts for this page only.
-  }
+  try { return localStorage.getItem(VIEW_KEY) === "list" ? "list" : "cards"; }
+  catch { return "cards"; }
 }
 
 function applyView(view: View): void {
   decks.forEach((deck) => {
+    controllers.get(deck)?.();
     deck.dataset.view = view;
     deck.querySelector<HTMLElement>("[data-deck-cards]")!.hidden = view === "list";
     deck.querySelector<HTMLElement>("[data-deck-list]")!.hidden = view !== "list";
@@ -52,122 +38,72 @@ function setFlipped(card: HTMLElement, flipped: boolean): void {
   if (back) back.inert = !flipped;
 }
 
-function resetReader(deck: HTMLElement): void {
-  const reader = deck.querySelector<HTMLElement>("[data-card-reader]");
-  const status = reader?.querySelector<HTMLElement>("[data-reader-status]");
-  reader?.classList.remove("is-armed", "is-reading");
-  if (status) status.textContent = status.dataset.idle ?? "";
-}
-
-function resetCard(card: HTMLElement): void {
-  card.getAnimations().forEach((animation) => animation.cancel());
-  card.style.translate = "";
-  card.classList.remove("is-dragging", "is-played");
-}
-
-function enableDrag(deck: HTMLElement): void {
-  const hand = deck.querySelector<HTMLElement>("[data-card-hand]");
-  const reader = deck.querySelector<HTMLElement>("[data-card-reader]");
-  const status = reader?.querySelector<HTMLElement>("[data-reader-status]");
+function enhanceDeck(deck: HTMLElement): void {
+  const hand = deck.querySelector<HTMLElement>("[data-card-hand]")!;
+  const reader = deck.querySelector<HTMLElement>("[data-card-reader]")!;
+  const status = reader.querySelector<HTMLElement>("[data-reader-status]")!;
   const announcer = deck.querySelector<HTMLElement>("[data-deck-announcer]");
-  if (!hand || !reader || !status) return;
-
-  deck.classList.add("is-draggable");
-  if (!reduced()) deck.classList.add("is-fanned");
-
-  let drag: { card: HTMLElement; x: number; y: number; active: boolean; over: boolean } | null = null;
-  let tilted: HTMLElement | null = null;
-
-  // Hovered cards lean up to 6 degrees toward the pointer, updated once per frame.
+  let gesture: { card: HTMLElement; pointerId: number; x: number; y: number; moved: boolean; draggable: boolean } | null = null;
+  let suppressUntil = 0;
+  let navigation = 0;
   let tiltFrame = 0;
-  let tiltEvent: PointerEvent | null = null;
-  const untilt = (body: HTMLElement | null): void => {
-    body?.classList.remove("is-tracking");
-    body?.style.removeProperty("--tilt-x");
-    body?.style.removeProperty("--tilt-y");
-  };
-  const applyTilt = (): void => {
-    tiltFrame = 0;
-    const event = tiltEvent;
-    if (!event) return;
-    const body = (event.target as Element).closest<HTMLElement>(".deck-card__body");
-    if (tilted !== body) untilt(tilted);
-    tilted = body;
-    if (!body) return;
-    const rect = body.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    body.classList.add("is-tracking");
-    body.style.setProperty("--tilt-x", `${(x * 12).toFixed(1)}deg`);
-    body.style.setProperty("--tilt-y", `${(-y * 12).toFixed(1)}deg`);
-  };
-  const tilt = (event: PointerEvent): void => {
-    if (reduced()) return;
-    tiltEvent = event;
-    tiltFrame ||= requestAnimationFrame(applyTilt);
-  };
-  hand.addEventListener("pointerleave", () => {
+  let tilted: HTMLElement | null = null;
+  const clearTilt = (): void => {
     cancelAnimationFrame(tiltFrame);
     tiltFrame = 0;
-    tiltEvent = null;
-    untilt(tilted);
+    tilted?.classList.remove("is-tracking");
+    tilted?.style.removeProperty("--tilt-x");
+    tilted?.style.removeProperty("--tilt-y");
     tilted = null;
-  });
+  };
+
+  const reset = (): void => {
+    navigation += 1;
+    clearTilt();
+    if (gesture?.moved) suppressUntil = performance.now() + 400;
+    const previous = gesture;
+    gesture = null;
+    if (previous?.card.hasPointerCapture(previous.pointerId)) previous.card.releasePointerCapture(previous.pointerId);
+    reader.classList.remove("is-armed", "is-reading");
+    status.textContent = status.dataset.idle ?? "";
+    deck.querySelectorAll<HTMLElement>("[data-card]").forEach((card) => {
+      card.getAnimations().forEach((animation) => animation.cancel());
+      card.style.translate = "";
+      card.classList.remove("is-dragging", "is-played");
+    });
+  };
+  controllers.set(deck, reset);
 
   const overReader = (event: PointerEvent): boolean => {
     const rect = reader.getBoundingClientRect();
-    return (
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom
-    );
+    return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
   };
 
   const play = (card: HTMLElement): void => {
     const href = card.dataset.href;
-    const title = card.dataset.title ?? "";
     if (!href) return;
+    const title = card.dataset.title ?? "";
+    const attempt = ++navigation;
+    card.classList.remove("is-dragging");
     card.classList.add("is-played");
     reader.classList.remove("is-armed");
     reader.classList.add("is-reading");
     status.textContent = (status.dataset.reading ?? "").replace("{title}", title);
     if (announcer) announcer.textContent = (announcer.dataset.template ?? "").replace("{title}", title);
     sound.play("acquire");
-
     if (reduced()) {
       window.location.assign(href);
       return;
     }
-    // Seat the card in the reader, then navigate; the art morphs into the case file.
-    const cardRect = card.getBoundingClientRect();
-    const readerRect = reader.getBoundingClientRect();
-    const dx = readerRect.left + readerRect.width / 2 - (cardRect.left + cardRect.width / 2);
-    const dy = readerRect.top + readerRect.height / 2 - (cardRect.top + cardRect.height / 2);
+    const from = card.getBoundingClientRect();
+    const to = reader.getBoundingClientRect();
     const [x, y] = (card.style.translate || "0px 0px").split(" ").map((value) => Number.parseFloat(value) || 0);
-    card
-      .animate(
-        [
-          { translate: `${x}px ${y}px`, scale: "1" },
-          { translate: `${x + dx}px ${y + dy}px`, scale: "0.62" },
-        ],
-        { duration: 180, easing: "cubic-bezier(.3,.7,.2,1)", fill: "forwards" },
-      )
-      .finished.then(() => window.location.assign(href))
-      .catch(() => window.location.assign(href));
-  };
-
-  const release = (card: HTMLElement): void => {
-    const from = card.style.translate;
-    card.style.translate = "";
-    card.classList.remove("is-dragging");
-    reader.classList.remove("is-armed");
-    if (from && !reduced()) {
-      card.animate([{ translate: from }, { translate: "0px 0px" }], {
-        duration: 200,
-        easing: "cubic-bezier(.2,.8,.2,1)",
-      });
-    }
+    card.animate([
+      { translate: `${x}px ${y}px`, scale: "1" },
+      { translate: `${x + to.left + to.width / 2 - from.left - from.width / 2}px ${y + to.top + to.height / 2 - from.top - from.height / 2}px`, scale: "0.62" },
+    ], { duration: 180, easing: "cubic-bezier(.3,.7,.2,1)", fill: "forwards" }).finished
+      .then(() => { if (attempt === navigation) window.location.assign(href); })
+      .catch(() => { /* A resize, preference change, or cancelled gesture must not navigate. */ });
   };
 
   hand.addEventListener("pointerdown", (event) => {
@@ -176,97 +112,110 @@ function enableDrag(deck: HTMLElement): void {
     if (target.closest("a, button")) return;
     const card = target.closest<HTMLElement>("[data-card]");
     if (!card || card.classList.contains("is-played")) return;
-    drag = { card, x: event.clientX, y: event.clientY, active: false, over: false };
-    card.setPointerCapture(event.pointerId);
+    suppressUntil = 0;
+    clearTilt();
+    gesture = { card, pointerId: event.pointerId, x: event.clientX, y: event.clientY, moved: false, draggable: dragMedia.matches && event.pointerType !== "touch" };
   });
-
+  hand.addEventListener("pointerleave", clearTilt);
   hand.addEventListener("pointermove", (event) => {
-    if (!drag) {
-      tilt(event);
+    if (!gesture) {
+      if (!dragMedia.matches || reduced() || event.pointerType === "touch") return;
+      const body = (event.target as Element).closest<HTMLElement>(".deck-card__body");
+      if (tilted !== body) clearTilt();
+      tilted = body;
+      if (!body || tiltFrame) return;
+      tiltFrame = requestAnimationFrame(() => {
+        tiltFrame = 0;
+        const bounds = body.getBoundingClientRect();
+        body.classList.add("is-tracking");
+        body.style.setProperty("--tilt-x", `${((event.clientX - bounds.left) / bounds.width - 0.5) * 6}deg`);
+        body.style.setProperty("--tilt-y", `${-((event.clientY - bounds.top) / bounds.height - 0.5) * 6}deg`);
+      });
       return;
     }
-    const dx = event.clientX - drag.x;
-    const dy = event.clientY - drag.y;
-    if (!drag.active) {
-      if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
-      drag.active = true;
-      drag.card.classList.add("is-dragging");
-      sound.play("key");
+    if (gesture.pointerId !== event.pointerId) return;
+    const dx = event.clientX - gesture.x;
+    const dy = event.clientY - gesture.y;
+    if (!gesture.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+    if (!gesture.moved) {
+      gesture.moved = true;
+      if (gesture.draggable) {
+        gesture.card.setPointerCapture(event.pointerId);
+        gesture.card.classList.add("is-dragging");
+        sound.play("key");
+      }
     }
-    drag.card.style.translate = `${dx}px ${dy}px`;
-    const over = overReader(event);
-    if (over !== drag.over) {
-      drag.over = over;
-      reader.classList.toggle("is-armed", over);
-      if (over) sound.play("detail");
-    }
+    if (!gesture.draggable) return;
+    gesture.card.style.translate = `${dx}px ${dy}px`;
+    reader.classList.toggle("is-armed", overReader(event));
   });
-
   const finish = (event: PointerEvent): void => {
-    if (!drag) return;
-    const { card, active } = drag;
-    const dropped = active && event.type === "pointerup" && overReader(event);
-    drag = null;
-    // A drag must not also count as a click-to-flip.
-    if (active) {
-      deck.dataset.suppressClick = "true";
-      window.setTimeout(() => delete deck.dataset.suppressClick, 0);
+    if (!gesture || gesture.pointerId !== event.pointerId) return;
+    const previous = gesture;
+    gesture = null;
+    if (previous.card.hasPointerCapture(event.pointerId)) previous.card.releasePointerCapture(event.pointerId);
+    if (previous.moved || event.type === "pointercancel") suppressUntil = performance.now() + 400;
+    if (previous.moved && previous.draggable && event.type === "pointerup" && overReader(event)) play(previous.card);
+    else {
+      const from = previous.card.style.translate;
+      previous.card.style.translate = "";
+      previous.card.classList.remove("is-dragging");
+      reader.classList.remove("is-armed");
+      if (from && !reduced()) previous.card.animate([{ translate: from }, { translate: "0px 0px" }], { duration: 160, easing: "ease-out" });
     }
-    if (dropped) play(card);
-    else if (active) release(card);
   };
   hand.addEventListener("pointerup", finish);
   hand.addEventListener("pointercancel", finish);
-}
-
-decks.forEach((deck) => {
-  deck.classList.add("is-enhanced");
+  hand.addEventListener("lostpointercapture", finish);
+  deck.addEventListener("click", (event) => {
+    if (performance.now() < suppressUntil) return;
+    const target = event.target as Element;
+    if (target.closest("a, button, .deck-card__actions")) return;
+    const card = target.closest<HTMLElement>("[data-card]");
+    if (card && !card.classList.contains("is-played")) {
+      setFlipped(card, !card.classList.contains("is-flipped"));
+      sound.play("detail");
+    }
+  });
+  deck.querySelectorAll<HTMLButtonElement>("[data-card-flip]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest<HTMLElement>("[data-card]")!;
+      setFlipped(card, !card.classList.contains("is-flipped"));
+      sound.play("detail");
+    });
+  });
   deck.querySelectorAll<HTMLButtonElement>("[data-deck-view]").forEach((button) => {
     button.addEventListener("click", () => {
       const view = button.dataset.deckView === "list" ? "list" : "cards";
-      writeView(view);
+      try { localStorage.setItem(VIEW_KEY, view); } catch { /* Page-local preference remains usable. */ }
       applyView(view);
       sound.play("tab");
     });
   });
-  const flip = (card: HTMLElement): void => {
-    setFlipped(card, !card.classList.contains("is-flipped"));
-    sound.play("detail");
-  };
-  deck.querySelectorAll<HTMLButtonElement>("[data-card-flip]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const card = button.closest<HTMLElement>("[data-card]");
-      if (card) flip(card);
-    });
-  });
-  // Clicking or tapping the card itself flips it too; the Flip button is the keyboard route.
-  deck.addEventListener("click", (event) => {
-    if (deck.dataset.suppressClick) return;
-    // With pointer capture the click lands on the card itself rather than its body.
-    const target = event.target as Element;
-    if (target.closest("a, button, .deck-card__actions")) return;
-    const card = target.closest<HTMLElement>("[data-card]");
-    if (card && !card.classList.contains("is-played")) flip(card);
-  });
-  if (canDrag) enableDrag(deck);
-});
+  deck.classList.add("is-enhanced");
+}
 
+decks.forEach(enhanceDeck);
+function syncInput(): void {
+  decks.forEach((deck) => {
+    controllers.get(deck)?.();
+    deck.classList.toggle("is-draggable", dragMedia.matches);
+    deck.dataset.motion = reduced() ? "reduced" : "system";
+  });
+}
+document.addEventListener("terminal-panel-change", () => controllers.forEach((reset) => reset()));
+dragMedia.addEventListener("change", syncInput);
+motionMedia.addEventListener("change", syncInput);
+new MutationObserver(syncInput).observe(document.documentElement, { attributes: true, attributeFilter: ["data-effects"] });
+syncInput();
 applyView(readView());
 
-// The hero avatar is a card too: flip between the pixel sprite and the photo.
 document.querySelectorAll<HTMLButtonElement>("[data-avatar-flip]").forEach((button) => {
   button.addEventListener("click", () => {
     button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
     sound.play("detail");
   });
 });
-
-// Coming back from a case file restores this page from the back/forward cache
-// with the played card still seated in the reader.
 window.addEventListener("pageshow", (event) => {
-  if (!event.persisted) return;
-  decks.forEach((deck) => {
-    resetReader(deck);
-    deck.querySelectorAll<HTMLElement>("[data-card]").forEach(resetCard);
-  });
+  if (event.persisted) syncInput();
 });

@@ -1,139 +1,96 @@
-// Field-terminal controller: desktop panel switching, fast opacity transitions,
-// and the opt-in sound engine. Runs on the landing page only.
-
-import { typeText } from "./decode";
+// The fitted console enhances native section links. Continuous layouts retain
+// document scrolling and expose the complete archive, including after resize.
 import { SoundEngine } from "./sound";
 
-// Retired panels whose old links should still land somewhere useful.
 const PANEL_ALIASES: Record<string, string> = { cv: "contact" };
 
 export function initTerminal(): void {
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
-
   const terminal = document.querySelector<HTMLElement>("[data-terminal-console]");
-  const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-terminal-tab]"));
-  const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-terminal-panel]"));
-  const soundButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-terminal-sound]"));
-  const validIds = new Set(panels.map((panel) => panel.dataset.terminalPanel));
-  const reduceMotion =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-    document.documentElement.dataset.effects === "reduced";
-  const enhanced = window.matchMedia(
-    "(min-width: 1120px) and (min-height: 720px)",
-  ).matches;
+  if (!terminal) return;
+  const tabs = Array.from(terminal.querySelectorAll<HTMLAnchorElement>("[data-terminal-tab]"));
+  const panels = Array.from(terminal.querySelectorAll<HTMLElement>("[data-terminal-panel]"));
+  const validIds = new Set(panels.map((panel) => panel.id));
+  const fitted = window.matchMedia("(min-width: 1120px) and (min-height: 720px)");
   const sound = new SoundEngine();
-  let activeId = "overview";
-
-  const syncSoundButton = (): void => {
-    terminal?.classList.toggle("terminal-console--sound-on", sound.enabled);
-    soundButtons.forEach((button) => {
-      button.textContent = sound.enabled ? "snd on" : "snd off";
-      button.setAttribute("aria-pressed", String(sound.enabled));
-    });
-  };
-
-  const showPanel = (id: string, updateHash = true, initial = false): void => {
+  const resolve = (id: string): string => {
     const target = PANEL_ALIASES[id] ?? id;
-    const nextId = validIds.has(target) ? target : "overview";
-    const nextPanel = panels.find((panel) => panel.dataset.terminalPanel === nextId);
+    return validIds.has(target) ? target : "overview";
+  };
+  let activeId = resolve(location.hash.slice(1));
 
-    if (!nextPanel) return;
-    if (nextId === activeId && !initial) {
-      sound.play("error");
-      return;
-    }
-
-    activeId = nextId;
-
+  const showPanel = (id: string, resetScroll = true): void => {
+    activeId = resolve(id);
+    const nextPanel = panels.find((panel) => panel.id === activeId)!;
+    const origin = document.activeElement?.closest<HTMLElement>("[data-terminal-panel]");
+    const moveFocus = fitted.matches && origin && origin !== nextPanel;
     panels.forEach((panel) => {
-      const isActive = panel.dataset.terminalPanel === nextId;
+      const visible = !fitted.matches || panel === nextPanel;
       panel.hidden = false;
-      panel.classList.toggle("is-active", isActive);
-      panel.inert = !isActive;
-      if (isActive) {
-        panel.removeAttribute("aria-hidden");
-      } else {
-        panel.setAttribute("aria-hidden", "true");
-      }
+      panel.classList.toggle("is-active", visible);
+      panel.inert = !visible;
+      if (visible) panel.removeAttribute("aria-hidden");
+      else panel.setAttribute("aria-hidden", "true");
     });
-
-    nextPanel.scrollTop = 0;
-
     tabs.forEach((tab) => {
-      const isActive = tab.hash === `#${nextId}`;
-      tab.classList.toggle("is-active", isActive);
-      if (isActive) {
-        tab.setAttribute("aria-current", "page");
-      } else {
-        tab.removeAttribute("aria-current");
-      }
+      const active = tab.hash === `#${activeId}`;
+      tab.classList.toggle("is-active", active);
+      if (active) tab.setAttribute("aria-current", "location");
+      else tab.removeAttribute("aria-current");
     });
-
-    if (updateHash && window.location.hash !== `#${nextId}`) {
-      history.replaceState(null, "", `#${nextId}`);
-    }
-
-    if (!initial) {
-      sound.play("tab", tabs.findIndex((tab) => tab.hash === `#${nextId}`));
+    terminal.dispatchEvent(new CustomEvent("terminal-panel-change", { bubbles: true }));
+    if (fitted.matches && resetScroll) nextPanel.scrollTop = 0;
+    if (moveFocus) {
+      const heading = nextPanel.querySelector<HTMLElement>("h1, h2");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus({ preventScroll: true });
     }
   };
 
-  const handleLink = (event: Event): void => {
-    const target = event.currentTarget as HTMLAnchorElement;
-    const href = target.getAttribute("href") ?? "#overview";
-    const id = href.replace("#", "");
+  const syncLayout = (changed = false): void => {
+    terminal.classList.toggle("terminal-console--continuous", !fitted.matches);
+    terminal.classList.add("terminal-console--ready");
+    showPanel(location.hash.slice(1) || activeId, changed);
+    if (!changed) return;
+    requestAnimationFrame(() => {
+      if (fitted.matches) window.scrollTo({ top: 0, behavior: "instant" });
+      else if (activeId !== "overview") {
+        document.getElementById(activeId)?.scrollIntoView({ block: "start", behavior: "instant" });
+      }
+    });
+  };
+
+  document.addEventListener("click", (event) => {
+    if (!fitted.matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = (event.target as Element).closest<HTMLAnchorElement>("a[href]");
+    if (!link || link.target || link.hasAttribute("download")) return;
+    const destination = new URL(link.href, location.href);
+    if (destination.origin !== location.origin || destination.pathname !== location.pathname || destination.search !== location.search || !destination.hash) return;
+    const id = destination.hash.slice(1);
     if (!validIds.has(PANEL_ALIASES[id] ?? id)) return;
     event.preventDefault();
     showPanel(id);
-  };
+    if (location.hash !== `#${activeId}`) history.pushState(null, "", `#${activeId}`);
+    sound.play("tab", tabs.findIndex((tab) => tab.hash === `#${activeId}`));
+  });
 
+  window.addEventListener("hashchange", () => {
+    showPanel(location.hash.slice(1), fitted.matches);
+    if (fitted.matches) window.scrollTo({ top: 0, behavior: "instant" });
+  });
+  fitted.addEventListener("change", () => syncLayout(true));
   tabs.forEach((tab) => {
-    tab.addEventListener("click", handleLink);
     tab.addEventListener("mouseenter", () => sound.play("key"));
     tab.addEventListener("focus", () => sound.play("key"));
   });
-  document
-    .querySelectorAll<HTMLAnchorElement>("[data-terminal-jump]")
-    .forEach((link) => link.addEventListener("click", handleLink));
-  soundButtons.forEach((button) =>
-    button.addEventListener("click", () => {
-      sound.setEnabled(!sound.enabled);
-      syncSoundButton();
-    }),
-  );
-  document.querySelectorAll<HTMLElement>(".archive-entry summary").forEach((summary) => {
+  terminal.querySelectorAll(".archive-entry summary").forEach((summary) => {
     summary.addEventListener("click", () => sound.play("detail"));
   });
-
-  if (!enhanced) {
-    terminal?.classList.add("terminal-console--continuous", "terminal-console--ready");
-    panels.forEach((panel) => {
-      panel.hidden = false;
-      panel.classList.add("is-active");
-      panel.inert = false;
-      panel.removeAttribute("aria-hidden");
-    });
-    syncSoundButton();
-    return;
-  }
-
-  window.addEventListener("hashchange", () => showPanel(window.location.hash.replace("#", ""), false));
-
-  const heroTitle = document.querySelector<HTMLElement>(".hero-panel h1");
-  const typeHeroTitle = (): void => {
-    if (reduceMotion || !heroTitle || activeId !== "overview") return;
-    const text = heroTitle.textContent ?? "";
-    typeText(heroTitle, text, 16);
-  };
-
-  syncSoundButton();
-  showPanel(window.location.hash.replace("#", ""), false, true);
-  requestAnimationFrame(() => {
-    terminal?.classList.add("terminal-console--ready");
-    typeHeroTitle();
-  });
+  syncLayout();
+  // A direct fragment URL selects a panel; it must not scroll the outer frame
+  // to the absolute-positioned panel after the document finishes loading.
+  window.addEventListener("load", () => {
+    if (fitted.matches && location.hash) window.scrollTo({ top: 0, behavior: "instant" });
+  }, { once: true });
 }
 
 initTerminal();
