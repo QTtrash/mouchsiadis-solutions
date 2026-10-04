@@ -51,8 +51,8 @@ Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.t
 - The front presents suit, project title, artwork, a complete outcome or summary, and keywords. The back presents role/constraints or project details and stack.
 - Desktop/tablet cards wrap into non-overlapping rows. Cards grow to fit translated copy; summary text is not line-clamped. Flip and Open case file sit above the card faces and stay visible, allowing a tall card to be flipped before reading from its top.
 - Phone cards use a horizontal scroll-snap row with visible controls. Touch scrolling never requires dragging to a reader.
-- Cards/List and the optional reader share a compact toolbar. The view preference persists and is shared by decks. List provides a plain, expandable archive.
-- Fine pointers may tilt cards and drag them into the reader on a fitted desktop. Keyboard users can reach Flip and Open case file directly. Every record is readable without dragging or flipping.
+- On fitted desktops, Cards/List and the reader occupy a reserved sticky side dock beside two card columns. The dock never covers card controls or faces. Other layouts retain the compact view switch. The view preference persists and is shared by decks; List provides a plain, expandable archive.
+- Fine pointers may tilt cards and drag them into the reader on a fitted desktop. A full-size pointer-following preview leaves a dimmed source in place, with localized pickup, release, reading, and cancellation feedback. Keyboard users can reach Flip and Open case file directly. Every record is readable without dragging or flipping.
 - Each card is `li > article` with a real heading. Flip is a toggle with `aria-pressed`; the inactive face is `inert`. Link names identify the project.
 - LIVE means the system actually runs in production (`live: true`). Public code, a website, or a prerelease alone does not earn it.
 - The open-source showcase includes Raid Signal and Regrind, derived from their content records. Regrind is an MIT-licensed Windows application for solo CS2 practice with a separate local dedicated server; it is presented as a prerelease and does not carry LIVE.
@@ -60,7 +60,7 @@ Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.t
 ## Responsive Composition
 
 - Below 768px: compact header, full-screen navigation drawer, continuous document flow, phone-native card scrolling, and large touch targets.
-- 768–1119px: continuous archive with columns only where text permits.
+- 768–1119px: the compact header and existing navigation drawer continue through tablet widths, with a continuous archive and columns only where text permits.
 - At least 1120px wide **and** 720px tall: JavaScript may enhance the landing and Tooling pages into a fitted console with side navigation and one active panel. Long panels scroll internally.
 - Below 720px tall: continuous document flow even at laptop widths. Below 500px tall the header scrolls away, keeping landscape content accessible.
 - 1600px and above: wider shell, bounded text measure; type does not grow without limit.
@@ -111,7 +111,7 @@ Preserved budgets:
 
 Keep review screenshots outside `public/` so they do not add shipping assets.
 
-### Verified results — 4 October 2026
+### Initial verified results — 4 October 2026
 
 `npm run validate` passed: zero Astro/TypeScript errors, 66 generated pages, passing performance budgets, and 202 passing browser tests. The 221 skips are intentional project exclusions: explicit viewport matrices and transition scenarios run once rather than repeating under the phone/tablet project presets, and pointer-specific tests skip incompatible presets. Seven existing Astro `z` deprecation hints remain.
 
@@ -121,7 +121,7 @@ Keep review screenshots outside `public/` so they do not add shipping assets.
 | Landing CSS | 30.0KB | 17.1KB | 32KB |
 | Inline SVG | 5.3KB (landing) | 5.6KB (maximum across 66 pages) | 20KB/page |
 
-Browser coverage includes all four locales at the 13 matrix sizes above plus 1280×650 and 1366×650, original Russian/German articles, Cards/List, card fronts/backs, native disclosure controls, keyboard focus/history, touch swiping, reactive reduced motion, resizing, blocked storage, and JavaScript-disabled navigation. Targeted axe checks cover the Georgian primary surfaces and narrow case/blog/article layouts. The optional reader stays sticky inside the fitted panel so lower-row cards can reach it.
+Browser coverage includes all four locales at the 13 matrix sizes above plus 1280×650 and 1366×650, original Russian/German articles, Cards/List, card fronts/backs, native disclosure controls, keyboard focus/history, touch swiping, reactive reduced motion, resizing, blocked storage, and JavaScript-disabled navigation. Targeted axe checks cover the Georgian primary surfaces and narrow case/blog/article layouts. The optional reader stays sticky inside the fitted panel so lower-row cards can reach it; the follow-up below gives it a dedicated side lane.
 
 The reproducible screenshot audit captured 172 views with zero horizontal overflows and zero failed flows. Sixty are landing views across all locales and 15 sizes; the remainder inspect the showcase, Work, Games, List, Tooling, Regrind case file, experience, contact, blog index, and original-language articles at 320×568 and 1440×900. Screenshots use reduced motion for stable captures; separate interaction tests exercise normal motion and live preference changes.
 
@@ -137,5 +137,26 @@ Start a built local preview, then run `node scripts/capture-design-audit.mjs`. S
 Additional evidence: [open-source showcase](./design-audit/open-source-showcase.png), [Tooling](./design-audit/tooling-after.png), [Georgian desktop](./design-audit/ge-desktop-after.png), and [Georgian Regrind case file](./design-audit/regrind-ge-phone.png).
 
 Regrind research checked the sibling repository's `AGENTS.md`, README, MIT license, implementation, and supporting documentation against the [public repository](https://github.com/QTtrash/regrind), [product page](https://grindlike.pro/regrind), and [v0.2.0 prerelease](https://github.com/QTtrash/regrind/releases/tag/v0.2.0). The sibling checkout identifies itself as 0.1.1 while the public prerelease is newer, so site copy remains versionless. Windows x64 support, local server setup/update, official/Workshop map handling, practice controls, Steam joining, and diagnostics are implemented; the site makes no cross-platform or multiplayer promise. The Work count is five, Tooling count three, and the nine project records generate 36 localized case files. Regrind is fully localized and carries prerelease status without LIVE.
+
+### Card-reader follow-up — 4 October 2026
+
+The browser reproduction connected both stylesheets: `global.css` makes fitted console panels independently scrollable, while `deck.css` placed an opaque sticky toolbar above the cards at `z-index: 25`. Browser scrolling to a card's Flip/Open control could position it beneath that toolbar; the card's own `5rem` scroll margin did not protect its focused descendants. The previous dragged card also had a lower stacking level (`20`) and remained inside the clipping panel. Pointer translation ignored panel scrolling, so a carried card could move away from the pointer. The matched baseline audit reproduced an obscured focused Flip button in Russian Tooling at 1440×900.
+
+Work, Games, and Tooling now reserve a 13rem side lane for the view switch and reader at the fitted fine-pointer breakpoint. The reader stays reachable beside lower rows. Its visible instruction and alternative Open hint explain the action, and pickup, armed, reading, and cancellation states use localized text and restrained green/amber feedback. Dragging creates a full-size, inert, pointer-following preview outside the scrollport; the original card keeps its place. A small viewport-bounded instruction remains readable when a tall Georgian preview covers the dock. Preview controls have opaque backgrounds and an armed preview gains an amber outline. Escape, release outside, lost capture, window blur, resizing, mode/panel changes, and effects changes clean up the interaction and invalidate pending navigation. Native Flip/Open, Cards/List, touch scrolling, and reduced-motion behavior remain available.
+
+Visual review also exposed an existing Georgian tablet header collision. The existing compact header and navigation drawer now extend through 1119px; card/page composition retains its separate breakpoints. This removes the overlapping header links without reducing translated text.
+
+The focused audit captured **144 matched before and 144 after screenshots** across all four locales, all three decks, and 1440×900, 1280×720, 1280×650, 820×1180, and 320×568. It includes focused first controls after scrolling, lower rows, and English/Georgian pickup, armed, and cancellation states. The final matrix reports **zero horizontal overflows, clipped controls, obscured focused controls, or failed flows**. Three additional Georgian screenshots at the minimum fitted 1120×720 size also passed geometry and visual checks. Screenshots wait for fonts and enhancements, use reduced motion for stability, and show keyboard focus through keyboard input; separate browser tests exercise normal motion and live interaction changes.
+
+Final `npm run validate` passed with exit code 0: **227 browser tests passed**, with 271 intentional project exclusions, zero Astro/TypeScript errors or warnings, seven existing deprecation hints, and 66 generated pages. Targeted regressions cover dock separation and focus in every locale/deck, lower-row drops, preview size and scroll anchoring, interruption cleanup, cancelled navigation, direct keyboard access, touch scrolling, reduced motion, and tablet header/drawer access. Gzipped output remains within the existing budgets: initial JavaScript **7.6KB / 15KB**, CSS **17.4KB / 32KB**, and maximum inline artwork **5.6KB / 20KB**. No runtime dependency was added.
+
+Run `AUDIT_BASE_URL=http://127.0.0.1:4331 node scripts/capture-card-reader-audit.mjs [outputDirectory]` against a built local preview. The default directory is `/tmp/card-reader-audit-after`; the script saves a JSON manifest alongside the screenshots. The matched baseline is retained in `/tmp/card-reader-audit-before`. Selected review evidence stays outside `public/`:
+
+| View | Before | After |
+| --- | --- | --- |
+| English Work, 1440×900 | [Before](./design-audit/card-reader/en-work-desktop-before.png) | [After](./design-audit/card-reader/en-work-desktop-after.png) |
+| Russian Tooling focused control, 1440×900 | [Before](./design-audit/card-reader/ru-tooling-focus-before.png) | [After](./design-audit/card-reader/ru-tooling-focus-after.png) |
+| Georgian armed reader, 1280×720 | — | [Full-size preview and release feedback](./design-audit/card-reader/ge-reader-armed.png) |
+| Georgian Tooling tablet, 820×1180 | — | [Cards and compact header](./design-audit/card-reader/ge-tablet-tooling.png) |
 
 Review boundaries: Georgian wording has received a consistency pass, but native-speaker editorial review remains outstanding. Historical project/experience records retain their documented English fallback where translations do not exist. Existing blog bodies remain unchanged. Automated and visual checks use Chromium; this audit does not establish parity with physical devices or every browser engine.

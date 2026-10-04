@@ -565,6 +565,10 @@ export const deckCopy: Record<
     readerLabel: string;
     readerIdle: string;
     readerHint: string;
+    readerCarrying: string;
+    readerArmed: string;
+    readerCancelled: string;
+    readerCancelHint: string;
     readerReading: string;
     announcePlayed: string;
     caseKicker: string;
@@ -590,8 +594,12 @@ export const deckCopy: Record<
     flip: "Flip",
     open: "Open case file",
     readerLabel: "Card reader",
-    readerIdle: "Drop a card here",
-    readerHint: "or choose Open case file on any card",
+    readerIdle: "Drop a card here to open",
+    readerHint: "Or choose Open case file on any card.",
+    readerCarrying: "Move to the reader",
+    readerArmed: "Release to open",
+    readerCancelled: "Card returned",
+    readerCancelHint: "Esc or release outside to cancel.",
     readerReading: "Reading {title}…",
     announcePlayed: "{title} played. Opening case file.",
     caseKicker: "CASE FILE",
@@ -616,8 +624,12 @@ export const deckCopy: Record<
     flip: "Перевернуть",
     open: "Открыть дело",
     readerLabel: "Считыватель карт",
-    readerIdle: "Перетащите карту сюда",
-    readerHint: "или нажмите «Открыть дело» на любой карте",
+    readerIdle: "Перетащите карту, чтобы открыть",
+    readerHint: "Или нажмите «Открыть дело» на карте.",
+    readerCarrying: "Перенесите к считывателю",
+    readerArmed: "Отпустите, чтобы открыть",
+    readerCancelled: "Карта возвращена",
+    readerCancelHint: "Esc или отпустите вне считывателя для отмены.",
     readerReading: "Чтение: {title}…",
     announcePlayed: "{title} разыграна. Открываю дело.",
     caseKicker: "ДЕЛО",
@@ -642,8 +654,12 @@ export const deckCopy: Record<
     flip: "Umdrehen",
     open: "Fallakte öffnen",
     readerLabel: "Kartenleser",
-    readerIdle: "Karte hier ablegen",
-    readerHint: "oder „Fallakte öffnen“ auf einer Karte wählen",
+    readerIdle: "Karte hier ablegen und öffnen",
+    readerHint: "Oder „Fallakte öffnen“ auf einer Karte wählen.",
+    readerCarrying: "Zum Kartenleser ziehen",
+    readerArmed: "Zum Öffnen loslassen",
+    readerCancelled: "Karte zurückgelegt",
+    readerCancelHint: "Esc oder außerhalb loslassen zum Abbrechen.",
     readerReading: "Lese {title} …",
     announcePlayed: "{title} ausgespielt. Fallakte wird geöffnet.",
     caseKicker: "FALLAKTE",
@@ -668,8 +684,12 @@ export const deckCopy: Record<
     flip: "გადაბრუნება",
     open: "პროექტის ნახვა",
     readerLabel: "ბარათის წამკითხველი",
-    readerIdle: "გადმოიტანეთ ბარათი აქ",
-    readerHint: "ან აირჩიეთ „პროექტის ნახვა“ ნებისმიერ ბარათზე",
+    readerIdle: "გადმოიტანეთ ბარათი გასახსნელად",
+    readerHint: "ან აირჩიეთ „პროექტის ნახვა“ ბარათზე.",
+    readerCarrying: "გადმოიტანეთ წამკითხველთან",
+    readerArmed: "გაუშვით გასახსნელად",
+    readerCancelled: "ბარათი დაბრუნდა",
+    readerCancelHint: "გაუქმება: Esc ან გაუშვით გარეთ.",
     readerReading: "იკითხება {title}…",
     announcePlayed: "იხსნება პროექტი: {title}.",
     caseKicker: "პროექტი",

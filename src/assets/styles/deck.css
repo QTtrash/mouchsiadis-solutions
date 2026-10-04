@@ -58,20 +58,32 @@ html[data-effects="reduced"]::view-transition-new(*) {
   gap: 1rem;
 }
 
-.card-deck.is-draggable .card-deck__toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 25;
-  padding-block: 0.5rem;
-  background: var(--screen);
+.card-deck.is-draggable:not([data-view="list"]) {
+  grid-template-columns: minmax(0, 1fr) 13rem;
+  column-gap: 1rem;
 }
 
-.card-deck.is-draggable .deck-card {
-  scroll-margin-block-start: 5rem;
+/* The reader owns a lane. Its sticky surface never covers cards or controls. */
+.card-deck.is-draggable:not([data-view="list"]) .card-deck__toolbar {
+  grid-area: 1 / 2;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  align-self: start;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.card-deck.is-draggable:not([data-view="list"]) .card-deck__table {
+  grid-area: 1 / 1;
+}
+
+.card-deck.is-draggable:not([data-view="list"]) .card-hand {
+  grid-template-columns: repeat(2, minmax(0, 17.5rem));
+  justify-content: start;
 }
 
 .card-deck__view {
-  order: 2;
   flex: none;
   margin-left: auto;
   display: inline-flex;
@@ -80,6 +92,13 @@ html[data-effects="reduced"]::view-transition-new(*) {
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.24);
+}
+
+.card-deck.is-draggable:not([data-view="list"]) .card-deck__view {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin-left: 0;
 }
 
 html:not(.js) .card-deck__view {
@@ -102,6 +121,11 @@ html:not(.js) .card-deck__view {
 
 .card-deck__view button:hover {
   color: var(--text);
+}
+
+.card-deck__view button:focus-visible {
+  position: relative;
+  outline-offset: 2px;
 }
 
 .card-deck__view button[aria-pressed="true"] {
@@ -429,21 +453,26 @@ html:not(.js) .deck-card__actions {
 }
 
 .card-deck.is-draggable:not([data-view="list"]) .card-reader {
-  flex: 1;
   min-width: 0;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
-  align-items: center;
-  gap: 0.85rem;
-  min-height: 2.9rem;
-  margin-right: 0;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--line);
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(180deg, rgba(165, 220, 113, 0.05), rgba(0, 0, 0, 0.3)),
-    #030a04;
-  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.6);
+    linear-gradient(180deg, rgba(165, 220, 113, 0.08), transparent 65%),
+    var(--screen);
+  box-shadow:
+    inset 0 2px rgba(165, 220, 113, 0.1),
+    inset 0 -3px rgba(0, 0, 0, 0.4);
+  transition: border-color 120ms ease;
+}
+
+.card-reader__header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .card-reader__led {
@@ -454,47 +483,69 @@ html:not(.js) .deck-card__actions {
 }
 
 .card-reader__label {
-  color: var(--muted);
+  color: var(--text-strong);
   font: 600 0.8125rem/1.5 var(--body);
   letter-spacing: normal;
   text-transform: none;
-  white-space: nowrap;
 }
 
 .card-reader__slot {
+  position: relative;
   display: grid;
   place-items: center;
-  min-height: 2.2rem;
-  padding: 0.2rem 0.6rem;
+  min-height: 6.25rem;
+  padding: 0.75rem 0.5rem;
   border: 1px dashed var(--line-strong);
   border-radius: 0.3rem;
   background:
     linear-gradient(
       180deg,
-      transparent 44%,
-      rgba(0, 0, 0, 0.95) 44% 56%,
-      transparent 56%
+      transparent calc(50% - 5px),
+      #010402 calc(50% - 5px) calc(50% + 5px),
+      transparent calc(50% + 5px)
     ),
     rgba(0, 0, 0, 0.35);
   transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease;
+    border-color 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .card-reader__slot strong {
-  padding: 0.15rem 0.45rem;
+  max-width: 100%;
+  padding: 0.25rem;
   background: #030a04;
-  color: var(--text-secondary);
-  font: 600 0.7rem/1.3 var(--mono);
+  color: var(--text);
+  font: 600 0.8125rem/1.5 var(--body);
   letter-spacing: normal;
+  text-align: center;
   text-transform: none;
 }
 
 .card-reader__hint {
-  display: none;
   color: var(--text-subtle);
-  font-size: 0.72rem;
-  line-height: 1.3;
+  font: 0.8125rem/1.5 var(--body);
+  min-height: 3em;
+}
+
+.card-reader[data-state="carrying"] {
+  border-color: var(--signal);
+}
+
+.card-reader[data-state="carrying"] .card-reader__led {
+  background: var(--signal);
+}
+
+.card-reader[data-state="carrying"] .card-reader__slot {
+  border-color: var(--signal);
+}
+
+.card-reader[data-state="armed"],
+.card-reader[data-state="reading"] {
+  border-color: var(--amber);
+}
+
+.card-reader[data-state="cancelled"] .card-reader__slot strong {
+  color: var(--text-subtle);
 }
 
 .card-reader.is-armed .card-reader__slot,
@@ -528,19 +579,68 @@ html:not(.js) .deck-card__actions {
   user-select: none;
 }
 
-.deck-card.is-dragging {
-  z-index: 20;
+.card-deck .deck-card.is-dragging {
+  opacity: 0.3;
 }
 
-.deck-card.is-dragging .deck-card__body {
+.card-deck .deck-card.is-dragging .deck-card__body {
   cursor: grabbing;
 }
 
-.deck-card.is-dragging .deck-card__face {
+.card-drag-preview {
+  position: fixed;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  margin: 0;
+  list-style: none;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.card-drag-preview .deck-card__face {
   box-shadow:
-    inset 0 0 0 3px rgba(0, 0, 0, 0.55),
+    inset 0 2px var(--suit),
     0 28px 60px -20px rgba(0, 0, 0, 1),
     0 0 26px color-mix(in srgb, var(--suit) 25%, transparent);
+}
+
+.card-drag-preview .deck-card__body {
+  transition: none;
+}
+
+.card-drag-preview .deck-card__actions {
+  border-radius: var(--radius-sm);
+  background: var(--screen);
+}
+
+.card-drag-preview[data-state="armed"] .deck-card__face,
+.card-drag-preview[data-state="reading"] .deck-card__face {
+  border-color: var(--amber);
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.card-drag-feedback {
+  position: fixed;
+  z-index: 41;
+  top: 0;
+  left: 0;
+  max-width: min(19rem, calc(100vw - 1.5rem));
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--signal);
+  border-radius: var(--radius-sm);
+  background: var(--screen);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  color: var(--text-strong);
+  font: 600 0.8125rem/1.5 var(--body);
+  pointer-events: none;
+}
+
+.card-drag-feedback[data-state="armed"] {
+  border-color: var(--amber);
+  color: var(--amber-bright);
 }
 
 /* Optional fine-pointer tilt never changes the resting layout. */

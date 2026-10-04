@@ -29,17 +29,27 @@ const labels = evidenceLabels[locale];
       >
     </div>
 
-    <div class="card-reader" data-card-reader aria-hidden="true">
-      <span class="card-reader__led"></span>
-      <span class="card-reader__label">{copy.readerLabel}</span>
+    <div class="card-reader" data-card-reader data-state="idle" aria-hidden="true">
+      <span class="card-reader__header">
+        <span class="card-reader__led"></span>
+        <span class="card-reader__label">{copy.readerLabel}</span>
+      </span>
       <span class="card-reader__slot">
         <strong
           data-reader-status
           data-idle={copy.readerIdle}
+          data-carrying={copy.readerCarrying}
+          data-armed={copy.readerArmed}
+          data-cancelled={copy.readerCancelled}
           data-reading={copy.readerReading}>{copy.readerIdle}</strong
         >
       </span>
-      <span class="card-reader__hint">{copy.readerHint}</span>
+      <span
+        class="card-reader__hint"
+        data-reader-hint
+        data-idle={copy.readerHint}
+        data-cancel={copy.readerCancelHint}>{copy.readerHint}</span
+      >
     </div>
   </div>
 

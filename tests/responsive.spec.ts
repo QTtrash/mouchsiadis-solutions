@@ -38,11 +38,40 @@ for (const locale of locales) {
 test("menu exposes navigation, languages, and preferences", async ({ page }) => {
   await page.goto("/en");
   const width = page.viewportSize()?.width ?? 1280;
-  await page.getByRole("button", { name: width <= 767 ? "Menu" : "Options" }).click();
+  await page.getByRole("button", { name: width < 1120 ? "Menu" : "Options" }).click();
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).last()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Languages" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Interface options" })).toBeVisible();
 });
+
+for (const locale of locales) {
+  test(`${locale} tablet header keeps navigation and controls reachable`, async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "tablet", "820px tablet header regression");
+    await page.goto(`/${locale}/tooling/`);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator(".site-header__nav")).toBeHidden();
+    const controls = page.locator(".site-header__brand, .site-header__hire, [data-drawer-open]");
+    const report = await controls.evaluateAll((elements) => elements.map((element) => {
+      const box = element.getBoundingClientRect();
+      return {
+        left: box.left,
+        right: box.right,
+        hit: element.contains(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)),
+      };
+    }));
+    for (const [index, control] of report.entries()) {
+      expect(control.hit, "header control is not covered by translated navigation").toBe(true);
+      if (index) expect(control.left).toBeGreaterThanOrEqual(report[index - 1]!.right);
+    }
+    const menu = page.locator("[data-drawer-open]");
+    await expect(menu.locator(".site-header__options-mobile")).toBeVisible();
+    await menu.click();
+    await expect(menu).toHaveAttribute("aria-expanded", "true");
+    await page.locator(`[data-drawer-link][href="/${locale}/#game-dev"]`).click();
+    await expect(page).toHaveURL(new RegExp(`/${locale}/#game-dev$`));
+    await expect(page.locator("#game-dev h2").first()).toBeInViewport();
+  });
+}
 
 test("Tooling to About uses the prefetched direct route", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1120, "desktop primary navigation");
