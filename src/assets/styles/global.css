@@ -2275,6 +2275,22 @@ html:not(.js) .terminal-chassis__knobs {
   .js .terminal-console--ready [data-terminal-panel].is-active {
     animation: phosphor-wake 110ms ease-out;
   }
+  /* One power-on per session: a beam opens across the glass and fades. */
+  .terminal-console--power-on .terminal-glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent 46%,
+      rgba(214, 255, 204, 0.85) 50%,
+      transparent 54%
+    );
+    animation: crt-power-on 420ms ease-out both;
+  }
 }
 @keyframes cursor-blink {
   50% {
@@ -2308,6 +2324,20 @@ html:not(.js) .terminal-chassis__knobs {
   }
   to {
     filter: none;
+  }
+}
+@keyframes crt-power-on {
+  0% {
+    opacity: 1;
+    transform: scaleY(0.02);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1);
   }
 }
 

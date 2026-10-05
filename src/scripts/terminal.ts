@@ -3,6 +3,24 @@
 import { SoundEngine } from "./sound";
 
 const PANEL_ALIASES: Record<string, string> = { cv: "contact" };
+const POWER_KEY = "terminalPowered";
+
+// One decorative power-on beam per session. It overlays the already rendered
+// glass, so content and actions are never delayed or hidden.
+function powerOn(terminal: HTMLElement): void {
+  const reduced =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    document.documentElement.dataset.effects === "reduced";
+  if (reduced) return;
+  try {
+    if (sessionStorage.getItem(POWER_KEY)) return;
+    sessionStorage.setItem(POWER_KEY, "1");
+  } catch {
+    return;
+  }
+  terminal.classList.add("terminal-console--power-on");
+  window.setTimeout(() => terminal.classList.remove("terminal-console--power-on"), 500);
+}
 
 export function initTerminal(): void {
   const terminal = document.querySelector<HTMLElement>("[data-terminal-console]");
@@ -86,6 +104,7 @@ export function initTerminal(): void {
     summary.addEventListener("click", () => sound.play("detail"));
   });
   syncLayout();
+  powerOn(terminal);
   // A direct fragment URL selects a panel; it must not scroll the outer frame
   // to the absolute-positioned panel after the document finishes loading.
   window.addEventListener("load", () => {
