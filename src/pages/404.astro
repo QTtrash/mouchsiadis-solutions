@@ -1,7 +1,15 @@
 ---
+// One static 404 serves every locale. English renders by default; a tiny inline
+// script shows the copy that matches the requested path's locale prefix.
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { buildLocaleAlternates } from "../lib/blog";
-import { localeSeo } from "../lib/i18n";
+import { buildLocaleAlternates, buildLocalePath } from "../lib/blog";
+import { EMAIL, mailto } from "../lib/contact";
+import {
+  LOCALES,
+  localeIntlCodes,
+  localeLabels,
+  localeSeo,
+} from "../lib/i18n";
 ---
 
 <BaseLayout
@@ -11,11 +19,53 @@ import { localeSeo } from "../lib/i18n";
   noindex={true}
 >
   <section class="section not-found-shell">
-    <div class="section-heading">
-      <p class="section-heading__kicker">404</p>
-      <h1>{localeSeo.en.labels.notFoundTitle}</h1>
-      <p class="section-heading__body">{localeSeo.en.labels.notFoundBody}</p>
-    </div>
-    <a class="button" href="/en/">{localeSeo.en.labels.returnHome}</a>
+    <p class="section-heading__kicker">404 // SIGNAL LOST</p>
+    {
+      LOCALES.map((locale) => {
+        const labels = localeSeo[locale].labels;
+        return (
+          <div
+            class="not-found"
+            data-not-found={locale}
+            lang={localeIntlCodes[locale]}
+            hidden={locale !== "en"}
+          >
+            <h1>{labels.notFoundTitle}</h1>
+            <p class="section-heading__body">{labels.notFoundBody}</p>
+            <div class="hero-panel__actions">
+              <a class="button button--primary" href={buildLocalePath(locale)}>
+                {labels.returnHome}
+              </a>
+            </div>
+            <p class="not-found__contact">
+              {labels.articleContact}{" "}
+              <a href={mailto(labels.mailSubject)}>{EMAIL}</a>
+            </p>
+          </div>
+        );
+      })
+    }
+    <nav class="not-found__languages" aria-label={localeSeo.en.labels.notFoundTitle}>
+      {
+        LOCALES.map((locale) => (
+          <a
+            href={buildLocalePath(locale)}
+            lang={localeIntlCodes[locale]}
+            hreflang={localeIntlCodes[locale]}
+          >
+            {localeLabels[locale]}
+          </a>
+        ))
+      }
+    </nav>
   </section>
+  <script is:inline>
+    (() => {
+      const match = location.pathname.match(/^\/(ru|de|ge)(\/|$)/);
+      if (!match) return;
+      document.querySelectorAll("[data-not-found]").forEach((block) => {
+        block.hidden = block.dataset.notFound !== match[1];
+      });
+    })();
+  </script>
 </BaseLayout>

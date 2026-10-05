@@ -2,6 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import { buildLocalePath, getPostLanguage, getPostSlug } from "../lib/blog";
 import { localeIntlCodes, localeSeo, type Locale } from "../lib/i18n";
+import { EMAIL, mailto } from "../lib/contact";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -81,5 +82,10 @@ const postLanguage = localeIntlCodes[getPostLanguage(post)];
         }
       </div>
     </div>
+
+    <p class="article-shell__contact">
+      {copy.labels.articleContact}
+      <a href={mailto(copy.labels.mailSubject)}>{EMAIL}</a>
+    </p>
   </section>
 </BaseLayout>
