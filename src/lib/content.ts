@@ -42,6 +42,17 @@ export interface ExperienceEntry {
   cover: string;
 }
 
+/** Owner-confirmed facts shown in the hero (location and availability, October 2026). */
+export const profile: { location: LocalizedString; availability: LocalizedString } = {
+  location: { en: "Munich / Europe", ru: "Мюнхен / Европа", de: "München / Europa", ge: "მიუნხენი / ევროპა" },
+  availability: {
+    en: "available for systems work",
+    ru: "открыт к сотрудничеству",
+    de: "offen für Zusammenarbeit",
+    ge: "ღია ვარ თანამშრომლობისთვის",
+  },
+};
+
 export const projects: ProjectEntry[] = [
   {
     slug: "ypay",
@@ -60,13 +71,13 @@ export const projects: ProjectEntry[] = [
     },
     summary: {
       en: "A live tenant-aware payout platform for mobility fleets, with admin and driver experiences, balance visibility, payout orchestration, and reconciliation.",
-      ru: "Платформа выплат для парков Yandex с административными и водительскими потоками, видимостью балансов, оркестрацией выплат и поддержкой двух VPS-окружений.",
-      de: "Eine Auszahlungsplattform fuer Yandex-Flotten mit Admin- und Fahrerablaeufen, Saldenansicht, Auszahlungsorchestrierung und dualem VPS-Deployment.",
+      ru: "Действующая мультиарендная платформа выплат для автопарков: интерфейсы для администраторов и водителей, видимость балансов, оркестрация выплат и сверка.",
+      de: "Eine produktive, mandantenfähige Auszahlungsplattform für Mobilitätsflotten mit Admin- und Fahreroberflächen, Saldenansicht, Auszahlungsorchestrierung und Abgleich.",
     },
     narrative: {
       en: "YPay is designed around tenant isolation, payout risk control, and infrastructure clarity. The product combines host-bound tenant routing, role-separated admin and driver surfaces, external provider integrations, and an auditable payout lifecycle.",
-      ru: "Neopay строится вокруг изоляции арендаторов, контроля рисков выплат и прозрачной инфраструктуры. Продукт сочетает host-bound маршрутизацию арендаторов, разделенные интерфейсы для админов и водителей, интеграции с внешними провайдерами и аудируемый жизненный цикл выплат.",
-      de: "Neopay ist auf Mandantentrennung, Risikokontrolle bei Auszahlungen und klare Infrastruktur ausgerichtet. Das Produkt kombiniert host-gebundenes Tenant-Routing, getrennte Admin- und Fahreroberflaechen, externe Integrationen und einen auditierbaren Auszahlungsprozess.",
+      ru: "YPay строится вокруг изоляции арендаторов, контроля рисков выплат и прозрачной инфраструктуры. Продукт сочетает host-bound маршрутизацию арендаторов, разделенные интерфейсы для админов и водителей, интеграции с внешними провайдерами и аудируемый жизненный цикл выплат.",
+      de: "YPay ist auf Mandantentrennung, Risikokontrolle bei Auszahlungen und klare Infrastruktur ausgerichtet. Das Produkt kombiniert host-gebundenes Tenant-Routing, getrennte Admin- und Fahreroberflächen, externe Integrationen und einen auditierbaren Auszahlungsprozess.",
     },
     details: {
       en: [
@@ -83,9 +94,9 @@ export const projects: ProjectEntry[] = [
       ],
       de: [
         "Als Next.js-16-Monolith mit typisierten Integrationsmodulen, Drizzle ORM, PostgreSQL und tenant-gebundenem Host-Parsing aufgebaut.",
-        "Enthaelt Integrationen fuer Yandex Fleet, Bird Verify und Bank of Georgia fuer Salden, OTP-Zustellung und Zahlungsanlage.",
-        "Unterstuetzt fahrerseitige Auszahlungsanfragen, Reconciliation-Ansicht und Ereignisverlauf unter Admin-Kontrolle.",
-        "Fuer produktive und Entwicklungs-VPS-Ziele hinter einem gemeinsamen Host-Proxy vorbereitet.",
+        "Enthält Integrationen für Yandex Fleet, Bird Verify und Bank of Georgia für Salden, OTP-Zustellung und Zahlungsanlage.",
+        "Unterstützt fahrerseitige Auszahlungsanfragen, Reconciliation-Ansicht und Ereignisverlauf unter Admin-Kontrolle.",
+        "Für produktive und Entwicklungs-VPS-Ziele hinter einem gemeinsamen Host-Proxy vorbereitet.",
       ],
     },
     stack: [
@@ -101,14 +112,14 @@ export const projects: ProjectEntry[] = [
     meta: {
       en: ["public platform", "tenant routing", "payments"],
       ru: ["публичная платформа", "tenant routing", "платежи"],
-      de: ["oeffentliche Plattform", "Tenant-Routing", "Payments"],
+      de: ["öffentliche Plattform", "Tenant-Routing", "Payments"],
       ge: ["პლატფორმა", "ავტოპარკები", "გადახდები"],
     },
     link: "https://ypay.ge",
     linkLabel: {
       en: "open platform",
       ru: "открыть платформу",
-      de: "Plattform oeffnen",
+      de: "Plattform öffnen",
     },
     cover: "neopay",
     live: true,
@@ -122,13 +133,13 @@ export const projects: ProjectEntry[] = [
       contribution: {
         en: "Designed and implemented the tenant model, product surfaces, payment integrations, and deployment topology.",
         ru: "Спроектировал и реализовал tenant-модель, продуктовые интерфейсы, платежные интеграции и схему развертывания.",
-        de: "Tenant-Modell, Produktoberflaechen, Zahlungsintegrationen und Deployment-Topologie konzipiert und umgesetzt.",
+        de: "Tenant-Modell, Produktoberflächen, Zahlungsintegrationen und Deployment-Topologie konzipiert und umgesetzt.",
         ge: "დავაპროექტე და განვახორციელე tenant-მოდელი, პროდუქტის ინტერფეისები, გადახდის ინტეგრაციები და განთავსების ტოპოლოგია.",
       },
       constraints: {
         en: "Financial operations require strict tenant isolation, auditable state changes, and resilient third-party boundaries.",
         ru: "Финансовые операции требуют строгой изоляции арендаторов, аудируемых изменений состояния и надежных границ интеграций.",
-        de: "Finanzoperationen verlangen strikte Tenant-Trennung, auditierbare Zustandsaenderungen und robuste Integrationsgrenzen.",
+        de: "Finanzoperationen verlangen strikte Tenant-Trennung, auditierbare Zustandsänderungen und robuste Integrationsgrenzen.",
         ge: "ფინანსური ოპერაციები მოითხოვს tenant-ების მკაცრ იზოლაციას, აუდიტირებად ცვლილებებს და გამძლე ინტეგრაციის საზღვრებს.",
       },
       outcomes: {
@@ -157,12 +168,12 @@ export const projects: ProjectEntry[] = [
     summary: {
       en: "A production dispatch and support workspace for tenant operations, real-time workflows, notification workers, and accountable case handling.",
       ru: "Рабочее пространство диспетчеризации и поддержки для tenant-операций, процессов в реальном времени, уведомлений и контролируемой обработки обращений.",
-      de: "Ein produktiver Dispatch- und Support-Arbeitsplatz fuer Tenant-Operations, Echtzeitablaeufe, Benachrichtigungen und nachvollziehbare Fallbearbeitung.",
+      de: "Ein produktiver Dispatch- und Support-Arbeitsplatz für Tenant-Operations, Echtzeitabläufe, Benachrichtigungen und nachvollziehbare Fallbearbeitung.",
     },
     narrative: {
       en: "YDesk turns operational traffic into a clear working surface: tenant-specific domains, role-aware queues, durable records, integrations, and background notifications under one deployment model.",
       ru: "YDesk превращает операционный поток в понятную рабочую среду: tenant-домены, ролевые очереди, надежные записи, интеграции и фоновые уведомления.",
-      de: "YDesk macht operativen Verkehr zu einer klaren Arbeitsflaeche: Tenant-Domains, rollenbezogene Queues, dauerhafte Datensaetze, Integrationen und Hintergrundbenachrichtigungen.",
+      de: "YDesk macht operativen Verkehr zu einer klaren Arbeitsfläche: Tenant-Domains, rollenbezogene Queues, dauerhafte Datensätze, Integrationen und Hintergrundbenachrichtigungen.",
     },
     details: {
       en: [
@@ -182,7 +193,7 @@ export const projects: ProjectEntry[] = [
     linkLabel: {
       en: "open site",
       ru: "открыть сайт",
-      de: "Website oeffnen",
+      de: "Website öffnen",
     },
     cover: "neopay",
     live: true,
@@ -202,13 +213,13 @@ export const projects: ProjectEntry[] = [
       constraints: {
         en: "Support work must remain fast under live traffic while preserving ownership, history, and tenant boundaries.",
         ru: "Поддержка должна оставаться быстрой под живой нагрузкой, сохраняя ответственность, историю и границы арендаторов.",
-        de: "Support muss unter Live-Traffic schnell bleiben und zugleich Zustaendigkeit, Verlauf und Tenant-Grenzen bewahren.",
+        de: "Support muss unter Live-Traffic schnell bleiben und zugleich Zuständigkeit, Verlauf und Tenant-Grenzen bewahren.",
         ge: "მხარდაჭერა სწრაფი უნდა დარჩეს ცოცხალი დატვირთვისას და ამავე დროს შეინარჩუნოს პასუხისმგებლობა, ისტორია და tenant-საზღვრები.",
       },
       outcomes: {
         en: "A live multi-tenant operations surface with clearer queues, accountable case handling, and durable notification delivery.",
         ru: "Рабочий мультиарендный интерфейс с понятными очередями, контролируемой обработкой обращений и надежными уведомлениями.",
-        de: "Eine produktive Multi-Tenant-Oberflaeche mit klareren Queues, verantwortlicher Fallbearbeitung und dauerhaften Benachrichtigungen.",
+        de: "Eine produktive Multi-Tenant-Oberfläche mit klareren Queues, verantwortlicher Fallbearbeitung und dauerhaften Benachrichtigungen.",
         ge: "მოქმედი multi-tenant საოპერაციო ინტერფეისი მკაფიო რიგებით, პასუხისმგებლიანი დამუშავებით და მდგრადი შეტყობინებებით.",
       },
     },
@@ -259,13 +270,13 @@ export const toolProjects: ProjectEntry[] = [
     },
     narrative: {
       en: "Coordinates are encrypted on the publishing device; the public relay forwards opaque messages without position history. Source and release evidence are public on GitHub.",
-      de: "Koordinaten werden auf dem sendenden Geraet verschluesselt; das oeffentliche Relay leitet undurchsichtige Nachrichten ohne Positionsverlauf weiter. Quellcode und Release-Nachweise sind auf GitHub oeffentlich.",
+      de: "Koordinaten werden auf dem sendenden Gerät verschlüsselt; das öffentliche Relay leitet undurchsichtige Nachrichten ohne Positionsverlauf weiter. Quellcode und Release-Nachweise sind auf GitHub öffentlich.",
       ru: "Координаты шифруются на отправляющем устройстве; публичный relay передаёт непрозрачные сообщения без истории позиций. Код и доказательства сборки доступны на GitHub.",
       ge: "კოორდინატები გამომცემ მოწყობილობაზე იშიფრება; საჯარო relay გაუშიფრავ შეტყობინებებს პოზიციების ისტორიის გარეშე გადასცემს. კოდი და რელიზის მტკიცებულებები GitHub-ზე საჯაროა.",
     },
     details: {
       en: ["Apache-2.0 original source code", "AES-256-GCM Internet rooms", "Immutable releases with checksum, SBOM and provenance"],
-      de: ["Originalquellcode unter Apache-2.0", "AES-256-GCM-Internetraeume", "Unveraenderliche Releases mit Checksumme, SBOM und Provenienz"],
+      de: ["Originalquellcode unter Apache-2.0", "AES-256-GCM-Interneträume", "Unveränderliche Releases mit Checksumme, SBOM und Provenienz"],
       ru: ["Исходный код под Apache-2.0", "Интернет-комнаты AES-256-GCM", "Неизменяемые релизы с checksum, SBOM и provenance"],
       ge: ["საწყისი კოდი Apache-2.0 ლიცენზიით", "AES-256-GCM ინტერნეტ-ოთახები", "უცვლელი რელიზები checksum-ით, SBOM-ით და provenance-ით"],
     },
@@ -278,7 +289,7 @@ export const toolProjects: ProjectEntry[] = [
     },
     status: { en: "OPEN SOURCE", de: "OPEN SOURCE", ru: "ОТКРЫТЫЙ КОД", ge: "ღია კოდი" },
     link: "https://signal.mouchsiadis-solutions.com",
-    linkLabel: { en: "open Raid Signal", de: "Raid Signal oeffnen", ru: "открыть Raid Signal", ge: "Raid Signal-ის გახსნა" },
+    linkLabel: { en: "open Raid Signal", de: "Raid Signal öffnen", ru: "открыть Raid Signal", ge: "Raid Signal-ის გახსნა" },
     sourceLink: "https://github.com/QTtrash/tarkov-map",
     sourceLinkLabel: { en: "view source", de: "Quellcode ansehen", ru: "исходный код", ge: "კოდის ნახვა" },
     cover: "truegrind",
@@ -406,7 +417,7 @@ export const gameProjects: ProjectEntry[] = [
     narrative: {
       en: "Alice Plays started from a simple thought: if a puzzle game lives on your phone, it should remember you, come back fast, and never make the quiet part of playing feel like work.",
       ru: "Alice Plays начался с простой мысли: если головоломка живет у тебя в телефоне, она должна помнить тебя, быстро возвращать в игру и не превращать спокойную часть игры в работу.",
-      de: "Alice Plays begann mit einem einfachen Gedanken: Wenn ein Puzzle-Spiel auf deinem Telefon lebt, soll es dich wiedererkennen, schnell zurueck sein und die ruhige Seite des Spielens nicht wie Arbeit wirken lassen.",
+      de: "Alice Plays begann mit einem einfachen Gedanken: Wenn ein Puzzle-Spiel auf deinem Telefon lebt, soll es dich wiedererkennen, schnell zurück sein und die ruhige Seite des Spielens nicht wie Arbeit wirken lassen.",
     },
     details: {
       en: [
@@ -423,9 +434,9 @@ export const gameProjects: ProjectEntry[] = [
       ],
       de: [
         "Startet mit Sudoku, ist aber als breitere Spieleplattform statt als einmaliger Titel aufgebaut.",
-        "Unterstuetzt Social Auth, Cloud Saves, Leaderboard-Muster und offline-freundliches Progressive-Web-App-Verhalten.",
-        "Mit modernem React-Stack fuer Mobile-First-Interaktion gebaut.",
-        "Als Produkt praesentiert, bei dem Polishing, Retention und kuenftige Erweiterbarkeit gleich wichtig sind.",
+        "Unterstützt Social Auth, Cloud Saves, Leaderboard-Muster und offline-freundliches Progressive-Web-App-Verhalten.",
+        "Mit modernem React-Stack für Mobile-First-Interaktion gebaut.",
+        "Als Produkt präsentiert, bei dem Polishing, Retention und künftige Erweiterbarkeit gleich wichtig sind.",
       ],
     },
     stack: [
@@ -441,14 +452,14 @@ export const gameProjects: ProjectEntry[] = [
     meta: {
       en: ["public product", "games", "mobile-first"],
       ru: ["публичный продукт", "игры", "mobile-first"],
-      de: ["oeffentliches Produkt", "Games", "mobile-first"],
+      de: ["öffentliches Produkt", "Games", "mobile-first"],
       ge: ["თავსატეხები", "მობილური", "თამაშები"],
     },
     link: "https://www.alice-plays.online/",
     linkLabel: {
       en: "open platform",
       ru: "открыть платформу",
-      de: "Plattform oeffnen",
+      de: "Plattform öffnen",
     },
     cover: "alice",
     live: true,
@@ -471,12 +482,12 @@ export const gameProjects: ProjectEntry[] = [
     summary: {
       en: "A RimWorld weapon mod centered on a rifle-revolver hybrid silhouette, tuning weapon feel, item identity, and battlefield role inside the game’s mod ecosystem.",
       ru: "Мод оружия для RimWorld, построенный вокруг гибридной силуэтной идеи rifle-revolver, с настройкой оружейного ощущения, идентичности предмета и его роли в бою.",
-      de: "Ein RimWorld-Waffenmod rund um die Silhouette eines Rifle-Revolver-Hybrids mit Fokus auf Waffencharakter, Item-Identitaet und taktische Rolle.",
+      de: "Ein RimWorld-Waffenmod rund um die Silhouette eines Rifle-Revolver-Hybrids mit Fokus auf Waffencharakter, Item-Identität und taktische Rolle.",
     },
     narrative: {
       en: "The value here is not only the workshop release itself but the discipline of translating a weapon concept into readable in-game behavior, balancing, and presentation.",
       ru: "Ценность здесь не только в публикации в Workshop, но и в дисциплине перевода оружейной идеи в читаемое игровое поведение, баланс и подачу.",
-      de: "Der Wert liegt nicht nur im Workshop-Release, sondern in der Disziplin, ein Waffenkonzept in lesbares Spielverhalten, Balancing und Praesentation zu uebersetzen.",
+      de: "Der Wert liegt nicht nur im Workshop-Release, sondern in der Disziplin, ein Waffenkonzept in lesbares Spielverhalten, Balancing und Präsentation zu übersetzen.",
     },
     details: {
       en: [
@@ -492,10 +503,10 @@ export const gameProjects: ProjectEntry[] = [
         "Кастомно оформленная карточка заменяет дефолтный embed ради более чистой портфельной подачи.",
       ],
       de: [
-        "Wird als sorgfaeltig gebauter Content-Mod und nicht als Wegwerf-Asset-Pack praesentiert.",
+        "Wird als sorgfältig gebauter Content-Mod und nicht als Wegwerf-Asset-Pack präsentiert.",
         "Fokussiert auf Weapon Fantasy, taktische Lesbarkeit und die Einbettung einer neuen Waffe in die Combat-Loops von RimWorld.",
-        "Wird hier als Teil eines groesseren Game-Development-Archivs gezeigt, neben originaler Spiel- und Systemarbeit.",
-        "Eine eigene Karteninszenierung ersetzt Standard-Embeds fuer eine sauberere Portfolio-Praesentation.",
+        "Wird hier als Teil eines größeren Game-Development-Archivs gezeigt, neben originaler Spiel- und Systemarbeit.",
+        "Eine eigene Karteninszenierung ersetzt Standard-Embeds für eine sauberere Portfolio-Präsentation.",
       ],
     },
     stack: [
@@ -537,12 +548,12 @@ export const gameProjects: ProjectEntry[] = [
     summary: {
       en: "A RimWorld revolver mod built around incendiary identity, emphasizing fire-driven combat flavor, encounter shaping, and the theatrical side of weapon design.",
       ru: "Мод револьвера для RimWorld с выраженной зажигательной идентичностью, акцентом на огненный боевой характер, форму столкновений и театральность оружейного дизайна.",
-      de: "Ein RimWorld-Revolvermod mit klarer Brand-Identitaet, Fokus auf feuergetriebene Kampfcharakteristik und die theatralische Seite von Weapon Design.",
+      de: "Ein RimWorld-Revolvermod mit klarer Brand-Identität, Fokus auf feuergetriebene Kampfcharakteristik und die theatralische Seite von Weapon Design.",
     },
     narrative: {
       en: "This entry highlights how small-scale game work can still carry strong authorship: a single weapon concept, a clear fantasy, and a better-than-default presentation layer.",
       ru: "Эта запись показывает, что даже малый игровой проект может нести сильное авторство: одна концепция оружия, четкая fantasy и презентация лучше дефолтной.",
-      de: "Dieser Eintrag zeigt, dass auch kleinformatige Spielearbeit starke Autorschaft tragen kann: ein klares Waffenkonzept, eine deutliche Fantasy und eine bessere Praesentation als der Standard.",
+      de: "Dieser Eintrag zeigt, dass auch kleinformatige Spielearbeit starke Autorschaft tragen kann: ein klares Waffenkonzept, eine deutliche Fantasy und eine bessere Präsentation als der Standard.",
     },
     details: {
       en: [
@@ -557,7 +568,7 @@ export const gameProjects: ProjectEntry[] = [
       ],
       de: [
         "Als eigene Showcase-Karte statt als roher Workshop-Embed aufgebaut.",
-        "Fokussiert auf Brand-Persoenlichkeit, Waffenlesbarkeit und Combat-Flavour in RimWorld.",
+        "Fokussiert auf Brand-Persönlichkeit, Waffenlesbarkeit und Combat-Flavour in RimWorld.",
         "Direkt mit der Steam-Workshop-Seite des Original-Releases verlinkt.",
       ],
     },
@@ -598,7 +609,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Owning cloud platform and infrastructure, with AI-agent integration and cross-team delivery support.",
       ru: "Ответственность за облачную платформу и инфраструктуру, интеграцию AI-агентов и поддержку поставки между командами.",
-      de: "Verantwortung fuer Cloud-Plattform und Infrastruktur, AI-Agenten-Integration und technische Unterstuetzung ueber Teamgrenzen hinweg.",
+      de: "Verantwortung für Cloud-Plattform und Infrastruktur, AI-Agenten-Integration und technische Unterstützung über Teamgrenzen hinweg.",
     },
     details: {
       en: [
@@ -612,9 +623,9 @@ export const experiences: ExperienceEntry[] = [
         "Работаю с внешними командами и поддерживаю поставку через техническое сопровождение и выравнивание решений.",
       ],
       de: [
-        "Verantworte Cloud-Plattform und Infrastruktur inklusive Provisioning, Skalierung und Zuverlaessigkeit ueber mehrere Umgebungen.",
-        "Implementiere eigene AI-Agenten und integriere AI-Tooling zur Automatisierung von Workflows und Erweiterung der Plattformfaehigkeiten.",
-        "Arbeite mit externen Teams zusammen und begleite Lieferprozesse mit technischer Fuehrung und Alignment.",
+        "Verantworte Cloud-Plattform und Infrastruktur inklusive Provisioning, Skalierung und Zuverlässigkeit über mehrere Umgebungen.",
+        "Implementiere eigene AI-Agenten und integriere AI-Tooling zur Automatisierung von Workflows und Erweiterung der Plattformfähigkeiten.",
+        "Arbeite mit externen Teams zusammen und begleite Lieferprozesse mit technischer Führung und Alignment.",
       ],
     },
     stack: [
@@ -676,7 +687,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Freelance platform delivery across analytics, frontend architecture, and full-stack product systems.",
       ru: "Фриланс-поставка платформ и продуктов: аналитика, frontend-архитектура и full-stack системы.",
-      de: "Freelance-Lieferung von Plattformen und Produkten ueber Analytics, Frontend-Architektur und Full-Stack-Systeme hinweg.",
+      de: "Freelance-Lieferung von Plattformen und Produkten über Analytics, Frontend-Architektur und Full-Stack-Systeme hinweg.",
     },
     details: {
       en: [
@@ -690,9 +701,9 @@ export const experiences: ExperienceEntry[] = [
         "Поставлял full-stack решения для клиентских проектов на NestJS, Ruby on Rails, Vue и Webflow — от требований до production deployment.",
       ],
       de: [
-        "Leitete die Plattformentwicklung fuer Acclinate Inc. und baute Analytics- sowie Data-Processing-Systeme.",
+        "Leitete die Plattformentwicklung für Acclinate Inc. und baute Analytics- sowie Data-Processing-Systeme.",
         "Mentorierte Ingenieure in Frontend-Architekturmustern, State Management und Authentifizierungsimplementierung.",
-        "Lieferte Full-Stack-Loesungen fuer mehrere Kundenprojekte mit NestJS, Ruby on Rails, Vue und Webflow vom Requirements-Scope bis zum produktiven Deployment.",
+        "Lieferte Full-Stack-Lösungen für mehrere Kundenprojekte mit NestJS, Ruby on Rails, Vue und Webflow vom Requirements-Scope bis zum produktiven Deployment.",
       ],
     },
     stack: [
@@ -718,7 +729,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Client delivery spanning testing strategy, React product work, and AWS-backed application delivery.",
       ru: "Клиентская поставка от стратегии тестирования до React-продуктов и приложений на AWS.",
-      de: "Kundenprojekte von Teststrategie ueber React-Produktarbeit bis zu AWS-gestuetzter Applikationslieferung.",
+      de: "Kundenprojekte von Teststrategie über React-Produktarbeit bis zu AWS-gestützter Applikationslieferung.",
     },
     details: {
       en: [
@@ -732,9 +743,9 @@ export const experiences: ExperienceEntry[] = [
         "Поставлял полные приложения для Variant Perception на JavaScript, React, Node.js и AWS Serverless — от архитектуры до тестирования и релиза.",
       ],
       de: [
-        "Entwickelte fuer Elunic AG eine umfassende Teststrategie mit Unit-, Integrations- und End-to-End-Abdeckung samt CI/CD-Integration.",
-        "Baute Frontend-Features mit React und TypeScript fuer die Remote-Work-Plattform von RemoteAmbition.",
-        "Lieferte komplette Anwendungen fuer Variant Perception mit JavaScript, React, Node.js und AWS Serverless von Architektur bis Deployment.",
+        "Entwickelte für Elunic AG eine umfassende Teststrategie mit Unit-, Integrations- und End-to-End-Abdeckung samt CI/CD-Integration.",
+        "Baute Frontend-Features mit React und TypeScript für die Remote-Work-Plattform von RemoteAmbition.",
+        "Lieferte komplette Anwendungen für Variant Perception mit JavaScript, React, Node.js und AWS Serverless von Architektur bis Deployment.",
       ],
     },
     stack: [
@@ -760,7 +771,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Led the refactor of a legacy monolith into a modern Java/Spring and React/TypeScript architecture.",
       ru: "Вел рефакторинг legacy-монолита в современную архитектуру на Java/Spring и React/TypeScript.",
-      de: "Fuehrte das Refactoring eines Legacy-Monolithen in eine moderne Java/Spring- und React/TypeScript-Architektur.",
+      de: "Führte das Refactoring eines Legacy-Monolithen in eine moderne Java/Spring- und React/TypeScript-Architektur.",
     },
     details: {
       en: [
@@ -774,7 +785,7 @@ export const experiences: ExperienceEntry[] = [
         "Спроектировал и реализовал frontend на React и TypeScript, задав структуру компонентов и state management.",
       ],
       de: [
-        "Fuehrte ein Team von zwei Entwicklern beim Reverse Engineering und Refactoring der Legacy-Anwendung eGas.",
+        "Führte ein Team von zwei Entwicklern beim Reverse Engineering und Refactoring der Legacy-Anwendung eGas.",
         "Baute das Backend mit Java und Spring neu auf, inklusive neuer Service-Schicht und verbesserter Data-Access-Muster.",
         "Entwarf und implementierte das Frontend in React und TypeScript inklusive Komponenten- und State-Management-Struktur.",
       ],
@@ -795,7 +806,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Technical consulting and custom application delivery across Angular, .NET, and Laravel systems.",
       ru: "Технический консалтинг и кастомная разработка приложений на Angular, .NET и Laravel.",
-      de: "Technische Beratung und kundenspezifische App-Entwicklung ueber Angular-, .NET- und Laravel-Systeme.",
+      de: "Technische Beratung und kundenspezifische App-Entwicklung über Angular-, .NET- und Laravel-Systeme.",
     },
     details: {
       en: [
@@ -809,7 +820,7 @@ export const experiences: ExperienceEntry[] = [
         "Создавал backend API и бизнес-логику на C# .NET и PHP Laravel с интеграцией базы данных.",
       ],
       de: [
-        "Beriet Kundenprojekte in technischer Architektur, darunter ein System zur Steuerung von Foerderlinien.",
+        "Beriet Kundenprojekte in technischer Architektur, darunter ein System zur Steuerung von Förderlinien.",
         "Entwickelte responsive Frontends mit TypeScript und Angular.",
         "Baute Backend-APIs und Business-Logik mit C# .NET und PHP Laravel inklusive Datenbankanbindung.",
       ],
@@ -830,7 +841,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Led PRISMA, a multi-clinic patient monitoring system handling questionnaire data and physician alerts.",
       ru: "Вел PRISMA — систему мониторинга пациентов для нескольких клиник с обработкой анкет и уведомлениями врачей.",
-      de: "Leitete PRISMA, ein Multi-Klinik-System zur Patientenueberwachung mit Fragebogendaten und Arzt-Benachrichtigungen.",
+      de: "Leitete PRISMA, ein Multi-Klinik-System zur Patientenüberwachung mit Fragebogendaten und Arzt-Benachrichtigungen.",
     },
     details: {
       en: [
@@ -844,8 +855,8 @@ export const experiences: ExperienceEntry[] = [
         "Создавал frontend на TypeScript и Angular и backend на Java Spring, MySQL и Hibernate, одновременно менторя двух junior-разработчиков.",
       ],
       de: [
-        "Leitete die Entwicklung von PRISMA fuer mehr als 10.000 Brustkrebspatientinnen ueber mehrere Kliniken hinweg.",
-        "Entwarf das relationale Datenbankschema und implementierte ein Alarmierungssystem fuer medizinisch kritische Antworten.",
+        "Leitete die Entwicklung von PRISMA für mehr als 10.000 Brustkrebspatientinnen über mehrere Kliniken hinweg.",
+        "Entwarf das relationale Datenbankschema und implementierte ein Alarmierungssystem für medizinisch kritische Antworten.",
         "Baute das Frontend mit TypeScript und Angular sowie das Backend mit Java Spring, MySQL und Hibernate und mentorierte dabei zwei Junior-Entwickler.",
       ],
     },
@@ -865,7 +876,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Built calibration and sensor-visualization tooling for engine test vehicles.",
       ru: "Разрабатывал инструменты калибровки и визуализации сенсорных данных для испытательных автомобилей.",
-      de: "Baute Kalibrierungs- und Sensorvisualisierungstools fuer Motor-Testfahrzeuge.",
+      de: "Baute Kalibrierungs- und Sensorvisualisierungstools für Motor-Testfahrzeuge.",
     },
     details: {
       en: [
@@ -880,7 +891,7 @@ export const experiences: ExperienceEntry[] = [
       ],
       de: [
         "Entwickelte Kalibrierungssoftware, mit der Ingenieure Sensordaten von Motor-Testfahrzeugen auswerten konnten.",
-        "Baute ein Interface mit Vue.js und JavaScript fuer Echtzeit-Monitoring und historische Analyse.",
+        "Baute ein Interface mit Vue.js und JavaScript für Echtzeit-Monitoring und historische Analyse.",
         "Implementierte die Datenverarbeitung im Backend mit Flask, Python, Asammdf, Pandas und Plotly.",
       ],
     },
@@ -900,7 +911,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Delivered business logic, testing infrastructure, and product fixes for a construction management platform.",
       ru: "Разрабатывал бизнес-логику, тестовую инфраструктуру и продуктовые исправления для платформы управления строительством.",
-      de: "Lieferte Business-Logik, Test-Infrastruktur und Produktkorrekturen fuer eine Construction-Management-Plattform.",
+      de: "Lieferte Business-Logik, Test-Infrastruktur und Produktkorrekturen für eine Construction-Management-Plattform.",
     },
     details: {
       en: [
@@ -935,7 +946,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Built analytics tools, backend services, and scraping pipelines for eCommerce intelligence.",
       ru: "Создавал аналитические инструменты, backend-сервисы и scraping-пайплайны для eCommerce intelligence.",
-      de: "Baute Analytics-Tools, Backend-Services und Scraping-Pipelines fuer eCommerce-Intelligence.",
+      de: "Baute Analytics-Tools, Backend-Services und Scraping-Pipelines für eCommerce-Intelligence.",
     },
     details: {
       en: [
@@ -950,7 +961,7 @@ export const experiences: ExperienceEntry[] = [
       ],
       de: [
         "Baute interne Analytics-Tools mit Vue.js, Plotly und Quasar.",
-        "Entwickelte Backend-Services mit Ruby on Rails und Docker fuer Verarbeitung und APIs.",
+        "Entwickelte Backend-Services mit Ruby on Rails und Docker für Verarbeitung und APIs.",
         "Implementierte Selenium-basiertes Scraping in Ruby zur Erhebung von Wettbewerbsdaten.",
       ],
     },
@@ -977,7 +988,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "SQL-heavy support work across reporting, bug diagnosis, testing, and Windows Server environments.",
       ru: "SQL-ориентированная support-работа: отчеты, диагностика багов, тестирование и среды Windows Server.",
-      de: "SQL-lastige Support-Arbeit ueber Reporting, Bugdiagnose, Testing und Windows-Server-Umgebungen.",
+      de: "SQL-lastige Support-Arbeit über Reporting, Bugdiagnose, Testing und Windows-Server-Umgebungen.",
     },
     details: {
       en: [
@@ -993,7 +1004,7 @@ export const experiences: ExperienceEntry[] = [
       de: [
         "Erstellte Kundenreports und Business-Analysen mit SQL und Excel.",
         "Diagnostizierte Anwendungsfehler und Datenbankkonflikte in Windows-Server-Umgebungen mit SQL.",
-        "Fuehrte Softwaretests durch, dokumentierte Probleme in Jira und arbeitete mit dem Entwicklungsteam an der Behebung.",
+        "Führte Softwaretests durch, dokumentierte Probleme in Jira und arbeitete mit dem Entwicklungsteam an der Behebung.",
       ],
     },
     stack: ["SQL", "Excel", "Windows Server", "Jira", "Testing"],
@@ -1012,7 +1023,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Hands-on manufacturing internship in precision mechanics, electronics, and quality assurance.",
       ru: "Практика в производстве прецизионной механики, электроники и контроля качества.",
-      de: "Praxis in Fertigung, Feinmechanik, Elektronik und Qualitaetssicherung.",
+      de: "Praxis in Fertigung, Feinmechanik, Elektronik und Qualitätssicherung.",
     },
     details: {
       en: [
@@ -1024,8 +1035,8 @@ export const experiences: ExperienceEntry[] = [
         "Поддерживал производственные задачи и работы по контролю качества.",
       ],
       de: [
-        "Arbeitete in Fertigungsprozessen fuer Feinmechanik und Elektronik mit.",
-        "Unterstuetzte Produktion und Qualitaetssicherung.",
+        "Arbeitete in Fertigungsprozessen für Feinmechanik und Elektronik mit.",
+        "Unterstützte Produktion und Qualitätssicherung.",
       ],
     },
     stack: ["Manufacturing", "Electronics", "Quality Assurance"],
@@ -1044,7 +1055,7 @@ export const experiences: ExperienceEntry[] = [
     summary: {
       en: "Led development of a driver and fleet management system integrated with Yandex Fleet for 10,000+ active drivers.",
       ru: "Возглавлял разработку системы управления водителями и флотом, интегрированной с Yandex Fleet, для 10 000+ активных водителей.",
-      de: "Leitete die Entwicklung eines Fahrer- und Flottenmanagement-Systems mit Yandex-Fleet-Integration fuer mehr als 10.000 aktive Fahrer.",
+      de: "Leitete die Entwicklung eines Fahrer- und Flottenmanagement-Systems mit Yandex-Fleet-Integration für mehr als 10.000 aktive Fahrer.",
     },
     details: {
       en: [
@@ -1060,7 +1071,7 @@ export const experiences: ExperienceEntry[] = [
       de: [
         "Leitete die Entwicklung von Fahrer- und Flottenmanagement-Flows mit Angular und TypeScript.",
         "Baute Backend-APIs mit NestJS, Prisma und PostgreSQL zur Automatisierung von Registrierung, Onboarding und Flottenbetrieb.",
-        "Implementierte Telegram-Bot- und Bird.com-SMS-Infrastruktur fuer Echtzeitkommunikation mit Fahrern.",
+        "Implementierte Telegram-Bot- und Bird.com-SMS-Infrastruktur für Echtzeitkommunikation mit Fahrern.",
       ],
     },
     stack: [
