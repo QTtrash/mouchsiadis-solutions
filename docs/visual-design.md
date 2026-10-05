@@ -2,161 +2,267 @@
 
 ## Direction
 
-Mouchsiadis Solutions is a retro-futurist field terminal with an editorial reading surface. Code-drawn hardware and pixel art establish its identity; clear language, visible actions, and readable evidence make it useful. The first viewport prioritizes the hiring visitor. Optional play belongs below the pitch and never gates content.
+Mouchsiadis Solutions is a field terminal: a code-drawn MS-86 console with a rounded CRT glass, P1-green phosphor and one amber action. Terminal character belongs to the chrome, the hero headline, navigation, cards and motion. Reading surfaces (body copy, case files, articles) stay calm and never glow.
+
+The site exists to turn visitors into contact requests, prospective clients first and hiring managers second. Within the first screen a visitor can tell who Suren is and what he builds, see live proof, and find one primary action. Optional play (cards, the reader, Backlog Breaker) never gates content.
 
 Two audiences share the same records:
 
-1. Hiring visitors can identify the role, open the CV, contact Suren, and inspect evidence without learning an interaction.
-2. Technical visitors can explore case files, public source, card backs, the card reader, and Backlog Breaker.
+1. Clients and hiring visitors read the positioning, open live case files, and contact Suren or open the CV without learning an interaction.
+2. Technical visitors explore case files, public source, card backs, the card reader, and Backlog Breaker.
 
 ## Research and Adapted Principles
 
-The October 2026 audit used these references as principles, without reproducing their layouts or assets:
+The October 2026 terminal-identity pass used these references as principles only. No layouts, assets or code were copied. The site uses no Fallout assets or logos and implies no affiliation.
 
-- [Linear](https://linear.app/): restrained surfaces, consistent alignment, and a clear hierarchy between heading, explanation, and action. Use quiet reading surfaces inside the terminal rather than applying glow and borders to every layer.
-- [Resend](https://resend.com/): concise positioning and distinct primary and secondary actions. Contact and CV come before the longer portfolio explanation.
-- [Rauno](https://rauno.me/): personality carried by authored artwork and deliberate interactions. Keep the pixel art and optional play; make the project links immediately usable.
-- [Practical Typography: line length](https://practicaltypography.com/line-length.html): constrain reading measure and establish paragraph rhythm. Articles remain an editorial column rather than filling the console width.
-- [Noto Georgian](https://notofonts.github.io/georgian/): inspect actual Georgian glyphs and weights alongside Latin text. Explicit font coverage matters more than the family name reported in computed CSS.
+CRT, phosphor and terminal interfaces:
 
-[W3C Georgian Script Resources](https://www.w3.org/TR/geor-lreq/) describes modern Mkhedruli usage and optional Mtavruli emphasis; it is a draft resource. [W3C language-sensitive CSS guidance](https://www.w3.org/International/questions/qa-css-lang) informs language metadata and inherited typography.
+- [Cathode Ray Tube Phosphors (labguysworld)](http://www.labguysworld.com/crt_phosphor_research.pdf): P1 is a green phosphor around 525 nm with roughly 20 ms persistence; P3 is amber around 602 nm. The palette takes its roles from them: P1 green for the system, P3 amber only for the one primary action and the lit key. Persistence becomes a short phosphor fade between panels, never a trail.
+- [cool-retro-term](https://github.com/Swordfish90/cool-retro-term): bloom, scanlines, curvature and flicker work as adjustable layers. The site keeps them as restrained, optional decoration behind Effects: Reduced and the OS motion setting.
+- [GM Shaders Mini: CRT](https://mini.gmshaders.com/p/gm-shaders-mini-crt) and [Building a multi-pass phosphor pipeline in WebGL](https://dev.to/the_l_man/building-a-multi-pass-phosphor-rendering-pipeline-in-webgl-113o): scanlines, vignette and glow are cheap; masks, barrel distortion and multi-pass persistence are not worth their cost at interface scale. Scanlines therefore sit in the glass background and art windows, never over text.
+- [Lip Gloss (Charm)](https://github.com/charmbracelet/lipgloss): TUI composition through bordered panes, padding and colour roles. Borders mark meaningful groups (keys, proof, case files), not every block.
+- [Ghostty](https://ghostty.org/): a terminal brand can animate its art while every word stays plain text. Decoration is separate from content.
+
+Retro-futurist interfaces:
+
+- [Typeset in the Future: Alien](https://typesetinthefuture.com/2014/12/01/alien/): a consistent labelling system (Ron Cobb's Semiotic Standard) makes a machine believable. The site uses one mono label system: kickers, status line, key legends, case-file numbers and `TX // NEXT STEP`.
+- [Apollo DSKY, Smithsonian National Air and Space Museum](https://airandspace.si.edu/collection-objects/display-keyboard-apollo-guidance-computer/nasm_A19760811000): labelled keys and readouts report state. Navigation is a column of bordered keys with a lit amber key; the console status line and LIVE lamps report state.
+- [Teletext art](https://teletext.wiki.zxnet.co.uk/wiki/Teletext_art): strict grids and colour coding. Suit colours (green platform, copper tool, amber game) and a pixel grid stay consistent across cards, proof tiles and covers.
+
+Engineer and consultancy pages that convert:
+
+- [Evil Martians, NATS case study](https://evilmartians.com/clients/nats): a case study states its outcome and ends with a contextual offer ("Hire us to handle your performance challenge"). Every case file now ends with "Building something similar?" and "Email me about {project}".
+- [Evil Martians, "We studied 100 dev tool landing pages"](https://evilmartians.com/chronicles/we-studied-100-devtool-landing-pages-here-is-what-actually-works-in-2025): a specific primary action with a visually distinct secondary, evidence directly after the hero, and a final call to action. The hero has one filled primary and an outlined CV, and proof follows the actions.
+- [Nielsen Norman Group, "Get Started" Stops Users](https://www.nngroup.com/articles/get-started/): labels should say what happens. Actions read "Contact me", "Email me", "Email me about YPay" and "CV (PDF)", and the hero shows the address itself.
+- [Nielsen Norman Group, Trustworthiness in Web Design](https://www.nngroup.com/articles/trustworthy-design/): visible contact information, correct and current content, and connections to the rest of the web. The address is visible beside every email action, project links stay one click away, and German project copy no longer uses ASCII transliterations.
+- [Nielsen Norman Group, 5-Second Usability Test](https://www.nngroup.com/videos/5-second-usability-test/): the first screen must say who, for whom, prove it, and offer the next step. The audit checked each locale against these four questions.
+- [Lynn Fisher (lynnandtonic.com)](https://lynnandtonic.com/): a strong, idiosyncratic identity is memorable when the hire path stays plain. The identity lives in the chrome; contact is direct text and one button.
+
+Accessibility, motion and WebGL:
+
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/): 2.4.11 Focus Not Obscured and 2.5.8 Target Size. Controls stay at least 44px, sticky surfaces never cover focus, and inline links keep 24px targets.
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion): every animation, the card fan and pointer tilt stop under reduced motion or Effects: Reduced.
+- [MDN: WebGL best practices](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices), [OGL](https://github.com/oframe/ogl) and [three.js at near-perfect gzip](https://minime.stephan-brumme.com/threejs/128/): cap device pixel ratio, handle context loss, refuse software rendering, and use the lightest tool. OGL's core is about 8 KB and three.js about 149 KB gzipped; a raw shader prototype measured 1.48 KB.
+
+Earlier references from the October 2026 audit still apply: [Practical Typography: line length](https://practicaltypography.com/line-length.html) for article measure, [Noto Georgian](https://notofonts.github.io/georgian/) and the [W3C Georgian Script Resources](https://www.w3.org/TR/geor-lreq/) draft for Georgian rendering, and [W3C language-sensitive CSS guidance](https://www.w3.org/International/questions/qa-css-lang) for language metadata.
+
+## Decisions (terminal-identity pass, October 2026)
+
+- **Direction.** Three concepts were built as mockups at 1440×900 and 390×844: A "Phosphor Restore", B "Instrument Console" (keycaps, dot-matrix registers, a 1.48 KB WebGL scope) and C "Field Dossier" (greenbar printouts, index cards, manila folders). The owner chose A. B's WebGL scope was not shipped.
+- **The hand.** The four-up tilted row cannot return without breaking two real fixes: the 13rem reader lane and the 230px minimum card width. At 1440 the fitted deck shows three cards per row and at 1120–1280 two. The tilt returns as a static alternating fan (±0.8° and a 6px stagger) when motion is allowed. Cards never overlap, never move under the pointer, and lie flat under reduced motion.
+- **Headline.** The owner approved "Senior platform engineer for products that have to work." Translations avoid compounds wider than a 320px column: «Старший инженер платформ…», "Senior Platform Engineer für Produkte…" (the common German job title), and a Georgian colon form. All three need native review.
+- **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
+- **Facts.** Location and availability are owner-confirmed and live in `profile` in `src/lib/content.ts`. No testimonials, client logos, response times or booking links are shown; none were provided.
+- **Contact.** Every email action uses one address and a subject that names its origin. The address is always visible as text beside a copy button, because `mailto:` can do nothing without a mail client.
+- **Georgian display size.** Noto Sans Georgian runs wider and taller than Montserrat, so the Georgian hero headline is set about 10% smaller at every width. Copy is never broken inside a word.
+- **Hero order.** The DOM order (headline, actions, proof, explanation) is the small-screen order, so actions and evidence reach the first screen in every locale. The fitted desktop places the explanation between headline and actions and gives proof its own column.
 
 ## Foundations
 
-- Heading and body: IBM Plex Sans, regular 400 and semibold 600. A single sans family gives headings and paragraphs a coherent rhythm.
-- Primary actions and card controls use Plex Sans for readable translated labels. Instrument readouts and compact metadata use IBM Plex Mono, 400 and 600.
-- Georgian: explicit Noto Sans Georgian fallback in heading, body, and control stacks; self-host only the Georgian subsets at 400/600/700. Latin product and technology names retain Plex.
-- Articles: Merriweather; Noto Serif Georgian supplies Georgian glyphs at 400/700. Article typography follows the original content language.
-- Georgian interface labels retain their authored Mkhedruli case, normal letter spacing, comfortable line height, and word-boundary wrapping. Do not fix long copy by shrinking it or applying arbitrary word breaks.
-- Spacing follows the 4, 8, 12, 16, 24, 32, 48, 64, 96px scale. Content padding and control sizes must leave room for translations.
-- Surfaces use near-black and olive graphite, with borders reserved for meaningful groups. Primary text is neutral and secondary text remains readable.
-- Green identifies system/platform content, copper identifies tools, and amber identifies the primary hiring action and games. Suit shapes repeat the color distinction.
-- Radius remains restrained, 2–8px. Hardware corners stay close to square.
-- The shell is capped at 1280px, rising modestly at large desktop sizes. Long-form prose stays near 65–72ch.
-- No readable text below 11px. Essential summaries use a larger body scale. Controls provide at least 44px height; archive title links meet the 24px WCAG 2.2 AA target minimum.
+- **Display:** Montserrat 800 for the hero headline, terminal section titles, card titles, proof names and case-file titles. Self-hosted woff2 covers Latin (19.0 KB) and Cyrillic (11.2 KB). Georgian glyphs fall back to Noto Sans Georgian in every display stack.
+- **Chrome:** IBM Plex Mono 400/600 for kickers, the status line, navigation keys, actions, labels and metadata. Uppercase with tracking in Latin and Cyrillic; Georgian keeps authored Mkhedruli, normal tracking and comfortable line height.
+- **Body:** IBM Plex Sans 400/600. Articles use Merriweather, with Noto Serif Georgian for Georgian glyphs.
+- **Palette:** P1 phosphor `#8dff7a`, headline `#dfffd4`, body text `#d6f5cd` and `#a9cba0`, subtle text `#8fae88`, glass `#031005`, chassis `#1a2216`. P3 amber `#ffb000` marks only the one primary action per view and the lit key. Copper `#e8935c` marks tools and amber marks games, and suit shapes repeat the colour distinction.
+- **Glow:** phosphor text-shadow only on the hero headline, terminal section titles, card titles, kickers, the lit key and status lamps. Body copy, case files and articles never glow.
+- **Shape:** the CRT glass is rounded (18px desktop, 14px phone) and recessed into a pixel-bevelled chassis. Cards use 10–12px corners, controls 4–5px, and the chassis stays square.
+- **Spacing:** the 4, 8, 12, 16, 24, 32, 48, 64, 96px scale. The shell is capped at 1280px and rises to 1360px at 1600px. Long-form prose stays near 65–72ch.
+- **Sizes:** no readable text below 11px. Controls are at least 44px tall; inline links in sentences and archive title links meet the 24px WCAG 2.2 AA minimum.
 
-## Fast Path and Navigation
+## Fast Path and Conversion
 
-- Every page has immediate Contact/Hire and CV access. The homepage offers Contact, CV (PDF), and Explore projects before supporting detail.
-- The heading is complete when rendered and remains stable; decoration does not change its accessible name or move the hiring actions.
-- Header links use familiar labels: Work, Games, Tooling, Experience, Notes. Languages and interface options remain accessible through the drawer at compact widths.
-- Only an enhanced fitted console suppresses duplicate header navigation. Continuous and JavaScript-disabled pages keep ordinary page navigation.
-- The footer has email, GitHub, LinkedIn, and CV links as real actions. It follows content rather than occupying an artificial viewport position.
+- **One primary per view.** The hero has one filled amber action, "Contact me". "CV (PDF)" is outlined and "Explore projects" is a link. The header "Contact" key and Backlog Breaker's "Start" stay secondary. The contact panel's primary is "Email me" and a case file's primary is "Email me about {project}".
+- **Hero.** It names Suren and his location (from `profile`), states the approved positioning, offers the actions, and then shows live proof. A direct email line names every engagement ("projects, contract work, consulting or a role") and shows the address. The owner-confirmed availability sits beneath as a status line.
+- **Contact panel.** An "Email me" action with a subject, the visible address with a copy button, a short "useful to include" list, then LinkedIn, GitHub and the CV.
+- **Case files.** The header shows evidence: cover, number, suit, LIVE, outcome, role and stack. Its product and source links are secondary, plus a link down to the call to action. Previous/next navigation follows the body. The file always ends with the contextual call to action.
+- **Open-source showcase.** One "Open case file" button per project; the product and source links are quiet inline links.
+- **Dead ends.** The 404 page answers in the requested locale (English without JavaScript) and offers contact. Articles end with a quiet contact line; post bodies are unchanged.
+- **Measurement.** The site has no analytics, and no tracking was added. Conversion choices are heuristic.
+
+## Navigation
+
+- Every page has immediate Contact and CV access.
+- Header links use familiar labels: Work, Games, Tooling, Experience, Notes. Languages and interface options stay reachable through the drawer at compact widths.
+- The fitted console's side navigation is a column of bordered mono keys with pixel icons. The active key is lit amber with a pixel chevron.
+- Only an enhanced fitted console suppresses the duplicate header navigation. Continuous and JavaScript-disabled pages keep ordinary navigation.
+- The footer is the terminal status bar, with email, GitHub, LinkedIn and CV links.
 - A German Impressum remains an owner-content follow-up; legal identity and address must come from the owner.
 
 ## Card System and Open-Source Showcase
 
-Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.ts`. Cards, Lists, Tooling, showcase entries, and case files share records, links, status, and artwork. Cards, homepage proof links, and the showcase use authored compact `cardSummary`; List uses full `summary`, while case files retain full evidence.
+Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.ts`. Cards, List, Tooling, the hero proof, the showcase and case files share records, links, status and artwork. Cards and proof use the authored compact `cardSummary`; List uses the full `summary`; case files keep the full evidence.
 
-- The front presents suit, project title, artwork, a complete outcome or summary, and keywords. The back presents role/constraints or project details and stack.
-- Desktop/tablet cards wrap into non-overlapping rows. Cards grow to fit translated copy; summary text is not line-clamped. Flip and Open case file sit above the card faces and stay visible, allowing a tall card to be flipped before reading from its top.
-- Phone cards use a horizontal scroll-snap row with visible controls. Touch scrolling never requires dragging to a reader.
-- On fitted desktops, Cards/List and the reader occupy a reserved sticky side dock beside two card columns. The dock never covers card controls or faces. Other layouts retain the compact view switch. The view preference persists and is shared by decks; List provides a plain, expandable archive.
-- Fine pointers may tilt cards and drag them into the reader on a fitted desktop. A full-size pointer-following preview leaves a dimmed source in place, with localized pickup, release, reading, and cancellation feedback. Keyboard users can reach Flip and Open case file directly. Every record is readable without dragging or flipping.
-- Each card is `li > article` with a real heading. Flip is a toggle with `aria-pressed`; the inactive face is `inert`. Link names identify the project.
-- LIVE means the system actually runs in production (`live: true`). Public code, a website, or a prerelease alone does not earn it.
-- The open-source showcase includes Raid Signal and Regrind, derived from their content records. Regrind is an MIT-licensed Windows application for solo CS2 practice with a separate local dedicated server; it is presented as a prerelease and does not carry LIVE.
+- **Faces.** The front presents suit pips (top label and a turned bottom pip), LIVE foil, art in a scanlined window, a Montserrat title, a mono eyebrow, the complete summary and keywords. The back presents role/constraints or details and stack.
+- **Controls.** Flip and Open case file form a tab joined to the top of the card. Tall cards can be flipped before reading, and the controls never move when a card flips.
+- **Fitted grid.** The fitted desktop hand fills the space up to a reserved 13rem reader lane: three columns at 1440 and two at 1120–1280, never narrower than 232px. Tablets use a stretching grid without edge gaps. Phones use a horizontal scroll-snap row with visible controls.
+- **Fan.** With motion allowed, the fitted hand rests in a slight alternating fan that never overlaps and never moves under the pointer. A dragged preview keeps the card's size and angle.
+- **Reader.** It is a recessed slot with a sensor line, and its status text sits below the slot, never across it. Keyboard users reach Flip and Open case file directly, and every record is readable without dragging or flipping.
+- **Semantics.** Each card is `li > article` with a real heading. Flip is a toggle with `aria-pressed`, and the inactive face is `inert`.
+- **LIVE.** It means the system actually runs in production (`live: true`). Public code, a website or a prerelease alone does not earn it. Regrind is a prerelease without LIVE.
 
 ## Responsive Composition
 
-- Below 768px: compact header, full-screen navigation drawer, continuous document flow, phone-native card scrolling, and large touch targets.
-- 768–1119px: the compact header and existing navigation drawer continue through tablet widths, with a continuous archive and columns only where text permits.
-- At least 1120px wide **and** 720px tall: JavaScript may enhance the landing and Tooling pages into a fitted console with side navigation and one active panel. Long panels scroll internally.
-- Below 720px tall: continuous document flow even at laptop widths. Below 500px tall the header scrolls away, keeping landscape content accessible.
-- 1600px and above: wider shell, bounded text measure; type does not grow without limit.
-- Without JavaScript: all content remains in document flow and direct links work.
+- **Below 768px:** compact header, full-screen navigation drawer, continuous flow, and the hero order headline → actions → proof → explanation. Phone-native card scrolling and large touch targets.
+- **768–1119px:** compact header and drawer, a single-column hero with a two-column proof grid, and a stretching card grid.
+- **At least 1120 wide and 720 tall:** JavaScript enhances the landing and Tooling pages into the fitted console. The glass holds the status line, the key navigation and one active panel; long panels scroll internally. The hero shows the explanation before the actions, with proof in a second column.
+- **Below 720px tall:** continuous flow even at laptop widths. Below 500px tall the header scrolls away.
+- **1600px and above:** a wider shell with bounded text measure.
+- **Without JavaScript:** all content remains in document flow, direct links work, and copy buttons stay hidden while the address stays readable.
 
-Verification matrix: 320×568, 360×740, 375×667, 390×844, 414×896, 844×390, 768×1024, 820×1180, 1024×768, 1180×820, 1280×720, 1440×900, and 1920×1080. Also check a wide viewport below the 720px fitted threshold. Cover all four locales on landing, Tooling, and case files, plus localized blog indices and original-language articles. Georgian receives detailed 320px and desktop font, wrapping, and control inspection.
+Verification matrix: 320×568, 360×740, 375×667, 390×844, 414×896, 844×390, 768×1024, 820×1180, 1024×768, 1180×820, 1280×720, 1440×900 and 1920×1080, plus 1120×720 (the smallest fitted console), 1280×650 and 1366×650.
+
+At every size of at least 568px height, in all locales, the three hero actions sit in the first viewport and exactly one filled primary is visible. Proof starts in the first viewport everywhere except the 320×568 phone, where it begins directly below the actions, and the 844×390 landscape, which is a scrolling layout by design.
 
 ## Motion, Input, and Progressive Enhancement
 
 - Sound defaults off. Effects follow the OS unless explicitly reduced; both preferences persist when storage is available.
-- Reduced motion disables tilt, foil sheen, page morphs, and decorative animation. Flips become immediate. Changing the preference while on the page takes effect immediately.
-- Essential content, focus, and direct navigation remain available if storage, lazy loading, or enhancement fails.
-- Focus is clearly visible; active/pressed state does not rely on color alone. Hover never selects an item or exposes the only available action.
+- **Power-on:** a decorative beam opens across the glass once per session (420ms) over already-rendered content. It is skipped under reduced motion, Effects: Reduced, or blocked storage.
+- **Panels:** switching panels uses an opacity fade within 110ms plus a brief phosphor brightness wake.
+- **Small motion:** the kicker and case-file cursors blink, and the header, status and chassis LEDs pulse. The LIVE foil sheens, the card fan rests at an angle, and fine pointers tilt cards.
+- **Reduced motion:** reduced motion or Effects: Reduced stops all of this immediately, including when changed while the page is open. Flips become immediate.
+- Focus is clearly visible, and active state never relies on colour alone. Hover never selects an item or exposes the only available action.
+- **Accessible names:** the prompt glyph on actions and the lit-key chevron are CSS masks, never text, so they never join an accessible name.
 - Avoid blend-mode layers over moving cards. Pointer movement is processed once per animation frame and updates transforms, not layout.
-- Card flips and cross-page transitions remain brief; optional motion never delays access to a case file.
 
-## Artwork and Backlog Breaker
+## Artwork, WebGL, and Backlog Breaker
 
-One code-drawn pixel/SVG vocabulary is shared by cards, case-file covers, navigation, avatar, and showcase. `src/lib/pixel.ts`, `src/lib/sprites.ts`, and `PixelArt.astro` render it at build time with no runtime drawing dependency.
+One code-drawn pixel/SVG vocabulary is shared by cards, proof tiles, case-file covers, navigation, the avatar and the showcase. `src/lib/pixel.ts`, `src/lib/sprites.ts` and `PixelArt.astro` render it at build time with no runtime drawing dependency.
 
-- Project art uses a 40×20 grid, navigation 9×9, suits 7×7, and avatar 32×32. Palette keys derive from context-specific accent tokens.
-- Every sprite describes the project: ledger flows for YPay, tenant lanes for YDesk, replay analysis for Grindlike, a sealed squad relay for Raid Signal, and a practice target/local server for Regrind.
-- Bayer dithering and `shape-rendering: crispEdges` preserve the authored pixel language. Decorative artwork has empty alternatives or is hidden from accessibility APIs.
-- The portrait button flips from pixel avatar to the real photo. The code-drawn terminal chassis remains decorative and never narrows the reading surface excessively.
-- Do not use official Fallout assets, logos, or implied affiliation. Do not add WebGL or a 3D runtime.
-- Backlog Breaker is optional. Its build-time poster shares geometry with its lazy canvas engine, loaded only on Start. Mouse, touch, arrows, a visible Pause button, and keyboard launch controls are supported. It pauses when hidden and never prevents page scrolling before play starts.
+- Project art uses a 40×20 grid, navigation 9×9, suits 7×7 and the avatar 32×32. Palette keys derive from context-specific accent tokens.
+- Every sprite describes its project. Bayer dithering and `shape-rendering: crispEdges` preserve the pixel language. Decorative artwork has empty alternatives or is hidden from accessibility APIs.
+- The portrait button beside the hero kicker flips from pixel avatar to the real photo.
+- Do not use official Fallout assets, logos, or implied affiliation.
+- Backlog Breaker is optional and sits below the open-source showcase. Its build-time poster shares geometry with its lazy canvas engine, which loads only on Start. It supports mouse, touch, arrows, a visible Pause button and keyboard launch, and it pauses when hidden.
 
-## Audit Findings and Review Boundaries
+**WebGL rule.** The current design ships no WebGL. A WebGL layer may be added only under all of these conditions:
 
-Baseline inspection found system FreeSans rendering Georgian headings and controls despite Noto imports; only Georgian body text selected Noto. At 320×568 the Georgian Contact and CV actions ended at approximately 731px and 786px. Overlapping desktop cards and line-clamped outcomes concealed evidence, while accumulated CSS overrides obscured the intended responsive threshold.
+1. It renders decoration only; all text, links and controls stay in the DOM.
+2. It loads with `import()` after first paint (after `load` and idle) and never delays the hero or the actions.
+3. It has a finished CSS/SVG fallback for no JavaScript, reduced motion, Effects: Reduced, missing WebGL, software rendering (`failIfMajorPerformanceCaveat`), phones and low-power devices (`hardwareConcurrency < 4` or Save-Data).
+4. It pauses offscreen and in hidden tabs, caps device pixel ratio at 1.5, handles context loss, and never adds blend layers over moving cards.
+5. It lives in a module named `src/scripts/webgl-*.ts`, so its chunk is checked by `npm run budget` against its own 6 KB gzipped budget. The check fails if the chunk becomes reachable through static imports.
+6. It uses the lightest tool: raw WebGL first. OGL (about 8 KB core) or three.js (about 149 KB) need a written justification and their gzipped size.
 
-The corrections use explicit font coverage, concise translated copy, visible project actions, complete card summaries, shared tokens, and a single fitted-console condition. The blog bodies and original-language routes are preserved. Interface terminology was reviewed for consistency. Native-speaker review of Georgian phrasing remains outstanding.
+## Audit Findings (5 October 2026)
 
-The browser audit at 320×568, 360×740, and 1440×900 verified actual rendered fonts with Chromium’s `CSS.getPlatformFontsForNode`, after font readiness: Georgian paragraphs select Noto Sans Georgian 400, headings and controls select Noto Sans Georgian 600, and Latin text retains IBM Plex. Noto Sans 700 and Noto Serif 400/700 also load successfully. Existing Russian/German articles render in Merriweather; a temporary browser-only Georgian prose sample selected Noto Serif Georgian for Georgian glyphs and Merriweather for Latin. No article body was modified for this check.
+The audit compared baseline `2146c1e` (the b425d54 design) with `ba44a8f` across 7 viewports and 4 locales: 1,536 views, 88 axe scans, contact-friction runs and all case-file endings.
 
-At 320×568, the updated Georgian Contact/CV controls ended at approximately 509px and Explore projects at 561px. Font-request blocking still left the text readable, all three actions accessible, and no horizontal overflow. Detailed Georgian checks covered the landing page, card and List modes, Tooling, the Regrind case file, and blog index; English, Russian, and German hero actions also fit the narrow viewport.
+It confirmed that the previous pass fixed real problems but flattened the identity. Kept fixes:
+
+- Short laptops (1366×650) no longer overlap panels.
+- Georgian renders in Noto everywhere, where it was FreeSans in headings and controls.
+- Georgian 320px actions moved from 731px to 509px.
+- Summaries are complete, cards do not overlap, and the reader has its own lane with focus never hidden.
+- The Georgian tablet header no longer collides.
+- The Russian article no longer overflows on phones.
+- The headline is static; the baseline typed it in, changing its accessible name.
+- CSS fell from 30.0 to 17.4 KB gzipped.
+
+Lost identity:
+
+- the Montserrat glow headline
+- the CRT glass
+- mono key navigation and prompt actions
+- status chips
+- the fanned hand
+- seven of the nine animation sets
+
+New conversion gaps:
+
+- Two filled primaries ("Contact me" and the game's "Start") competed in the first viewport.
+- The primary button of all 36 case files was the external product link, and every case file ended on prev/next navigation.
+- Contact was a bare mailto without a subject.
+- The tablet hero and the overview below the fold had voids.
+- The dock label crossed the slot on an opaque band.
+- The Russian phone showcase failed target spacing.
+
+This pass restores the identity on top of the kept fixes and closes those gaps. Matched screenshots are in [design-audit/terminal-identity](./design-audit/terminal-identity/).
+
+## Native Review
+
+New or changed copy ships in all four locales. Native-speaker review is outstanding for:
+
+- **Georgian (`ge`):**
+  - hero headline and body
+  - contact audience line, proof title, status label
+  - contact panel copy and the "useful to include" list
+  - email subjects
+  - case-file call-to-action copy and the 404/article contact line
+- **Russian and German:** the hero headline and body, the contact and case-file call-to-action copy, and the aligned YPay summary.
+
+Historical project and experience records keep their documented English fallback where translations do not exist. Blog bodies are unchanged.
 
 ## Performance and Validation
 
-`npm run validate` runs Astro/TypeScript checks, the static build, budget checks, and Playwright coverage. Browser verification must wait for fonts and inspect actual rendered font families where possible; computed font-family alone does not prove coverage.
+`npm run validate` runs Astro/TypeScript checks, the static build, budget checks and Playwright coverage. Browser verification waits for fonts and inspects actual rendered font families where possible.
 
-Preserved budgets:
+Budgets (gzipped):
 
-- Initial landing JavaScript: at most 15KB gzipped.
-- Landing CSS: at most 32KB gzipped.
-- Inline pixel art: at most 20KB gzipped per page.
+- Initial landing JavaScript: at most 15 KB.
+- Landing CSS: at most 32 KB.
+- Decorative WebGL: at most 6 KB, lazy only (none shipped).
+- Inline pixel art: at most 20 KB per page.
 - The drawer and game engine remain lazy. Cards add no runtime dependency.
 
 Keep review screenshots outside `public/` so they do not add shipping assets.
 
-### Initial verified results — 4 October 2026
+Start a built local preview, then run `node scripts/capture-design-audit.mjs` and `node scripts/capture-card-reader-audit.mjs`. Set `AUDIT_BASE_URL` for another local port and pass an output directory as the first argument. Both scripts write a JSON manifest beside their screenshots.
 
-`npm run validate` passed: zero Astro/TypeScript errors, 66 generated pages, passing performance budgets, and 202 passing browser tests. The 221 skips are intentional project exclusions: explicit viewport matrices and transition scenarios run once rather than repeating under the phone/tablet project presets, and pointer-specific tests skip incompatible presets. Seven existing Astro `z` deprecation hints remain.
+### Verified results — 5 October 2026
 
-| Gzipped asset | Before | After | Budget |
+`npm run validate` passed with exit code 0:
+
+- zero Astro/TypeScript errors or warnings; the seven existing `z` deprecation hints remain
+- 66 generated pages
+- passing budgets
+- **252 browser tests passed**, with 321 intentional project exclusions and no failures
+
+The 25 new conversion tests run once on the desktop project. Their phone/tablet duplicates are among the exclusions, alongside the existing explicit matrices and pointer-specific tests.
+
+| Gzipped asset | Before (main) | After | Budget |
 | --- | ---: | ---: | ---: |
-| Initial landing JavaScript | 6.6KB | 6.8KB | 15KB |
-| Landing CSS | 30.0KB | 17.1KB | 32KB |
-| Inline SVG | 5.3KB (landing) | 5.6KB (maximum across 66 pages) | 20KB/page |
+| Initial landing JavaScript | 7.6 KB | 8.3 KB | 15 KB |
+| Landing CSS | 17.4 KB | 20.2 KB | 32 KB |
+| Decorative WebGL (lazy) | none | none | 6 KB |
+| Inline SVG (maximum per page) | 5.6 KB | 5.8 KB | 20 KB |
 
-Browser coverage includes all four locales at the 13 matrix sizes above plus 1280×650 and 1366×650, original Russian/German articles, Cards/List, card fronts/backs, native disclosure controls, keyboard focus/history, touch swiping, reactive reduced motion, resizing, blocked storage, and JavaScript-disabled navigation. Targeted axe checks cover the Georgian primary surfaces and narrow case/blog/article layouts. The optional reader stays sticky inside the fitted panel so lower-row cards can reach it; the follow-up below gives it a dedicated side lane.
+New fonts: Montserrat 800 woff2, Latin 19.0 KB and Cyrillic 11.2 KB (loaded only for the scripts on the page). They replace six unused Montserrat `.woff` files.
 
-The reproducible screenshot audit captured 172 views with zero horizontal overflows and zero failed flows. Sixty are landing views across all locales and 15 sizes; the remainder inspect the showcase, Work, Games, List, Tooling, Regrind case file, experience, contact, blog index, and original-language articles at 320×568 and 1440×900. Screenshots use reduced motion for stable captures; separate interaction tests exercise normal motion and live preference changes.
+**Capture scripts.** Both scripts ran unchanged against main and the branch.
 
-Start a built local preview, then run `node scripts/capture-design-audit.mjs`. Set `AUDIT_BASE_URL` for another local port and pass an output directory as the first argument. The default output is `/tmp/mouchsiadis-design-audit`, including a JSON manifest. Selected review evidence is stored beside this document:
+- **Design matrix:** 172 screenshots per build, zero horizontal overflows, zero failed flows.
+- **Card reader:** 144 screenshots per build, zero overflow or clipping findings, zero obscured focused controls, zero failed flows.
 
-| View | Baseline | Updated |
-| --- | --- | --- |
-| English desktop, 1440×900 | [Before](./design-audit/en-desktop-before.png) | [After](./design-audit/en-desktop-after.png) |
-| Georgian phone, 320×568 | [Before](./design-audit/ge-phone-before.png) | [After](./design-audit/ge-phone-after.png) |
-| Short laptop, 1366×650 | [Before](./design-audit/short-laptop-before.png) | [After](./design-audit/short-laptop-after.png) |
-| Work deck, 1440×900 | [Before](./design-audit/en-work-before.png) | [After](./design-audit/en-work-after.png) |
+**Supplementary audit.** 794 views per build across 7 viewports and 4 locales.
 
-Additional evidence: [open-source showcase](./design-audit/open-source-showcase.png), [Tooling](./design-audit/tooling-after.png), [Georgian desktop](./design-audit/ge-desktop-after.png), and [Georgian Regrind case file](./design-audit/regrind-ge-phone.png).
+- **Defects:** zero overflows, clipped controls or mid-word breaks.
+- **Axe:** zero serious/critical violations in 44 scans (main had one, the Russian phone showcase).
+- **Case files:** all 36 end with the call to action; none leads with an external primary.
 
-Regrind research checked the sibling repository's `AGENTS.md`, README, MIT license, implementation, and supporting documentation against the [public repository](https://github.com/QTtrash/regrind), [product page](https://grindlike.pro/regrind), and [v0.2.0 prerelease](https://github.com/QTtrash/regrind/releases/tag/v0.2.0). The sibling checkout identifies itself as 0.1.1 while the public prerelease is newer, so site copy remains versionless. Windows x64 support, local server setup/update, official/Workshop map handling, practice controls, Steam joining, and diagnostics are implemented; the site makes no cross-platform or multiplayer promise. The Work count is five, Tooling count three, and the nine project records generate 36 localized case files. Regrind is fully localized and carries prerelease status without LIVE.
+**Hero measurement.** All 16 sizes and 4 locales: no headline word overflows. At every size of at least 568px height, the three actions sit in the first viewport with exactly one filled primary.
 
-### Card-reader follow-up — 4 October 2026
-
-The browser reproduction connected both stylesheets: `global.css` makes fitted console panels independently scrollable, while `deck.css` placed an opaque sticky toolbar above the cards at `z-index: 25`. Browser scrolling to a card's Flip/Open control could position it beneath that toolbar; the card's own `5rem` scroll margin did not protect its focused descendants. The previous dragged card also had a lower stacking level (`20`) and remained inside the clipping panel. Pointer translation ignored panel scrolling, so a carried card could move away from the pointer. The matched baseline audit reproduced an obscured focused Flip button in Russian Tooling at 1440×900.
-
-Work, Games, and Tooling now reserve a 13rem side lane for the view switch and reader at the fitted fine-pointer breakpoint. The reader stays reachable beside lower rows. Its visible instruction and alternative Open hint explain the action, and pickup, armed, reading, and cancellation states use localized text and restrained green/amber feedback. Dragging creates a full-size, inert, pointer-following preview outside the scrollport; the original card keeps its place. A small viewport-bounded instruction remains readable when a tall Georgian preview covers the dock. Preview controls have opaque backgrounds and an armed preview gains an amber outline. Escape, release outside, lost capture, window blur, resizing, mode/panel changes, and effects changes clean up the interaction and invalidate pending navigation. Native Flip/Open, Cards/List, touch scrolling, and reduced-motion behavior remain available.
-
-Visual review also exposed an existing Georgian tablet header collision. The existing compact header and navigation drawer now extend through 1119px; card/page composition retains its separate breakpoints. This removes the overlapping header links without reducing translated text.
-
-The focused audit captured **144 matched before and 144 after screenshots** across all four locales, all three decks, and 1440×900, 1280×720, 1280×650, 820×1180, and 320×568. It includes focused first controls after scrolling, lower rows, and English/Georgian pickup, armed, and cancellation states. The final matrix reports **zero horizontal overflows, clipped controls, obscured focused controls, or failed flows**. Three additional Georgian screenshots at the minimum fitted 1120×720 size also passed geometry and visual checks. Screenshots wait for fonts and enhancements, use reduced motion for stability, and show keyboard focus through keyboard input; separate browser tests exercise normal motion and live interaction changes.
-
-Final `npm run validate` passed with exit code 0: **227 browser tests passed**, with 271 intentional project exclusions, zero Astro/TypeScript errors or warnings, seven existing deprecation hints, and 66 generated pages. Targeted regressions cover dock separation and focus in every locale/deck, lower-row drops, preview size and scroll anchoring, interruption cleanup, cancelled navigation, direct keyboard access, touch scrolling, reduced motion, and tablet header/drawer access. Gzipped output remains within the existing budgets: initial JavaScript **7.6KB / 15KB**, CSS **17.4KB / 32KB**, and maximum inline artwork **5.6KB / 20KB**. No runtime dependency was added.
-
-Run `AUDIT_BASE_URL=http://127.0.0.1:4331 node scripts/capture-card-reader-audit.mjs [outputDirectory]` against a built local preview. The default directory is `/tmp/card-reader-audit-after`; the script saves a JSON manifest alongside the screenshots. The matched baseline is retained in `/tmp/card-reader-audit-before`. Selected review evidence stays outside `public/`:
+Matched screenshots (main `ba44a8f` before, this branch after), stored as WebP outside `public/`:
 
 | View | Before | After |
 | --- | --- | --- |
-| English Work, 1440×900 | [Before](./design-audit/card-reader/en-work-desktop-before.png) | [After](./design-audit/card-reader/en-work-desktop-after.png) |
-| Russian Tooling focused control, 1440×900 | [Before](./design-audit/card-reader/ru-tooling-focus-before.png) | [After](./design-audit/card-reader/ru-tooling-focus-after.png) |
-| Georgian armed reader, 1280×720 | — | [Full-size preview and release feedback](./design-audit/card-reader/ge-reader-armed.png) |
-| Georgian Tooling tablet, 820×1180 | — | [Cards and compact header](./design-audit/card-reader/ge-tablet-tooling.png) |
+| English hero, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-home-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-home-after.webp) |
+| Georgian hero, 1440×900 | [Before](./design-audit/terminal-identity/ge-1440x900-home-before.webp) | [After](./design-audit/terminal-identity/ge-1440x900-home-after.webp) |
+| Georgian phone, 320×568 | [Before](./design-audit/terminal-identity/ge-320x568-home-before.webp) | [After](./design-audit/terminal-identity/ge-320x568-home-after.webp) |
+| English phone, 390×844 | [Before](./design-audit/terminal-identity/en-390x844-home-before.webp) | [After](./design-audit/terminal-identity/en-390x844-home-after.webp) |
+| Short laptop, 1366×650 | [Before](./design-audit/terminal-identity/en-1366x650-home-before.webp) | [After](./design-audit/terminal-identity/en-1366x650-home-after.webp) |
+| Tablet, 820×1180 | [Before](./design-audit/terminal-identity/en-820x1180-home-before.webp) | [After](./design-audit/terminal-identity/en-820x1180-home-after.webp) |
+| Work deck with motion, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-work-motion-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-work-motion-after.webp) |
+| Work deck and reader lane, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-work-reader-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-work-reader-after.webp) |
+| Georgian armed reader, 1280×720 | [Before](./design-audit/terminal-identity/ge-1280x720-work-armed-before.webp) | [After](./design-audit/terminal-identity/ge-1280x720-work-armed-after.webp) |
+| Russian Tooling focused control, 1440×900 | [Before](./design-audit/terminal-identity/ru-1440x900-tooling-focus-before.webp) | [After](./design-audit/terminal-identity/ru-1440x900-tooling-focus-after.webp) |
+| Open-source showcase, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-showcase-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-showcase-after.webp) |
+| Contact, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-contact-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-contact-after.webp) |
+| Case-file ending, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-case-end-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-case-end-after.webp) |
+| Georgian Regrind case file, 320×568 | [Before](./design-audit/terminal-identity/ge-320x568-regrind-before.webp) | [After](./design-audit/terminal-identity/ge-320x568-regrind-after.webp) |
+| Russian article, 1440×900 | [Before](./design-audit/terminal-identity/ru-1440x900-article-before.webp) | [After](./design-audit/terminal-identity/ru-1440x900-article-after.webp) |
 
-Review boundaries: Georgian wording has received a consistency pass, but native-speaker editorial review remains outstanding. Historical project/experience records retain their documented English fallback where translations do not exist. Existing blog bodies remain unchanged. Automated and visual checks use Chromium; this audit does not establish parity with physical devices or every browser engine.
+### Earlier passes
+
+- **4 October 2026, readability pass:** replaced clamped, overlapping cards and system-font Georgian with complete summaries, explicit Noto coverage, shared tokens and a single fitted-console condition. 202 browser tests passed.
+- **4 October 2026, card-reader follow-up:** gave the reader its own lane, made focus scrolling clear the sticky toolbar, and added localized pickup/armed/cancel states and interruption cleanup. 227 browser tests passed. Evidence is in [design-audit](./design-audit/) and [design-audit/card-reader](./design-audit/card-reader/).
+
+Review boundaries: automated and visual checks use Chromium. They do not establish parity with physical devices or other browser engines, and native Georgian review remains outstanding.

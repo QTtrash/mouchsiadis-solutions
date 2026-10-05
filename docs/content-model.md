@@ -17,6 +17,14 @@ Landing-page content is stored in `src/lib/content.ts`.
 
 The content model only stores portfolio data. Visual palette choices live in `src/assets/styles/global.css`, not in TypeScript content records.
 
+### Profile Facts
+
+`profile` holds owner-confirmed facts shown in the hero: `location` and `availability`, localized for all four locales. Interface copy in `src/lib/i18n.ts` may label them (for example "status"), but claims about Suren live here. Do not add testimonials, client logos, response times or availability wording without the owner's confirmation.
+
+### Hero Proof
+
+The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true` and links each to its case file. The displayed count comes from that list. Prereleases such as Regrind appear in Work, Tooling and the showcase, not in the live proof.
+
 ### Software Work Entries
 
 Each project entry includes:
@@ -55,6 +63,8 @@ Tools are stored separately as `toolProjects` and rendered as Tool cards on the 
 Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files retain the full outcome, summary, and evidence.
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
+
+German copy uses proper umlauts and ß (the October 2026 pass replaced ASCII transliterations such as "fuer" and "oeffnen"). The product formerly called Neopay is YPay in every locale; its Russian and German summaries follow the English meaning.
 
 ## Professional Experience
 

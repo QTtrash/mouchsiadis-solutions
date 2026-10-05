@@ -22,7 +22,7 @@ Multilingual portfolio, blog, and CV site for `mouchsiadis-solutions.com`.
 
 ## Visual Direction
 
-The landing page is a portfolio inside a retro field-terminal console. Hiring visitors get immediate Contact and CV access, followed by project evidence. Technical visitors can explore complete card summaries, List views, shareable case files, and optional card/game interactions. Cards wrap without overlapping and keep their direct actions visible. All project art is code-drawn pixel SVG, including a pixel avatar generated from the profile photo. The open-source showcase shares content records with Work and Tooling, including Raid Signal and the Regrind Windows prerelease. Georgian text has explicit Noto glyph coverage alongside IBM Plex typography. The design avoids direct Fallout asset or logo reuse.
+The landing page is a portfolio inside a retro field-terminal console: a pixel-bevelled MS-86 chassis around a rounded CRT glass, P1-green phosphor and one amber action per view. The first screen names Suren, states the positioning, offers Contact (primary), CV and Explore, and shows live proof drawn from the content records. Prospective clients come first and hiring managers second. Every case file ends with a contextual email call to action, and contact always shows the address beside a copy button. Technical visitors can explore complete card summaries, List views, shareable case files, and optional card/game interactions. Cards wrap without overlapping, rest in a slight fan when motion is allowed, and keep their direct actions visible. All project art is code-drawn pixel SVG, including a pixel avatar generated from the profile photo. Montserrat display headlines, IBM Plex Mono chrome and IBM Plex Sans body copy carry Latin and Cyrillic; Georgian has explicit Noto glyph coverage. Reading surfaces never glow. The design avoids direct Fallout asset or logo reuse.
 
 The fitted console is a progressive enhancement for viewports at least 1120×720. Phones, tablets, short laptops, and JavaScript-disabled browsers use continuous document flow. Blog bodies and original-language article routes are preserved. Research principles, the responsive matrix, and review boundaries are documented in [docs/visual-design.md](./docs/visual-design.md).
 
@@ -38,6 +38,7 @@ The fitted console is a progressive enhancement for viewports at least 1120×720
 - `node scripts/pixelate-avatar.mjs`: regenerates the pixel avatar from `public/images/profile-pic.webp`
 - `npm run preview`: serves the built site locally
 - `node scripts/capture-design-audit.mjs`: captures the four-locale visual matrix from a running local preview
+- `node scripts/capture-card-reader-audit.mjs`: captures the card decks and reader states from a running local preview
 - `./ops/setup`: creates `~/envs/mouchsiadis-solutions.env`
 - `./ops/deploy`: builds and deploys the app stack
 - `./ops/status`: shows git and compose status
