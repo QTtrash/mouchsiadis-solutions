@@ -2,11 +2,14 @@
 // Counts the gzipped JS a first visit to /en/ downloads before any interaction
 // (entry module scripts plus their static imports) and the page's stylesheets.
 // Lazy chunks (the options drawer, future minigames) are excluded.
+// Decorative WebGL modules are named src/scripts/webgl-*.ts. They have their own
+// budget and must stay lazy: reaching one through static imports fails the check.
 import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join, posix } from "node:path";
+import { basename, dirname, join, posix } from "node:path";
 import { gzipSync } from "node:zlib";
 
-const BUDGET = { js: 15 * 1024, css: 32 * 1024, art: 20 * 1024 };
+const BUDGET = { js: 15 * 1024, css: 32 * 1024, art: 20 * 1024, webgl: 6 * 1024 };
+const WEBGL_CHUNK = /^webgl-[\w-]*\.[\w-]+\.js$/;
 const dist = new URL("../dist/", import.meta.url).pathname;
 const html = readFileSync(join(dist, "en/index.html"), "utf8");
 const gz = (path) => gzipSync(readFileSync(join(dist, path))).length;
@@ -36,6 +39,15 @@ for (const [label, rows, limit] of [["JS", js, BUDGET.js], ["CSS", css, BUDGET.c
   console.log(`${ok ? "ok  " : "FAIL"} ${label} ${kb(sum)} gz / budget ${kb(limit)}`);
   rows.forEach(([path, size]) => console.log(`       ${kb(size).padStart(8)}  ${path}`));
 }
+const webglChunks = readdirSync(join(dist, "_astro")).filter((name) => WEBGL_CHUNK.test(name));
+const webglSize = webglChunks.reduce((sum, name) => sum + gz(join("_astro", name)), 0);
+const eagerWebgl = [...seen].filter((path) => WEBGL_CHUNK.test(basename(path)));
+const webglOk = webglSize <= BUDGET.webgl && eagerWebgl.length === 0;
+failed ||= !webglOk;
+console.log(
+  `${webglOk ? "ok  " : "FAIL"} WebGL ${kb(webglSize)} gz lazy / budget ${kb(BUDGET.webgl)} (${webglChunks.length ? webglChunks.join(", ") : "no decorative WebGL shipped"})`,
+);
+for (const path of eagerWebgl) console.log(`       statically imported, must load with import() after first paint: ${path}`);
 // Artwork is build-time inline SVG. Check every generated page, so adding
 // records or a showcase cannot silently exceed the documented per-page limit.
 const pages = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
