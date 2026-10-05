@@ -693,8 +693,19 @@ html:not(.js) .deck-card__actions {
   color: var(--amber-bright);
 }
 
-/* Optional fine-pointer tilt never changes the resting layout. */
+/* Optional fine-pointer motion never changes the layout: a slight alternating
+   fan (cards never overlap and never move under the pointer) and pointer tilt.
+   Both are off whenever motion is reduced, by the OS or by Effects: Reduced. */
 @media (prefers-reduced-motion: no-preference) {
+  .card-deck.is-draggable[data-motion="system"]:not([data-view="list"])
+    .deck-card:nth-child(odd) {
+    rotate: -0.8deg;
+  }
+  .card-deck.is-draggable[data-motion="system"]:not([data-view="list"])
+    .deck-card:nth-child(even) {
+    rotate: 0.8deg;
+    translate: 0 6px;
+  }
   html:not([data-effects="reduced"])
     .card-deck.is-draggable
     .deck-card:not(.is-flipped)

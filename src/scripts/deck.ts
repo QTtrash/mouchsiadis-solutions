@@ -20,6 +20,9 @@ type Gesture = {
   y: number;
   offsetX: number;
   offsetY: number;
+  width: number;
+  height: number;
+  angle: string;
   moved: boolean;
   draggable: boolean;
 };
@@ -31,7 +34,26 @@ type DragVisual = {
   y: number;
   offsetX: number;
   offsetY: number;
+  width: number;
+  height: number;
+  angle: string;
 };
+
+// A fanned card may rest at a slight angle. The preview keeps the card's layout
+// size and angle, so it covers exactly what the visitor picked up.
+function restingFrame(card: HTMLElement): { left: number; top: number; width: number; height: number; angle: string } {
+  const bounds = card.getBoundingClientRect();
+  const width = card.offsetWidth;
+  const height = card.offsetHeight;
+  const rotate = getComputedStyle(card).rotate;
+  return {
+    left: bounds.x + (bounds.width - width) / 2,
+    top: bounds.y + (bounds.height - height) / 2,
+    width,
+    height,
+    angle: rotate && rotate !== "none" ? rotate : "0deg",
+  };
+}
 
 function readView(): View {
   try { return localStorage.getItem(VIEW_KEY) === "list" ? "list" : "cards"; }
@@ -128,12 +150,11 @@ function enhanceDeck(deck: HTMLElement): void {
     if (previous?.card.hasPointerCapture(previous.pointerId)) previous.card.releasePointerCapture(previous.pointerId);
     setState(hadDrag && report ? "cancelled" : "idle", returning?.card.dataset.title);
     if (returning && animate && !reduced()) {
-      const from = returning.preview.getBoundingClientRect();
-      const to = returning.card.getBoundingClientRect();
+      const to = restingFrame(returning.card);
       returning.feedback.remove();
       returning.preview.animate([
-        { transform: `translate(${from.x}px, ${from.y}px)` },
-        { transform: `translate(${to.x}px, ${to.y}px)` },
+        { transform: `translate(${returning.x - returning.offsetX}px, ${returning.y - returning.offsetY}px) rotate(${returning.angle})` },
+        { transform: `translate(${to.left}px, ${to.top}px) rotate(${to.angle})` },
       ], { duration: 160, easing: "ease-out", fill: "forwards" }).finished
         .then(() => { if (visual === returning) removeVisual(); })
         .catch(() => { /* Another gesture or layout change removed the preview. */ });
@@ -151,8 +172,8 @@ function enhanceDeck(deck: HTMLElement): void {
     cancelAnimationFrame(dragFrame);
     dragFrame = 0;
     if (!visual || !gesture) return;
-    const { preview, feedback, x, y, offsetX, offsetY, card } = visual;
-    preview.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`;
+    const { preview, feedback, x, y, offsetX, offsetY, angle, card } = visual;
+    preview.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px) rotate(${angle})`;
     setState(overReader(x, y) ? "armed" : "carrying", card.dataset.title);
     // The full-size card can cover the dock. Keep its instruction beside the
     // pointer and inside the viewport, including for tall translated cards.
@@ -166,7 +187,6 @@ function enhanceDeck(deck: HTMLElement): void {
   };
 
   const lift = (current: Gesture, event: PointerEvent): void => {
-    const bounds = current.card.getBoundingClientRect();
     const clone = current.card.cloneNode(true) as HTMLElement;
     const preview = document.createElement("div");
     preview.className = `deck-card card-drag-preview${current.card.classList.contains("is-flipped") ? " is-flipped" : ""}`;
@@ -186,15 +206,15 @@ function enhanceDeck(deck: HTMLElement): void {
     preview.dataset.dragPreview = "";
     preview.inert = true;
     preview.setAttribute("aria-hidden", "true");
-    preview.style.width = `${bounds.width}px`;
-    preview.style.height = `${bounds.height}px`;
+    preview.style.width = `${current.width}px`;
+    preview.style.height = `${current.height}px`;
     const feedback = document.createElement("div");
     feedback.className = "card-drag-feedback";
     feedback.dataset.dragFeedback = "";
     feedback.setAttribute("aria-hidden", "true");
     feedback.inert = true;
     document.body.append(preview, feedback);
-    visual = { card: current.card, preview, feedback, x: event.clientX, y: event.clientY, offsetX: current.offsetX, offsetY: current.offsetY };
+    visual = { card: current.card, preview, feedback, x: event.clientX, y: event.clientY, offsetX: current.offsetX, offsetY: current.offsetY, width: current.width, height: current.height, angle: current.angle };
     current.card.setPointerCapture(event.pointerId);
     current.card.classList.add("is-dragging");
     renderDrag();
@@ -215,11 +235,10 @@ function enhanceDeck(deck: HTMLElement): void {
       window.location.assign(href);
       return;
     }
-    const from = seating.preview.getBoundingClientRect();
     const to = reader.getBoundingClientRect();
     seating.preview.animate([
-      { transform: `translate(${from.x}px, ${from.y}px) scale(1)`, opacity: 1 },
-      { transform: `translate(${to.x + to.width / 2 - from.width / 2}px, ${to.y + to.height / 2 - from.height / 2}px) scale(0.62)`, opacity: 0.35 },
+      { transform: `translate(${seating.x - seating.offsetX}px, ${seating.y - seating.offsetY}px) rotate(${seating.angle}) scale(1)`, opacity: 1 },
+      { transform: `translate(${to.x + to.width / 2 - seating.width / 2}px, ${to.y + to.height / 2 - seating.height / 2}px) rotate(0deg) scale(0.62)`, opacity: 0.35 },
     ], { duration: 180, easing: "cubic-bezier(.3,.7,.2,1)", fill: "forwards" }).finished
       .then(() => { if (attempt === navigation) window.location.assign(href); })
       .catch(() => { /* A resize, preference change, or cancelled gesture must not navigate. */ });
@@ -238,8 +257,8 @@ function enhanceDeck(deck: HTMLElement): void {
     const card = target.closest<HTMLElement>("[data-card]");
     if (!card || card.classList.contains("is-played")) return;
     cancel(false, false);
-    const bounds = card.getBoundingClientRect();
-    gesture = { card, pointerId: event.pointerId, x: event.clientX, y: event.clientY, offsetX: event.clientX - bounds.x, offsetY: event.clientY - bounds.y, moved: false, draggable: dragMedia.matches && event.pointerType !== "touch" };
+    const frame = restingFrame(card);
+    gesture = { card, pointerId: event.pointerId, x: event.clientX, y: event.clientY, offsetX: event.clientX - frame.left, offsetY: event.clientY - frame.top, width: frame.width, height: frame.height, angle: frame.angle, moved: false, draggable: dragMedia.matches && event.pointerType !== "touch" };
   });
   hand.addEventListener("pointerleave", clearTilt);
   hand.addEventListener("pointermove", (event) => {
