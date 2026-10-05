@@ -909,10 +909,11 @@ button {
     "title proof"
     "actions proof"
     "body proof"
+    "impact proof"
     "direct proof"
     "status proof"
     ". proof";
-  grid-template-rows: repeat(6, auto) 1fr;
+  grid-template-rows: repeat(7, auto) 1fr;
   column-gap: 2rem;
   align-items: start;
 }
@@ -934,6 +935,9 @@ button {
 .hero-panel__grid > .hero-panel__body {
   grid-area: body;
   margin-top: 1.25rem;
+}
+.hero-panel__grid > .hero-impact {
+  grid-area: impact;
 }
 .hero-panel__grid > .hero-panel__direct {
   grid-area: direct;
@@ -987,6 +991,46 @@ button {
   margin: 0;
   color: var(--text-secondary);
   font-size: 1.0625rem;
+}
+/* A short track record: results restated from the experience log. */
+.hero-impact {
+  max-width: 60ch;
+  margin-top: 1.125rem;
+}
+.hero-impact h2 {
+  margin: 0 0 0.375rem;
+  color: var(--text-subtle);
+  font: 600 0.6875rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero-impact ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hero-impact li {
+  position: relative;
+  padding-left: 1.125rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.hero-impact li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--phosphor);
+  mask: var(--chevron) center / contain no-repeat;
+}
+.hero-impact strong {
+  color: var(--amber);
+  font: 700 0.9375rem/1.5 var(--mono);
 }
 .hero-panel__actions {
   display: flex;
@@ -1925,6 +1969,7 @@ html:not(.js) .avatar-card {
       "title proof"
       "body proof"
       "actions proof"
+      "impact proof"
       "direct proof"
       "status proof"
       ". proof";
@@ -2008,7 +2053,7 @@ html:not(.js) .avatar-card {
 @media (max-width: 900px) {
   .hero-panel__grid {
     grid-template-columns: 1fr;
-    grid-template-areas: "kicker" "title" "actions" "proof" "body" "direct" "status";
+    grid-template-areas: "kicker" "title" "actions" "proof" "body" "impact" "direct" "status";
     grid-template-rows: none;
   }
   .hero-panel__grid > .hero-proof {

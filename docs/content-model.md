@@ -21,6 +21,10 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 `profile` holds owner-confirmed facts shown in the hero: `location` and `availability`, localized for all four locales. Interface copy in `src/lib/i18n.ts` may label them (for example "status"), but claims about Suren live here. Do not add testimonials, client logos, response times or availability wording without the owner's confirmation.
 
+### Track Record
+
+`impact` holds the short results list shown in the hero. Each entry has an optional localized `figure`, localized `text`, and `sources`: the `experiences` slugs whose summary or details state the fact. Add a line only when its source entry already states it; `tests/conversion.spec.ts` checks every figure against its sources.
+
 ### Hero Proof
 
 The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true` and links each to its case file. The displayed count comes from that list. Prereleases such as Regrind appear in Work, Tooling and the showcase, not in the live proof.

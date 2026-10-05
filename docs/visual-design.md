@@ -4,7 +4,7 @@
 
 Mouchsiadis Solutions is a field terminal: a code-drawn MS-86 console with a rounded CRT glass, P1-green phosphor and one amber action. Terminal character belongs to the chrome, the hero headline, navigation, cards and motion. Reading surfaces (body copy, case files, articles) stay calm and never glow.
 
-The site exists to turn visitors into contact requests, prospective clients first and hiring managers second. Within the first screen a visitor can tell who Suren is and what he builds, see live proof, and find one primary action. Optional play (cards, the reader, Backlog Breaker) never gates content.
+The site exists to turn visitors into contact requests, prospective clients first and hiring managers second. Within the first screen a visitor can tell who Suren is and what gets built, see live proof, and find one primary action. Optional play (cards, the reader, Backlog Breaker) never gates content.
 
 Two audiences share the same records:
 
@@ -50,7 +50,8 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 
 - **Direction.** Three concepts were built as mockups at 1440×900 and 390×844: A "Phosphor Restore", B "Instrument Console" (keycaps, dot-matrix registers, a 1.48 KB WebGL scope) and C "Field Dossier" (greenbar printouts, index cards, manila folders). The owner chose A. B's WebGL scope was not shipped.
 - **The hand.** The four-up tilted row cannot return without breaking two real fixes: the 13rem reader lane and the 230px minimum card width. At 1440 the fitted deck shows three cards per row and at 1120–1280 two. The tilt returns as a static alternating fan (±0.8° and a 6px stagger) when motion is allowed. Cards never overlap, never move under the pointer, and lie flat under reduced motion.
-- **Headline.** The owner approved "Senior platform engineer for products that have to work." Translations avoid compounds wider than a 320px column: «Старший инженер платформ…», "Senior Platform Engineer für Produkte…" (the common German job title), and a Georgian colon form. All three need native review.
+- **Headline.** The owner approved "Senior platform engineer for products that have to work." The job title stays in English in every locale (owner decision); only the rest of the sentence is translated, and Georgian uses a colon form.
+- **Body and track record.** One general line ("I build scalable platforms and the cloud infrastructure that keeps them running.") replaces a project-specific description; no single project is described in depth in the hero. A short "Track record" list follows the actions. It comes from `impact` in `src/lib/content.ts`, where each line names the experience entries that state its facts, and a test checks every figure against them.
 - **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
 - **Facts.** Location and availability are owner-confirmed and live in `profile` in `src/lib/content.ts`. No testimonials, client logos, response times or booking links are shown; none were provided.
 - **Contact.** Every email action uses one address and a subject that names its origin. The address is always visible as text beside a copy button, because `mailto:` can do nothing without a mail client.
@@ -71,7 +72,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 ## Fast Path and Conversion
 
 - **One primary per view.** The hero has one filled amber action, "Contact me". "CV (PDF)" is outlined and "Explore projects" is a link. The header "Contact" key and Backlog Breaker's "Start" stay secondary. The contact panel's primary is "Email me" and a case file's primary is "Email me about {project}".
-- **Hero.** It names Suren and his location (from `profile`), states the approved positioning, offers the actions, and then shows live proof. A direct email line names every engagement ("projects, contract work, consulting or a role") and shows the address. The owner-confirmed availability sits beneath as a status line.
+- **Hero.** It names Suren and the location (from `profile`), states the approved positioning in one general line, offers the actions, lists the track record, and shows live proof. A direct email line names every engagement ("projects, contract work, consulting or a role") and shows the address. The owner-confirmed availability sits beneath as a status line.
 - **Contact panel.** An "Email me" action with a subject, the visible address with a copy button, a short "useful to include" list, then LinkedIn, GitHub and the CV.
 - **Case files.** The header shows evidence: cover, number, suit, LIVE, outcome, role and stack. Its product and source links are secondary, plus a link down to the call to action. Previous/next navigation follows the body. The file always ends with the contextual call to action.
 - **Open-source showcase.** One "Open case file" button per project; the product and source links are quiet inline links.
@@ -182,12 +183,12 @@ This pass restores the identity on top of the kept fixes and closes those gaps. 
 New or changed copy ships in all four locales. Native-speaker review is outstanding for:
 
 - **Georgian (`ge`):**
-  - hero headline and body
+  - hero headline, body and track-record list
   - contact audience line, proof title, status label
   - contact panel copy and the "useful to include" list
   - email subjects
   - case-file call-to-action copy and the 404/article contact line
-- **Russian and German:** the hero headline and body, the contact and case-file call-to-action copy, and the aligned YPay summary.
+- **Russian and German:** the hero headline, body and track-record list, the meta descriptions, the contact and case-file call-to-action copy, and the aligned YPay summary.
 
 Historical project and experience records keep their documented English fallback where translations do not exist. Blog bodies are unchanged.
 

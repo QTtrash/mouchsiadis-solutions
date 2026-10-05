@@ -184,6 +184,7 @@ export const localeSeo: Record<
       status: string;
       contactAudience: string;
       proofTitle: string;
+      impactTitle: string;
       emailMe: string;
       copyAddress: string;
       copied: string;
@@ -217,10 +218,10 @@ export const localeSeo: Record<
   en: {
     title: "Mouchsiadis Solutions",
     description:
-      "Suren Mouchsiadis is a senior systems builder creating production platforms, operational tools, and independent software.",
+      "Suren Mouchsiadis is a senior platform engineer building scalable platforms, the cloud infrastructure under them, and independent software.",
     heroTitle: "Senior platform engineer for products that have to work.",
     heroBody:
-      "I design, ship and run production platforms: payouts for mobility fleets, dispatch and support workspaces, and the cloud infrastructure under them.",
+      "I build scalable platforms and the cloud infrastructure that keeps them running.",
     nav: {
       overview: "Overview",
       work: "Work",
@@ -266,6 +267,7 @@ export const localeSeo: Record<
       status: "status",
       contactAudience: "For projects, contract work, consulting or a role. Or write directly:",
       proofTitle: "Live case files",
+      impactTitle: "Track record",
       emailMe: "Email me",
       copyAddress: "Copy address",
       copied: "Copied",
@@ -305,10 +307,10 @@ export const localeSeo: Record<
   ru: {
     title: "Mouchsiadis Solutions",
     description:
-      "Сурен Мухсиадис — старший системный разработчик, создающий production-платформы, операционные инструменты и независимое ПО.",
-    heroTitle: "Старший инженер платформ для продуктов, которые обязаны работать.",
+      "Сурен Мухсиадис — senior platform engineer: масштабируемые платформы, облачная инфраструктура под ними и независимое ПО.",
+    heroTitle: "Senior platform engineer для продуктов, которые обязаны работать.",
     heroBody:
-      "Проектирую, запускаю и сопровождаю продакшн-платформы: выплаты для автопарков, рабочие места диспетчеров и поддержки и облачную инфраструктуру под ними.",
+      "Строю масштабируемые платформы и облачную инфраструктуру, на которой они работают.",
     nav: {
       overview: "Обзор",
       work: "Работы",
@@ -354,6 +356,7 @@ export const localeSeo: Record<
       status: "статус",
       contactAudience: "Для проектов, контрактов, консалтинга или работы в команде. Или напишите напрямую:",
       proofTitle: "Работающие проекты",
+      impactTitle: "Результаты",
       emailMe: "Написать на почту",
       copyAddress: "Скопировать адрес",
       copied: "Скопировано",
@@ -393,10 +396,10 @@ export const localeSeo: Record<
   de: {
     title: "Mouchsiadis Solutions",
     description:
-      "Suren Mouchsiadis entwickelt als Senior Systems Builder produktive Plattformen, Operations-Werkzeuge und unabhängige Software.",
+      "Suren Mouchsiadis ist Senior Platform Engineer: skalierbare Plattformen, die Cloud-Infrastruktur darunter und unabhängige Software.",
     heroTitle: "Senior Platform Engineer für Produkte, die funktionieren müssen.",
     heroBody:
-      "Ich entwerfe, liefere und betreibe Produktionsplattformen: Auszahlungen für Mobilitätsflotten, Dispositions- und Support-Arbeitsplätze und die Cloud-Infrastruktur darunter.",
+      "Ich baue skalierbare Plattformen und die Cloud-Infrastruktur, die sie am Laufen hält.",
     nav: {
       overview: "Überblick",
       work: "Arbeit",
@@ -442,6 +445,7 @@ export const localeSeo: Record<
       status: "Status",
       contactAudience: "Für Projekte, Auftragsarbeit, Beratung oder eine Festanstellung. Oder direkt schreiben:",
       proofTitle: "Live-Fallakten",
+      impactTitle: "Ergebnisse",
       emailMe: "E-Mail schreiben",
       copyAddress: "Adresse kopieren",
       copied: "Kopiert",
@@ -481,10 +485,10 @@ export const localeSeo: Record<
   ge: {
     title: "Mouchsiadis Solutions",
     description:
-      "სურენ მუხსიადისი — უფროსი ინჟინერი. გადახდის პლატფორმები, სამუშაო ინსტრუმენტები და დამოუკიდებელი პროგრამები.",
-    heroTitle: "უფროსი პლატფორმის ინჟინერი: სისტემები, რომლებიც უნდა მუშაობდეს.",
+      "სურენ მუხსიადისი — senior platform engineer: მასშტაბირებადი პლატფორმები, მათი ღრუბლოვანი ინფრასტრუქტურა და დამოუკიდებელი პროგრამები.",
+    heroTitle: "Senior platform engineer: სისტემები, რომლებიც უნდა მუშაობდეს.",
     heroBody:
-      "ვაპროექტებ, ვუშვებ და ვმართავ საწარმოო პლატფორმებს: ავტოპარკების გადახდებს, დისპეტჩერიზაციისა და მხარდაჭერის სამუშაო სივრცეებს და მათ ქვეშ არსებულ ღრუბლოვან ინფრასტრუქტურას.",
+      "ვაშენებ მასშტაბირებად პლატფორმებს და ღრუბლოვან ინფრასტრუქტურას, რომელზეც ისინი მუშაობს.",
     nav: {
       overview: "მიმოხილვა",
       work: "ნამუშევრები",
@@ -530,6 +534,7 @@ export const localeSeo: Record<
       status: "სტატუსი",
       contactAudience: "პროექტებისთვის, კონტრაქტებისთვის, კონსულტაციისთვის ან სამუშაო შეთავაზებისთვის. ან მომწერეთ პირდაპირ:",
       proofTitle: "მოქმედი პროექტები",
+      impactTitle: "შედეგები",
       emailMe: "მომწერეთ ელფოსტით",
       copyAddress: "მისამართის კოპირება",
       copied: "დაკოპირდა",

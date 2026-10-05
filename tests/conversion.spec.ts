@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { experiences, impact } from "../src/lib/content.ts";
 
 const locales = ["en", "ru", "de", "ge"] as const;
 const slugs = [
@@ -85,6 +86,24 @@ test("hero proof lists exactly the live work records and states their count", as
   // Regrind is a prerelease: it is public work but not proof of a live system.
   await expect(proof.locator('a[href="/en/work/regrind/"]')).toHaveCount(0);
 });
+
+test("every hero impact line is backed by the experience it cites", () => {
+  for (const item of impact) {
+    const sources = item.sources.map((slug) => experiences.find((entry) => entry.slug === slug));
+    expect(sources.every(Boolean), item.text.en).toBe(true);
+    if (!item.figure) continue;
+    const evidence = sources.flatMap((entry) => [entry!.summary.en, ...entry!.details.en]).join(" ");
+    expect(evidence, item.text.en).toContain(item.figure.en);
+  }
+});
+
+for (const locale of locales) {
+  test(`${locale}: the hero keeps the English title and lists the track record`, async ({ page }) => {
+    await page.goto(`/${locale}/`);
+    await expect(page.locator(".hero-panel h1")).toHaveText(/^Senior platform engineer/i);
+    await expect(page.locator(".hero-impact [data-impact]")).toHaveCount(impact.length);
+  });
+}
 
 test("the hero states availability and a direct email next to the primary action", async ({ page }) => {
   await page.goto("/en/");

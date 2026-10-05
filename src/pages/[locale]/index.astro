@@ -10,7 +10,7 @@ import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
-import { experiences, profile } from "../../lib/content";
+import { experiences, impact, profile } from "../../lib/content";
 import { EMAIL, mailto } from "../../lib/contact";
 import {
   cardSummary,
@@ -211,6 +211,19 @@ const contactHref = mailto(copy.labels.mailSubject);
               </aside>
 
               <p class="hero-panel__body">{copy.heroBody}</p>
+              <section class="hero-impact" aria-labelledby="hero-impact-title">
+                <h2 id="hero-impact-title">{copy.labels.impactTitle}</h2>
+                <ul role="list">
+                  {
+                    impact.map((item) => (
+                      <li data-impact>
+                        {item.figure && <strong>{localized(item.figure)}</strong>}{" "}
+                        {localized(item.text)}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </section>
               <p class="hero-panel__direct">
                 {copy.labels.contactAudience}{" "}
                 <a href={contactHref}>{EMAIL}</a>
