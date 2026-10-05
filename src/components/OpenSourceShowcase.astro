@@ -1,4 +1,6 @@
 ---
+// Public-source projects from the Tool records. One button opens the case file;
+// the product and source links stay as quieter inline links.
 import CoverArt from "./CoverArt.astro";
 import {
   cardSummary,
@@ -50,33 +52,29 @@ const copy = deckCopy[locale];
             </h3>
             <p>{cardSummary(entry, locale)}</p>
           </div>
-          <nav class="open-source-showcase__actions" aria-label={entry.title}>
+          <div class="open-source-showcase__actions">
             <a class="button" href={casePath(locale, entry.slug)}>
               {copy.open}
               <span class="visually-hidden">: {entry.title}</span>
             </a>
-            <a
-              class="button button--ghost"
-              href={entry.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {localize(entry.linkLabel, locale)}{" "}
-              <span aria-hidden="true">↗</span>
-            </a>
-            {entry.sourceLink && entry.sourceLinkLabel && (
-              <a
-                class="button button--ghost"
-                href={entry.sourceLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {localize(entry.sourceLinkLabel, locale)}
-                <span class="visually-hidden">: {entry.title}</span>{" "}
+            <p class="open-source-showcase__links">
+              <a href={entry.link} target="_blank" rel="noopener noreferrer">
+                {localize(entry.linkLabel, locale)}
                 <span aria-hidden="true">↗</span>
               </a>
-            )}
-          </nav>
+              {entry.sourceLink && entry.sourceLinkLabel && (
+                <a
+                  href={entry.sourceLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {localize(entry.sourceLinkLabel, locale)}
+                  <span class="visually-hidden">: {entry.title}</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </p>
+          </div>
         </article>
       ))
     }

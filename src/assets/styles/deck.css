@@ -23,7 +23,7 @@ html[data-effects="reduced"]::view-transition-new(*) {
 }
 
 .card-deck {
-  --card-w: 15rem;
+  --card-w: 14.5rem;
   position: relative;
   display: grid;
   gap: 0.85rem;
@@ -34,20 +34,26 @@ html[data-effects="reduced"]::view-transition-new(*) {
   display: none !important;
 }
 
-/* suit accents extend the phosphor tokens: platform green, tool copper, game amber */
+/* suits extend the phosphor tokens: platform green, tool copper, game amber */
 [data-suit="platform"] {
   --suit: var(--signal);
-  --suit-soft: rgba(141, 255, 122, 0.12);
+  --suit-soft: rgba(141, 255, 122, 0.1);
+  --suit-title: var(--text-strong);
+  --suit-glow: rgba(141, 255, 122, 0.24);
 }
 
 [data-suit="tool"] {
   --suit: var(--atlas-copper);
-  --suit-soft: rgba(224, 123, 66, 0.14);
+  --suit-soft: rgba(232, 147, 92, 0.12);
+  --suit-title: #ffe9da;
+  --suit-glow: rgba(232, 147, 92, 0.24);
 }
 
 [data-suit="game"] {
   --suit: var(--amber);
-  --suit-soft: rgba(255, 176, 0, 0.13);
+  --suit-soft: rgba(255, 176, 0, 0.11);
+  --suit-title: #fff0cf;
+  --suit-glow: rgba(255, 176, 0, 0.22);
 }
 
 /* ---- Cards / List switch ---- */
@@ -78,19 +84,15 @@ html[data-effects="reduced"]::view-transition-new(*) {
   grid-area: 1 / 1;
 }
 
-.card-deck.is-draggable:not([data-view="list"]) .card-hand {
-  grid-template-columns: repeat(2, minmax(0, 17.5rem));
-  justify-content: start;
-}
-
 .card-deck__view {
   flex: none;
   margin-left: auto;
   display: inline-flex;
   justify-self: end;
-  padding: 0.15rem;
+  gap: 0.25rem;
+  padding: 0.25rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   background: rgba(0, 0, 0, 0.24);
 }
 
@@ -110,12 +112,12 @@ html:not(.js) .card-deck__view {
   min-height: 2.75rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid transparent;
-  border-radius: 0.18rem;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-subtle);
-  font: 600 0.8125rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.75rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -134,7 +136,7 @@ html:not(.js) .card-deck__view {
   color: var(--amber-bright);
 }
 
-/* ---- the table: reader + hand ---- */
+/* ---- the table: a hand that fills the space up to the reader lane ---- */
 
 .card-deck__table {
   display: grid;
@@ -147,32 +149,29 @@ html:not(.js) .card-deck__view {
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(min(100%, var(--card-w)), 17.5rem)
+    minmax(min(100%, var(--card-w)), 1fr)
   );
-  justify-content: space-between;
-  gap: 1.25rem;
+  gap: 1.25rem 1rem;
   margin: 0;
   padding: 0.25rem;
   list-style: none;
 }
 
-/* ---- a card ---- */
+/* ---- a card: suit pips, art window, and a control tab on top ---- */
 
 .deck-card {
   position: relative;
   display: grid;
-  gap: 0.4rem;
   min-width: 0;
   grid-template-rows: auto 1fr;
   perspective: 1100px;
   container-type: inline-size;
 }
 
-/* Both faces share one grid cell. The longer face determines height; 5:7 is a minimum. */
+/* Both faces share one grid cell. The longer face determines height. */
 .deck-card__body {
   position: relative;
   display: grid;
-  min-height: 140cqw;
   transform-style: preserve-3d;
   transition: transform 320ms cubic-bezier(0.3, 0.7, 0.2, 1);
 }
@@ -187,14 +186,17 @@ html:not(.js) .card-deck__view {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding: 1rem;
+  gap: 0.625rem;
+  padding: 0.875rem 0.875rem 1.25rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--suit) 42%, transparent);
-  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--suit) 55%, transparent);
+  border-radius: 0 0 12px 12px;
   background:
-    linear-gradient(180deg, var(--suit-soft), transparent 45%), var(--panel);
-  box-shadow: inset 0 2px var(--suit);
+    linear-gradient(180deg, var(--suit-soft), transparent 42%),
+    #0a140b;
+  box-shadow:
+    inset 0 2px 0 var(--suit),
+    0 18px 40px -24px #000;
   backface-visibility: hidden;
 }
 
@@ -218,21 +220,33 @@ html:not(.js) .card-deck__view {
   align-items: center;
   justify-content: space-between;
   gap: 0.4rem;
-  font: 600 0.75rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.6875rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .deck-card__suit {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.375rem;
   color: var(--suit);
 }
 
 .deck-card__suit-icon {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.6875rem;
+  height: 0.6875rem;
+  --px-accent: var(--suit);
+}
+
+/* bottom corner pip, turned like the second index on a playing card */
+.deck-card__pip {
+  position: absolute;
+  right: 0.625rem;
+  bottom: 0.5rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  rotate: 180deg;
+  opacity: 0.65;
   --px-accent: var(--suit);
 }
 
@@ -253,16 +267,16 @@ html:not(.js) .card-deck__view {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.15rem 0.35rem;
+  padding: 0.2rem 0.4rem;
   border: 1px solid var(--amber-line);
-  border-radius: 0.15rem;
+  border-radius: 3px;
   color: var(--amber-bright);
 }
 
 .deck-card__live::before {
   content: "";
-  width: 0.35rem;
-  height: 0.35rem;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: var(--amber);
   box-shadow: 0 0 6px var(--amber);
@@ -273,29 +287,41 @@ html:not(.js) .card-deck__view {
   flex: none;
   aspect-ratio: 2 / 1;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--suit) 26%, transparent);
-  border-radius: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--suit) 30%, transparent);
+  border-radius: 6px;
   background:
     radial-gradient(circle at top right, var(--suit-soft), transparent 45%),
-    #040d05;
+    #030c04;
   --cover-accent: var(--suit);
 }
 
+/* scanlines on the art window only; the card text stays clean */
+.deck-card__art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.22) 0 1px,
+    transparent 1px 3px
+  );
+}
+
 .deck-card h3 {
-  margin: 0.1rem 0 0;
-  color: var(--text-strong);
-  font-family: var(--heading);
-  font-size: 1.375rem;
-  line-height: 1.25;
+  margin: 0.125rem 0 0;
+  color: var(--suit-title);
+  font: 800 1.4375rem/1.15 var(--display);
+  text-shadow: 0 0 12px var(--suit-glow);
 }
 
 .deck-card__eyebrow,
 .deck-card__back-kicker {
   margin: 0;
   color: var(--suit);
-  font: 0.8125rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.71875rem/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .deck-card__outcome {
@@ -310,16 +336,16 @@ html:not(.js) .card-deck__view {
   flex-wrap: wrap;
   gap: 0.3rem;
   margin: auto 0 0;
-  padding: 0;
+  padding: 0 1rem 0 0;
   list-style: none;
 }
 
 .deck-card__keywords li {
-  padding: 0.12rem 0.35rem;
+  padding: 0.12rem 0.4rem;
   border: 1px solid var(--line);
-  border-radius: 0.15rem;
+  border-radius: 3px;
   color: var(--text-subtle);
-  font: 0.8125rem/1.5 var(--body);
+  font: 0.75rem/1.5 var(--mono);
 }
 
 .deck-card__evidence {
@@ -331,9 +357,9 @@ html:not(.js) .card-deck__view {
 
 .deck-card__evidence dt {
   color: var(--amber-bright);
-  font: 600 0.75rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.71875rem/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .deck-card__evidence dd,
@@ -353,14 +379,20 @@ html:not(.js) .card-deck__view {
 .deck-card__stack {
   margin: auto 0 0;
   color: var(--text-subtle);
-  font: 0.7rem/1.4 var(--mono);
+  font: 0.75rem/1.4 var(--mono);
 }
 
+/* Flip and Open stay above the faces, joined to the card like an index tab,
+   so a tall card can be flipped before reading and never moves when it does. */
 .deck-card__actions {
   grid-row: 1;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.35rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--suit) 45%, transparent);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 html:not(.js) .deck-card__flip {
@@ -375,41 +407,54 @@ html:not(.js) .deck-card__actions {
 .deck-card__open {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
   min-height: 2.75rem;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.3);
-  color: var(--text);
-  font: 600 0.8125rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-align: center;
+  padding: 0.35rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: 600 0.6875rem/1.35 var(--mono);
+  letter-spacing: 0.07em;
+  text-align: left;
   text-decoration: none;
-  text-transform: none;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
 .deck-card__flip {
-  color: var(--muted);
+  border-right: 1px solid color-mix(in srgb, var(--suit) 30%, transparent);
 }
 
 .deck-card__flip[aria-pressed="true"] {
-  border-color: var(--amber-line);
   color: var(--amber-bright);
+  background: var(--amber-soft);
 }
 
 .deck-card__open {
-  border-color: color-mix(in srgb, var(--suit) 55%, transparent);
+  justify-content: space-between;
   color: var(--text-strong);
+}
+
+.deck-card__open::after {
+  content: "";
+  flex: none;
+  width: 0.3125rem;
+  height: 0.5625rem;
+  background: var(--suit);
+  mask: var(--chevron) center / contain no-repeat;
 }
 
 .deck-card__flip:hover,
 .deck-card__open:hover,
 .deck-card__flip:focus-visible,
 .deck-card__open:focus-visible {
-  border-color: var(--amber-line);
   color: var(--amber-bright);
+  background: var(--amber-soft);
+}
+
+.deck-card__flip:focus-visible,
+.deck-card__open:focus-visible {
+  outline-offset: -3px;
 }
 
 /* LIVE foil: a slow sheen across production systems only */
@@ -455,13 +500,13 @@ html:not(.js) .deck-card__actions {
 .card-deck.is-draggable:not([data-view="list"]) .card-reader {
   min-width: 0;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.75rem;
   padding: 0.75rem;
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   background:
     linear-gradient(180deg, rgba(165, 220, 113, 0.08), transparent 65%),
-    var(--screen);
+    #020803;
   box-shadow:
     inset 0 2px rgba(165, 220, 113, 0.1),
     inset 0 -3px rgba(0, 0, 0, 0.4);
@@ -480,50 +525,51 @@ html:not(.js) .deck-card__actions {
   height: 0.5rem;
   border-radius: 50%;
   background: var(--dim);
+  box-shadow: 0 0 0 2px #010401;
 }
 
 .card-reader__label {
   color: var(--text-strong);
-  font: 600 0.8125rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.71875rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
+/* a recessed slot with a sensor line; text sits below it, never across it */
 .card-reader__slot {
   position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 6.25rem;
-  padding: 0.75rem 0.5rem;
-  border: 1px dashed var(--line-strong);
-  border-radius: 0.3rem;
-  background:
-    linear-gradient(
-      180deg,
-      transparent calc(50% - 5px),
-      #010402 calc(50% - 5px) calc(50% + 5px),
-      transparent calc(50% + 5px)
-    ),
-    rgba(0, 0, 0, 0.35);
-  transition:
-    border-color 120ms ease,
-    box-shadow 120ms ease;
+  display: block;
+  height: 1.375rem;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #000 0 45%, #0d1a0e 100%);
+  box-shadow:
+    inset 0 2px 4px #000,
+    0 1px 0 rgba(165, 220, 113, 0.18);
+  transition: box-shadow 120ms ease;
 }
 
-.card-reader__slot strong {
+.card-reader__slot::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 2px;
+  translate: 0 -50%;
+  background: rgba(141, 255, 122, 0.28);
+  box-shadow: 0 0 8px rgba(141, 255, 122, 0.4);
+}
+
+.card-reader__status {
   max-width: 100%;
-  padding: 0.25rem;
-  background: #030a04;
-  color: var(--text);
-  font: 600 0.8125rem/1.5 var(--body);
-  letter-spacing: normal;
+  color: var(--text-strong);
+  font: 600 0.8125rem/1.45 var(--mono);
   text-align: center;
-  text-transform: none;
 }
 
 .card-reader__hint {
   color: var(--text-subtle);
-  font: 0.8125rem/1.5 var(--body);
+  font: 0.75rem/1.5 var(--body);
   min-height: 3em;
 }
 
@@ -533,10 +579,11 @@ html:not(.js) .deck-card__actions {
 
 .card-reader[data-state="carrying"] .card-reader__led {
   background: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
 }
 
-.card-reader[data-state="carrying"] .card-reader__slot {
-  border-color: var(--signal);
+.card-reader[data-state="carrying"] .card-reader__slot::after {
+  background: var(--signal);
 }
 
 .card-reader[data-state="armed"],
@@ -544,21 +591,25 @@ html:not(.js) .deck-card__actions {
   border-color: var(--amber);
 }
 
-.card-reader[data-state="cancelled"] .card-reader__slot strong {
+.card-reader[data-state="cancelled"] .card-reader__status {
   color: var(--text-subtle);
 }
 
 .card-reader.is-armed .card-reader__slot,
 .card-reader.is-reading .card-reader__slot {
-  border-color: var(--amber);
-  border-style: solid;
   box-shadow:
-    0 0 22px rgba(255, 176, 0, 0.22),
-    inset 0 0 18px rgba(255, 176, 0, 0.12);
+    inset 0 2px 4px #000,
+    0 0 22px rgba(255, 176, 0, 0.3);
 }
 
-.card-reader.is-armed .card-reader__slot strong,
-.card-reader.is-reading .card-reader__slot strong {
+.card-reader.is-armed .card-reader__slot::after,
+.card-reader.is-reading .card-reader__slot::after {
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber);
+}
+
+.card-reader.is-armed .card-reader__status,
+.card-reader.is-reading .card-reader__status {
   color: var(--amber-bright);
 }
 
@@ -611,8 +662,7 @@ html:not(.js) .deck-card__actions {
 }
 
 .card-drag-preview .deck-card__actions {
-  border-radius: var(--radius-sm);
-  background: var(--screen);
+  background: var(--glass);
 }
 
 .card-drag-preview[data-state="armed"] .deck-card__face,
@@ -631,10 +681,10 @@ html:not(.js) .deck-card__actions {
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--signal);
   border-radius: var(--radius-sm);
-  background: var(--screen);
+  background: var(--glass);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   color: var(--text-strong);
-  font: 600 0.8125rem/1.5 var(--body);
+  font: 600 0.8125rem/1.5 var(--mono);
   pointer-events: none;
 }
 
@@ -653,6 +703,13 @@ html:not(.js) .deck-card__actions {
   }
   .deck-card__body.is-tracking {
     transition: none;
+  }
+}
+
+/* desktop and tablet cards keep a playing-card proportion as a minimum */
+@media (min-width: 768px) {
+  .deck-card__body {
+    min-height: 128cqw;
   }
 }
 
@@ -675,35 +732,31 @@ html:not(.js) .deck-card__actions {
   .card-hand {
     display: flex;
     gap: 0.75rem;
-    margin-inline: -0.75rem;
-    padding: 0.25rem 0.75rem 0.75rem;
+    margin-inline: -0.875rem;
+    padding: 0.25rem 0.875rem 0.75rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-padding-inline: 0.75rem;
+    scroll-padding-inline: 0.875rem;
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
   }
 
   .deck-card {
-    flex: 0 0 min(90%, 19rem);
+    flex: 0 0 min(88%, 19rem);
     scroll-snap-align: start;
   }
 
   .deck-card h3 {
-    font-size: 1.2rem;
-  }
-
-  .deck-card__outcome {
-    font-size: 0.9375rem;
+    font-size: 1.25rem;
   }
 }
 
-/* ---- case file ---- */
+/* ---- case file: evidence first, a calm body, a contextual call to action ---- */
 
 .case-file {
   display: grid;
   gap: 1.5rem;
-  max-width: 60rem;
+  max-width: 62rem;
   margin: 1.5rem auto 0;
 }
 
@@ -712,10 +765,11 @@ html:not(.js) .deck-card__actions {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
-  color: var(--muted);
-  font: 600 0.875rem/1.5 var(--body);
+  color: var(--text-secondary);
+  font: 600 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
   text-decoration: none;
-  text-transform: none;
+  text-transform: uppercase;
 }
 
 .case-file__back:hover,
@@ -725,56 +779,136 @@ html:not(.js) .deck-card__actions {
 
 .case-file__header {
   display: grid;
-  grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr);
-  gap: 1.5rem;
+  grid-template-columns: minmax(15rem, 0.85fr) minmax(0, 1.15fr);
+  gap: 1.75rem;
   align-items: center;
-  padding: 1.35rem;
+  padding: 1.5rem;
   border: 1px solid color-mix(in srgb, var(--suit) 32%, transparent);
-  border-radius: var(--radius);
+  border-radius: 14px;
   background:
-    linear-gradient(180deg, var(--suit-soft), transparent 50%), var(--panel);
+    linear-gradient(180deg, var(--suit-soft), transparent 55%),
+    var(--panel);
 }
 
+/* the cover sits in a small CRT window */
 .case-file__cover {
   position: relative;
   aspect-ratio: 8 / 5;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--suit) 30%, transparent);
-  border-radius: var(--radius-sm);
+  border-radius: 16px;
   background:
-    radial-gradient(circle at top right, var(--suit-soft), transparent 45%),
-    #040d05;
+    radial-gradient(circle at 30% 20%, var(--suit-soft), transparent 55%),
+    #020a03;
+  box-shadow:
+    0 0 0 6px #121a10,
+    0 0 0 9px #050805,
+    inset 0 0 60px rgba(0, 0, 0, 0.8);
   --cover-accent: var(--suit);
 }
 
+.case-file__cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.26) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+.case-file__lead {
+  min-width: 0;
+}
+
+.case-file__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  color: var(--amber);
+  font: 600 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-file__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.case-file__live::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+
 .case-file h1 {
-  margin: 0 0 0.5rem;
-  color: #e8ffd3;
-  font-family: var(--heading);
-  font-size: clamp(2.2rem, 5vw, 3.3rem);
-  line-height: 1.2;
+  margin: 0.625rem 0 0.375rem;
+  color: var(--text-strong);
+  font: 800 clamp(2.5rem, 5vw, 3.75rem)/1.02 var(--display);
+  overflow-wrap: anywhere;
 }
 
 .case-file__eyebrow {
   margin: 0 0 1rem;
   color: var(--suit);
-  font: 0.8rem/1.4 var(--mono);
-  text-transform: none;
+  font: 600 0.8125rem/1.45 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .case-file__outcome {
   margin: 0;
-  color: var(--text-strong);
-  font-size: 1.08rem;
-  line-height: 1.5;
+  color: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+.case-file__facts {
+  display: grid;
+  gap: 0.375rem;
+  margin: 1rem 0 0;
+}
+
+.case-file__facts div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.case-file__facts dt {
+  color: var(--amber);
+  font: 600 0.75rem/1.6 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-file__facts dd {
+  margin: 0;
+  color: var(--text-secondary);
+  font: 400 0.8125rem/1.6 var(--mono);
+}
+
+.case-file__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1.25rem;
 }
 
 .case-file__body {
   display: grid;
   gap: 1.25rem;
-  padding: 1.35rem;
+  padding: 1.5rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 10px;
   background: var(--panel);
 }
 
@@ -792,9 +926,9 @@ html:not(.js) .deck-card__actions {
 .case-file h2 {
   margin: 0 0 0.6rem;
   color: var(--amber-bright);
-  font: 600 0.875rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .case-file__details {
@@ -819,29 +953,8 @@ html:not(.js) .deck-card__actions {
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--panel-soft);
-  color: var(--muted);
-  font: 0.74rem/1.2 var(--mono);
-}
-
-.case-file__hire {
-  padding: 1.35rem;
-  border: 1px solid var(--amber-line);
-  border-radius: var(--radius);
-  background:
-    linear-gradient(180deg, var(--amber-soft), transparent 70%), var(--panel);
-}
-
-.case-file__hire h2 {
-  margin-bottom: 0.4rem;
-  color: var(--text-strong);
-  font: 600 1.35rem/1.3 var(--heading);
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.case-file__hire p {
-  margin: 0;
   color: var(--text-secondary);
+  font: 0.75rem/1.2 var(--mono);
 }
 
 .case-file__adjacent {
@@ -856,7 +969,7 @@ html:not(.js) .deck-card__actions {
   min-height: 2.75rem;
   padding: 0.9rem 1rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   background: var(--panel);
   text-decoration: none;
 }
@@ -867,18 +980,62 @@ html:not(.js) .deck-card__actions {
 
 .case-file__adjacent span {
   color: var(--text-subtle);
-  font: 0.7rem/1.2 var(--mono);
-  text-transform: none;
+  font: 0.6875rem/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .case-file__adjacent strong {
   color: var(--text);
-  font-family: var(--heading);
+  font: 800 1rem/1.3 var(--display);
 }
 
 .case-file__adjacent a:hover,
 .case-file__adjacent a:focus-visible {
   border-color: var(--amber-line);
+}
+
+/* the case file always ends with the next step */
+.case-file__cta {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  padding: 1.5rem;
+  border: 1px solid var(--amber-line);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, var(--amber-soft), transparent 70%),
+    var(--panel);
+  scroll-margin-top: 6rem;
+}
+
+.case-file__cta-kicker {
+  margin: 0;
+  color: var(--amber);
+  font: 600 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-file .case-file__cta h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font: 800 1.75rem/1.2 var(--display);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.case-file__cta > p:not([class]) {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--text-secondary);
+}
+
+.case-file__cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
 }
 
 @media (max-width: 767px) {
@@ -890,11 +1047,21 @@ html:not(.js) .deck-card__actions {
   .case-file__header {
     grid-template-columns: 1fr;
     padding: 1rem;
+    gap: 1.25rem;
   }
 
   .case-file__body,
-  .case-file__hire {
+  .case-file__cta {
     padding: 1rem;
+  }
+
+  .case-file__facts div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .case-file__cta-actions .button--primary {
+    width: 100%;
   }
 
   .case-file__adjacent {
@@ -911,12 +1078,10 @@ html:not(.js) .deck-card__actions {
 .tooling-note {
   margin: 1.25rem 0 0;
   color: var(--text-subtle);
-  font: 0.8125rem/1.6 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 0.75rem/1.6 var(--mono);
 }
 
-/* ---- Backlog Breaker (hero mini-game) ---- */
+/* ---- Backlog Breaker (optional play below the pitch) ---- */
 
 .arcade {
   display: grid;
@@ -934,9 +1099,9 @@ html:not(.js) .deck-card__actions {
 .arcade h2 {
   margin: 0;
   color: var(--amber-bright);
-  font: 600 0.75rem/1.5 var(--body);
-  letter-spacing: normal;
-  text-transform: none;
+  font: 600 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .arcade__hud {
@@ -944,8 +1109,7 @@ html:not(.js) .deck-card__actions {
   gap: 0.9rem;
   margin: 0;
   color: var(--text-subtle);
-  font: 0.75rem/1.5 var(--body);
-  text-transform: none;
+  font: 0.75rem/1.5 var(--mono);
 }
 
 .arcade__hud b {
@@ -959,9 +1123,8 @@ html:not(.js) .deck-card__actions {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.3);
-  color: var(--muted);
-  font: 600 0.8125rem/1.5 var(--body);
-  text-transform: none;
+  color: var(--text-secondary);
+  font: 600 0.75rem/1.5 var(--mono);
   cursor: pointer;
 }
 
@@ -1033,6 +1196,10 @@ html:not(.js) .deck-card__actions {
 
 .arcade__overlay p:empty {
   display: none;
+}
+
+.arcade__start {
+  background: rgba(2, 6, 2, 0.85);
 }
 
 .arcade__foot {

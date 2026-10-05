@@ -1,8 +1,10 @@
 ---
-// Case file: the shareable, full record behind each card.
+// Case file: the shareable, full record behind each card. It ends with a
+// contextual call to action; the product link stays a secondary action.
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CoverArt from "../../../components/CoverArt.astro";
 import { buildLocalePath } from "../../../lib/blog";
+import { EMAIL, mailto } from "../../../lib/contact";
 import {
   caseRecords,
   cardOutcome,
@@ -16,7 +18,6 @@ import {
   evidenceLabels,
   isLocale,
   localeSeo,
-  navigationCopy,
   type Locale,
 } from "../../../lib/i18n";
 import "../../../assets/styles/deck.css";
@@ -37,7 +38,6 @@ if (index < 0) throw new Error(`Unknown case file: ${slug}`);
 const { entry, suit } = caseRecords[index]!;
 const copy = deckCopy[locale];
 const seo = localeSeo[locale];
-const nav = navigationCopy[locale];
 const labels = evidenceLabels[locale];
 const t = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
   localize(record, locale);
@@ -67,6 +67,9 @@ const evidence = entry.evidence
       entry.evidence.outcomes,
     ].map((value, position) => ({ label: labels[position]!, value: t(value) }))
   : [];
+const fileNumber = String(index + 1).padStart(2, "0");
+const withTitle = (template: string) =>
+  template.replace("{title}", entry.title);
 ---
 
 <BaseLayout
@@ -88,18 +91,41 @@ const evidence = entry.evidence
         <CoverArt slug={entry.cover} record={entry.slug} />
       </div>
       <div class="case-file__lead">
-        <p class="section-heading__kicker">
-          {copy.caseKicker} / {copy.suits[suit]}{
-            entry.live && ` / ${copy.live}`
+        <p class="case-file__kicker">
+          <span>{copy.caseKicker} {fileNumber}</span>
+          <span aria-hidden="true">//</span>
+          <span>{copy.suits[suit]}</span>
+          {
+            entry.live && (
+              <>
+                <span aria-hidden="true">//</span>
+                <span class="case-file__live">{copy.live}</span>
+              </>
+            )
           }
+          <span class="case-file__cursor" aria-hidden="true">▮</span>
         </p>
         <h1>{entry.title}</h1>
         <p class="case-file__eyebrow">{t(entry.eyebrow)}</p>
         {entry.status && <p class="project-status">{t(entry.status)}</p>}
         <p class="case-file__outcome">{cardOutcome(entry, locale)}</p>
-        <div class="hero-panel__actions">
+        <dl class="case-file__facts">
+          {
+            entry.evidence && (
+              <div>
+                <dt>{labels[0]}</dt>
+                <dd>{t(entry.evidence.role)}</dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>{copy.stack}</dt>
+            <dd>{entry.stack.slice(0, 4).join(" · ")}</dd>
+          </div>
+        </dl>
+        <div class="case-file__actions">
           <a
-            class="button button--primary"
+            class="button"
             href={entry.link}
             target="_blank"
             rel="noopener noreferrer">{t(entry.linkLabel)} ↗</a
@@ -107,7 +133,7 @@ const evidence = entry.evidence
           {
             entry.sourceLink && entry.sourceLinkLabel && (
               <a
-                class="button"
+                class="button button--tertiary"
                 href={entry.sourceLink}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -116,6 +142,9 @@ const evidence = entry.evidence
               </a>
             )
           }
+          <a class="button button--tertiary" href="#case-contact"
+            >{copy.discuss} ↓</a
+          >
         </div>
       </div>
     </header>
@@ -151,22 +180,6 @@ const evidence = entry.evidence
       </section>
     </div>
 
-    <aside class="case-file__hire" aria-labelledby="case-hire">
-      <h2 id="case-hire">{copy.hireTitle}</h2>
-      <p>{copy.hireBody}</p>
-      <div class="hero-panel__actions">
-        <a class="button button--primary" href={`${home}#contact`}
-          >{nav.hireMe}</a
-        >
-        <a
-          class="button"
-          href="/cv/Suren_Mouchsiadis_CV.pdf"
-          target="_blank"
-          rel="noopener noreferrer">{seo.cta.cv}</a
-        >
-      </div>
-    </aside>
-
     <nav
       class="case-file__adjacent"
       aria-label={`${copy.prevCase} / ${copy.nextCase}`}
@@ -178,5 +191,41 @@ const evidence = entry.evidence
         ><span>{copy.nextCase}</span><strong>{next.title}</strong></a
       >
     </nav>
+
+    <aside
+      class="case-file__cta"
+      id="case-contact"
+      aria-labelledby="case-contact-title"
+    >
+      <p class="case-file__cta-kicker">{copy.ctaKicker}</p>
+      <h2 id="case-contact-title">{copy.ctaTitle}</h2>
+      <p>{copy.ctaBody}</p>
+      <div class="case-file__cta-actions">
+        <a
+          class="button button--primary"
+          href={mailto(withTitle(copy.ctaSubject))}>{withTitle(copy.ctaEmail)}</a
+        >
+        <a
+          class="button"
+          href="/cv/Suren_Mouchsiadis_CV.pdf"
+          target="_blank"
+          rel="noopener noreferrer">{seo.cta.cv}</a
+        >
+      </div>
+      <p class="case-file__cta-address">
+        <span data-email-address>{EMAIL}</span>
+        <button
+          class="contact-panel__copy"
+          type="button"
+          data-copy-email
+          data-copied={seo.labels.copied}
+          hidden>{seo.labels.copyAddress}</button
+        >
+      </p>
+    </aside>
   </article>
+
+  <script>
+    import "../../../scripts/copy-email.ts";
+  </script>
 </BaseLayout>

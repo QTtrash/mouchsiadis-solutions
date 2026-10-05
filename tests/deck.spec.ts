@@ -39,7 +39,11 @@ test("every card opens a localized case file", async ({ page, request }) => {
 
   await page.goto(hrefs[0]!);
   await expect(page.locator("h1")).toHaveText("YPay");
-  await expect(page.getByRole("link", { name: "Hire me" }).last()).toBeVisible();
+  // The hiring action is now contextual and ends the case file.
+  const contact = page.getByRole("link", { name: "Email me about YPay" });
+  await contact.scrollIntoViewIfNeeded();
+  await expect(contact).toBeVisible();
+  await expect(contact).toHaveAttribute("href", /^mailto:suren@mouchsiadis-solutions\.com\?subject=/);
 });
 
 test("Cards and List views switch and the choice persists", async ({ page }) => {

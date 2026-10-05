@@ -66,44 +66,46 @@ const tabs = [
     data-terminal-lang={localeLabels[locale]}
   >
     <TerminalChassis />
-    <div class="terminal-status" aria-hidden="true">
-      <span>Mouchsiadis // field terminal</span>
-      <span>LANG {localeLabels[locale]}</span>
-      <span>STATION MUC-01</span>
-    </div>
+    <div class="terminal-glass">
+      <div class="terminal-status" aria-hidden="true">
+        <span>Mouchsiadis // field terminal</span>
+        <span>LANG {localeLabels[locale]}</span>
+        <span>STATION MUC-01</span>
+      </div>
 
-    <div class="terminal-console__body">
-      <nav class="terminal-side-nav" aria-label={navigation.primaryLabel}>
-        {
-          tabs.map((tab) => (
-            <a
-              class:list={["current" in tab && "is-active"]}
-              href={tab.href}
-              aria-current={"current" in tab ? "page" : undefined}
-              data-astro-prefetch
-            >
-              <PixelArt
-                grid={navSprites[tab.key]!}
-                class="terminal-side-nav__icon"
-              />
-              {tab.label}
-            </a>
-          ))
-        }
-      </nav>
+      <div class="terminal-console__body">
+        <nav class="terminal-side-nav" aria-label={navigation.primaryLabel}>
+          {
+            tabs.map((tab) => (
+              <a
+                class:list={["current" in tab && "is-active"]}
+                href={tab.href}
+                aria-current={"current" in tab ? "page" : undefined}
+                data-astro-prefetch
+              >
+                <PixelArt
+                  grid={navSprites[tab.key]!}
+                  class="terminal-side-nav__icon"
+                />
+                {tab.label}
+              </a>
+            ))
+          }
+        </nav>
 
-      <div class="terminal-console__content">
-        <section id="tooling" class="section terminal-section is-active">
-          <div class="section-heading">
-            <p class="section-heading__kicker">{kicker}</p>
-            <h1>{copy.title}</h1>
-            <p class="section-heading__body">{copy.body}</p>
-          </div>
+        <div class="terminal-console__content">
+          <section id="tooling" class="section terminal-section is-active">
+            <div class="section-heading">
+              <p class="section-heading__kicker">{kicker}</p>
+              <h1>{copy.title}</h1>
+              <p class="section-heading__body">{copy.body}</p>
+            </div>
 
-          <CardDeck records={toolRecords} locale={locale} />
+            <CardDeck records={toolRecords} locale={locale} />
 
-          <p class="tooling-note">{copy.note}</p>
-        </section>
+            <p class="tooling-note">{copy.note}</p>
+          </section>
+        </div>
       </div>
     </div>
   </section>

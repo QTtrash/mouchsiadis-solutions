@@ -32,7 +32,6 @@ export const navigationCopy: Record<
     experience: string;
     notes: string;
     contact: string;
-    hireMe: string;
     cv: string;
     menu: string;
     options: string;
@@ -55,7 +54,6 @@ export const navigationCopy: Record<
     experience: "Experience",
     notes: "Notes",
     contact: "Contact",
-    hireMe: "Hire me",
     cv: "CV",
     menu: "Menu",
     options: "Options",
@@ -77,7 +75,6 @@ export const navigationCopy: Record<
     experience: "Опыт",
     notes: "Записи",
     contact: "Контакт",
-    hireMe: "Нанять меня",
     cv: "Резюме",
     menu: "Меню",
     options: "Настройки",
@@ -99,7 +96,6 @@ export const navigationCopy: Record<
     experience: "Erfahrung",
     notes: "Notizen",
     contact: "Kontakt",
-    hireMe: "Anfragen",
     cv: "CV",
     menu: "Menü",
     options: "Optionen",
@@ -121,7 +117,6 @@ export const navigationCopy: Record<
     experience: "გამოცდილება",
     notes: "ჩანაწერები",
     contact: "კონტაქტი",
-    hireMe: "დამიქირავეთ",
     cv: "CV",
     menu: "მენიუ",
     options: "პარამეტრები",
@@ -186,16 +181,21 @@ export const localeSeo: Record<
       contact: string;
     };
     labels: {
-      basedIn: string;
-      studioMode: string;
-      availableFor: string;
+      status: string;
+      contactAudience: string;
+      proofTitle: string;
+      emailMe: string;
+      copyAddress: string;
+      copied: string;
+      includeTitle: string;
+      include: string[];
+      elsewhere: string;
+      mailSubject: string;
+      articleContact: string;
       archiveOpen: string;
       cvOpen: string;
       cvDownload: string;
       cvBody: string;
-      currentFocus: string;
-      currentFocusBody: string;
-      contactBody: string;
       blogBody: string;
       blogLanguage: string;
       blogCount: string;
@@ -211,8 +211,6 @@ export const localeSeo: Record<
       openSourceKicker: string;
       openSourceTitle: string;
       openSourceBody: string;
-      openSourceProduct: string;
-      openSourceCode: string;
     };
   }
 > = {
@@ -220,9 +218,9 @@ export const localeSeo: Record<
     title: "Mouchsiadis Solutions",
     description:
       "Suren Mouchsiadis is a senior systems builder creating production platforms, operational tools, and independent software.",
-    heroTitle: "Senior engineer. Reliable systems.",
+    heroTitle: "Senior platform engineer for products that have to work.",
     heroBody:
-      "I build payment platforms, practical tools, and independent software.",
+      "I design, ship and run production platforms: payouts for mobility fleets, dispatch and support workspaces, and the cloud infrastructure under them.",
     nav: {
       overview: "Overview",
       work: "Work",
@@ -262,21 +260,30 @@ export const localeSeo: Record<
       games: "An independent game studio, a puzzle platform, and RimWorld mods. Every card opens a case file.",
       cv: "Experience and education in a downloadable PDF.",
       blog: "A personal writing archive, preserved in its original languages.",
-      contact: "Email is the fastest route. The CV is one click away.",
+      contact: "Tell me about the project, contract, consulting work or role. Email reaches me directly.",
     },
     labels: {
-      basedIn: "Munich / Europe",
-      studioMode: "cloud / product / tools / games",
-      availableFor: "available for systems work",
+      status: "status",
+      contactAudience: "For projects, contract work, consulting or a role. Or write directly:",
+      proofTitle: "Live case files",
+      emailMe: "Email me",
+      copyAddress: "Copy address",
+      copied: "Copied",
+      includeTitle: "Useful to include",
+      include: [
+        "What you are building or hiring for",
+        "Timeline and how far along it is",
+        "Stack, constraints and decisions already made",
+        "Links or documents I can read first",
+      ],
+      elsewhere: "Also on",
+      mailSubject: "Inquiry via mouchsiadis-solutions.com",
+      articleContact: "Want to talk about a project or a role?",
       archiveOpen: "inspect",
       cvOpen: "open pdf",
       cvDownload: "download",
       cvBody:
         "Education record: BS Computer Science, Technical University of Munich, December 2019. Use the PDF for the formal dossier.",
-      currentFocus: "Current focus",
-      currentFocusBody:
-        "Cloud infrastructure, product systems, internal tools, and game development.",
-      contactBody: "Email: suren@mouchsiadis-solutions.com",
       blogBody: "Personal notes, preserved in their original languages.",
       blogLanguage: "source language",
       blogCount: "Archive records: {count}",
@@ -293,17 +300,15 @@ export const localeSeo: Record<
       openSourceTitle: "Open source, in practice.",
       openSourceBody:
         "Independent tools with public code, documented decisions, and releases you can inspect.",
-      openSourceProduct: "open project",
-      openSourceCode: "view source",
     },
   },
   ru: {
     title: "Mouchsiadis Solutions",
     description:
       "Сурен Мухсиадис — старший системный разработчик, создающий production-платформы, операционные инструменты и независимое ПО.",
-    heroTitle: "Старший инженер. Надёжные системы.",
+    heroTitle: "Старший инженер платформ для продуктов, которые обязаны работать.",
     heroBody:
-      "Создаю платёжные платформы, рабочие инструменты и независимое ПО.",
+      "Проектирую, запускаю и сопровождаю продакшн-платформы: выплаты для автопарков, рабочие места диспетчеров и поддержки и облачную инфраструктуру под ними.",
     nav: {
       overview: "Обзор",
       work: "Работы",
@@ -343,21 +348,30 @@ export const localeSeo: Record<
       games: "Независимая игровая студия, платформа головоломок и моды для RimWorld. Каждая карта открывает дело проекта.",
       cv: "Опыт и образование в PDF.",
       blog: "Архив личных записей. Тексты сохранены на языке оригинала.",
-      contact: "Быстрее всего — по почте. Резюме в один клик.",
+      contact: "Расскажите о проекте, контракте, консультации или вакансии. Письмо приходит напрямую мне.",
     },
     labels: {
-      basedIn: "Мюнхен / Европа",
-      studioMode: "облако / продукты / инструменты / игры",
-      availableFor: "открыт к сотрудничеству",
+      status: "статус",
+      contactAudience: "Для проектов, контрактов, консалтинга или работы в команде. Или напишите напрямую:",
+      proofTitle: "Работающие проекты",
+      emailMe: "Написать на почту",
+      copyAddress: "Скопировать адрес",
+      copied: "Скопировано",
+      includeTitle: "Что стоит указать",
+      include: [
+        "Что вы строите или на какую роль ищете человека",
+        "Сроки и текущий этап",
+        "Стек, ограничения и уже принятые решения",
+        "Ссылки или документы, с которыми стоит ознакомиться",
+      ],
+      elsewhere: "Также",
+      mailSubject: "Запрос с mouchsiadis-solutions.com",
+      articleContact: "Хотите обсудить проект или работу?",
       archiveOpen: "осмотреть",
       cvOpen: "открыть pdf",
       cvDownload: "скачать",
       cvBody:
         "Запись об образовании: BS Computer Science, Technical University of Munich, December 2019. PDF содержит формальное досье.",
-      currentFocus: "Сейчас в работе",
-      currentFocusBody:
-        "Облачная инфраструктура, продуктовые системы, внутренние инструменты и разработка игр.",
-      contactBody: "Канал связи: suren@mouchsiadis-solutions.com",
       blogBody: "Личные записи на языке оригинала.",
       blogLanguage: "язык источника",
       blogCount: "Записей в архиве: {count}",
@@ -374,17 +388,15 @@ export const localeSeo: Record<
       openSourceTitle: "Открытый код в работе.",
       openSourceBody:
         "Независимые инструменты с открытым кодом, описанными решениями и доступными для проверки релизами.",
-      openSourceProduct: "открыть проект",
-      openSourceCode: "исходный код",
     },
   },
   de: {
     title: "Mouchsiadis Solutions",
     description:
       "Suren Mouchsiadis entwickelt als Senior Systems Builder produktive Plattformen, Operations-Werkzeuge und unabhängige Software.",
-    heroTitle: "Senior Engineer. Zuverlässige Systeme.",
+    heroTitle: "Senior Platform Engineer für Produkte, die funktionieren müssen.",
     heroBody:
-      "Ich entwickle Zahlungsplattformen, praktische Werkzeuge und unabhängige Software.",
+      "Ich entwerfe, liefere und betreibe Produktionsplattformen: Auszahlungen für Mobilitätsflotten, Dispositions- und Support-Arbeitsplätze und die Cloud-Infrastruktur darunter.",
     nav: {
       overview: "Überblick",
       work: "Arbeit",
@@ -424,21 +436,30 @@ export const localeSeo: Record<
       games: "Ein unabhängiges Spielestudio, eine Puzzle-Plattform und RimWorld-Mods. Jede Karte öffnet eine Fallakte.",
       cv: "Erfahrung und Ausbildung als PDF.",
       blog: "Ein persönliches Textarchiv. Alle Beiträge bleiben in ihrer Originalsprache.",
-      contact: "Per E-Mail geht es am schnellsten. Der CV ist einen Klick entfernt.",
+      contact: "Erzählen Sie mir von Projekt, Auftrag, Beratung oder Rolle. Die E-Mail erreicht mich direkt.",
     },
     labels: {
-      basedIn: "München / Europa",
-      studioMode: "Cloud / Produkte / Werkzeuge / Spiele",
-      availableFor: "offen für Zusammenarbeit",
+      status: "Status",
+      contactAudience: "Für Projekte, Auftragsarbeit, Beratung oder eine Festanstellung. Oder direkt schreiben:",
+      proofTitle: "Live-Fallakten",
+      emailMe: "E-Mail schreiben",
+      copyAddress: "Adresse kopieren",
+      copied: "Kopiert",
+      includeTitle: "Hilfreich in der Nachricht",
+      include: [
+        "Was Sie bauen oder für welche Rolle Sie suchen",
+        "Zeitplan und aktueller Stand",
+        "Stack, Rahmenbedingungen und bereits getroffene Entscheidungen",
+        "Links oder Dokumente zum Vorab-Lesen",
+      ],
+      elsewhere: "Außerdem auf",
+      mailSubject: "Anfrage über mouchsiadis-solutions.com",
+      articleContact: "Möchten Sie über ein Projekt oder eine Rolle sprechen?",
       archiveOpen: "prüfen",
       cvOpen: "PDF öffnen",
       cvDownload: "download",
       cvBody:
         "Ausbildungsdatensatz: BS Computer Science, Technical University of Munich, Dezember 2019. Das PDF enthält das formale Dossier.",
-      currentFocus: "Aktueller Fokus",
-      currentFocusBody:
-        "Cloud-Infrastruktur, Produktsysteme, interne Werkzeuge und Spieleentwicklung.",
-      contactBody: "Signalkanal: suren@mouchsiadis-solutions.com",
       blogBody: "Persönliche Beiträge in ihrer Originalsprache.",
       blogLanguage: "quellsprache",
       blogCount: "Archivbeiträge: {count}",
@@ -455,17 +476,15 @@ export const localeSeo: Record<
       openSourceTitle: "Open Source in der Praxis.",
       openSourceBody:
         "Unabhängige Werkzeuge mit öffentlichem Quellcode, dokumentierten Entscheidungen und nachvollziehbaren Releases.",
-      openSourceProduct: "Projekt öffnen",
-      openSourceCode: "Quellcode ansehen",
     },
   },
   ge: {
     title: "Mouchsiadis Solutions",
     description:
       "სურენ მუხსიადისი — უფროსი ინჟინერი. გადახდის პლატფორმები, სამუშაო ინსტრუმენტები და დამოუკიდებელი პროგრამები.",
-    heroTitle: "უფროსი ინჟინერი. საიმედო სისტემები.",
+    heroTitle: "უფროსი პლატფორმის ინჟინერი: სისტემები, რომლებიც უნდა მუშაობდეს.",
     heroBody:
-      "ვქმნი გადახდის პლატფორმებს, სამუშაო ინსტრუმენტებსა და დამოუკიდებელ პროგრამებს.",
+      "ვაპროექტებ, ვუშვებ და ვმართავ საწარმოო პლატფორმებს: ავტოპარკების გადახდებს, დისპეტჩერიზაციისა და მხარდაჭერის სამუშაო სივრცეებს და მათ ქვეშ არსებულ ღრუბლოვან ინფრასტრუქტურას.",
     nav: {
       overview: "მიმოხილვა",
       work: "ნამუშევრები",
@@ -505,21 +524,30 @@ export const localeSeo: Record<
       games: "დამოუკიდებელი სტუდია, თავსატეხების პლატფორმა და RimWorld-ის მოდები. გაეცანით თითოეულ პროექტს.",
       cv: "სამუშაო გამოცდილება და განათლება PDF ფორმატში.",
       blog: "პირადი ჩანაწერების არქივი. ტექსტები შენარჩუნებულია ორიგინალის ენაზე.",
-      contact: "ყველაზე სწრაფი გზა ელფოსტაა. CV ერთი დაწკაპებითაა ხელმისაწვდომი.",
+      contact: "მომწერეთ პროექტის, კონტრაქტის, კონსულტაციის ან ვაკანსიის შესახებ. წერილი პირდაპირ მე მომდის.",
     },
     labels: {
-      basedIn: "მიუნხენი / ევროპა",
-      studioMode: "სისტემები / პროდუქტები / ინსტრუმენტები / თამაშები",
-      availableFor: "ღია ვარ თანამშრომლობისთვის",
+      status: "სტატუსი",
+      contactAudience: "პროექტებისთვის, კონტრაქტებისთვის, კონსულტაციისთვის ან სამუშაო შეთავაზებისთვის. ან მომწერეთ პირდაპირ:",
+      proofTitle: "მოქმედი პროექტები",
+      emailMe: "მომწერეთ ელფოსტით",
+      copyAddress: "მისამართის კოპირება",
+      copied: "დაკოპირდა",
+      includeTitle: "რა უნდა მიუთითოთ",
+      include: [
+        "რას ქმნით ან რა როლზე ეძებთ ადამიანს",
+        "ვადები და მიმდინარე ეტაპი",
+        "სტეკი, შეზღუდვები და უკვე მიღებული გადაწყვეტილებები",
+        "ბმულები ან დოკუმენტები, რომელთა გაცნობაც ღირს",
+      ],
+      elsewhere: "ასევე",
+      mailSubject: "მოთხოვნა mouchsiadis-solutions.com-დან",
+      articleContact: "გსურთ პროექტის ან სამუშაოს განხილვა?",
       archiveOpen: "დეტალები",
       cvOpen: "PDF-ის გახსნა",
       cvDownload: "ჩამოტვირთვა",
       cvBody:
         "განათლება: BS Computer Science, Technical University of Munich, დეკემბერი 2019. სრული ინფორმაცია CV-შია.",
-      currentFocus: "მიმდინარე მიმართულებები",
-      currentFocusBody:
-        "ღრუბლოვანი ინფრასტრუქტურა, პროგრამული პროდუქტები, შიდა ინსტრუმენტები და თამაშების ლოგიკა.",
-      contactBody: "ელფოსტა: suren@mouchsiadis-solutions.com",
       blogBody:
         "ჩანაწერები ორიგინალის ენაზე, თარგმანის გარეშე.",
       blogLanguage: "ჩანაწერის ენა",
@@ -537,8 +565,6 @@ export const localeSeo: Record<
       openSourceTitle: "პროექტები ღია კოდით.",
       openSourceBody:
         "დამოუკიდებელი ინსტრუმენტები საჯარო კოდით, დოკუმენტირებული გადაწყვეტილებებითა და შემოწმებადი რელიზებით.",
-      openSourceProduct: "პროექტის გახსნა",
-      openSourceCode: "კოდის ნახვა",
     },
   },
 };
@@ -579,8 +605,12 @@ export const deckCopy: Record<
     stack: string;
     prevCase: string;
     nextCase: string;
-    hireTitle: string;
-    hireBody: string;
+    discuss: string;
+    ctaKicker: string;
+    ctaTitle: string;
+    ctaBody: string;
+    ctaEmail: string;
+    ctaSubject: string;
     avatarPhoto: string;
   }
 > = {
@@ -610,8 +640,12 @@ export const deckCopy: Record<
     stack: "Stack",
     prevCase: "Previous case",
     nextCase: "Next case",
-    hireTitle: "Need a system like this built?",
-    hireBody: "Email is the fastest route. The CV has the full record.",
+    discuss: "Discuss a similar project",
+    ctaKicker: "TX // NEXT STEP",
+    ctaTitle: "Building something similar?",
+    ctaBody: "Tell me what you are working on: a project, contract work, consulting or a role. Email reaches me directly.",
+    ctaEmail: "Email me about {title}",
+    ctaSubject: "About {title} (via mouchsiadis-solutions.com)",
     avatarPhoto: "Show photo",
   },
   ru: {
@@ -640,8 +674,12 @@ export const deckCopy: Record<
     stack: "Стек",
     prevCase: "Предыдущее дело",
     nextCase: "Следующее дело",
-    hireTitle: "Нужна такая система?",
-    hireBody: "Быстрее всего — по почте. Полная история — в резюме.",
+    discuss: "Обсудить похожий проект",
+    ctaKicker: "TX // СЛЕДУЮЩИЙ ШАГ",
+    ctaTitle: "Строите что-то похожее?",
+    ctaBody: "Расскажите, над чем работаете: проект, контракт, консультация или вакансия. Письмо приходит напрямую мне.",
+    ctaEmail: "Написать о {title}",
+    ctaSubject: "По поводу {title} (mouchsiadis-solutions.com)",
     avatarPhoto: "Показать фото",
   },
   de: {
@@ -670,8 +708,12 @@ export const deckCopy: Record<
     stack: "Stack",
     prevCase: "Vorherige Akte",
     nextCase: "Nächste Akte",
-    hireTitle: "Brauchen Sie ein solches System?",
-    hireBody: "Per E-Mail geht es am schnellsten. Der CV enthält den vollständigen Werdegang.",
+    discuss: "Ähnliches Projekt besprechen",
+    ctaKicker: "TX // NÄCHSTER SCHRITT",
+    ctaTitle: "Bauen Sie etwas Ähnliches?",
+    ctaBody: "Erzählen Sie, woran Sie arbeiten: Projekt, Auftrag, Beratung oder eine Rolle. Die E-Mail erreicht mich direkt.",
+    ctaEmail: "Zu {title} schreiben",
+    ctaSubject: "Zu {title} (über mouchsiadis-solutions.com)",
     avatarPhoto: "Foto zeigen",
   },
   ge: {
@@ -700,8 +742,12 @@ export const deckCopy: Record<
     stack: "სტეკი",
     prevCase: "წინა პროექტი",
     nextCase: "შემდეგი პროექტი",
-    hireTitle: "გჭირდებათ მსგავსი სისტემა?",
-    hireBody: "ყველაზე სწრაფი გზა ელფოსტაა. სრული გამოცდილება CV-შია.",
+    discuss: "მსგავსი პროექტის განხილვა",
+    ctaKicker: "TX // შემდეგი ნაბიჯი",
+    ctaTitle: "ქმნით რაიმე მსგავსს?",
+    ctaBody: "მომიყევით, რაზე მუშაობთ: პროექტი, კონტრაქტი, კონსულტაცია თუ ვაკანსია. წერილი პირდაპირ მე მომდის.",
+    ctaEmail: "მომწერეთ {title}-ის შესახებ",
+    ctaSubject: "{title}-ის შესახებ (mouchsiadis-solutions.com)",
     avatarPhoto: "ფოტოს ჩვენება",
   },
 };

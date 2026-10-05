@@ -3,17 +3,20 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
+import CoverArt from "../../components/CoverArt.astro";
 import OpenSourceShowcase from "../../components/OpenSourceShowcase.astro";
 import BacklogBreaker from "../../components/BacklogBreaker.astro";
 import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
-import { experiences } from "../../lib/content";
+import { experiences, profile } from "../../lib/content";
+import { EMAIL, mailto } from "../../lib/contact";
 import {
   cardSummary,
   casePath,
   gameRecords,
+  liveWorkRecords,
   localize,
   workRecords,
 } from "../../lib/cards";
@@ -56,10 +59,9 @@ const alternates = buildLocaleAlternates();
 const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
   localize(record, locale);
 const recentPosts = sortPosts(await getCollection("blog")).slice(0, 3);
-const proofRecords = workRecords.filter(({ entry }) =>
-  ["ypay", "ydesk", "raid-signal"].includes(entry.slug),
-);
+const liveCount = String(liveWorkRecords.length).padStart(2, "0");
 const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
+const contactHref = mailto(copy.labels.mailSubject);
 ---
 
 <BaseLayout locale={locale} alternates={alternates} bodyClass="has-console">
@@ -69,120 +71,75 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
     data-terminal-lang={localeLabels[locale]}
   >
     <TerminalChassis />
-    <div class="terminal-status" aria-hidden="true">
-      <span>Mouchsiadis // field terminal</span>
-      <span>LANG {localeLabels[locale]}</span>
-      <span>STATION MUC-01</span>
-    </div>
+    <div class="terminal-glass">
+      <div class="terminal-status" aria-hidden="true">
+        <span>Mouchsiadis // field terminal</span>
+        <span>LANG {localeLabels[locale]}</span>
+        <span>STATION MUC-01</span>
+      </div>
 
-    <div class="terminal-console__body">
-      <nav class="terminal-side-nav" aria-label={navigation.primaryLabel}>
-        <a
-          class="is-active"
-          href="#overview"
-          data-terminal-tab
-          aria-current="page"
-          ><PixelArt
-            grid={navSprites.overview}
-            class="terminal-side-nav__icon"
-          />{copy.nav.overview}</a
-        >
-        <a href="#software-work" data-terminal-tab
-          ><PixelArt grid={navSprites.work} class="terminal-side-nav__icon" />{
-            copy.nav.work
-          }</a
-        >
-        <a href="#game-dev" data-terminal-tab
-          ><PixelArt grid={navSprites.games} class="terminal-side-nav__icon" />{
-            copy.nav.games
-          }</a
-        >
-        <a href="#experience" data-terminal-tab
-          ><PixelArt
-            grid={navSprites.experience}
-            class="terminal-side-nav__icon"
-          />{copy.nav.experience}</a
-        >
-        <a
-          class="tooling-portal-link"
-          href={buildLocalePath(locale, "/tooling")}
-          ><PixelArt
-            grid={navSprites.tooling}
-            class="terminal-side-nav__icon"
-          />{navigation.tooling}</a
-        >
-        <a href="#blog" data-terminal-tab
-          ><PixelArt grid={navSprites.notes} class="terminal-side-nav__icon" />{
-            copy.nav.blog
-          }</a
-        >
-        <a href="#contact" data-terminal-tab
-          ><PixelArt
-            grid={navSprites.contact}
-            class="terminal-side-nav__icon"
-          />{copy.nav.contact}</a
-        >
-      </nav>
+      <div class="terminal-console__body">
+        <nav class="terminal-side-nav" aria-label={navigation.primaryLabel}>
+          <a
+            class="is-active"
+            href="#overview"
+            data-terminal-tab
+            aria-current="page"
+            ><PixelArt
+              grid={navSprites.overview}
+              class="terminal-side-nav__icon"
+            />{copy.nav.overview}</a
+          >
+          <a href="#software-work" data-terminal-tab
+            ><PixelArt
+              grid={navSprites.work}
+              class="terminal-side-nav__icon"
+            />{copy.nav.work}</a
+          >
+          <a href="#game-dev" data-terminal-tab
+            ><PixelArt
+              grid={navSprites.games}
+              class="terminal-side-nav__icon"
+            />{copy.nav.games}</a
+          >
+          <a href="#experience" data-terminal-tab
+            ><PixelArt
+              grid={navSprites.experience}
+              class="terminal-side-nav__icon"
+            />{copy.nav.experience}</a
+          >
+          <a
+            class="tooling-portal-link"
+            href={buildLocalePath(locale, "/tooling")}
+            ><PixelArt
+              grid={navSprites.tooling}
+              class="terminal-side-nav__icon"
+            />{navigation.tooling}<span aria-hidden="true">↗</span></a
+          >
+          <a href="#blog" data-terminal-tab
+            ><PixelArt
+              grid={navSprites.notes}
+              class="terminal-side-nav__icon"
+            />{copy.nav.blog}</a
+          >
+          <a href="#contact" data-terminal-tab
+            ><PixelArt
+              grid={navSprites.contact}
+              class="terminal-side-nav__icon"
+            />{copy.nav.contact}</a
+          >
+        </nav>
 
-      <div class="terminal-console__content">
-        <section
-          id="overview"
-          class="hero-panel terminal-section is-active"
-          data-terminal-panel="overview"
-        >
-          <div class="hero-panel__grid">
-            <div class="hero-panel__copy">
-              <p class="hero-panel__kicker">
-                Suren Mouchsiadis / {localeLabels[locale]}
-              </p>
-              <h1>{copy.heroTitle}</h1>
-              <p class="hero-panel__body">{copy.heroBody}</p>
-
-              <div class="hero-panel__actions" data-fast-path>
-                <a
-                  class="button button--primary"
-                  href="#contact"
-                  data-terminal-jump>{copy.cta.contact}</a
-                >
-                <a
-                  class="button"
-                  href={cvHref}
-                  target="_blank"
-                  rel="noopener noreferrer">{copy.cta.cv}</a
-                >
-                <a
-                  class="button button--ghost"
-                  href="#software-work"
-                  data-terminal-jump>{copy.cta.play}</a
-                >
-              </div>
-
-              <ul class="hero-proof" role="list">
-                {
-                  proofRecords.map(({ entry }) => (
-                    <li>
-                      <a href={casePath(locale, entry.slug)}>
-                        <>
-                          <strong>
-                            {entry.title} <span aria-hidden="true">↗</span>
-                          </strong>
-                          <span>{cardSummary(entry, locale)}</span>
-                        </>
-                      </a>
-                    </li>
-                  ))
-                }
-              </ul>
-              <div class="hero-panel__chips">
-                <span>{copy.labels.basedIn}</span>
-                <span>{copy.labels.availableFor}</span>
-              </div>
-            </div>
-
-            <div class="hero-panel__signal">
-              <div class="signal-card signal-card--primary">
+        <div class="terminal-console__content">
+          <section
+            id="overview"
+            class="hero-panel terminal-section is-active"
+            data-terminal-panel="overview"
+          >
+            <div class="hero-panel__grid">
+              <div class="hero-panel__kicker">
                 <button
-                  class="signal-card__portrait avatar-card"
+                  class="avatar-card"
                   type="button"
                   data-avatar-flip
                   aria-pressed="false"
@@ -198,182 +155,270 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
                   />
                   <span class="visually-hidden">{deck.avatarPhoto}</span>
                 </button>
-                <strong>{copy.labels.currentFocus}</strong>
-                <p>{copy.labels.currentFocusBody}</p>
+                <p>
+                  <span>Suren Mouchsiadis</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{localized(profile.location)}</span>
+                  <span class="hero-panel__cursor" aria-hidden="true">▮</span>
+                </p>
               </div>
-              <BacklogBreaker locale={locale} />
-            </div>
-          </div>
+              <h1>{copy.heroTitle}</h1>
 
-          <OpenSourceShowcase
-            locale={locale}
-            kicker={copy.labels.openSourceKicker}
-            title={copy.labels.openSourceTitle}
-            body={copy.labels.openSourceBody}
-          />
-        </section>
-
-        <section
-          id="software-work"
-          class="section terminal-section"
-          data-terminal-panel="software-work"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
-            <h2>{copy.sections.work}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.work}</p>
-          </div>
-
-          <CardDeck records={workRecords} locale={locale} />
-        </section>
-
-        <section
-          id="game-dev"
-          class="section terminal-section"
-          data-terminal-panel="game-dev"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
-            <h2>{copy.sections.games}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.games}</p>
-          </div>
-
-          <CardDeck records={gameRecords} locale={locale} />
-        </section>
-
-        <section
-          id="experience"
-          class="section terminal-section"
-          data-terminal-panel="experience"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">
-              {copy.sectionKickers.experience}
-            </p>
-            <h2>{copy.sections.experience}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.experience}</p>
-          </div>
-
-          <div class="archive-grid archive-grid--timeline">
-            {
-              experiences.map((entry) => (
-                <ArchiveEntry
-                  compact={true}
-                  title={`${localized(entry.title)} / ${entry.company}`}
-                  eyebrow=""
-                  summary={localized(entry.summary)}
-                  narrative=""
-                  details={localized(entry.details)}
-                  stack={entry.stack}
-                  meta={[entry.range, entry.location]}
-                  cover={entry.cover}
-                  toggleLabel={copy.labels.archiveOpen}
-                  toggleCloseLabel={copy.labels.archiveClose}
-                />
-              ))
-            }
-          </div>
-        </section>
-
-        <section
-          id="blog"
-          class="section terminal-section"
-          data-terminal-panel="blog"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
-            <h2>{copy.sections.blog}</h2>
-            <p class="section-heading__body">{copy.labels.blogBody}</p>
-          </div>
-
-          {
-            recentPosts.length > 0 && (
-              <div class="blog-index blog-index--compact">
-                {recentPosts.map((post) => (
-                  <article class="blog-index__item">
-                    <div class="blog-index__meta">
-                      <span>{formatDate(post.data.date, locale)}</span>
-                      <span class="blog-index__language">
-                        {getPostLanguageLabel(getPostLanguage(post), locale)}
-                      </span>
-                    </div>
-                    <h3 lang={localeIntlCodes[getPostLanguage(post)]}>
-                      <a
-                        href={buildLocalePath(
-                          getPostLanguage(post),
-                          `/blog/${getPostSlug(post)}`,
-                        )}
-                      >
-                        {post.data.title}
-                      </a>
-                    </h3>
-                    {post.data.description && (
-                      <p lang={localeIntlCodes[getPostLanguage(post)]}>
-                        {post.data.description}
-                      </p>
-                    )}
-                  </article>
-                ))}
-              </div>
-            )
-          }
-
-          <div class="blog-callout">
-            <p>{copy.sectionBodies.blog}</p>
-            <a class="button" href={buildLocalePath(locale, "/blog")}
-              >{copy.cta.blog}</a
-            >
-          </div>
-        </section>
-
-        <section
-          id="contact"
-          class="section terminal-section"
-          data-terminal-panel="contact"
-        >
-          <div class="section-heading">
-            <p class="section-heading__kicker">{copy.sectionKickers.contact}</p>
-            <h2>{copy.sections.contact}</h2>
-            <p class="section-heading__body">{copy.sectionBodies.contact}</p>
-          </div>
-
-          <div class="contact-panel">
-            <a href="mailto:suren@mouchsiadis-solutions.com"
-              >suren@mouchsiadis-solutions.com</a
-            >
-            <a
-              href="https://github.com/QTtrash"
-              target="_blank"
-              rel="noopener noreferrer">{copy.labels.githubLabel}</a
-            >
-            <a
-              href="https://www.linkedin.com/in/surenmouchsiadis"
-              target="_blank"
-              rel="noopener noreferrer">{copy.labels.linkedinLabel}</a
-            >
-          </div>
-
-          <div class="cv-panel" id="cv">
-            <div class="cv-panel__copy">
-              <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
-              <p class="cv-panel__education">
-                EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019
-              </p>
-              <p>{copy.labels.cvBody}</p>
-              <div class="hero-panel__actions">
+              <div class="hero-panel__actions" data-fast-path>
+                <a
+                  class="button button--primary"
+                  href="#contact"
+                  data-terminal-jump>{copy.cta.contact}</a
+                >
                 <a
                   class="button"
                   href={cvHref}
                   target="_blank"
-                  rel="noopener noreferrer">{copy.labels.cvOpen}</a
+                  rel="noopener noreferrer">{copy.cta.cv}</a
                 >
-                <a class="button button--ghost" href={cvHref} download
-                  >{copy.labels.cvDownload}</a
+                <a
+                  class="button button--tertiary"
+                  href="#software-work"
+                  data-terminal-jump>{copy.cta.play}</a
                 >
               </div>
+
+              <aside class="hero-proof" aria-labelledby="hero-proof-title">
+                <div class="hero-proof__head">
+                  <h2 id="hero-proof-title">{copy.labels.proofTitle}</h2>
+                  <p class="hero-proof__count">{liveCount} {deck.live}</p>
+                </div>
+                <ul role="list">
+                  {
+                    liveWorkRecords.map(({ entry, suit }) => (
+                      <li data-suit={suit} data-cover={entry.cover} data-proof>
+                        <a href={casePath(locale, entry.slug)}>
+                          <span class="hero-proof__art" aria-hidden="true">
+                            <CoverArt slug={entry.cover} record={entry.slug} />
+                          </span>
+                          <span class="hero-proof__text">
+                            <strong>
+                              {entry.title}
+                              <span class="hero-proof__live">{deck.live}</span>
+                            </strong>
+                            <span>{cardSummary(entry, locale)}</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </aside>
+
+              <p class="hero-panel__body">{copy.heroBody}</p>
+              <p class="hero-panel__direct">
+                {copy.labels.contactAudience}{" "}
+                <a href={contactHref}>{EMAIL}</a>
+              </p>
+              <p class="hero-panel__status">
+                <span class="hero-panel__led" aria-hidden="true"></span>
+                <span>{copy.labels.status}:</span>
+                <span>{localized(profile.availability)}</span>
+              </p>
             </div>
-          </div>
-        </section>
+
+            <OpenSourceShowcase
+              locale={locale}
+              kicker={copy.labels.openSourceKicker}
+              title={copy.labels.openSourceTitle}
+              body={copy.labels.openSourceBody}
+            />
+
+            <BacklogBreaker locale={locale} />
+          </section>
+
+          <section
+            id="software-work"
+            class="section terminal-section"
+            data-terminal-panel="software-work"
+          >
+            <div class="section-heading">
+              <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
+              <h2>{copy.sections.work}</h2>
+              <p class="section-heading__body">{copy.sectionBodies.work}</p>
+            </div>
+
+            <CardDeck records={workRecords} locale={locale} />
+          </section>
+
+          <section
+            id="game-dev"
+            class="section terminal-section"
+            data-terminal-panel="game-dev"
+          >
+            <div class="section-heading">
+              <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
+              <h2>{copy.sections.games}</h2>
+              <p class="section-heading__body">{copy.sectionBodies.games}</p>
+            </div>
+
+            <CardDeck records={gameRecords} locale={locale} />
+          </section>
+
+          <section
+            id="experience"
+            class="section terminal-section"
+            data-terminal-panel="experience"
+          >
+            <div class="section-heading">
+              <p class="section-heading__kicker">
+                {copy.sectionKickers.experience}
+              </p>
+              <h2>{copy.sections.experience}</h2>
+              <p class="section-heading__body">
+                {copy.sectionBodies.experience}
+              </p>
+            </div>
+
+            <div class="archive-grid archive-grid--timeline">
+              {
+                experiences.map((entry) => (
+                  <ArchiveEntry
+                    compact={true}
+                    title={`${localized(entry.title)} / ${entry.company}`}
+                    eyebrow=""
+                    summary={localized(entry.summary)}
+                    narrative=""
+                    details={localized(entry.details)}
+                    stack={entry.stack}
+                    meta={[entry.range, entry.location]}
+                    cover={entry.cover}
+                    toggleLabel={copy.labels.archiveOpen}
+                    toggleCloseLabel={copy.labels.archiveClose}
+                  />
+                ))
+              }
+            </div>
+          </section>
+
+          <section
+            id="blog"
+            class="section terminal-section"
+            data-terminal-panel="blog"
+          >
+            <div class="section-heading">
+              <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
+              <h2>{copy.sections.blog}</h2>
+              <p class="section-heading__body">{copy.labels.blogBody}</p>
+            </div>
+
+            {
+              recentPosts.length > 0 && (
+                <div class="blog-index blog-index--compact">
+                  {recentPosts.map((post) => (
+                    <article class="blog-index__item">
+                      <div class="blog-index__meta">
+                        <span>{formatDate(post.data.date, locale)}</span>
+                        <span class="blog-index__language">
+                          {getPostLanguageLabel(getPostLanguage(post), locale)}
+                        </span>
+                      </div>
+                      <h3 lang={localeIntlCodes[getPostLanguage(post)]}>
+                        <a
+                          href={buildLocalePath(
+                            getPostLanguage(post),
+                            `/blog/${getPostSlug(post)}`,
+                          )}
+                        >
+                          {post.data.title}
+                        </a>
+                      </h3>
+                      {post.data.description && (
+                        <p lang={localeIntlCodes[getPostLanguage(post)]}>
+                          {post.data.description}
+                        </p>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              )
+            }
+
+            <div class="blog-callout">
+              <p>{copy.sectionBodies.blog}</p>
+              <a class="button" href={buildLocalePath(locale, "/blog")}
+                >{copy.cta.blog}</a
+              >
+            </div>
+          </section>
+
+          <section
+            id="contact"
+            class="section terminal-section"
+            data-terminal-panel="contact"
+          >
+            <div class="section-heading">
+              <p class="section-heading__kicker">
+                {copy.sectionKickers.contact}
+              </p>
+              <h2>{copy.sections.contact}</h2>
+              <p class="section-heading__body">{copy.sectionBodies.contact}</p>
+            </div>
+
+            <div class="contact-panel">
+              <div class="contact-panel__main">
+                <a class="button button--primary" href={contactHref}
+                  >{copy.labels.emailMe}</a
+                >
+                <p class="contact-panel__address">
+                  <span data-email-address>{EMAIL}</span>
+                  <button
+                    class="contact-panel__copy"
+                    type="button"
+                    data-copy-email
+                    data-copied={copy.labels.copied}
+                    hidden>{copy.labels.copyAddress}</button
+                  >
+                </p>
+              </div>
+              <div class="contact-panel__include">
+                <h3>{copy.labels.includeTitle}</h3>
+                <ul>
+                  {copy.labels.include.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              <p class="contact-panel__elsewhere">
+                <span>{copy.labels.elsewhere}</span>
+                <a
+                  href="https://www.linkedin.com/in/surenmouchsiadis"
+                  target="_blank"
+                  rel="noopener noreferrer">{copy.labels.linkedinLabel}</a
+                >
+                <a
+                  href="https://github.com/QTtrash"
+                  target="_blank"
+                  rel="noopener noreferrer">{copy.labels.githubLabel}</a
+                >
+              </p>
+            </div>
+
+            <div class="cv-panel" id="cv">
+              <div class="cv-panel__copy">
+                <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
+                <p class="cv-panel__education">
+                  EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019
+                </p>
+                <p>{copy.labels.cvBody}</p>
+                <div class="hero-panel__actions">
+                  <a
+                    class="button"
+                    href={cvHref}
+                    target="_blank"
+                    rel="noopener noreferrer">{copy.labels.cvOpen}</a
+                  >
+                  <a class="button button--tertiary" href={cvHref} download
+                    >{copy.labels.cvDownload}</a
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   </section>
@@ -381,5 +426,6 @@ const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
   <script>
     import "../../scripts/terminal.ts";
     import "../../scripts/deck.ts";
+    import "../../scripts/copy-email.ts";
   </script>
 </BaseLayout>

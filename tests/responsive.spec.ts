@@ -11,7 +11,7 @@ for (const locale of locales) {
       const terminal = await page.locator(".terminal-console").boundingBox();
       expect(terminal ? terminal.y + terminal.height : Number.POSITIVE_INFINITY).toBeLessThanOrEqual(page.viewportSize()?.height ?? 720);
 
-      const portrait = await page.locator(".signal-card__portrait").boundingBox();
+      const portrait = await page.locator("[data-avatar-flip]").boundingBox();
       expect(Math.abs((portrait?.width ?? 0) - (portrait?.height ?? 1))).toBeLessThanOrEqual(1);
 
       await page.locator('[data-terminal-tab][href="#software-work"]').click();
@@ -24,7 +24,7 @@ for (const locale of locales) {
       await page.locator('[data-terminal-tab][href="#contact"]').click();
       await expect(page.locator("#contact")).toBeVisible();
     } else {
-      const portrait = await page.locator(".signal-card__portrait").boundingBox();
+      const portrait = await page.locator("[data-avatar-flip]").boundingBox();
       expect(Math.abs((portrait?.width ?? 0) - (portrait?.height ?? 1))).toBeLessThanOrEqual(1);
       await expect(page.locator("#software-work")).toBeVisible();
       await expect(page.locator("#experience")).toBeVisible();
@@ -99,7 +99,7 @@ test("desktop terminal fits common laptop and monitor heights", async ({ page },
     await page.goto("/en/");
     const terminal = await page.locator(".terminal-console").boundingBox();
     expect(terminal ? terminal.y + terminal.height : Number.POSITIVE_INFINITY).toBeLessThanOrEqual(viewport.height);
-    const portrait = await page.locator(".signal-card__portrait").boundingBox();
+    const portrait = await page.locator("[data-avatar-flip]").boundingBox();
     expect(Math.abs((portrait?.width ?? 0) - (portrait?.height ?? 1))).toBeLessThanOrEqual(1);
   }
 });

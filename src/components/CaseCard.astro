@@ -69,6 +69,7 @@ const offset = index - (count - 1) / 2;
       <ul class="deck-card__keywords" role="list">
         {keywords.map((keyword) => <li>{keyword}</li>)}
       </ul>
+      <PixelArt grid={suitSprites[suit]} class="deck-card__pip" />
     </div>
 
     <div

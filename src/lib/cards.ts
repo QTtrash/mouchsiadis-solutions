@@ -24,6 +24,8 @@ export const gameRecords = caseRecords.filter((record) => record.suit === "game"
 export const toolRecords = caseRecords.filter((record) => record.suit === "tool");
 /** The showcase reuses tool records; project copy and links stay in the content model. */
 export const openSourceRecords = toolRecords.filter((record) => Boolean(record.entry.sourceLink));
+/** First-viewport proof: Work records that run in production (`live: true`). */
+export const liveWorkRecords = workRecords.filter((record) => record.entry.live === true);
 
 export function localize<T>(record: { en: T } & Partial<Record<Locale, T>>, locale: Locale): T {
   return record[locale] ?? record.en;
