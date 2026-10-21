@@ -1379,6 +1379,22 @@ html:not(.js) .avatar-card {
   background: linear-gradient(180deg, rgba(232, 147, 92, 0.08), transparent 45%), var(--panel);
   --cover-accent: var(--atlas-copper);
 }
+/* A lone project spans the row, with its actions beside the copy. */
+.open-source-showcase__project:only-child {
+  grid-column: 1 / -1;
+}
+@media (min-width: 1120px) {
+  .open-source-showcase__project:only-child {
+    grid-template-columns: 6rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem 2rem;
+  }
+  .open-source-showcase__project:only-child .open-source-showcase__actions {
+    grid-column: auto;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
 .open-source-showcase__art {
   position: relative;
   aspect-ratio: 1;
