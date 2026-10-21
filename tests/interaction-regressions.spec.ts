@@ -77,7 +77,7 @@ test("content and navigation remain usable without JavaScript", async ({ browser
     await expect(page.locator(".site-header__nav")).toBeVisible();
     await expect(page.locator(".site-header .locale-switcher")).toBeVisible();
     await expect(page.locator("[data-drawer-open]")).toBeHidden();
-    await expect(page.locator('[data-card][data-title="Regrind"] [data-card-open]')).toBeVisible();
+    await expect(page.locator('[data-card][data-title="NeoPoints"] [data-card-open]')).toBeVisible();
     await page.locator(`.site-header__nav a[href="/${locale}/tooling/"]`).click();
     await expect(page.locator("h1")).toBeVisible();
   }
@@ -161,21 +161,20 @@ test("blocked storage still permits drawer preferences and the List view", async
 });
 
 for (const locale of ["en", "ru", "de", "ge"]) {
-  test(`${locale}: Regrind is shared across the showcase, collections, and case file`, async ({ page }) => {
+  test(`${locale}: Raid Signal is shared across the showcase, collections, and case file`, async ({ page }) => {
     await page.goto(`/${locale}/`);
-    await expect(page.locator('.open-source-showcase a[href*="/work/regrind/"]').first()).toBeAttached();
+    await expect(page.locator('.open-source-showcase a[href*="/work/raid-signal/"]').first()).toBeAttached();
     await page.locator('[data-terminal-tab][href="#software-work"]').click();
-    const regrind = page.locator('#software-work [data-card][data-title="Regrind"]');
-    await expect(regrind).toBeVisible();
-    await expect(regrind.locator(".deck-card__live")).toHaveCount(0);
+    const raidSignal = page.locator('#software-work [data-card][data-title="Raid Signal"]');
+    await expect(raidSignal).toBeVisible();
     await page.locator('#software-work [data-deck-view="list"]').click();
-    await expect(page.locator(`#software-work [data-deck-list] a[href="/${locale}/work/regrind/"]`).first()).toBeVisible();
+    await expect(page.locator(`#software-work [data-deck-list] a[href="/${locale}/work/raid-signal/"]`).first()).toBeVisible();
     await page.goto(`/${locale}/tooling/`);
-    await expect(page.locator(`#tooling [data-deck-list] a[href="/${locale}/work/regrind/"]`).first()).toBeVisible();
-    await page.goto(`/${locale}/work/regrind/`);
-    await expect(page.locator("h1")).toHaveText("Regrind");
+    await expect(page.locator(`#tooling [data-deck-list] a[href="/${locale}/work/raid-signal/"]`).first()).toBeVisible();
+    await page.goto(`/${locale}/work/raid-signal/`);
+    await expect(page.locator("h1")).toHaveText("Raid Signal");
     await expect(page.locator("html")).toHaveAttribute("lang", locale === "ge" ? "ka-GE" : new RegExp(`^${locale}`));
-    await expect(page.locator('a[href="https://github.com/QTtrash/regrind"]')).toBeAttached();
+    await expect(page.locator('a[href="https://github.com/QTtrash/tarkov-map"]')).toBeAttached();
   });
 }
 
@@ -198,30 +197,30 @@ test("Georgian headings and controls render glyphs from the intended web font", 
 });
 
 for (const locale of ["en", "ge"]) {
-  test(`${locale}: the reader remains reachable when dragging lower-row Regrind`, async ({ page }) => {
+  test(`${locale}: the reader remains reachable when dragging lower-row Raid Signal`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/${locale}/#software-work`);
     const panel = page.locator("#software-work");
     const deck = panel.locator("[data-deck]");
-    const regrind = deck.locator('[data-card][data-title="Regrind"]');
+    const raidSignal = deck.locator('[data-card][data-title="Raid Signal"]');
     const first = await deck.locator("[data-card]").first().boundingBox();
-    const initial = await regrind.boundingBox();
-    expect(initial!.y, "Regrind occupies a later grid row").toBeGreaterThanOrEqual(first!.y + first!.height);
+    const initial = await raidSignal.boundingBox();
+    expect(initial!.y, "Raid Signal occupies a later grid row").toBeGreaterThanOrEqual(first!.y + first!.height);
 
-    await regrind.scrollIntoViewIfNeeded();
+    await raidSignal.scrollIntoViewIfNeeded();
     const bounds = (await panel.boundingBox())!;
     const reader = deck.locator("[data-card-reader]");
     const target = (await reader.locator(".card-reader__slot").boundingBox())!;
     expect(target.y, "reader remains below the panel's upper edge").toBeGreaterThanOrEqual(bounds.y);
     expect(target.y + target.height, "reader remains inside the scrolling panel").toBeLessThanOrEqual(bounds.y + bounds.height);
 
-    const art = (await regrind.locator(".deck-card__art").boundingBox())!;
+    const art = (await raidSignal.locator(".deck-card__art").boundingBox())!;
     await page.mouse.move(art.x + art.width / 2, art.y + art.height / 2);
     await page.mouse.down();
     await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 12 });
     await expect(reader).toHaveClass(/is-armed/);
     await page.mouse.up();
-    await expect(page).toHaveURL(new RegExp(`/${locale}/work/regrind/$`));
-    await expect(page.locator("h1")).toHaveText("Regrind");
+    await expect(page).toHaveURL(new RegExp(`/${locale}/work/raid-signal/$`));
+    await expect(page.locator("h1")).toHaveText("Raid Signal");
   });
 }

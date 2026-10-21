@@ -762,25 +762,25 @@ export const toolingCopy: Record<Locale, { kicker: string; title: string; body: 
   en: {
     kicker: "TL // TOOLING / {count} PROJECTS",
     title: "Tools built for practice.",
-    body: "Game analysis, encrypted squad coordination, and solo CS2 practice. Explore the code, decisions, and release status of each project.",
+    body: "Game analysis and encrypted squad coordination. Explore the code, decisions, and release status of each project.",
     note: "Independent tools · production and prerelease projects",
   },
   ru: {
     kicker: "TL // ИНСТРУМЕНТЫ / ПРОЕКТОВ: {count}",
     title: "Инструменты для дела.",
-    body: "Анализ игр, зашифрованная координация отряда и одиночная практика в CS2. Код, решения и статус релиза — в описании каждого проекта.",
+    body: "Анализ игр и зашифрованная координация отряда. Код, решения и статус релиза — в описании каждого проекта.",
     note: "Независимые инструменты · рабочие и предварительные версии",
   },
   de: {
     kicker: "TL // WERKZEUGE / {count} PROJEKTE",
     title: "Werkzeuge für die Praxis.",
-    body: "Spielanalyse, verschlüsselte Teamkoordination und Solotraining in CS2. Jeder Eintrag zeigt Quellcode, Entscheidungen und Release-Status.",
+    body: "Spielanalyse und verschlüsselte Teamkoordination. Jeder Eintrag zeigt Quellcode, Entscheidungen und Release-Status.",
     note: "Unabhängige Werkzeuge · produktive Systeme und Vorabversionen",
   },
   ge: {
     kicker: "TL // ინსტრუმენტები / {count} პროექტი",
     title: "ინსტრუმენტები პრაქტიკისთვის.",
-    body: "თამაშების ანალიზი, გუნდის დაშიფრული კოორდინაცია და CS2-ში ინდივიდუალური ვარჯიში. გაეცანით პროექტების კოდს, გადაწყვეტილებებსა და გამოშვების სტატუსს.",
+    body: "თამაშების ანალიზი და გუნდის დაშიფრული კოორდინაცია. გაეცანით პროექტების კოდს, გადაწყვეტილებებსა და გამოშვების სტატუსს.",
     note: "დამოუკიდებელი ინსტრუმენტები · მოქმედი და წინასწარი ვერსიები",
   },
 };

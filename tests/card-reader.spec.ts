@@ -92,7 +92,8 @@ for (const locale of locales) {
   }
 }
 
-for (const panel of panels) {
+// Tooling's two cards share one row at 1120px, so only the larger decks have a lower row.
+for (const panel of ["software-work", "game-dev"] as const) {
   test(`${panel}: a lower-row card keeps its full-size preview and opens through the dock`, async ({ page }) => {
     await page.setViewportSize({ width: 1120, height: 720 });
     const deck = await openDeck(page, panel);

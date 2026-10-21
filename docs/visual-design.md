@@ -52,7 +52,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 - **The hand.** The four-up tilted row cannot return without breaking two real fixes: the 13rem reader lane and the 230px minimum card width. At 1440 the fitted deck shows three cards per row and at 1120–1280 two. The tilt returns as a static alternating fan (±0.8° and a 6px stagger) when motion is allowed. Cards never overlap, never move under the pointer, and lie flat under reduced motion.
 - **Headline.** The owner approved "Senior platform engineer for products that have to work." The job title stays in English in every locale (owner decision); only the rest of the sentence is translated, and Georgian uses a colon form.
 - **Body and track record.** One general line ("I build scalable platforms and the cloud infrastructure that keeps them running.") replaces a project-specific description; no single project is described in depth in the hero. A short "Track record" list follows the actions. It comes from `impact` in `src/lib/content.ts`, where each line names the experience entries that state its facts, and a test checks every figure against them.
-- **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
+- **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, NeoPoints, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
 - **Facts.** Location and availability are owner-confirmed and live in `profile` in `src/lib/content.ts`. No testimonials, client logos, response times or booking links are shown; none were provided.
 - **Contact.** Every email action uses one address and a subject that names its origin. The address is always visible as text beside a copy button, because `mailto:` can do nothing without a mail client.
 - **Georgian display size.** Noto Sans Georgian runs wider and taller than Montserrat, so the Georgian hero headline is set about 10% smaller at every width. Copy is never broken inside a word.
@@ -98,7 +98,7 @@ Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.t
 - **Fan.** With motion allowed, the fitted hand rests in a slight alternating fan that never overlaps and never moves under the pointer. A dragged preview keeps the card's size and angle.
 - **Reader.** It is a recessed slot with a sensor line, and its status text sits below the slot, never across it. Keyboard users reach Flip and Open case file directly, and every record is readable without dragging or flipping.
 - **Semantics.** Each card is `li > article` with a real heading. Flip is a toggle with `aria-pressed`, and the inactive face is `inert`.
-- **LIVE.** It means the system actually runs in production (`live: true`). Public code, a website or a prerelease alone does not earn it. Regrind is a prerelease without LIVE.
+- **LIVE.** It means the system actually runs in production (`live: true`). Public code, a website or a prerelease alone does not earn it.
 
 ## Responsive Composition
 
@@ -258,7 +258,6 @@ Matched screenshots (main `ba44a8f` before, this branch after), stored as WebP o
 | Open-source showcase, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-showcase-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-showcase-after.webp) |
 | Contact, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-contact-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-contact-after.webp) |
 | Case-file ending, 1440×900 | [Before](./design-audit/terminal-identity/en-1440x900-case-end-before.webp) | [After](./design-audit/terminal-identity/en-1440x900-case-end-after.webp) |
-| Georgian Regrind case file, 320×568 | [Before](./design-audit/terminal-identity/ge-320x568-regrind-before.webp) | [After](./design-audit/terminal-identity/ge-320x568-regrind-after.webp) |
 | Russian article, 1440×900 | [Before](./design-audit/terminal-identity/ru-1440x900-article-before.webp) | [After](./design-audit/terminal-identity/ru-1440x900-article-after.webp) |
 
 ### Earlier passes

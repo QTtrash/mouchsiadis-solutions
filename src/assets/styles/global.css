@@ -1469,8 +1469,7 @@ html:not(.js) .avatar-card {
   height: 84%;
   --px-accent: var(--cover-accent);
 }
-.archive-entry[data-cover="truegrind"],
-.archive-entry[data-cover="regrind"] {
+.archive-entry[data-cover="truegrind"] {
   --cover-accent: var(--atlas-copper);
 }
 .archive-entry[data-cover="rifle"],

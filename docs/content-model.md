@@ -27,7 +27,7 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 ### Hero Proof
 
-The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true` and links each to its case file. The displayed count comes from that list. Prereleases such as Regrind appear in Work, Tooling and the showcase, not in the live proof.
+The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true` and links each to its case file. The displayed count comes from that list. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof.
 
 ### Software Work Entries
 
@@ -54,6 +54,7 @@ Selected professional entries:
 
 - `YPay`
 - `YDesk`
+- `NeoPoints`
 
 Tools are stored separately as `toolProjects` and rendered as Tool cards on the landing Work deck and the Tooling page. This collection includes production systems and prereleases; membership does not imply LIVE status. The Tooling count is the record count. Game entries are stored as `gameProjects` and render as the Games deck.
 
@@ -108,8 +109,6 @@ Navigation, preferences, hero positioning, evidence labels, and all card, reader
 
 ## Open-Source Showcase
 
-The landing showcase derives `openSourceRecords` from Tool records that have a `sourceLink`. Keep project descriptions, links, source links, status, stack, and cover selection there; `i18n.ts` supplies only generic showcase/interface labels. Raid Signal and Regrind appear in the same collection without duplicating their project copy in the page template.
-
-Regrind is an MIT-licensed Windows desktop application for solo Counter-Strike 2 practice, managing a separate local dedicated server. Its current prerelease is distinct from a deployed production service: it does not set `live: true`. Describe implemented capabilities separately from planned features, and link release evidence through the public project/source links. Recheck release status when revising the record.
+The landing showcase derives `openSourceRecords` from Tool records that have a `sourceLink`. Keep project descriptions, links, source links, status, stack, and cover selection there; `i18n.ts` supplies only generic showcase/interface labels. Raid Signal currently appears there without its project copy being duplicated in the page template.
 
 New featured work must supply all four locale values. Georgian interface terms use “ინსტრუმენტები” for tools and “პროექტის ნახვა” for the direct project action. Technical names remain unchanged where translation would obscure the product or technology. A native Georgian editorial review remains useful for nuance; do not rewrite historical blog bodies as part of that review.

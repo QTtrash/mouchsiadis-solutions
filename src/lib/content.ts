@@ -274,6 +274,96 @@ export const projects: ProjectEntry[] = [
       },
     },
   },
+  {
+    slug: "neopoints",
+    title: "NeoPoints",
+    cardSummary: {
+      en: "Driver loyalty with a points ledger, gift catalogue, ranks and missions per park.",
+      ru: "Программа лояльности водителей: учёт баллов, каталог подарков, ранги и миссии для каждого парка.",
+      de: "Fahrerloyalität mit Punkte-Ledger, Geschenkkatalog, Rängen und Missionen je Flottenpark.",
+      ge: "მძღოლების ლოიალობის პროგრამა: ქულების აღრიცხვა, საჩუქრების კატალოგი, რანგები და მისიები.",
+    },
+    eyebrow: {
+      en: "Multi-tenant driver loyalty",
+      ru: "Мультиарендная программа лояльности",
+      de: "Mandantenfähige Fahrerloyalität",
+      ge: "მძღოლების ლოიალობის პლატფორმა",
+    },
+    summary: {
+      en: "A live loyalty platform for Neo Taxi and Neo Delivery drivers: qualifying completed orders earn points in an auditable ledger, redeemed through a gift catalogue, with ranks, missions, leaderboards and tournaments.",
+      ru: "Действующая программа лояльности для водителей Neo Taxi и Neo Delivery: выполненные заказы приносят баллы в аудируемом журнале, которые обмениваются на подарки из каталога; есть ранги, миссии, рейтинги и турниры.",
+      de: "Eine produktive Loyalitätsplattform für Fahrer von Neo Taxi und Neo Delivery: qualifizierte abgeschlossene Fahrten bringen Punkte in einem prüfbaren Ledger, einlösbar im Geschenkkatalog – mit Rängen, Missionen, Bestenlisten und Turnieren.",
+      ge: "მოქმედი ლოიალობის პლატფორმა Neo Taxi-სა და Neo Delivery-ს მძღოლებისთვის: შესრულებული შეკვეთები ქულებს აგროვებს აუდიტირებად ჟურნალში, რომლებიც საჩუქრების კატალოგში იცვლება; რანგები, მისიები, რეიტინგები და ტურნირები.",
+    },
+    narrative: {
+      en: "NeoPoints is built around a balanced, append-only ledger and strict park boundaries. Each park has its own hosts, membership, wallet and activation; identity and SMS codes come from YPay, Yandex Fleet data arrives through a shared Fleet service, and support stays in YDesk.",
+      ru: "NeoPoints строится вокруг сбалансированного журнала только на добавление и строгих границ между парками. У каждого парка свои домены, участники, кошелёк и активация; идентификацию и SMS-коды даёт YPay, данные Yandex Fleet приходят через общий Fleet-сервис, а поддержка остаётся в YDesk.",
+      de: "NeoPoints basiert auf einem ausgeglichenen, nur anhängenden Ledger und strikten Parkgrenzen. Jeder Park hat eigene Hosts, Mitgliedschaft, Wallet und Aktivierung; Identität und SMS-Codes liefert YPay, Yandex-Fleet-Daten kommen über einen gemeinsamen Fleet-Dienst, Support bleibt in YDesk.",
+      ge: "NeoPoints დაფუძნებულია დაბალანსებულ, მხოლოდ დამატებად ჟურნალსა და პარკებს შორის მკაცრ საზღვრებზე. თითოეულ პარკს აქვს საკუთარი დომენები, წევრობა, საფულე და აქტივაცია; იდენტიფიკაციასა და SMS-კოდებს YPay უზრუნველყოფს, Yandex Fleet-ის მონაცემები საერთო Fleet-სერვისით მოდის, მხარდაჭერა კი YDesk-შია.",
+    },
+    details: {
+      en: [
+        "Next.js 16 and React 19 app with web, worker, order-board and Fleet processes on PostgreSQL, with jobs and outbox kept in the database.",
+        "Points from qualifying completed orders, recorded as immutable, balanced journal entries with audited admin adjustments.",
+        "Gift catalogue with stock reservations and Telegram order notifications, plus ranks, missions, seasons, leaderboards, 2x campaigns and public order tournaments.",
+        "HMAC-signed internal APIs to YPay for identity, SMS one-time codes and challenge rewards; installable PWA in Georgian, English and Russian.",
+      ],
+      ru: [
+        "Приложение на Next.js 16 и React 19 с процессами web, worker, order-board и Fleet на PostgreSQL; задачи и outbox хранятся в базе.",
+        "Баллы за выполненные заказы фиксируются неизменяемыми сбалансированными проводками; корректировки администраторов проходят аудит.",
+        "Каталог подарков с резервированием остатков и уведомлениями о заказах в Telegram, а также ранги, миссии, сезоны, рейтинги, акции 2x и публичные турниры по заказам.",
+        "Подписанные HMAC внутренние API к YPay для идентификации, SMS-кодов и наград за челленджи; устанавливаемое PWA на грузинском, английском и русском.",
+      ],
+      de: [
+        "Next.js-16- und React-19-Anwendung mit Web-, Worker-, Order-Board- und Fleet-Prozessen auf PostgreSQL; Jobs und Outbox liegen in der Datenbank.",
+        "Punkte für qualifizierte abgeschlossene Fahrten als unveränderliche, ausgeglichene Buchungen; Admin-Korrekturen werden auditiert.",
+        "Geschenkkatalog mit Bestandsreservierung und Telegram-Benachrichtigungen, dazu Ränge, Missionen, Saisons, Bestenlisten, 2x-Aktionen und öffentliche Fahrtenturniere.",
+        "HMAC-signierte interne APIs zu YPay für Identität, SMS-Einmalcodes und Challenge-Prämien; installierbare PWA auf Georgisch, Englisch und Russisch.",
+      ],
+    },
+    stack: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Yandex Fleet", "YPay", "Telegram", "PWA"],
+    meta: {
+      en: ["live platform", "multi-tenant", "loyalty"],
+      ru: ["действующая платформа", "изоляция клиентов", "лояльность"],
+      de: ["im Einsatz", "Mandantentrennung", "Loyalität"],
+      ge: ["მოქმედი პლატფორმა", "იზოლაცია", "ლოიალობა"],
+    },
+    link: "https://neopoints.ge",
+    linkLabel: {
+      en: "open platform",
+      ru: "открыть платформу",
+      de: "Plattform öffnen",
+      ge: "პლატფორმის გახსნა",
+    },
+    cover: "neopay",
+    live: true,
+    evidence: {
+      role: {
+        en: "Product and systems engineer",
+        ru: "Продуктовый и системный инженер",
+        de: "Produkt- und Systementwickler",
+        ge: "პროდუქტისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Designed and built the points economy, ledger, tenant model, gift catalogue, gamification, admin workspaces, YPay and Fleet integrations, and release pipeline.",
+        ru: "Спроектировал и построил экономику баллов, журнал, tenant-модель, каталог подарков, геймификацию, админ-панели, интеграции с YPay и Fleet и процесс релизов.",
+        de: "Punkteökonomie, Ledger, Tenant-Modell, Geschenkkatalog, Gamification, Admin-Arbeitsbereiche, YPay- und Fleet-Integration sowie Release-Pipeline konzipiert und umgesetzt.",
+        ge: "დავაპროექტე და ავაწყე ქულების ეკონომიკა, ჟურნალი, tenant-მოდელი, საჩუქრების კატალოგი, გეიმიფიკაცია, ადმინისტრირება, YPay-სა და Fleet-ის ინტეგრაციები და რელიზების პროცესი.",
+      },
+      constraints: {
+        en: "Points carry real value, so every balance must reconcile to journal entries, parks must never see each other's data, and other systems' records stay behind signed APIs.",
+        ru: "Баллы имеют реальную ценность: каждый баланс должен сходиться с проводками, парки не должны видеть данные друг друга, а записи других систем доступны только через подписанные API.",
+        de: "Punkte haben echten Wert: Jeder Saldo muss mit den Buchungen übereinstimmen, Parks dürfen keine fremden Daten sehen, und Daten anderer Systeme bleiben hinter signierten APIs.",
+        ge: "ქულებს რეალური ღირებულება აქვს: ყველა ბალანსი უნდა ემთხვეოდეს ჟურნალის ჩანაწერებს, პარკები ერთმანეთის მონაცემებს ვერ ხედავენ, სხვა სისტემების ჩანაწერები კი მხოლოდ ხელმოწერილი API-ით არის ხელმისაწვდომი.",
+      },
+      outcomes: {
+        en: "A live loyalty program in two fleet parks where drivers earn points on real orders, climb ranks and redeem gifts, with every balance traceable to its ledger entries.",
+        ru: "Действующая программа лояльности в двух автопарках: водители получают баллы за реальные заказы, растут в рангах и обменивают баллы на подарки, а каждый баланс прослеживается до проводок.",
+        de: "Ein produktives Loyalitätsprogramm in zwei Flottenparks: Fahrer sammeln Punkte für echte Fahrten, steigen in Rängen auf und lösen Geschenke ein – jeder Saldo ist bis zur Buchung nachvollziehbar.",
+        ge: "მოქმედი ლოიალობის პროგრამა ორ ავტოპარკში: მძღოლები რეალურ შეკვეთებზე ქულებს აგროვებენ, რანგებში იწევენ და საჩუქრებს იღებენ, ყველა ბალანსი კი ჟურნალის ჩანაწერებამდე მიკვლევადია.",
+      },
+    },
+  },
 ];
 
 export const toolProjects: ProjectEntry[] = [
@@ -344,77 +434,6 @@ export const toolProjects: ProjectEntry[] = [
     sourceLinkLabel: { en: "view source", de: "Quellcode ansehen", ru: "исходный код", ge: "კოდის ნახვა" },
     cover: "truegrind",
     live: true,
-  },
-  {
-    slug: "regrind",
-    title: "Regrind",
-    eyebrow: {
-      en: "Solo CS2 practice on Windows",
-      ru: "Одиночные тренировки в CS2 на Windows",
-      de: "Solo-Training für CS2 unter Windows",
-      ge: "ინდივიდუალური ვარჯიში CS2-ში",
-    },
-    cardSummary: {
-      en: "A local CS2 practice server with map discovery, Steam joining and session controls.",
-      ru: "Локальный сервер CS2: выбор карт, подключение через Steam и настройки тренировки.",
-      de: "Ein lokaler CS2-Trainingsserver mit Kartenauswahl, Steam-Beitritt und Sitzungssteuerung.",
-      ge: "CS2-ის ლოკალური სერვერი, რუკების არჩევა და Steam-ით დაკავშირება.",
-    },
-    summary: {
-      en: "A Windows desktop app that manages a separate local CS2 server for solo practice, with official and Workshop maps and practical session controls.",
-      ru: "Приложение для Windows, которое управляет отдельным локальным сервером CS2 для одиночных тренировок: официальные карты, Workshop и настройки сессии.",
-      de: "Eine Windows-App, die einen separaten lokalen CS2-Server für Solo-Training verwaltet – mit offiziellen Karten, Workshop-Karten und direkter Sitzungssteuerung.",
-      ge: "Windows-ის აპლიკაცია ინდივიდუალური ვარჯიშისთვის: ცალკე ლოკალური CS2 სერვერი, ოფიციალური და Workshop-ის რუკები და სავარჯიშო სესიის მართვა.",
-    },
-    narrative: {
-      en: "Regrind brings server setup, map selection, Steam joining and practice controls into one desktop interface. Rust manages the server lifecycle while React presents verified state. It works independently of True Grind accounts and services.",
-      ru: "Regrind объединяет установку сервера, выбор карты, подключение через Steam и управление тренировкой в одном приложении. Rust управляет жизненным циклом сервера, а React отображает его проверенное состояние. Аккаунт и сервисы True Grind не требуются.",
-      de: "Regrind vereint Serverinstallation, Kartenauswahl, Steam-Verbindung und Trainingseinstellungen in einer Desktop-App. Rust verwaltet den Server; React zeigt den überprüften Zustand an. Ein Konto oder Dienste von True Grind sind nicht erforderlich.",
-      ge: "Regrind ერთ აპლიკაციაში აერთიანებს სერვერის დაყენებას, რუკის არჩევას, Steam-ით დაკავშირებასა და ვარჯიშის პარამეტრებს. სერვერს Rust მართავს, React კი მის შემოწმებულ მდგომარეობას აჩვენებს. True Grind-ის ანგარიში და სერვისები საჭირო არ არის.",
-    },
-    details: {
-      en: [
-        "MIT-licensed application built with Tauri, React, TypeScript and Rust, with a native Win32 process bridge.",
-        "Official maps, a curated Workshop library with search and filters, individual map imports and local favorites.",
-        "Round, ammunition, grenade and bot controls, with server and map readiness checked before joining.",
-        "Windows x64 prerelease with an unsigned installer; Windows 11 is the tested platform. Setup needs Steam, CS2, internet and 90 GB free for a separate server installation.",
-        "Solo sessions only. Workshop training belongs to each map; multiplayer, saved lineups and original drills remain planned work. Offline play is not promised.",
-      ],
-      ru: [
-        "Приложение с лицензией MIT на Tauri, React, TypeScript и Rust с нативным мостом Win32 для управления процессами.",
-        "Официальные карты, подборка Workshop с поиском и фильтрами, импорт отдельных карт и локальное избранное.",
-        "Настройки раундов, боеприпасов, гранат и ботов; готовность сервера и карты проверяется до подключения.",
-        "Предварительная версия для Windows x64 с неподписанным установщиком; проверена на Windows 11. Для настройки нужны Steam, CS2, интернет и 90 ГБ свободного места под отдельный сервер.",
-        "Только одиночные сессии. Возможности тренировки в Workshop зависят от карты; мультиплеер, сохранённые раскидки и собственные упражнения пока в планах. Игра без интернета не гарантируется.",
-      ],
-      de: [
-        "MIT-lizenzierte Anwendung mit Tauri, React, TypeScript und Rust sowie einer nativen Win32-Anbindung für die Prozessverwaltung.",
-        "Offizielle Karten, kuratierte Workshop-Bibliothek mit Suche und Filtern, Kartenimport und lokale Favoriten.",
-        "Steuerung für Runden, Munition, Granaten und Bots; Server und Karte werden vor dem Beitritt auf Bereitschaft geprüft.",
-        "Vorabversion für Windows x64 mit unsigniertem Installer; getestet unter Windows 11. Die Einrichtung benötigt Steam, CS2, Internet und 90 GB freien Speicher für einen separaten Server.",
-        "Nur Solo-Sitzungen. Workshop-Training stammt von der jeweiligen Karte; Mehrspieler, gespeicherte Granatenwürfe und eigene Übungen sind geplant. Offline-Spiel wird nicht zugesichert.",
-      ],
-      ge: [
-        "MIT ლიცენზიის მქონე აპლიკაცია Tauri-ზე, React-ზე, TypeScript-სა და Rust-ზე; პროცესებს Win32-ის ინტერფეისით მართავს.",
-        "ოფიციალური რუკები, Workshop-ის შერჩეული კატალოგი ძიებითა და ფილტრებით, რუკების დამატება და რჩეულების ლოკალურად შენახვა.",
-        "რაუნდების, საბრძოლო მასალის, ყუმბარებისა და ბოტების მართვა; დაკავშირებამდე სერვერისა და რუკის მზადყოფნა მოწმდება.",
-        "წინასწარი ვერსია Windows x64-ისთვის, ციფრული ხელმოწერის გარეშე; შემოწმებულია Windows 11-ზე. დაყენებას სჭირდება Steam, CS2, ინტერნეტი და 90 გბ თავისუფალი ადგილი ცალკე სერვერისთვის.",
-        "მხოლოდ ინდივიდუალური სესიები. Workshop-ში ვარჯიშის შესაძლებლობებს რუკა განსაზღვრავს; მრავალმოთამაშიანი რეჟიმი, შენახული ყუმბარის პოზიციები და საკუთარი სავარჯიშოები ჯერ დაგეგმილია. ინტერნეტის გარეშე თამაში გარანტირებული არ არის.",
-      ],
-    },
-    stack: ["Tauri 2", "React", "TypeScript", "Rust", "Win32", "SteamCMD"],
-    meta: {
-      en: ["MIT open source", "Windows x64", "solo practice"],
-      ru: ["открытый код · MIT", "Windows x64", "одиночная практика"],
-      de: ["Open Source · MIT", "Windows x64", "Solo-Training"],
-      ge: ["ღია კოდი · MIT", "Windows x64", "ინდივიდუალური ვარჯიში"],
-    },
-    status: { en: "Prerelease", ru: "Предварительная версия", de: "Vorabversion", ge: "წინასწარი ვერსია" },
-    link: "https://grindlike.pro/regrind",
-    linkLabel: { en: "explore Regrind", ru: "о Regrind", de: "Regrind entdecken", ge: "Regrind-ის ნახვა" },
-    sourceLink: "https://github.com/QTtrash/regrind",
-    sourceLinkLabel: { en: "view source", ru: "исходный код", de: "Quellcode ansehen", ge: "კოდის ნახვა" },
-    cover: "regrind",
   },
 ];
 
@@ -647,6 +666,29 @@ export const gameProjects: ProjectEntry[] = [
 
 export const experiences: ExperienceEntry[] = [
   {
+    slug: "alexander-thamm",
+    title: {
+      en: "Senior Software Engineer",
+      ru: "Senior Software Engineer",
+      de: "Senior Software Engineer",
+    },
+    company: "Alexander Thamm GmbH",
+    range: "Oct 2026 - Present",
+    location: "Munich, Bavaria, Germany",
+    summary: {
+      en: "Software engineering at a data and AI consultancy serving enterprise and mid-sized clients across the DACH region.",
+      ru: "Разработка ПО в консалтинговой компании в области данных и AI для корпоративных клиентов и среднего бизнеса в регионе DACH.",
+      de: "Softwareentwicklung bei einer Data- und AI-Beratung für Konzerne und Mittelständler im DACH-Raum.",
+    },
+    details: {
+      en: ["Deliver software engineering for client data and AI initiatives, from technical design through implementation and production readiness."],
+      ru: ["Веду разработку для клиентских проектов в области данных и AI — от технического дизайна до реализации и готовности к продакшену."],
+      de: ["Liefere Softwareentwicklung für Data- und AI-Initiativen von Kunden, vom technischen Design über die Umsetzung bis zur Produktionsreife."],
+    },
+    stack: ["Software Engineering", "Data & AI", "Consulting"],
+    cover: "consulting",
+  },
+  {
     slug: "ocumeda",
     title: {
       en: "Senior Cloud Engineer",
@@ -654,28 +696,28 @@ export const experiences: ExperienceEntry[] = [
       de: "Senior Cloud Engineer",
     },
     company: "Ocumeda GmbH",
-    range: "Apr 2026 - Present",
+    range: "Apr 2026 - Sep 2026",
     location: "Munich, Bavaria, Germany",
     summary: {
-      en: "Owning cloud platform and infrastructure, with AI-agent integration and cross-team delivery support.",
+      en: "Owned cloud platform and infrastructure, with AI-agent integration and cross-team delivery support.",
       ru: "Ответственность за облачную платформу и инфраструктуру, интеграцию AI-агентов и поддержку поставки между командами.",
       de: "Verantwortung für Cloud-Plattform und Infrastruktur, AI-Agenten-Integration und technische Unterstützung über Teamgrenzen hinweg.",
     },
     details: {
       en: [
-        "Own cloud platform and infrastructure, including provisioning, scalability, and reliability across environments.",
-        "Implement custom AI agents and integrate AI tooling to automate workflows and extend platform capability.",
-        "Collaborate with external teams and support delivery with technical guidance and alignment.",
+        "Owned cloud platform and infrastructure, including provisioning, scalability, and reliability across environments.",
+        "Implemented custom AI agents and integrated AI tooling to automate workflows and extend platform capability.",
+        "Collaborated with external teams and supported delivery with technical guidance and alignment.",
       ],
       ru: [
-        "Веду облачную платформу и инфраструктуру: provisioning, scalability и reliability между окружениями.",
-        "Реализую кастомных AI-агентов и интегрирую AI-инструменты для автоматизации процессов и расширения возможностей платформы.",
-        "Работаю с внешними командами и поддерживаю поставку через техническое сопровождение и выравнивание решений.",
+        "Вёл облачную платформу и инфраструктуру: provisioning, scalability и reliability между окружениями.",
+        "Реализовал кастомных AI-агентов и интегрировал AI-инструменты для автоматизации процессов и расширения возможностей платформы.",
+        "Работал с внешними командами и поддерживал поставку через техническое сопровождение и выравнивание решений.",
       ],
       de: [
-        "Verantworte Cloud-Plattform und Infrastruktur inklusive Provisioning, Skalierung und Zuverlässigkeit über mehrere Umgebungen.",
-        "Implementiere eigene AI-Agenten und integriere AI-Tooling zur Automatisierung von Workflows und Erweiterung der Plattformfähigkeiten.",
-        "Arbeite mit externen Teams zusammen und begleite Lieferprozesse mit technischer Führung und Alignment.",
+        "Verantwortete Cloud-Plattform und Infrastruktur inklusive Provisioning, Skalierung und Zuverlässigkeit über mehrere Umgebungen.",
+        "Implementierte eigene AI-Agenten und integrierte AI-Tooling zur Automatisierung von Workflows und Erweiterung der Plattformfähigkeiten.",
+        "Arbeitete mit externen Teams zusammen und begleitete Lieferprozesse mit technischer Führung und Alignment.",
       ],
     },
     stack: [

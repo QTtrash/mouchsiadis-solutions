@@ -73,7 +73,7 @@ for (const locale of locales) {
   for (const [width, height] of viewports) {
     test(`${locale} ${width}x${height}: primary pages remain readable and navigable`, async ({ page }) => {
       await page.setViewportSize({ width, height });
-      for (const suffix of ["", "tooling/", "work/regrind/", "blog/"]) {
+      for (const suffix of ["", "tooling/", "work/neopoints/", "blog/"]) {
         const path = `/${locale}/${suffix}`;
         await page.goto(path);
         await page.evaluate(() => document.fonts.ready);
@@ -139,7 +139,7 @@ for (const state of ["software-work", "game-dev", "list", "drawer", "contact"] a
   });
 }
 
-for (const path of ["/ge/tooling/", "/ge/work/regrind/", "/ge/blog/", "/ru/blog/tonight-i-cry/", "/de/blog/de-translation-tonight-i-cry/"]) {
+for (const path of ["/ge/tooling/", "/ge/work/neopoints/", "/ge/blog/", "/ru/blog/tonight-i-cry/", "/de/blog/de-translation-tonight-i-cry/"]) {
   test(`${path} has no serious accessibility violations at narrow phone width`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto(path);

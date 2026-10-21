@@ -150,10 +150,10 @@ async function inspectSurfaces(page, locale, viewport) {
   await page.locator('[data-deck-view="list"]').click();
   if (viewport.width < 1120) await alignStart(page, "[data-deck-list]");
   await shot("tooling-list");
-  await navigate(page, `/${locale}/work/regrind/`);
-  await shot("regrind");
+  await navigate(page, `/${locale}/work/neopoints/`);
+  await shot("neopoints");
   await alignStart(page, ".case-file__body");
-  await shot("regrind-details");
+  await shot("neopoints-details");
   await navigate(page, `/${locale}/blog/`);
   await shot("blog");
   const article =

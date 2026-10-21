@@ -5,9 +5,9 @@ const locales = ["en", "ru", "de", "ge"] as const;
 const slugs = [
   "ypay",
   "ydesk",
+  "neopoints",
   "grindlike",
   "raid-signal",
-  "regrind",
   "flygod-studios",
   "alice-plays",
   "rifle-revolver",
@@ -79,12 +79,10 @@ test("hero proof lists exactly the live work records and states their count", as
   await page.goto("/en/");
   const proof = page.locator(".hero-proof");
   const items = proof.locator("[data-proof] a");
-  await expect(items).toHaveCount(4);
+  await expect(items).toHaveCount(5);
   const hrefs = await items.evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-  expect(hrefs).toEqual(["/en/work/ypay/", "/en/work/ydesk/", "/en/work/grindlike/", "/en/work/raid-signal/"]);
-  await expect(proof.locator(".hero-proof__count")).toHaveText("04 LIVE");
-  // Regrind is a prerelease: it is public work but not proof of a live system.
-  await expect(proof.locator('a[href="/en/work/regrind/"]')).toHaveCount(0);
+  expect(hrefs).toEqual(["/en/work/ypay/", "/en/work/ydesk/", "/en/work/neopoints/", "/en/work/grindlike/", "/en/work/raid-signal/"]);
+  await expect(proof.locator(".hero-proof__count")).toHaveText("05 LIVE");
 });
 
 test("every hero impact line is backed by the experience it cites", () => {
@@ -136,7 +134,7 @@ for (const locale of locales) {
 test("the open-source showcase gives each project one button and quiet links", async ({ page }) => {
   await page.goto("/en/");
   const projects = page.locator(".open-source-showcase__project");
-  await expect(projects).toHaveCount(2);
+  await expect(projects).toHaveCount(1);
   for (const project of await projects.all()) {
     await expect(project.locator(".button")).toHaveCount(1);
     await expect(project.locator(".button")).toHaveAttribute("href", /\/en\/work\//);
