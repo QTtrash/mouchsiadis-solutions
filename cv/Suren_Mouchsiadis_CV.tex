@@ -1,0 +1,326 @@
+\documentclass[10pt,a4paper]{article}
+
+% =========================================================
+% ATS-safe, single-column senior engineering CV
+% =========================================================
+\usepackage[a4paper,top=1.20cm,bottom=1.20cm,left=1.45cm,right=1.45cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{sourcesanspro}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{hyperref}
+\usepackage{iftex}
+
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+
+\definecolor{ink}{HTML}{151515}
+\definecolor{accent}{HTML}{173A5E}
+\definecolor{muted}{HTML}{555555}
+\definecolor{rule}{HTML}{B8C1C9}
+
+\hypersetup{
+  pdftitle={Suren Mouchsiadis - Senior Software / Platform / Cloud Engineer},
+  pdfauthor={Suren Mouchsiadis},
+  pdfsubject={Curriculum Vitae},
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=accent
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\urlstyle{same}
+
+% ---------- Section styling ----------
+\titleformat{\section}
+  {\needspace{4\baselineskip}\large\bfseries\color{accent}}
+  {}{0pt}{}[\vspace{1.5pt}\color{rule}\titlerule]
+\titlespacing*{\section}{0pt}{7pt}{3.5pt}
+
+% ---------- Lists ----------
+\setlist[itemize]{
+  leftmargin=14pt,
+  label=\textbullet,
+  topsep=1.5pt,
+  itemsep=1.0pt,
+  parsep=0pt,
+  partopsep=0pt
+}
+
+% ---------- Reusable commands ----------
+\newcommand{\cvname}[1]{%
+  {\fontsize{25}{27}\selectfont\bfseries\color{ink} #1}\par
+}
+
+\newcommand{\cvheadline}[1]{%
+  \vspace{1pt}{\large\bfseries\color{accent} #1}\par
+}
+
+\newcommand{\contactline}[1]{%
+  \vspace{3pt}{\small\color{muted} #1}\par
+}
+
+\newcommand{\job}[4]{%
+  \needspace{5\baselineskip}%
+  \vspace{4pt}%
+  {\bfseries #1}\hfill{\bfseries #2}\par
+  {\itshape\color{muted} #3}\hfill{\itshape\color{muted} #4}\par
+}
+
+\newcommand{\rolecontext}[1]{%
+  \vspace{1pt}{\small\color{muted} #1}\par
+}
+
+\newcommand{\client}[3]{%
+  \needspace{4\baselineskip}%
+  \vspace{3pt}%
+  {\bfseries #1}\hfill{\small\bfseries #2}\par
+  {\small\color{muted} #3}\par
+}
+
+\newcommand{\skillrow}[2]{%
+  \textbf{#1:} #2\par
+}
+
+\newcommand{\project}[2]{%
+  \needspace{4\baselineskip}%
+  {\bfseries #1}\par
+  \vspace{1pt}#2
+}
+
+\begin{document}
+
+% =========================================================
+% HEADER
+% =========================================================
+\cvname{Suren Mouchsiadis}
+\cvheadline{Senior Software / Platform / Cloud Engineer}
+\contactline{Munich, Germany \;|\; \href{mailto:smouchsiadis@gmail.com}{smouchsiadis@gmail.com} \;|\; \href{tel:+4915739714002}{+49 157 39714002} \;|\; \href{https://www.linkedin.com/in/surenmouchsiadis}{LinkedIn} \;|\; \href{https://www.mouchsiadis-solutions.com/}{mouchsiadis-solutions.com}}
+
+% =========================================================
+% SUMMARY
+% =========================================================
+\section{Professional Summary}
+Senior Software, Platform, Cloud Engineer with 8+ years of experience delivering complex products and platform initiatives across healthcare, legal tech, mobility, analytics, and enterprise software. Strong track record of end-to-end ownership, legacy modernization, cloud and platform responsibility, and technical leadership, including systems serving 10,000+ users. Experienced in taking ambiguous technical problems from architecture and planning through production while collaborating across teams and mentoring engineers.
+
+
+% =========================================================
+% SKILLS
+% =========================================================
+\section{Technical Skills}
+\small
+\skillrow{Languages}{TypeScript, JavaScript, C\#, Java, Python, Ruby, SQL, PHP}
+\skillrow{Backend}{Node.js, NestJS, .NET, Spring, Ruby on Rails, Flask, REST APIs, GraphQL, Prisma, TypeORM, Hibernate}
+\skillrow{Frontend}{Angular, React, Next.js, Vue.js, HTML/CSS, component architecture, state management, responsive applications}
+\skillrow{Cloud \& Platform}{AWS, Microsoft Azure, GCP, AWS CDK, Terraform, Docker, Kubernetes, serverless, IAM, networking, CI/CD, monitoring, observability}
+\skillrow{Data}{PostgreSQL, MySQL, MongoDB, Redis, analytics/data processing, web scraping, data visualization}
+\skillrow{Quality \& AI}{Playwright, Cypress, Jest, unit/integration/E2E testing, test strategy, AI agents, LLM/AI tooling integration}
+\skillrow{Domains}{Healthcare and clinical research, LegalTech, energy/gas markets, industrial IoT, mobility/fleet operations, fintech, construction SaaS, e-commerce analytics}
+\normalsize
+
+% =========================================================
+% EXPERIENCE
+% =========================================================
+\section{Professional Experience}
+
+\job{Senior Software Engineer}{Oct 2026 -- Present}{Alexander Thamm GmbH}{Munich, Germany}
+\rolecontext{Data and AI consultancy delivering data strategy, AI, and software engineering projects for enterprise and mid-sized clients across the DACH region.}
+\begin{itemize}
+  \item Delivering software engineering for client data and AI initiatives, from technical design through implementation and production readiness.
+\end{itemize}
+
+\job{Senior Cloud Engineer}{Apr 2026 -- Sep 2026}{Ocumeda GmbH}{Munich, Germany}
+\rolecontext{Teleophthalmology platform connecting optical retail locations with ophthalmology specialists for digital eye-screening workflows.}
+\begin{itemize}
+  \item Owned the AWS cloud platform behind security-sensitive teleophthalmology workflows, covering environment provisioning, scalability, reliability, IAM, networking, and operational infrastructure.
+  \item Evolved infrastructure as code with AWS CDK and improved repeatable environment provisioning and deployment practices across the platform.
+  \item Owned DevOps and CI/CD topics and coordinated infrastructure delivery with an external engineering team, providing architectural guidance and unblocking cross-team delivery.
+  \item Improved production operations through monitoring, observability, deployment-process improvements, and reliability-focused engineering across cloud and application boundaries.
+  \item Built and evaluated custom AI agents and AI-assisted engineering tooling while contributing across AWS, TypeScript, NestJS, React, Nx, and Playwright.
+\end{itemize}
+
+\job{Software Engineer}{Jan 2025 -- Mar 2026}{JUNE GmbH}{Munich, Germany}
+\rolecontext{AI-driven legal case-management and workflow-automation platform for complex and high-volume legal work, including documents, deadlines, communications, and reporting.}
+\begin{itemize}
+  \item Built end-to-end product features across C\#, .NET, TypeScript, and Angular for legal case management, document workflows, deadlines, communications, and business analytics.
+  \item Developed analytics functionality spanning backend APIs, domain/business logic, data processing, and frontend visualization of operational and business metrics.
+  \item Modernized a legacy Angular application by migrating 50+ components away from deprecated UI dependencies to the current Angular version and component library.
+  \item Managed infrastructure as code with Terraform and Microsoft Azure and contributed to CI/CD, monitoring, observability, testing, and production reliability.
+  \item Mentored 2 junior developers through implementation design, debugging, code reviews, and full-stack engineering practices.
+\end{itemize}
+
+\job{Senior Software / Platform Engineer - Freelance}{Feb 2021 -- Jan 2026}{Toptal, Upwork \& direct client engagements}{Remote / Munich, Germany}
+\rolecontext{Selected engagements across healthcare, fintech, industrial software, analytics, e-commerce, data products, and SaaS.}
+\begin{itemize}
+  \item Delivered full product and platform work from discovery and technical design through implementation, automated testing, CI/CD, deployment, and production support.
+\end{itemize}
+
+\client{Acclinate Inc. - Senior Full-stack / Platform Engineer}{2022 -- 2023}{Clinical research and health-equity data | NestJS, Angular, TypeORM, PostgreSQL, Auth0, GCP}
+\begin{itemize}
+  \item Led development of core platform capabilities for healthcare analytics, data processing, and operational workflows in a company focused on improving representation and engagement in clinical research.
+  \item Delivered authenticated full-stack features from requirements and technical design through production using NestJS, Angular, TypeORM, PostgreSQL, Auth0, and GCP.
+  \item Mentored 2 engineers through code reviews, frontend architecture, state management, authentication, and implementation guidance.
+\end{itemize}
+
+\client{Tanzer Holdings Limited - Senior Node.js Developer}{2024}{Custodial financial services | Node.js, TypeScript, Passport.js, IBEX, Lightspark, Railway}
+\begin{itemize}
+  \item Developed production backend functionality for a custodial financial-services product, including authentication, service orchestration, and integration-heavy payment flows.
+  \item Implemented and maintained Passport.js authentication plus integrations with IBEX and Lightspark services, and supported deployment/CI workflows on Railway.
+\end{itemize}
+
+\client{Exceed Solutions GmbH - Full-stack Developer}{2023 -- 2024}{E-commerce visitor recovery and conversion | Node.js, JavaScript, MongoDB, Kubernetes, GCP, CI/CD}
+\begin{itemize}
+  \item Built core visitor-identification and recovery tooling for software designed to recover otherwise lost web traffic and improve e-commerce conversion.
+  \item Designed and implemented a domain-specific language for configurable client-side traffic rules and business logic.
+  \item Improved recovery and exit-page experiences and delivered backend/frontend functionality across Node.js, MongoDB, Kubernetes, GCP, and CI/CD workflows.
+\end{itemize}
+
+\client{Wallabit Media LLC / Bitbo - Web Developer}{2024}{Bitcoin analytics and data visualization | Jekyll, Vue.js, JavaScript, Python, Ruby, Stripe, Formspree}
+\begin{itemize}
+  \item Built and maintained Bitcoin market-data and analytics experiences for Bitbo, including interactive charts and data visualizations.
+  \item Refactored Python and Ruby code and delivered Jekyll/Vue/Webflow functionality plus Stripe and Formspree integrations.
+\end{itemize}
+
+\client{Ota - Scraping Expert}{2023}{Travel data | Python, SQL, web scraping, Google Places API, NoSQL}
+\begin{itemize}
+  \item Developed robust scrapers for multiple travel agencies and normalized external travel/location data for downstream product use.
+  \item Contributed to architecture for future application capabilities and oversaw recurring data-collection and maintenance workflows.
+\end{itemize}
+
+\client{elunic AG - Lead QA Engineer / Full-stack Developer}{2021 -- 2022}{Industrial IoT and connected manufacturing | Angular, TypeScript, Node.js, Cypress, Jest, Redis, Docker, Kubernetes}
+\begin{itemize}
+  \item Built automated quality coverage for industrial/connected-software products, implementing E2E testing and supporting full-stack feature delivery.
+  \item Established testing workflows with Cypress/Jest and CI/CD integration across an Angular/Node.js application stack.
+  \item Coordinated execution by delegating tasks and tracking delivery against story points and project-budget constraints.
+\end{itemize}
+
+\client{Variant Perception - Full-stack Developer}{2021}{Quantitative macro and investment research | React, Node.js, Express, AWS Serverless}
+\begin{itemize}
+  \item Delivered full-stack functionality for a quantitative investment-research product focused on macro cycles, market signals, and repeatable research workflows.
+  \item Built React/Node.js application features and AWS Serverless components across implementation, testing, and deployment.
+\end{itemize}
+
+\client{RemoteAmbition - Full-stack Developer}{2021}{Job-search platform | React, TypeScript, Node.js, MySQL, GraphQL, Twilio}
+\begin{itemize}
+  \item Built frontend and backend functionality for a job-search platform, including application-facing workflows, database/API logic, and messaging capabilities.
+  \item Delivered React/TypeScript UI features and Node.js/MySQL/GraphQL services with Twilio integration.
+\end{itemize}
+
+\client{BizMiner Research Guides - Front-end Developer}{2021}{Industry financial and market analytics | Vue.js, Vuex, JavaScript, CSS, Figma}
+\begin{itemize}
+  \item Developed frontend functionality for a business-research platform providing granular industry financial, market, and valuation data.
+  \item Translated Figma designs into Vue/Vuex features, integrated endpoints, and implemented lower-level JavaScript/CSS behavior where needed.
+\end{itemize}
+
+\job{Software Engineer}{Aug 2023 -- Jan 2025}{Ingenics Digital GmbH}{Munich, Germany}
+\rolecontext{e-Gas: modular, multi-tenant software for regulated commercial workflows of gas network operators, storage operators, and traders.}
+\begin{itemize}
+  \item Led a 2-developer team to reverse-engineer and modernize e-Gas, a legacy monolith supporting regulated gas-market processes and communication with market participants.
+  \item Rebuilt backend functionality with Java and Spring, introducing a modern service layer and cleaner data-access patterns while preserving complex domain behavior.
+  \item Architected and developed the React/TypeScript frontend, defining component structure, state-management patterns, and maintainable application boundaries.
+  \item Worked within a domain involving nomination/capacity workflows, master and contract data, monitoring, deadlines, and integration-heavy gas-market processes.
+\end{itemize}
+
+\job{Technical Consultant / Full-stack Developer}{Dec 2022 -- Jul 2023}{BOLDLY GO INDUSTRIES GmbH}{Munich, Germany}
+\rolecontext{Technology and innovation consultancy focused on digital transformation, Industry 4.0, data-driven products, and industrial software.}
+\begin{itemize}
+  \item Consulted on technical architecture and delivered custom client software, including a conveyor-line management system for industrial operations.
+  \item Built Angular/TypeScript frontends and backend APIs/business logic with C\#/.NET and PHP/Laravel from client requirements through database integration.
+  \item Worked across consulting and implementation, translating business/process requirements into maintainable software components and user workflows.
+\end{itemize}
+
+\job{Software Developer}{Jan 2022 -- Dec 2022}{BITS GmbH}{Munich, Germany}
+\rolecontext{PRISMA digital breast-cancer aftercare project: patient portal/mobile workflows with questionnaire-based monitoring and escalation to breast centers.}
+\begin{itemize}
+  \item Led development of PRISMA, a multi-clinic patient-monitoring platform processing questionnaire data for 10,000+ breast-cancer patients across participating medical facilities.
+  \item Designed the relational database and backend data model and implemented notification logic that alerted physicians/breast centers when repeated patient responses indicated potential concerns.
+  \item Built the Angular/TypeScript frontend and Java/Spring/MySQL/Hibernate backend while mentoring 2 junior developers and providing technical guidance.
+\end{itemize}
+
+\job{Software Engineer Intern}{Mar 2021 -- Aug 2021}{BMW Group}{Munich, Germany}
+\rolecontext{Internal engineering tooling for vehicle/engine testing, measurement-data processing, and calibration analysis.}
+\begin{itemize}
+  \item Developed calibration and data-analysis software for engine test vehicles, helping engineers navigate and interpret large volumes of vehicle sensor and measurement data.
+  \item Built a Vue.js/JavaScript visualization interface for real-time sensor monitoring and historical analysis.
+  \item Implemented Python/Flask data-processing workflows using pandas and asammdf and created interactive Plotly visualizations for engineering measurement files.
+\end{itemize}
+
+\job{Working Student Software Developer}{Oct 2020 -- Mar 2021}{Capmo}{Munich, Germany}
+\rolecontext{Construction project-management platform for general contractors, covering site documentation, defects, plans/documents, tasks, and project coordination.}
+\begin{itemize}
+  \item Developed React/TypeScript/GraphQL business logic within a construction-management platform used to coordinate project and site workflows.
+  \item Established a Cypress E2E suite using the Page Object Model for critical workflows and regression protection.
+  \item Diagnosed and resolved frontend performance issues, UI inconsistencies, and application/backend logic defects.
+\end{itemize}
+
+\job{Working Student Software Developer}{May 2020 -- Oct 2020}{metoda GmbH}{Munich, Germany}
+\rolecontext{E-commerce and Amazon intelligence with proprietary analytics, price/product monitoring, and crawling technology.}
+\begin{itemize}
+  \item Built internal Vue.js/Quasar/Plotly analytics dashboards for e-commerce market and competitive-data analysis.
+  \item Developed Ruby on Rails/Docker backend services and API endpoints for data processing and internal product workflows.
+  \item Implemented Selenium/Ruby scraping pipelines to collect competitor, product, and market data used in analytics and monitoring.
+\end{itemize}
+
+\job{Working Student - Second Level Support}{Jan 2020 -- May 2020}{iPrax Systems GmbH}{Munich, Germany}
+\rolecontext{Practice-management software for physiotherapy, occupational therapy, speech therapy, podiatry, and alternative-practitioner workflows, including patients, appointments, prescriptions, and billing.}
+\begin{itemize}
+  \item Investigated and resolved application bugs and database conflicts using SQL in Windows Server environments for customer-facing practice-management software.
+  \item Generated client reports and business analyses with SQL and Excel and supported software testing and issue reproduction.
+  \item Documented defects in Jira and collaborated with the development team to diagnose root causes and validate fixes.
+\end{itemize}
+
+\job{Lead Developer}{Jan 2018 -- Mar 2021}{NEO TAXI}{Tbilisi, Georgia}
+\rolecontext{Official Yandex taxi-fleet partner in Georgia with driver onboarding, fleet operations, support, and payment/operational workflows.}
+\begin{itemize}
+  \item Led development of a Yandex Fleet-integrated driver and fleet-management platform supporting 10,000+ active drivers.
+  \item Built Angular/TypeScript operator and driver workflows plus NestJS/Prisma/PostgreSQL APIs for registration, onboarding, fleet operations, and automation.
+  \item Implemented real-time driver communication with Telegram Bot API and Bird.com SMS and owned architecture, integrations, production support, and operational tooling.
+  \item Automated workflows that reduced manual fleet-administration effort across driver registration, status management, and recurring operational processes.
+\end{itemize}
+
+% =========================================================
+% PRODUCTS
+% =========================================================
+\section{Selected Product Work}
+
+\project{YPay - Fleet \& Payment Management Platform \;|\; \href{https://ypay.ge}{ypay.ge}}{
+\begin{itemize}
+  \item Designed and built an end-to-end multi-tenant platform for taxi-fleet operations and driver payments, including administration, driver onboarding/confirmation, payment integrations, SMS/OTP communication, and operational automation.
+  \item Owned product architecture across backend, frontend, infrastructure, third-party integrations, and mobile workflows using NestJS, Prisma, PostgreSQL, TypeScript, and production cloud infrastructure.
+  \item Implemented secure handling of tenant-specific integration credentials and operational workflows around fleet/payment providers.
+\end{itemize}}
+
+\project{YDesk - Internal Customer Support Platform \;|\; \href{https://ydesk.org}{ydesk.org}}{
+\begin{itemize}
+  \item Built a purpose-specific support and ticketing platform for fleet operations as a lightweight Zendesk alternative tailored to internal driver-support workflows.
+  \item Took the product from concept through architecture and implementation, emphasizing fast operator workflows, maintainability, and integration with surrounding business systems.
+\end{itemize}}
+
+\project{NeoPoints - Driver Loyalty Platform \;|\; \href{https://neopoints.ge}{neopoints.ge}}{
+\begin{itemize}
+  \item Designed and launched a multi-tenant loyalty platform for Neo Taxi and Neo Delivery drivers, with separate hosts, memberships, wallets, and activation per fleet park.
+  \item Built an append-only, balanced points ledger that rewards qualifying completed orders, plus a gift catalogue with stock reservations, ranks, missions, seasons, leaderboards, order tournaments, and audited admin adjustments.
+  \item Integrated YPay identity/SMS OTP and challenge rewards through HMAC-signed internal APIs and a shared Yandex Fleet service; shipped as an installable Georgian/English/Russian PWA on Next.js, React, TypeScript, PostgreSQL, Docker, and Caddy.
+\end{itemize}}
+
+% =========================================================
+% EDUCATION
+% =========================================================
+\section{Education}
+\textbf{Technical University of Munich (TUM)} \hfill 2019 -- 2022\par
+Computer Science, B.Sc. program studies \hfill Munich, Germany\par
+
+\vspace{3pt}
+\textbf{Studienkolleg bei den Universit\"aten des Freistaates Bayern in M\"unchen} \hfill 2019\par
+T-Kurs - Mathematics, Physics, Chemistry, Computer Science, German \hfill Munich, Germany\par
+
+\end{document}
