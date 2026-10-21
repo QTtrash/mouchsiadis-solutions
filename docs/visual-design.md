@@ -52,7 +52,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 - **The hand.** The four-up tilted row cannot return without breaking two real fixes: the 13rem reader lane and the 230px minimum card width. At 1440 the fitted deck shows three cards per row and at 1120–1280 two. The tilt returns as a static alternating fan (±0.8° and a 6px stagger) when motion is allowed. Cards never overlap, never move under the pointer, and lie flat under reduced motion.
 - **Headline.** The owner approved "Senior platform engineer for products that have to work." The job title stays in English in every locale (owner decision); only the rest of the sentence is translated, and Georgian uses a colon form.
 - **Body and track record.** One general line ("I build scalable platforms and the cloud infrastructure that keeps them running.") replaces a project-specific description; no single project is described in depth in the hero. A short "Track record" list follows the actions. It comes from `impact` in `src/lib/content.ts`, where each line names the experience entries that state its facts, and a test checks every figure against them.
-- **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, NeoPoints, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
+- **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, NeoPoints, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. Only the count carries LIVE; rows do not repeat it. On phones each row shows art and title, so the intro and track record follow within the first scroll. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
 - **Facts.** Location and availability are owner-confirmed and live in `profile` in `src/lib/content.ts`. No testimonials, client logos, response times or booking links are shown; none were provided.
 - **Contact.** Every email action uses one address and a subject that names its origin. The address is always visible as text beside a copy button, because `mailto:` can do nothing without a mail client.
 - **Georgian display size.** Noto Sans Georgian runs wider and taller than Montserrat, so the Georgian hero headline is set about 10% smaller at every width. Copy is never broken inside a word.
@@ -90,7 +90,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 
 ## Card System and Open-Source Showcase
 
-Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.ts`. Cards, List, Tooling, the hero proof, the showcase and case files share records, links, status and artwork. Cards and proof use the authored compact `cardSummary`; List uses the full `summary`; case files keep the full evidence.
+Cards are a view of records in `src/lib/content.ts`, derived by `src/lib/cards.ts`. Cards, List, Tooling, the hero proof, the showcase and case files share records, links, status and artwork. Cards and proof use the authored compact `cardSummary`; List uses the full `summary`. A case file states role and outcome once in its header; its body adds narrative, contribution, constraints, details and the full stack.
 
 - **Faces.** The front presents suit pips (top label and a turned bottom pip), LIVE foil, art in a scanlined window, a Montserrat title, a mono eyebrow, the complete summary and keywords. The back presents role/constraints or details and stack.
 - **Controls.** Flip and Open case file form a tab joined to the top of the card. Tall cards can be flipped before reading, and the controls never move when a card flips.
@@ -132,7 +132,7 @@ One code-drawn pixel/SVG vocabulary is shared by cards, proof tiles, case-file c
 - Every sprite describes its project. Bayer dithering and `shape-rendering: crispEdges` preserve the pixel language. Decorative artwork has empty alternatives or is hidden from accessibility APIs.
 - The portrait button beside the hero kicker flips from pixel avatar to the real photo.
 - Do not use official Fallout assets, logos, or implied affiliation.
-- Backlog Breaker is optional and sits below the open-source showcase. Its build-time poster shares geometry with its lazy canvas engine, which loads only on Start. It supports mouse, touch, arrows, a visible Pause button and keyboard launch, and it pauses when hidden.
+- Backlog Breaker is optional and closes the Games panel; the open-source showcase closes the Work panel, so the Overview panel holds only the hero. Its build-time poster shares geometry with its lazy canvas engine, which loads only on Start. It supports mouse, touch, arrows, a visible Pause button and keyboard launch, and it pauses when hidden.
 
 **WebGL rule.** The current design ships no WebGL. A WebGL layer may be added only under all of these conditions:
 

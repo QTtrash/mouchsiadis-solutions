@@ -40,6 +40,8 @@ export interface ExperienceEntry {
   details: LocalizedRecord<string[]>;
   stack: string[];
   cover: string;
+  /** Internship or student role: folded under the main timeline. */
+  early?: boolean;
 }
 
 /** Owner-confirmed facts shown in the hero (location and availability, October 2026). */
@@ -674,7 +676,7 @@ export const experiences: ExperienceEntry[] = [
     },
     company: "Alexander Thamm GmbH",
     range: "Oct 2026 - Present",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Software engineering at a data and AI consultancy serving enterprise and mid-sized clients across the DACH region.",
       ru: "Разработка ПО в консалтинговой компании в области данных и AI для корпоративных клиентов и среднего бизнеса в регионе DACH.",
@@ -697,7 +699,7 @@ export const experiences: ExperienceEntry[] = [
     },
     company: "Ocumeda GmbH",
     range: "Apr 2026 - Sep 2026",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Owned cloud platform and infrastructure, with AI-agent integration and cross-team delivery support.",
       ru: "Ответственность за облачную платформу и инфраструктуру, интеграцию AI-агентов и поддержку поставки между командами.",
@@ -735,9 +737,9 @@ export const experiences: ExperienceEntry[] = [
       ru: "Software Engineer",
       de: "Software Engineer",
     },
-    company: "June GmbH",
+    company: "JUNE GmbH",
     range: "Jan 2025 - Mar 2026",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Full-stack analytics product work, Angular modernization, and Azure/Terraform platform ownership.",
       ru: "Full-stack разработка аналитического продукта, модернизация Angular и владение Azure/Terraform платформой.",
@@ -767,87 +769,44 @@ export const experiences: ExperienceEntry[] = [
     cover: "analytics",
   },
   {
-    slug: "toptal",
+    slug: "freelance",
     title: {
       en: "Senior Software / Platform Engineer (Freelance)",
       ru: "Senior Software / Platform Engineer (Freelance)",
       de: "Senior Software / Platform Engineer (Freelance)",
     },
-    company: "Toptal",
-    range: "Feb 2022 - Jan 2026",
-    location: "Munich, Bavaria, Germany",
-    summary: {
-      en: "Freelance platform delivery across analytics, frontend architecture, and full-stack product systems.",
-      ru: "Фриланс-поставка платформ и продуктов: аналитика, frontend-архитектура и full-stack системы.",
-      de: "Freelance-Lieferung von Plattformen und Produkten über Analytics, Frontend-Architektur und Full-Stack-Systeme hinweg.",
-    },
-    details: {
-      en: [
-        "Led platform development for Acclinate Inc., building analytics and data-processing systems.",
-        "Mentored engineers on frontend architecture patterns, state management, and authentication implementation.",
-        "Delivered full-stack solutions across client projects with NestJS, Ruby on Rails, Vue, and Webflow, from requirements through production deployment.",
-      ],
-      ru: [
-        "Вел платформенную разработку для Acclinate Inc., создавая аналитические и data-processing системы.",
-        "Менторил инженеров по frontend-архитектуре, state management и реализации аутентификации.",
-        "Поставлял full-stack решения для клиентских проектов на NestJS, Ruby on Rails, Vue и Webflow — от требований до production deployment.",
-      ],
-      de: [
-        "Leitete die Plattformentwicklung für Acclinate Inc. und baute Analytics- sowie Data-Processing-Systeme.",
-        "Mentorierte Ingenieure in Frontend-Architekturmustern, State Management und Authentifizierungsimplementierung.",
-        "Lieferte Full-Stack-Lösungen für mehrere Kundenprojekte mit NestJS, Ruby on Rails, Vue und Webflow vom Requirements-Scope bis zum produktiven Deployment.",
-      ],
-    },
-    stack: [
-      "NestJS",
-      "Ruby on Rails",
-      "Vue",
-      "Webflow",
-      "Architecture",
-      "Mentoring",
-    ],
-    cover: "platform",
-  },
-  {
-    slug: "upwork",
-    title: {
-      en: "Senior Software Engineer (Freelance)",
-      ru: "Senior Software Engineer (Freelance)",
-      de: "Senior Software Engineer (Freelance)",
-    },
-    company: "Upwork",
+    company: "Toptal, Upwork & direct clients",
     range: "Feb 2021 - Jan 2026",
-    location: "Munich, Bavaria, Germany",
+    location: "Remote / Munich, Germany",
     summary: {
-      en: "Client delivery spanning testing strategy, React product work, and AWS-backed application delivery.",
-      ru: "Клиентская поставка от стратегии тестирования до React-продуктов и приложений на AWS.",
-      de: "Kundenprojekte von Teststrategie über React-Produktarbeit bis zu AWS-gestützter Applikationslieferung.",
+      en: "Freelance product and platform delivery for healthcare, fintech, industrial, analytics and e-commerce clients, from technical design to production support.",
+      ru: "Фриланс-разработка продуктов и платформ для клиентов из здравоохранения, финтеха, промышленности, аналитики и e-commerce — от технического дизайна до поддержки в продакшене.",
+      de: "Freelance-Produkt- und Plattformentwicklung für Kunden aus Healthcare, Fintech, Industrie, Analytics und E-Commerce – vom technischen Design bis zum Produktionsbetrieb.",
     },
     details: {
       en: [
-        "Developed a comprehensive testing strategy for Elunic AG with unit, integration, and end-to-end coverage plus CI/CD integration.",
-        "Built frontend features with React and TypeScript for RemoteAmbition’s remote work platform.",
-        "Delivered complete applications for Variant Perception using JavaScript, React, Node.js, and AWS Serverless across architecture, implementation, testing, and deployment.",
+        "Led core platform development for Acclinate Inc. (clinical-research data) with NestJS, Angular, TypeORM, PostgreSQL, Auth0 and GCP, and mentored two engineers.",
+        "Designed a domain-specific language for configurable traffic rules at Exceed Solutions and built visitor-recovery tooling on Node.js, MongoDB, Kubernetes and GCP.",
+        "Built backend services and payment integrations with Passport.js, IBEX and Lightspark for Tanzer Holdings' custodial financial-services product.",
+        "Established Cypress/Jest end-to-end testing and CI/CD as lead QA engineer at elunic AG for industrial IoT software.",
+        "Delivered React, Vue, Node.js and AWS Serverless features for Variant Perception, RemoteAmbition, BizMiner and Bitbo, plus travel-data scrapers for Ota.",
       ],
       ru: [
-        "Разработал комплексную стратегию тестирования для Elunic AG: unit, integration и end-to-end покрытие с интеграцией в CI/CD.",
-        "Создавал frontend-функции на React и TypeScript для платформы удаленной работы RemoteAmbition.",
-        "Поставлял полные приложения для Variant Perception на JavaScript, React, Node.js и AWS Serverless — от архитектуры до тестирования и релиза.",
+        "Вёл разработку ядра платформы Acclinate Inc. (данные клинических исследований) на NestJS, Angular, TypeORM, PostgreSQL, Auth0 и GCP и менторил двух инженеров.",
+        "Спроектировал предметно-ориентированный язык для настраиваемых правил трафика в Exceed Solutions и создал инструменты возврата посетителей на Node.js, MongoDB, Kubernetes и GCP.",
+        "Разработал backend-сервисы и платёжные интеграции на Passport.js, IBEX и Lightspark для кастодиального финансового продукта Tanzer Holdings.",
+        "Выстроил end-to-end тестирование на Cypress/Jest и CI/CD в роли ведущего QA-инженера в elunic AG для промышленного IoT-ПО.",
+        "Поставлял функции на React, Vue, Node.js и AWS Serverless для Variant Perception, RemoteAmbition, BizMiner и Bitbo, а также скраперы туристических данных для Ota.",
       ],
       de: [
-        "Entwickelte für Elunic AG eine umfassende Teststrategie mit Unit-, Integrations- und End-to-End-Abdeckung samt CI/CD-Integration.",
-        "Baute Frontend-Features mit React und TypeScript für die Remote-Work-Plattform von RemoteAmbition.",
-        "Lieferte komplette Anwendungen für Variant Perception mit JavaScript, React, Node.js und AWS Serverless von Architektur bis Deployment.",
+        "Leitete die Kernplattform-Entwicklung für Acclinate Inc. (klinische Forschungsdaten) mit NestJS, Angular, TypeORM, PostgreSQL, Auth0 und GCP und mentorierte zwei Ingenieure.",
+        "Entwarf bei Exceed Solutions eine domänenspezifische Sprache für konfigurierbare Traffic-Regeln und baute Visitor-Recovery-Tools mit Node.js, MongoDB, Kubernetes und GCP.",
+        "Entwickelte Backend-Dienste und Zahlungsintegrationen mit Passport.js, IBEX und Lightspark für das Custody-Finanzprodukt von Tanzer Holdings.",
+        "Etablierte als Lead QA Engineer bei elunic AG End-to-End-Tests mit Cypress/Jest und CI/CD für industrielle IoT-Software.",
+        "Lieferte React-, Vue-, Node.js- und AWS-Serverless-Features für Variant Perception, RemoteAmbition, BizMiner und Bitbo sowie Reisedaten-Scraper für Ota.",
       ],
     },
-    stack: [
-      "React",
-      "TypeScript",
-      "Node.js",
-      "AWS Serverless",
-      "Testing",
-      "CI/CD",
-    ],
+    stack: ["NestJS", "Angular", "React", "Node.js", "GCP", "AWS Serverless", "Testing", "CI/CD"],
     cover: "delivery",
   },
   {
@@ -859,7 +818,7 @@ export const experiences: ExperienceEntry[] = [
     },
     company: "Ingenics Digital GmbH",
     range: "Aug 2023 - Jan 2025",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Led the refactor of a legacy monolith into a modern Java/Spring and React/TypeScript architecture.",
       ru: "Вел рефакторинг legacy-монолита в современную архитектуру на Java/Spring и React/TypeScript.",
@@ -888,13 +847,13 @@ export const experiences: ExperienceEntry[] = [
   {
     slug: "boldly-go",
     title: {
-      en: "Tech Consulting",
-      ru: "Tech Consulting",
-      de: "Tech Consulting",
+      en: "Technical Consultant / Full-stack Developer",
+      ru: "Technical Consultant / Full-stack Developer",
+      de: "Technical Consultant / Full-stack Developer",
     },
-    company: "Boldly Go Industries GmbH",
+    company: "BOLDLY GO INDUSTRIES GmbH",
     range: "Dec 2022 - Jul 2023",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Technical consulting and custom application delivery across Angular, .NET, and Laravel systems.",
       ru: "Технический консалтинг и кастомная разработка приложений на Angular, .NET и Laravel.",
@@ -929,7 +888,7 @@ export const experiences: ExperienceEntry[] = [
     },
     company: "BITS GmbH",
     range: "Jan 2022 - Dec 2022",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Led PRISMA, a multi-clinic patient monitoring system handling questionnaire data and physician alerts.",
       ru: "Вел PRISMA — систему мониторинга пациентов для нескольких клиник с обработкой анкет и уведомлениями врачей.",
@@ -964,7 +923,7 @@ export const experiences: ExperienceEntry[] = [
     },
     company: "BMW Group",
     range: "Mar 2021 - Aug 2021",
-    location: "Munich, Bavaria, Germany",
+    location: "Munich, Germany",
     summary: {
       en: "Built calibration and sensor-visualization tooling for engine test vehicles.",
       ru: "Разрабатывал инструменты калибровки и визуализации сенсорных данных для испытательных автомобилей.",
@@ -989,13 +948,14 @@ export const experiences: ExperienceEntry[] = [
     },
     stack: ["Vue.js", "JavaScript", "Flask", "Python", "Pandas", "Plotly"],
     cover: "telemetry",
+    early: true,
   },
   {
     slug: "capmo",
     title: {
       en: "Working Student Software Developer",
       ru: "Working Student Software Developer",
-      de: "Werkstudent Software Developer",
+      de: "Working Student Software Developer",
     },
     company: "Capmo",
     range: "Oct 2020 - Mar 2021",
@@ -1024,15 +984,16 @@ export const experiences: ExperienceEntry[] = [
     },
     stack: ["React", "TypeScript", "GraphQL", "Cypress", "E2E Testing"],
     cover: "testing",
+    early: true,
   },
   {
     slug: "metoda",
     title: {
       en: "Working Student Software Developer",
       ru: "Working Student Software Developer",
-      de: "Werkstudent Software Developer",
+      de: "Working Student Software Developer",
     },
-    company: "Metoda GmbH",
+    company: "metoda GmbH",
     range: "May 2020 - Oct 2020",
     location: "Munich, Germany",
     summary: {
@@ -1066,13 +1027,14 @@ export const experiences: ExperienceEntry[] = [
       "Selenium",
     ],
     cover: "scraping",
+    early: true,
   },
   {
     slug: "iprax",
     title: {
-      en: "Working Student Second Line Support",
-      ru: "Working Student Second Line Support",
-      de: "Werkstudent Second Line Support",
+      en: "Working Student - Second Level Support",
+      ru: "Working Student - Second Level Support",
+      de: "Working Student - Second Level Support",
     },
     company: "iPrax Systems GmbH",
     range: "Jan 2020 - May 2020",
@@ -1101,38 +1063,7 @@ export const experiences: ExperienceEntry[] = [
     },
     stack: ["SQL", "Excel", "Windows Server", "Jira", "Testing"],
     cover: "support",
-  },
-  {
-    slug: "grabmaier",
-    title: {
-      en: "Fertigungspraktikum",
-      ru: "Fertigungspraktikum",
-      de: "Fertigungspraktikum",
-    },
-    company: "Grabmaier Feinmechanik und Elektronik GmbH",
-    range: "Apr 2019 - Jun 2019",
-    location: "Munich, Germany",
-    summary: {
-      en: "Hands-on manufacturing internship in precision mechanics, electronics, and quality assurance.",
-      ru: "Практика в производстве прецизионной механики, электроники и контроля качества.",
-      de: "Praxis in Fertigung, Feinmechanik, Elektronik und Qualitätssicherung.",
-    },
-    details: {
-      en: [
-        "Participated in manufacturing processes for precision mechanics and electronics.",
-        "Supported production tasks and quality-assurance work.",
-      ],
-      ru: [
-        "Участвовал в производственных процессах прецизионной механики и электроники.",
-        "Поддерживал производственные задачи и работы по контролю качества.",
-      ],
-      de: [
-        "Arbeitete in Fertigungsprozessen für Feinmechanik und Elektronik mit.",
-        "Unterstützte Produktion und Qualitätssicherung.",
-      ],
-    },
-    stack: ["Manufacturing", "Electronics", "Quality Assurance"],
-    cover: "precision",
+    early: true,
   },
   {
     slug: "neo-taxi",

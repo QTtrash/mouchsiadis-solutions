@@ -55,6 +55,8 @@ const locale: Locale = localeParam;
 const copy = localeSeo[locale];
 const navigation = navigationCopy[locale];
 const deck = deckCopy[locale];
+const mainExperiences = experiences.filter((entry) => !entry.early);
+const earlyExperiences = experiences.filter((entry) => entry.early);
 const alternates = buildLocaleAlternates();
 const localized = <T,>(record: { en: T } & Partial<Record<Locale, T>>) =>
   localize(record, locale);
@@ -197,10 +199,7 @@ const contactHref = mailto(copy.labels.mailSubject);
                             <CoverArt slug={entry.cover} record={entry.slug} />
                           </span>
                           <span class="hero-proof__text">
-                            <strong>
-                              {entry.title}
-                              <span class="hero-proof__live">{deck.live}</span>
-                            </strong>
+                            <strong>{entry.title}</strong>
                             <span>{cardSummary(entry, locale)}</span>
                           </span>
                         </a>
@@ -234,15 +233,6 @@ const contactHref = mailto(copy.labels.mailSubject);
                 <span>{localized(profile.availability)}</span>
               </p>
             </div>
-
-            <OpenSourceShowcase
-              locale={locale}
-              kicker={copy.labels.openSourceKicker}
-              title={copy.labels.openSourceTitle}
-              body={copy.labels.openSourceBody}
-            />
-
-            <BacklogBreaker locale={locale} />
           </section>
 
           <section
@@ -257,6 +247,13 @@ const contactHref = mailto(copy.labels.mailSubject);
             </div>
 
             <CardDeck records={workRecords} locale={locale} />
+
+            <OpenSourceShowcase
+              locale={locale}
+              kicker={copy.labels.openSourceKicker}
+              title={copy.labels.openSourceTitle}
+              body={copy.labels.openSourceBody}
+            />
           </section>
 
           <section
@@ -271,6 +268,8 @@ const contactHref = mailto(copy.labels.mailSubject);
             </div>
 
             <CardDeck records={gameRecords} locale={locale} />
+
+            <BacklogBreaker locale={locale} />
           </section>
 
           <section
@@ -290,7 +289,7 @@ const contactHref = mailto(copy.labels.mailSubject);
 
             <div class="archive-grid archive-grid--timeline">
               {
-                experiences.map((entry) => (
+                mainExperiences.map((entry) => (
                   <ArchiveEntry
                     compact={true}
                     title={`${localized(entry.title)} / ${entry.company}`}
@@ -307,6 +306,31 @@ const contactHref = mailto(copy.labels.mailSubject);
                 ))
               }
             </div>
+
+            <details class="archive-early" data-early-roles>
+              <summary>
+                {copy.labels.earlyRoles} ({earlyExperiences.length})
+              </summary>
+              <div class="archive-grid archive-grid--timeline">
+                {
+                  earlyExperiences.map((entry) => (
+                    <ArchiveEntry
+                      compact={true}
+                      title={`${localized(entry.title)} / ${entry.company}`}
+                      eyebrow=""
+                      summary={localized(entry.summary)}
+                      narrative=""
+                      details={localized(entry.details)}
+                      stack={entry.stack}
+                      meta={[entry.range, entry.location]}
+                      cover={entry.cover}
+                      toggleLabel={copy.labels.archiveOpen}
+                      toggleCloseLabel={copy.labels.archiveClose}
+                    />
+                  ))
+                }
+              </div>
+            </details>
           </section>
 
           <section

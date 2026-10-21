@@ -192,6 +192,8 @@ test("Backlog Breaker loads on Start and plays with the keyboard", async ({ page
     if (/\/breaker\.[\w-]+\.js$/.test(request.url())) engineRequests.push(request.url());
   });
   await page.goto("/en/");
+  // The arcade lives in the Games panel; fitted consoles show one panel at a time.
+  if (await page.locator(".terminal-side-nav").isVisible()) await page.locator('[data-terminal-tab][href="#game-dev"]').click();
   const arcade = page.locator("[data-arcade]");
   await arcade.scrollIntoViewIfNeeded();
   await expect(arcade.locator(".arcade__poster")).toBeVisible();

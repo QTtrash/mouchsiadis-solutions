@@ -65,7 +65,7 @@ Tools are stored separately as `toolProjects` and rendered as Tool cards on the 
 
 ### Cards and Case Files
 
-Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files retain the full outcome, summary, and evidence.
+Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files show the outcome and role once in the header; the body carries narrative, contribution, constraints and details.
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
@@ -85,8 +85,9 @@ Each entry includes:
 - localized `details`
 - `stack`
 - `cover`
+- optional `early` — internships and student roles, folded under the main timeline in a closed disclosure
 
-The source of truth is the canonical experience text provided by the user in chat, not PDF parsing.
+The CV source, `cv/Suren_Mouchsiadis_CV.tex`, is the source of truth: companies, titles, ranges and locations match it, and freelance work is one entry like on the CV. Job titles stay in English in every locale. Do not mark a role `early` while the hero's `impact` cites it.
 
 ## Blog Content
 

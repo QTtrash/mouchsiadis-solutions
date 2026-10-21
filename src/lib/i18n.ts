@@ -207,6 +207,7 @@ export const localeSeo: Record<
       notFoundBody: string;
       returnHome: string;
       archiveClose: string;
+      earlyRoles: string;
       githubLabel: string;
       linkedinLabel: string;
       openSourceKicker: string;
@@ -296,12 +297,13 @@ export const localeSeo: Record<
       notFoundBody: "No record at this coordinate.",
       returnHome: "return to terminal",
       archiveClose: "close",
+      earlyRoles: "Internships and student roles",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
       openSourceKicker: "OPEN SOURCE",
       openSourceTitle: "Open source, in practice.",
       openSourceBody:
-        "Independent tools with public code, documented decisions, and releases you can inspect.",
+        "Public code, documented decisions, and releases you can inspect.",
     },
   },
   ru: {
@@ -385,12 +387,13 @@ export const localeSeo: Record<
       notFoundBody: "По этим координатам записи нет.",
       returnHome: "вернуться к терминалу",
       archiveClose: "закрыть",
+      earlyRoles: "Стажировки и студенческие позиции",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
       openSourceKicker: "ОТКРЫТЫЙ КОД",
       openSourceTitle: "Открытый код в работе.",
       openSourceBody:
-        "Независимые инструменты с открытым кодом, описанными решениями и доступными для проверки релизами.",
+        "Открытый код, описанные решения и релизы, доступные для проверки.",
     },
   },
   de: {
@@ -474,12 +477,13 @@ export const localeSeo: Record<
       notFoundBody: "An diesen Koordinaten liegt kein Datensatz.",
       returnHome: "zurück zum terminal",
       archiveClose: "schließen",
+      earlyRoles: "Praktika und Werkstudentenstellen",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
       openSourceKicker: "OPEN SOURCE",
       openSourceTitle: "Open Source in der Praxis.",
       openSourceBody:
-        "Unabhängige Werkzeuge mit öffentlichem Quellcode, dokumentierten Entscheidungen und nachvollziehbaren Releases.",
+        "Öffentlicher Quellcode, dokumentierte Entscheidungen und nachvollziehbare Releases.",
     },
   },
   ge: {
@@ -564,12 +568,13 @@ export const localeSeo: Record<
       notFoundBody: "ამ კოორდინატზე ჩანაწერი არ არის.",
       returnHome: "ტერმინალში დაბრუნება",
       archiveClose: "დახურვა",
+      earlyRoles: "სტაჟირებები და სტუდენტური პოზიციები",
       githubLabel: "GitHub",
       linkedinLabel: "LinkedIn",
       openSourceKicker: "ღია კოდი",
       openSourceTitle: "პროექტები ღია კოდით.",
       openSourceBody:
-        "დამოუკიდებელი ინსტრუმენტები საჯარო კოდით, დოკუმენტირებული გადაწყვეტილებებითა და შემოწმებადი რელიზებით.",
+        "საჯარო კოდი, დოკუმენტირებული გადაწყვეტილებები და შემოწმებადი რელიზები.",
     },
   },
 };
@@ -763,25 +768,25 @@ export const toolingCopy: Record<Locale, { kicker: string; title: string; body: 
     kicker: "TL // TOOLING / {count} PROJECTS",
     title: "Tools built for practice.",
     body: "Game analysis and encrypted squad coordination. Explore the code, decisions, and release status of each project.",
-    note: "Independent tools · production and prerelease projects",
+    note: "Independent tools · running in production",
   },
   ru: {
     kicker: "TL // ИНСТРУМЕНТЫ / ПРОЕКТОВ: {count}",
     title: "Инструменты для дела.",
     body: "Анализ игр и зашифрованная координация отряда. Код, решения и статус релиза — в описании каждого проекта.",
-    note: "Независимые инструменты · рабочие и предварительные версии",
+    note: "Независимые инструменты · работают в продакшене",
   },
   de: {
     kicker: "TL // WERKZEUGE / {count} PROJEKTE",
     title: "Werkzeuge für die Praxis.",
     body: "Spielanalyse und verschlüsselte Teamkoordination. Jeder Eintrag zeigt Quellcode, Entscheidungen und Release-Status.",
-    note: "Unabhängige Werkzeuge · produktive Systeme und Vorabversionen",
+    note: "Unabhängige Werkzeuge · im produktiven Einsatz",
   },
   ge: {
     kicker: "TL // ინსტრუმენტები / {count} პროექტი",
     title: "ინსტრუმენტები პრაქტიკისთვის.",
     body: "თამაშების ანალიზი და გუნდის დაშიფრული კოორდინაცია. გაეცანით პროექტების კოდს, გადაწყვეტილებებსა და გამოშვების სტატუსს.",
-    note: "დამოუკიდებელი ინსტრუმენტები · მოქმედი და წინასწარი ვერსიები",
+    note: "დამოუკიდებელი ინსტრუმენტები · მოქმედი პროექტები",
   },
 };
 

@@ -95,6 +95,26 @@ test("every hero impact line is backed by the experience it cites", () => {
   }
 });
 
+test("experience folds internships and student roles below the main timeline", async ({ page }) => {
+  const early = experiences.filter((entry) => entry.early);
+  const cited = new Set(impact.flatMap((item) => item.sources));
+  expect(early.filter((entry) => cited.has(entry.slug)), "roles cited in the hero stay visible").toEqual([]);
+  await page.goto("/en/");
+  const panel = page.locator("#experience");
+  const fold = panel.locator("[data-early-roles]");
+  expect(await fold.evaluate((element) => (element as HTMLDetailsElement).open)).toBe(false);
+  await expect(fold.locator(":scope > summary")).toHaveText(`Internships and student roles (${early.length})`);
+  await expect(fold.locator(".archive-entry")).toHaveCount(early.length);
+  await expect(panel.locator(".archive-entry")).toHaveCount(experiences.length);
+});
+
+test("case files state the role and outcome once", async ({ page }) => {
+  await page.goto("/en/work/neopoints/");
+  const outcome = (await page.locator(".case-file__outcome").textContent())!.trim();
+  await expect(page.locator(".case-file__body").getByText(outcome, { exact: true })).toHaveCount(0);
+  await expect(page.locator(".case-file__body .archive-entry__evidence dt")).toHaveText(["Contribution", "Constraints"]);
+});
+
 for (const locale of locales) {
   test(`${locale}: the hero keeps the English title and lists the track record`, async ({ page }) => {
     await page.goto(`/${locale}/`);

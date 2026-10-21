@@ -59,13 +59,12 @@ const alternates = Object.fromEntries(
     casePath(entryLocale, entry.slug),
   ]),
 ) as Record<Locale, string>;
+// Role and outcome already lead the header, so the body adds only what it lacks.
 const evidence = entry.evidence
   ? [
-      entry.evidence.role,
-      entry.evidence.contribution,
-      entry.evidence.constraints,
-      entry.evidence.outcomes,
-    ].map((value, position) => ({ label: labels[position]!, value: t(value) }))
+      { label: labels[1]!, value: t(entry.evidence.contribution) },
+      { label: labels[2]!, value: t(entry.evidence.constraints) },
+    ]
   : [];
 const fileNumber = String(index + 1).padStart(2, "0");
 const withTitle = (template: string) =>

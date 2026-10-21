@@ -119,8 +119,6 @@ async function capture(page, locale, viewport, surface) {
 
 async function inspectSurfaces(page, locale, viewport) {
   const shot = (surface) => capture(page, locale, viewport, surface);
-  await alignStart(page, ".open-source-showcase");
-  await shot("showcase");
   for (const [surface, id] of [
     ["work", "software-work"],
     ["games", "game-dev"],
@@ -141,6 +139,9 @@ async function inspectSurfaces(page, locale, viewport) {
     }
     await shot(surface);
   }
+  await navigate(page, `/${locale}/#software-work`);
+  await alignStart(page, ".open-source-showcase");
+  await shot("showcase");
   await navigate(page, `/${locale}/tooling/`);
   await page.locator('[data-deck-view="cards"]').click();
   await shot("tooling-top");
