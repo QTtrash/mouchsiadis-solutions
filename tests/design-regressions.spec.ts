@@ -38,7 +38,8 @@ async function assertLandingComposition(page: Page, width: number, height: numbe
   const fitted = width >= 1120 && height >= 720;
   if (fitted) {
     const inactive = page.locator('[data-terminal-panel]:not(.is-active)');
-    await expect(inactive).toHaveCount(5);
+    // seven panels: overview, work, games, experience, tooling, notes, contact
+    await expect(inactive).toHaveCount(6);
     for (const panel of await inactive.all()) {
       await expect(panel).toBeHidden();
       await expect(panel).toHaveAttribute("inert", "");

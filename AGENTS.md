@@ -56,7 +56,7 @@ These are standing owner decisions. Do not reverse them without asking.
 ## Code map (short)
 
 - **Content:** `src/lib/content.ts` holds the records. `src/lib/gallery.ts` maps slugs to screenshots and `src/lib/art.ts` maps slugs to PixelLab art; both stay separate so Node tests can import `content.ts`. `src/lib/diagrams.ts` holds the architecture flows. `src/lib/i18n.ts` holds all interface copy.
-- **Pages:** `src/pages/[locale]/index.astro` is the landing page, one DOM for both views. `src/pages/[locale]/work/[slug].astro` is the case file.
+- **Pages:** `src/pages/[locale]/index.astro` is the landing page, one DOM for both views. `src/pages/[locale]/work/[slug].astro` is the case file. In the terminal view, Tooling is a tab of the landing console (`#tooling`); `src/pages/[locale]/tooling/` serves the Simple view and redirects terminal visitors to the tab. Every terminal tab must behave the same: no tab may load a separate page.
 - **View switch:**
   - The pre-paint script in `src/components/BaseHead.astro` sets `html[data-view]`.
   - `Header.astro` wires the lever and the drawer toggle.

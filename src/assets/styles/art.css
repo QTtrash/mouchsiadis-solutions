@@ -203,3 +203,14 @@
     font-size: min(2rem, 7.4vw);
   }
 }
+
+/* Phones: compact experience entries used to drop their cover. With PixelLab
+   art the plate gets its own row above the title, at 2x where it fits. */
+@media (max-width: 767px) {
+  .archive-entry--compact .archive-entry__cover:has(.card-art) {
+    display: block;
+    grid-row: auto;
+    grid-column: 1 / -1;
+    width: min(100%, 16rem);
+  }
+}

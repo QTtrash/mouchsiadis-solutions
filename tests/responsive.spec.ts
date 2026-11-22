@@ -73,13 +73,11 @@ for (const locale of locales) {
   });
 }
 
-test("Tooling to About uses the prefetched direct route", async ({ page }) => {
+test("Tooling to About switches console tabs in place", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1120, "desktop primary navigation");
   await page.goto("/en/tooling/");
-  // on console pages the side nav is the desktop navigation (the header drops its duplicate links)
-  await expect(page.locator(".site-header__nav")).toBeHidden();
-  const about = page.locator('.terminal-side-nav a[href="/en/#experience"]');
-  await expect(about).toHaveAttribute("data-astro-prefetch", "");
+  await expect(page).toHaveURL(/\/en\/#tooling$/);
+  const about = page.locator('.terminal-side-nav [data-terminal-tab][href="#experience"]');
   await about.click();
   await expect(page).toHaveURL(/\/en\/#experience$/);
   await expect(page.locator("#experience")).toBeVisible();
@@ -170,8 +168,10 @@ test("desktop panels scroll inside the terminal and reset on tab changes", async
 });
 
 test("tooling is a terminal panel with the tool card deck", async ({ page }) => {
+  // Old links land in the console tab: the terminal view has no separate page.
   await page.goto("/en/tooling/");
-  await expect(page.locator("h1")).toHaveText("Tools built for practice.");
+  await expect(page).toHaveURL(/\/en\/#tooling$/);
+  await expect(page.locator("#tooling h2")).toHaveText("Tools built for practice.");
   const cards = page.locator("#tooling [data-card]");
   await expect(cards).toHaveCount(2);
   await expect(cards.first()).toHaveAttribute("data-suit", "tool");
@@ -179,7 +179,8 @@ test("tooling is a terminal panel with the tool card deck", async ({ page }) => 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   if ((page.viewportSize()?.width ?? 0) >= 1120) {
-    await expect(page.locator('.terminal-side-nav a[aria-current="page"]')).toHaveText(/Tooling/);
+    await expect(page.locator('.terminal-side-nav a[aria-current="location"]')).toHaveText(/Tooling/);
+    await expect(page.locator(".tmux__window.is-active")).toHaveText("4:tooling");
     await expect(page.locator("#tooling [data-deck]")).toHaveClass(/is-draggable/);
   }
 });
@@ -187,7 +188,8 @@ test("tooling is a terminal panel with the tool card deck", async ({ page }) => 
 test("tool case files lead back to Tooling", async ({ page }) => {
   await page.goto("/en/work/raid-signal/");
   await page.getByRole("link", { name: "← Back to tooling" }).click();
-  await expect(page).toHaveURL(/\/en\/tooling\/$/);
+  await expect(page).toHaveURL(/\/en\/#tooling$/);
+  await expect(page.locator("#tooling")).not.toHaveAttribute("inert", "");
 });
 
 test("blog is grouped as a dated archive", async ({ page }) => {
@@ -240,3 +242,19 @@ for (const path of ["/en/", "/en/tooling/", "/404.html"]) {
     expect(Math.abs(docHeight - footerBottom)).toBeLessThanOrEqual(1);
   });
 }
+
+test("the Tooling tab switches in place like every other tab, with no duplicate ids", async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 1120, "fitted console tabs");
+  await page.goto("/en/");
+  const ids = await page.evaluate(() => [...document.querySelectorAll("[id]")].map((element) => element.id));
+  expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
+  const marker = await page.evaluate(() => ((window as unknown as { stay: number }).stay = 42));
+  await page.locator('[data-terminal-tab][href="#tooling"]').click();
+  await expect(page).toHaveURL(/\/en\/#tooling$/);
+  expect(await page.evaluate(() => (window as unknown as { stay?: number }).stay)).toBe(marker);
+  await expect(page.locator("#tooling")).toHaveClass(/is-active/);
+  await expect(page.locator("#overview")).toHaveAttribute("inert", "");
+  await expect(page.locator('.site-header__nav a[data-nav-key="tooling"]')).toHaveAttribute("href", "/en/#tooling");
+  await page.goBack();
+  await expect(page.locator("#overview")).not.toHaveAttribute("inert", "");
+});

@@ -19,14 +19,16 @@ interface Props {
   locale: Locale;
   index: number;
   count: number;
+  idPrefix?: string;
+  transition?: boolean;
 }
 
-const { record, locale, index, count } = Astro.props;
+const { record, locale, index, count, idPrefix = "", transition = true } = Astro.props;
 const { entry, suit } = record;
 const copy = deckCopy[locale];
 const labels = evidenceLabels[locale];
 const href = casePath(locale, entry.slug);
-const titleId = `card-${entry.slug}-title`;
+const titleId = `${idPrefix}card-${entry.slug}-title`;
 const keywords = localize(entry.meta, locale);
 const details = localize(entry.details, locale).slice(0, 3);
 // Fan geometry: signed distance from the middle of the hand, and its square for the arc.
@@ -53,7 +55,7 @@ const offset = index - (count - 1) / 2;
       </div>
       <div
         class="deck-card__art"
-        style={`view-transition-name: ${transitionName(entry.slug)};`}
+        style={transition ? `view-transition-name: ${transitionName(entry.slug)};` : undefined}
         aria-hidden="true"
       >
         <CardArt slug={entry.slug} cover={entry.cover} glint />

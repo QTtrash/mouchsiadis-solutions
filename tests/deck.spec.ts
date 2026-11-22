@@ -21,9 +21,10 @@ test("Contact is in the first viewport without interaction", async ({ page }) =>
 
 test("every card opens a localized case file", async ({ page, request }) => {
   await page.goto("/en/");
-  const links = page.locator("[data-card-open]");
+  // Work (platforms and tools) plus games: every record with a case file. The
+  // Tooling tab repeats the tool cards, so it is left out of the count.
+  const links = page.locator("#software-work [data-card-open], #game-dev [data-card-open]");
   const hrefs = await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  // Work (platforms and tools) plus games: every record with a case file.
   expect(hrefs).toHaveLength(caseRecords.length);
   for (const href of hrefs) {
     expect(href).toMatch(/^\/en\/work\/[a-z-]+\/$/);
@@ -147,7 +148,8 @@ test("desktop console reaches Games, and old CV links land on Contact", async ({
 
 test("cards carry their PixelLab art, crisp and undraggable, and a pixel suit mark", async ({ page }) => {
   await page.goto("/en/");
-  const card = (title: string) => page.locator(`[data-card][data-title="${title}"]`);
+  // The Tooling tab repeats the tool cards; check the Work and Games hands.
+  const card = (title: string) => page.locator(`:is(#software-work, #game-dev) [data-card][data-title="${title}"]`);
   const sources = new Set<string>();
   for (const title of ["YPay", "Grindlike", "Alice Plays"]) {
     const art = card(title).locator(".deck-card__art .card-art__img");

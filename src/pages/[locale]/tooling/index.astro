@@ -1,15 +1,14 @@
 ---
-// Tooling: the instrument atlas as one more panel of the field terminal.
-// Same card deck, reader, and pixel art as the landing page; the side nav
-// links back into the landing panels.
+// Tooling for the Simple view (and old links). In the terminal view Tooling is
+// a tab of the landing console (index.astro, #tooling), so terminal visitors
+// are sent there before first paint, and pulling the lever here does the same.
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CardDeck from "../../../components/CardDeck.astro";
-import PixelArt from "../../../components/PixelArt.astro";
 import TerminalChassis from "../../../components/TerminalChassis.astro";
 import TermPrompt from "../../../components/TermPrompt.astro";
 import { toolRecords } from "../../../lib/cards";
 import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
-import { navSprites } from "../../../lib/sprites";
+import { icon } from "../../../lib/art";
 import {
   LOCALES,
   isLocale,
@@ -37,6 +36,7 @@ const kicker = copy.kicker.replace(
   "{count}",
   String(toolRecords.length).padStart(2, "0"),
 );
+const terminalTab = `${home}#tooling`;
 const tabs = [
   { key: "overview", href: `${home}#overview`, label: seo.nav.overview },
   { key: "work", href: `${home}#software-work`, label: seo.nav.work },
@@ -62,6 +62,12 @@ const tabs = [
   alternates={buildLocaleAlternates("/tooling")}
   bodyClass="has-console"
 >
+  <script is:inline slot="head" define:vars={{ terminalTab }}>
+    if (document.documentElement.dataset.view === "terminal") location.replace(terminalTab);
+    window.addEventListener("interface-view-change", (event) => {
+      if (event.detail === "terminal") location.assign(terminalTab);
+    });
+  </script>
   <section
     class="terminal-console section tooling-console"
     data-terminal-lang={localeLabels[locale]}
@@ -84,10 +90,7 @@ const tabs = [
                 aria-current={"current" in tab ? "page" : undefined}
                 data-astro-prefetch
               >
-                <PixelArt
-                  grid={navSprites[tab.key]!}
-                  class="terminal-side-nav__icon"
-                />
+                <img class="terminal-side-nav__icon px-icon" src={icon(tab.key)} alt="" width="32" height="32" />
                 {tab.label}
               </a>
             ))

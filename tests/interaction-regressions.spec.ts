@@ -71,14 +71,17 @@ test("content and navigation remain usable without JavaScript", async ({ browser
   const page = await context.newPage();
   for (const locale of ["en", "ge"]) {
     await page.goto(`http://127.0.0.1:4322/${locale}/`);
-    for (const panel of await page.locator("[data-terminal-panel]").all()) await expect(panel).toBeVisible();
+    // The Tooling tab is terminal-only; no-JS visitors get the Simple view.
+    for (const panel of await page.locator("[data-terminal-panel]:not([data-terminal-only])").all()) await expect(panel).toBeVisible();
     await expect(page.locator(".site-header__nav")).toBeVisible();
     await expect(page.locator(".site-header .locale-switcher")).toBeVisible();
     await expect(page.locator("[data-drawer-open]")).toBeHidden();
     // Without JavaScript the server-rendered Simple view applies: work rows, not cards.
     await expect(page.locator("html")).toHaveAttribute("data-view", "simple");
     await expect(page.locator(`#software-work .work-row a[href="/${locale}/work/neopoints/"]`)).toBeVisible();
-    await page.locator(`.site-header__nav a[href="/${locale}/tooling/"]`).click();
+    // Without JavaScript the Simple view keeps Tooling as its own page.
+    await expect(page.locator('.site-header__nav a[data-nav-key="tooling"]')).toHaveAttribute("href", `/${locale}/tooling/`);
+    await page.locator('.site-header__nav a[data-nav-key="tooling"]').click();
     await expect(page.locator("h1")).toBeVisible();
   }
   await context.close();

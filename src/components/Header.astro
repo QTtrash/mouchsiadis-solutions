@@ -31,6 +31,11 @@ const links = [
   { key: "notes", label: nav.notes, href: buildLocalePath(locale, "/blog") },
 ];
 const drawerLinks = [...links, { key: "contact", label: nav.contact, href: contactHref }];
+// Tooling is a console tab in the terminal view and its own page in the Simple
+// view; syncView() below points these links at the right one.
+const toolingTerminalHref = `${home}#tooling`;
+const viewLinkAttrs = (key: string, href: string) =>
+  key === "tooling" ? { "data-simple-href": href, "data-terminal-href": toolingTerminalHref } : {};
 ---
 
 <header class="site-header">
@@ -55,6 +60,8 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
               link.key === "notes" && active === "blog" && "is-active",
             ]}
             href={link.href}
+            data-nav-key={link.key}
+            {...viewLinkAttrs(link.key, link.href)}
             data-astro-prefetch
             aria-current={
               (link.key === "tooling" && active === "tooling") ||
@@ -104,7 +111,7 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
     <nav class="navigation-drawer__links" aria-label={nav.primaryLabel}>
       {
         drawerLinks.map((link, index) => (
-          <a href={link.href} data-drawer-link data-astro-prefetch>
+          <a href={link.href} data-drawer-link data-nav-key={link.key} {...viewLinkAttrs(link.key, link.href)} data-astro-prefetch>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <strong>{link.label}</strong>
           </a>
@@ -193,8 +200,12 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
   const viewSwitches = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-view-switch]"));
   const viewPreference = drawer?.querySelector<HTMLButtonElement>("[data-view-preference]");
   const viewLabel = viewPreference?.querySelector<HTMLElement>("[data-view-label]");
+  const viewLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("a[data-terminal-href][data-simple-href]"));
   const syncView = () => {
     const terminal = root.dataset.view === "terminal";
+    viewLinks.forEach((link) => {
+      link.href = (terminal ? link.dataset.terminalHref : link.dataset.simpleHref) ?? link.href;
+    });
     viewSwitches.forEach((button) => button.setAttribute("aria-checked", String(terminal)));
     viewPreference?.setAttribute("aria-pressed", String(terminal));
     if (viewLabel && viewPreference) {

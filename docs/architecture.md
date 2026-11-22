@@ -25,7 +25,7 @@ The site has four public concerns:
 
 - `src/pages/[locale]/index.astro`
   One landing DOM for both views. In the Simple view the console chrome, hero proof, card hand and game are hidden; the datasheet title block (sheet bar, name, pixel portrait, spec list), the numbered Selected work rows (`WorkRows.astro`), Games rows, Experience, Notes and Contact read as one column. In the terminal view it is the landing page inside the CRT glass, described below. Each panel opens with a decorative `TermPrompt` and the status line is a tmux bar (window list, LIVE count, Munich clock) driven by `terminal.ts`.
-  Terminal view: The hero names Suren (the page's only `h1`), his location and availability, and shows the PixelLab operator-room scene; there is no headline and there are no hero buttons (owner, 22 November 2026). Then come live proof (the `live: true` Work records) and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Notes, Contact. `#cv` is an alias for Contact.
+  Terminal view: The hero names Suren (the page's only `h1`), his location and availability, and shows the PixelLab operator-room scene; there is no headline and there are no hero buttons (owner, 22 November 2026). Then come live proof (the `live: true` Work records) and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Tooling, Notes, Contact. Tooling (`#tooling`, `data-terminal-only`) is a real console tab with the tool deck. Its cards repeat the tool records from Work, so its deck uses `idPrefix="tooling-"` and no view-transition names. `#cv` is an alias for Contact.
 - `src/pages/[locale]/work/[slug].astro`
   Case file per record. The header shows the numbered kicker, eyebrow, status and outcome; product and source links are secondary. Then the hero screenshot (`ShotFrame`), "At a glance" (role, status, year, stack, links), overview, problem and constraints, what was built, the architecture flow (`ArchDiagram`), collection parts (`parts`, for SurikMods), the gallery (`Gallery`, a `<dialog>` lightbox from `src/scripts/gallery.ts`), the full stack and previous/next case. The hero shot also becomes the page's `og:image`. It always ends with a contextual call to action (`Email me about {project}` with a subject, CV, visible address).
 - `src/components/ViewSwitch.astro`
@@ -63,7 +63,7 @@ The site has four public concerns:
 - `src/pages/[locale]/blog/[...slug].astro`
   Source for blog-post pages under each post’s original language, read from frontmatter.
 - `src/pages/[locale]/tooling/index.astro`
-  The Tool collection as a field-terminal panel: wrapping Tool cards, optional reader/drag, flip, and List view, with navigation back into the landing panels. Counts include production tools and prereleases; they are not a count of LIVE systems.
+  The Tool collection as its own page for the Simple view, old links and SEO. In the terminal view an inline head script (`slot="head"`) replaces the location with `/<locale>/#tooling` before first paint. It does the same when the lever is pulled on this page, so terminal visitors always use the console tab. Counts include production tools and prereleases; they are not a count of LIVE systems.
 - `src/components/BaseHead.astro`
   Metadata and the blocking pre-paint script: `html.js`, `data-effects`, and `data-view` (`?view=` → stored `interfaceView` → `simple`).
 - `src/layouts/BaseLayout.astro`
@@ -75,7 +75,7 @@ The site has four public concerns:
 - `src/components/ArchiveEntry.astro`
   Expandable archive record used across work and experience, including optional product evidence.
 - `src/components/Header.astro`
-  The view lever and brand at the start, then five-link navigation (hidden with JavaScript below 1200px, and below 1600px in Georgian, where the Options drawer carries it) (Work, Games, Tooling, Experience, Notes), the secondary amber-outlined Contact key, locale keys (in the drawer below 1120px), and a wrapped Web Awesome drawer for navigation, CV, and preferences.
+  The view lever and brand at the start, then five-link navigation (hidden with JavaScript below 1200px, and below 1600px in Georgian, where the Options drawer carries it) (Work, Games, Tooling, Experience, Notes), the secondary amber-outlined Contact key, locale keys (in the drawer below 1120px), and a wrapped Web Awesome drawer for navigation, CV, and preferences. The Tooling links carry `data-simple-href` and `data-terminal-href`, and `syncView()` points them at `/tooling/` or `/#tooling` to match the view.
 
 ## Build Path
 

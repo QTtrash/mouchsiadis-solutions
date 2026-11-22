@@ -20,6 +20,7 @@ import {
   heroProofRecords,
   liveWorkRecords,
   localize,
+  toolRecords,
   workRecords,
 } from "../../lib/cards";
 import {
@@ -40,6 +41,7 @@ import {
   localeSeo,
   navigationCopy,
   sheetCopy,
+  toolingCopy,
   type Locale,
 } from "../../lib/i18n";
 import "../../assets/styles/deck.css";
@@ -59,6 +61,8 @@ const copy = localeSeo[locale];
 const navigation = navigationCopy[locale];
 const deck = deckCopy[locale];
 const sheet = sheetCopy[locale];
+const tooling = toolingCopy[locale];
+const toolingKicker = tooling.kicker.replace("{count}", String(toolRecords.length).padStart(2, "0"));
 const mainExperiences = experiences.filter((entry) => !entry.early);
 const earlyExperiences = experiences.filter((entry) => entry.early);
 const alternates = buildLocaleAlternates();
@@ -88,6 +92,7 @@ const contactHref = mailto(copy.labels.mailSubject);
               ["software-work", copy.nav.work],
               ["game-dev", copy.nav.games],
               ["experience", copy.nav.experience],
+              ["tooling", navigation.tooling],
               ["blog", copy.nav.blog],
               ["contact", copy.nav.contact],
             ].map(([id, label], index) => (
@@ -121,10 +126,8 @@ const contactHref = mailto(copy.labels.mailSubject);
           <a href="#experience" data-terminal-tab
             ><img class="terminal-side-nav__icon px-icon" src={icon("experience")} alt="" width="32" height="32" />{copy.nav.experience}</a
           >
-          <a
-            class="tooling-portal-link"
-            href={buildLocalePath(locale, "/tooling")}
-            ><img class="terminal-side-nav__icon px-icon" src={icon("tooling")} alt="" width="32" height="32" />{navigation.tooling}<span aria-hidden="true">↗</span></a
+          <a href="#tooling" data-terminal-tab
+            ><img class="terminal-side-nav__icon px-icon" src={icon("tooling")} alt="" width="32" height="32" />{navigation.tooling}</a
           >
           <a href="#blog" data-terminal-tab
             ><img class="terminal-side-nav__icon px-icon" src={icon("notes")} alt="" width="32" height="32" />{copy.nav.blog}</a
@@ -347,6 +350,24 @@ const contactHref = mailto(copy.labels.mailSubject);
                 }
               </div>
             </details>
+          </section>
+
+          <section
+            id="tooling"
+            class="section terminal-section"
+            data-terminal-panel="tooling"
+            data-terminal-only
+          >
+            <TermPrompt cmd="ls --tools" path="~/tooling" />
+            <div class="section-heading">
+              <p class="section-heading__kicker">{toolingKicker}</p>
+              <h2>{tooling.title}</h2>
+              <p class="section-heading__body">{tooling.body}</p>
+            </div>
+
+            <CardDeck records={toolRecords} locale={locale} idPrefix="tooling-" transition={false} rows={false} />
+
+            <p class="tooling-note">{tooling.note}</p>
           </section>
 
           <section

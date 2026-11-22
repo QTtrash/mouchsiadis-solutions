@@ -10,8 +10,8 @@ test.beforeEach(async ({}, testInfo) => {
 });
 
 async function openDeck(page: Page, panel: Panel = "software-work", locale = "en"): Promise<Locator> {
-  await page.goto(`/${locale}/${panel === "tooling" ? "tooling/" : ""}`);
-  if (panel !== "tooling" && (await page.locator(".terminal-side-nav").isVisible())) {
+  await page.goto(`/${locale}/`);
+  if (await page.locator(".terminal-side-nav").isVisible()) {
     await page.locator(`[data-terminal-tab][href="#${panel}"]`).click();
   }
   await page.evaluate(() => document.fonts.ready);
@@ -225,7 +225,7 @@ test("touch swipes across each collection preserve horizontal and vertical scrol
   const page = await context.newPage();
   const session = await context.newCDPSession(page);
   for (const panel of panels) {
-    await page.goto(`http://127.0.0.1:4322/en/${panel === "tooling" ? "tooling/" : ""}`);
+    await page.goto(`http://127.0.0.1:4322/en/#${panel}`);
     const deck = page.locator(`#${panel} [data-deck]`);
     const hand = deck.locator("[data-card-hand]");
     await expect(deck).toHaveClass(/is-enhanced/);
@@ -258,9 +258,9 @@ test("Georgian reader instructions use the intended font at the narrow fitted br
   await session.send("CSS.enable");
   const { root } = await session.send("DOM.getDocument");
   for (const selector of [".card-reader__label", "[data-reader-status]", ".card-reader__hint"]) {
-    const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector });
+    const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector: `#tooling ${selector}` });
     const { fonts } = await session.send("CSS.getPlatformFontsForNode", { nodeId });
     expect(fonts.some((font) => font.isCustomFont && font.familyName.startsWith("Noto Sans Georgian") && font.glyphCount > 0), selector).toBe(true);
-    await expect(page.locator(selector)).toHaveCSS("text-transform", "none");
+    await expect(page.locator(`#tooling ${selector}`)).toHaveCSS("text-transform", "none");
   }
 });

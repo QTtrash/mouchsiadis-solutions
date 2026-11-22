@@ -11,15 +11,21 @@ import { deckCopy, evidenceLabels, localeSeo, type Locale } from "../lib/i18n";
 interface Props {
   records: CaseRecord[];
   locale: Locale;
+  /** Prefix for card ids when the same records render twice on a page. */
+  idPrefix?: string;
+  /** Give card art a view-transition name (only one deck per page may). */
+  transition?: boolean;
+  /** Render the Simple-view rows too (off for terminal-only decks). */
+  rows?: boolean;
 }
 
-const { records, locale } = Astro.props;
+const { records, locale, idPrefix = "", transition = true, rows = true } = Astro.props;
 const copy = deckCopy[locale];
 const seo = localeSeo[locale];
 const labels = evidenceLabels[locale];
 ---
 
-<WorkRows records={records} locale={locale} />
+{rows && <WorkRows records={records} locale={locale} />}
 
 <div class="card-deck" data-deck data-terminal-only>
   <div class="card-deck__toolbar">
@@ -65,6 +71,8 @@ const labels = evidenceLabels[locale];
             locale={locale}
             index={index}
             count={records.length}
+            idPrefix={idPrefix}
+            transition={transition}
           />
         ))
       }

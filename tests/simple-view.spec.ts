@@ -161,3 +161,20 @@ test("every experience role carries its PixelLab art, early roles included", asy
     await expect(image).toHaveCSS("image-rendering", "pixelated");
   }
 });
+
+test("the Simple view keeps Tooling as its own page, and phones show experience art", async ({ page }) => {
+  await page.goto("/en/tooling/");
+  await expect(page).toHaveURL(/\/en\/tooling\/$/);
+  await expect(page.locator("html")).toHaveAttribute("data-view", "simple");
+  await expect(page.locator(".work-row")).toHaveCount(2);
+  await page.goto("/en/");
+  await expect(page.locator('.site-header__nav a[data-nav-key="tooling"]')).toHaveAttribute("href", "/en/tooling/");
+  await page.locator(".site-header [data-view-switch]").click();
+  await expect(page.locator('.site-header__nav a[data-nav-key="tooling"]')).toHaveAttribute("href", "/en/#tooling");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator(".site-header [data-view-switch]").click();
+  const first = page.locator("#experience .archive-grid--timeline").first().locator(".card-art__img").first();
+  await first.scrollIntoViewIfNeeded();
+  await expect(first).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+});

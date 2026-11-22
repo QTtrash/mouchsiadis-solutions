@@ -65,6 +65,11 @@ This section supersedes the Simple-view and hero parts of the first November pas
 
 **Regenerating art.** The PixelLab tools are listed in the `pixellab` MCP server. Use the palette above, pass the existing `cards/ypay.png` as the style image, and keep the canvas at 128×64 for cards. Pick candidates by eye, then copy the PNG into `src/assets/art/`. A new record needs no code change: `cardArt()` finds `cards/<slug>.png` by name.
 
+**Tooling tab and phone experience art (22 November 2026, owner).**
+
+- In the terminal, Tooling now behaves like every other tab. It is an in-console panel with the same prompt, the tmux window `4:tooling` and instant switching, where it used to be a separate page with an older console.
+- On phones, experience entries show their role art as a 2:1 plate above the title (`art.css`). Previously compact covers were hidden.
+
 **New native-review copy (ru/de/ge):** the datasheet labels in `sheetCopy` (sheet title, No., System, Status, Base, systems live).
 
 **Verified, 22 November 2026 (second pass).** `npm run validate`: 0 Astro/TypeScript errors; budgets JS 8.9 KB, CSS 26.6 KB, inline art 7.3 KB gzipped; 298 of 298 browser tests passed on the release run. In an earlier run, a card flip at 768×1024 failed once and then passed 20 of 20 on repeat, so it is timing-flaky. Screenshots are in [design-audit/datasheet-pixels](./design-audit/datasheet-pixels/).
