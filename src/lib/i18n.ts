@@ -138,8 +138,6 @@ export const localeSeo: Record<
   {
     title: string;
     description: string;
-    heroTitle: string;
-    heroBody: string;
     nav: {
       overview: string;
       work: string;
@@ -153,8 +151,6 @@ export const localeSeo: Record<
       work: string;
       blog: string;
       cv: string;
-      contact: string;
-      play: string;
     };
     sections: {
       work: string;
@@ -218,9 +214,6 @@ export const localeSeo: Record<
     title: "Mouchsiadis Solutions",
     description:
       "Suren Mouchsiadis is a senior platform engineer building scalable platforms, the cloud infrastructure under them, and independent software.",
-    heroTitle: "Senior platform engineer for products that have to work.",
-    heroBody:
-      "I build scalable platforms and the cloud infrastructure that keeps them running.",
     nav: {
       overview: "Overview",
       work: "Work",
@@ -234,8 +227,6 @@ export const localeSeo: Record<
       work: "See work",
       blog: "Read notes",
       cv: "CV (PDF)",
-      contact: "Contact me",
-      play: "Explore projects",
     },
     sections: {
       work: "Selected work",
@@ -306,9 +297,6 @@ export const localeSeo: Record<
     title: "Mouchsiadis Solutions",
     description:
       "Сурен Мухсиадис — senior platform engineer: масштабируемые платформы, облачная инфраструктура под ними и независимое ПО.",
-    heroTitle: "Senior platform engineer для продуктов, которые обязаны работать.",
-    heroBody:
-      "Строю масштабируемые платформы и облачную инфраструктуру, на которой они работают.",
     nav: {
       overview: "Обзор",
       work: "Работы",
@@ -322,8 +310,6 @@ export const localeSeo: Record<
       work: "Смотреть работы",
       blog: "Читать записи",
       cv: "Резюме (PDF)",
-      contact: "Написать мне",
-      play: "Смотреть проекты",
     },
     sections: {
       work: "Избранные работы",
@@ -394,9 +380,6 @@ export const localeSeo: Record<
     title: "Mouchsiadis Solutions",
     description:
       "Suren Mouchsiadis ist Senior Platform Engineer: skalierbare Plattformen, die Cloud-Infrastruktur darunter und unabhängige Software.",
-    heroTitle: "Senior Platform Engineer für Produkte, die funktionieren müssen.",
-    heroBody:
-      "Ich baue skalierbare Plattformen und die Cloud-Infrastruktur, die sie am Laufen hält.",
     nav: {
       overview: "Überblick",
       work: "Arbeit",
@@ -410,8 +393,6 @@ export const localeSeo: Record<
       work: "Arbeiten ansehen",
       blog: "Notizen lesen",
       cv: "CV (PDF)",
-      contact: "Kontakt aufnehmen",
-      play: "Projekte ansehen",
     },
     sections: {
       work: "Ausgewählte Arbeiten",
@@ -482,9 +463,6 @@ export const localeSeo: Record<
     title: "Mouchsiadis Solutions",
     description:
       "სურენ მუხსიადისი — senior platform engineer: მასშტაბირებადი პლატფორმები, მათი ღრუბლოვანი ინფრასტრუქტურა და დამოუკიდებელი პროგრამები.",
-    heroTitle: "Senior platform engineer: სისტემები, რომლებიც უნდა მუშაობდეს.",
-    heroBody:
-      "ვაშენებ მასშტაბირებად პლატფორმებს და ღრუბლოვან ინფრასტრუქტურას, რომელზეც ისინი მუშაობს.",
     nav: {
       overview: "მიმოხილვა",
       work: "ნამუშევრები",
@@ -498,8 +476,6 @@ export const localeSeo: Record<
       work: "ნამუშევრების ნახვა",
       blog: "ჩანაწერების კითხვა",
       cv: "CV (PDF)",
-      contact: "დამიკავშირდით",
-      play: "პროექტების ნახვა",
     },
     sections: {
       work: "რჩეული ნამუშევრები",
@@ -1043,3 +1019,46 @@ export const caseCopy: Record<
   },
 };
 
+
+/** Labels of the Simple view's datasheet (November 2026, "Datasheet + pixels"). */
+export const sheetCopy: Record<
+  Locale,
+  { sheet: string; no: string; system: string; status: string; base: string; live: string; systemsLive: string }
+> = {
+  en: {
+    sheet: "Portfolio datasheet",
+    no: "No.",
+    system: "System",
+    status: "Status",
+    base: "Base",
+    live: "Live",
+    systemsLive: "systems live",
+  },
+  ru: {
+    sheet: "Портфолио: технический лист",
+    no: "№",
+    system: "Система",
+    status: "Статус",
+    base: "База",
+    live: "Live",
+    systemsLive: "систем в работе",
+  },
+  de: {
+    sheet: "Portfolio-Datenblatt",
+    no: "Nr.",
+    system: "System",
+    status: "Status",
+    base: "Standort",
+    live: "Live",
+    systemsLive: "Systeme live",
+  },
+  ge: {
+    sheet: "პორტფოლიოს მონაცემთა ფურცელი",
+    no: "№",
+    system: "სისტემა",
+    status: "სტატუსი",
+    base: "ბაზა",
+    live: "Live",
+    systemsLive: "სისტემა მუშაობს",
+  },
+};

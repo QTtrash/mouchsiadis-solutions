@@ -25,7 +25,14 @@ test("a first visit gets the Simple view, with the terminal chrome and cards hid
   await expect(page.locator(".work-rows").first()).toBeVisible();
   const hrefs = await page.locator(".work-row a").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
   expect(hrefs.sort()).toEqual(caseRecords.map(({ entry }) => `/en/work/${entry.slug}/`).sort());
-  expect(await primaryInViewport(page)).toBe(1);
+  // datasheet + pixels: every row carries its PixelLab card art, crisp
+  const art = page.locator(".work-row .card-art__img");
+  expect(await art.count()).toBe(caseRecords.length);
+  await expect(art.first()).toHaveCSS("image-rendering", "pixelated");
+  // The hero carries no buttons (owner, 22 November 2026); Contact is in the header.
+  expect(await primaryInViewport(page)).toBe(0);
+  await expect(page.locator(".sheet-bar")).toBeVisible();
+  await expect(page.locator(".hero-spec")).toBeVisible();
 });
 
 test("the rusty switch is a named switch that boots the terminal and remembers it", async ({ page }) => {
@@ -93,7 +100,7 @@ test.describe("matrix", () => {
           await page.goto(path);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
           expect(overflow, path).toBeLessThanOrEqual(1);
-          if (path.endsWith(`/${locale}/`)) expect(await primaryInViewport(page), path).toBe(1);
+          if (path.endsWith(`/${locale}/`)) expect(await primaryInViewport(page), path).toBe(0);
         }
       }
     });

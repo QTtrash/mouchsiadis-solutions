@@ -1,0 +1,189 @@
+/* PixelLab artwork and sprite VFX, shared by both views (src/lib/art.ts).
+   Art is shown with crisp, nearest-neighbour scaling. Every effect animates
+   only transform or opacity on a small element, so the CRT glass and the
+   panels never repaint (AGENTS.md, "Performance rule"). Reduced motion and
+   the "reduced effects" option show still frames. */
+
+/* ---- card illustrations ---- */
+/* Decoration only: never a native image drag, so card drags keep working. */
+.card-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.card-art__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+.case-file__cover:has(.card-art),
+.open-source-showcase__art:has(.card-art) {
+  aspect-ratio: 2 / 1;
+}
+
+/* Pixel icons from the UI kit. */
+.px-icon {
+  display: inline-block;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  image-rendering: pixelated;
+}
+.px-icon--sm {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ---- sprite VFX ---- */
+/* A strip of N frames inside a one-frame window; steps() walks it with a
+   transform, so playback is compositor-only. */
+.vfx-glint {
+  position: absolute;
+  z-index: 1;
+  top: 6%;
+  right: 7%;
+  width: 21.1%; /* 27 of 128 art pixels: the glint sits on the art's own grid */
+  aspect-ratio: 27 / 34;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+.vfx-glint img {
+  display: block;
+  width: 1100%;
+  max-width: none;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* the burst sits over the knob and stays inside the 44px control */
+.view-switch__vfx {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0.125rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+.view-switch__vfx img {
+  display: block;
+  width: 500%;
+  max-width: none;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* LIVE lamps: a ring that pings outward now and then (ambient, tiny). */
+.live-ping {
+  position: relative;
+}
+.live-ping::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 1px solid var(--live, #8dff7a);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-effects="reduced"]) .deck-card:hover .vfx-glint,
+  :root:not([data-effects="reduced"]) .work-row__link:hover .vfx-glint,
+  :root:not([data-effects="reduced"]) .work-row__link:focus-visible .vfx-glint,
+  :root:not([data-effects="reduced"]) .open-source-showcase__project:hover .vfx-glint,
+  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint {
+    opacity: 1;
+  }
+  :root:not([data-effects="reduced"]) .deck-card:hover .vfx-glint img,
+  :root:not([data-effects="reduced"]) .work-row__link:hover .vfx-glint img,
+  :root:not([data-effects="reduced"]) .work-row__link:focus-visible .vfx-glint img,
+  :root:not([data-effects="reduced"]) .open-source-showcase__project:hover .vfx-glint img,
+  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint img {
+    animation: vfx-glint 920ms steps(11) 1 both;
+  }
+  :root:not([data-effects="reduced"]) .view-switch.is-pulled .view-switch__vfx {
+    opacity: 1;
+    transition: opacity 0s;
+  }
+  :root:not([data-effects="reduced"]) .view-switch.is-pulled .view-switch__vfx img {
+    animation: vfx-sparks 320ms steps(5) 1 both;
+  }
+  :root:not([data-effects="reduced"]) .vfx-glint--loop {
+    opacity: 1;
+  }
+  :root:not([data-effects="reduced"]) .vfx-glint--loop img {
+    will-change: transform;
+    animation: vfx-glint-loop 3.9s linear var(--glint-delay, 0s) infinite;
+  }
+  :root:not([data-effects="reduced"]) .live-ping::after {
+    will-change: transform, opacity;
+    animation: live-ping 3.2s cubic-bezier(0.2, 0.6, 0.3, 1) var(--ping-delay, 0s) infinite;
+  }
+}
+
+@keyframes vfx-glint {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes vfx-sparks {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+/* play the 11 frames in the first quarter, then hold past the strip (empty) */
+@keyframes vfx-glint-loop {
+  0% {
+    transform: translateX(0);
+    animation-timing-function: steps(11, end);
+  }
+  24% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes live-ping {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.6);
+  }
+  45%,
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* The name is Latin in every locale: keep it in capitals in Georgian too,
+   where global.css drops text-transform on every element (!important). */
+:lang(ka) .hero-panel .hero-panel__name,
+:lang(ka) .hero-panel .hero-panel__name > span {
+  text-transform: uppercase !important;
+}
+
+/* Narrow phones: the capitalised name scales with the viewport so the
+   avatar and "MOUCHSIADIS" share one row without overflow. */
+@media (max-width: 480px) {
+  .hero-panel .hero-panel__name,
+  :lang(ka) .hero-panel .hero-panel__name {
+    font-size: min(2rem, 7.4vw);
+  }
+}

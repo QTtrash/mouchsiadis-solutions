@@ -7,16 +7,14 @@ test.beforeEach(async ({}, testInfo) => {
 });
 
 for (const locale of ["en", "ru", "de", "ge"]) {
-  test(`${locale}: phone hiring and Work links scroll without hiding the archive`, async ({ page }) => {
+  test(`${locale}: the phone Contact link scrolls without hiding the archive`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    for (const target of ["contact", "software-work"]) {
-      await page.goto(`/${locale}/`);
-      await page.locator(`[data-fast-path] a[href="#${target}"]`).click();
-      await expect(page).toHaveURL(new RegExp(`#${target}$`));
-      await expect(page.locator(`#${target} h2`).first()).toBeInViewport();
-      await expect(page.locator("[data-terminal-panel][inert], [data-terminal-panel][aria-hidden=true]")).toHaveCount(0);
-    }
+    await page.goto(`/${locale}/`);
+    await page.locator(".site-header__hire").click();
+    await expect(page).toHaveURL(/#contact$/);
+    await expect(page.locator("#contact h2").first()).toBeInViewport();
+    await expect(page.locator("[data-terminal-panel][inert], [data-terminal-panel][aria-hidden=true]")).toHaveCount(0);
   });
 }
 
@@ -55,12 +53,12 @@ test("resizing restores all content and updates the card reader", async ({ page 
   await expect(deck).toHaveClass(/is-draggable/);
 });
 
-test("keyboard fast path moves focus out of the hidden hero and Back restores the panel", async ({ page }) => {
+test("the keyboard Contact tab hides the hero panel and Back restores the panel", async ({ page }) => {
   await page.goto("/en/");
-  const contact = page.locator('[data-fast-path] a[href="#contact"]');
+  const contact = page.locator('[data-terminal-tab][href="#contact"]');
   await contact.focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator("#contact h2").first()).toBeFocused();
+  await expect(page.locator("#contact h2").first()).toBeInViewport();
   await expect(page.locator("#overview")).toHaveAttribute("inert", "");
   await page.locator('[data-terminal-tab][href="#software-work"]').click();
   await page.goBack();
@@ -192,7 +190,7 @@ test("Georgian headings and controls render glyphs from the intended web font", 
   await session.send("DOM.enable");
   await session.send("CSS.enable");
   const { root } = await session.send("DOM.getDocument");
-  for (const selector of [".hero-panel h1", ".site-header__hire", "#software-work h2", "#software-work [data-card-open]", "#software-work [data-card-flip]"]) {
+  for (const selector of [".site-header__hire", "#software-work h2", "#software-work [data-card-open]", "#software-work [data-card-flip]"]) {
     const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector });
     const { fonts } = await session.send("CSS.getPlatformFontsForNode", { nodeId });
     expect(fonts.some((font) => font.isCustomFont && font.familyName.startsWith("Noto Sans Georgian") && font.glyphCount > 0), `${selector}: ${fonts.map((font) => font.familyName).join(", ")}`).toBe(true);

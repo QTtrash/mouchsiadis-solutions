@@ -896,9 +896,13 @@ button {
 }
 .terminal-side-nav__icon {
   flex: none;
-  width: 0.875rem;
-  height: 0.875rem;
-  --px-accent: currentColor;
+  width: 1.25rem;
+  height: 1.25rem;
+  image-rendering: auto;
+}
+/* PixelLab section icons (src/lib/art.ts); the Simple view restyles them. */
+.section-heading__icon {
+  display: none;
 }
 .terminal-side-nav a:hover {
   color: var(--text-strong);
@@ -940,33 +944,48 @@ button {
   grid-template-columns: minmax(0, 1.35fr) minmax(16.5rem, 0.65fr);
   grid-template-areas:
     "kicker proof"
-    "title proof"
-    "actions proof"
-    "body proof"
     "status proof"
-    ". proof";
-  grid-template-rows: repeat(5, auto) 1fr;
+    "scene proof";
+  grid-template-rows: repeat(2, auto) 1fr;
   column-gap: 2rem;
   align-items: start;
 }
 .hero-panel__grid > * {
   min-width: 0;
 }
+/* The name is the page title: avatar, name, then where. */
 .hero-panel__kicker {
   grid-area: kicker;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "avatar name"
+    "avatar where";
   align-items: center;
-  gap: 0.75rem;
+  column-gap: 1rem;
 }
-.hero-panel__grid > h1 {
-  grid-area: title;
+.hero-panel__kicker .avatar-card {
+  grid-area: avatar;
+  width: 5.5rem;
+  height: 5.5rem;
 }
-.hero-panel__grid > .hero-panel__actions {
-  grid-area: actions;
+@media (max-width: 900px) {
+  .hero-panel__kicker .avatar-card {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
 }
-.hero-panel__grid > .hero-panel__body {
-  grid-area: body;
-  margin-top: 1.25rem;
+.hero-panel .hero-panel__name {
+  grid-area: name;
+  margin: 0;
+  max-width: none;
+  text-transform: uppercase;
+}
+.hero-panel__first::after {
+  content: " ";
+}
+.hero-panel__where {
+  grid-area: where;
 }
 .hero-panel__grid > .hero-panel__status {
   grid-area: status;
@@ -975,7 +994,43 @@ button {
 .hero-panel__grid > .hero-proof {
   grid-area: proof;
 }
-.hero-panel__kicker p {
+/* The operator room (PixelLab): a framed scene under the name. */
+.hero-scene {
+  grid-area: scene;
+  position: relative;
+  align-self: end;
+  width: min(100%, 36rem);
+  margin: 1.5rem 0 0;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border: 1px solid rgb(var(--olive-rgb) / 0.22);
+  border-radius: 6px;
+  background: #020a03;
+}
+.hero-scene > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+/* glints on the three monitors, on the scene's own 192 px grid */
+.hero-scene .vfx-glint {
+  width: 14.06%;
+  top: 30%;
+}
+.hero-scene .vfx-glint:nth-of-type(1) {
+  right: auto;
+  left: 30%;
+}
+.hero-scene .vfx-glint:nth-of-type(2) {
+  right: auto;
+  left: 50%;
+}
+.hero-scene .vfx-glint:nth-of-type(3) {
+  right: 26%;
+}
+.hero-panel__where {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1937,6 +1992,14 @@ html:not(.js) .avatar-card {
 
 /* Fitted console is an enhancement. These are the only fitted breakpoints. */
 @media (min-width: 1120px) and (min-height: 720px) {
+  /* the scene takes what the panel has left, cropped, never scrolling */
+  [data-view="terminal"].js .hero-scene {
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+    max-height: 19rem;
+    aspect-ratio: auto;
+  }
   [data-view="terminal"].js .has-console .site-header__nav {
     visibility: hidden;
   }
@@ -1957,18 +2020,6 @@ html:not(.js) .avatar-card {
   }
   [data-view="terminal"].js .terminal-status {
     display: flex;
-  }
-  [data-view="terminal"].js .hero-panel__grid {
-    grid-template-areas:
-      "kicker proof"
-      "title proof"
-      "body proof"
-      "actions proof"
-      "status proof"
-      ". proof";
-  }
-  [data-view="terminal"].js .hero-panel__grid > .hero-panel__body {
-    margin-top: 0;
   }
   [data-view="terminal"] .terminal-console .section-heading {
     display: grid;
@@ -2048,7 +2099,7 @@ html:not(.js) .avatar-card {
 @media (max-width: 900px) {
   .hero-panel__grid {
     grid-template-columns: 1fr;
-    grid-template-areas: "kicker" "title" "actions" "proof" "body" "status";
+    grid-template-areas: "kicker" "proof" "status" "scene";
     grid-template-rows: none;
   }
   .hero-panel__grid > .hero-proof {
@@ -2112,7 +2163,7 @@ html:not(.js) .avatar-card {
   .hero-panel__actions .button--primary {
     flex: 1 1 100%;
   }
-  .hero-panel__kicker p {
+  .hero-panel__where {
     font-size: 0.6875rem;
   }
   .hero-proof {

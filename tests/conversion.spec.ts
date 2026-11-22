@@ -45,15 +45,16 @@ async function filledPrimariesInView(page: Page): Promise<string[]> {
 }
 
 for (const locale of locales) {
-  test(`${locale}: the landing first viewport has one primary action and visible proof`, async ({ page }) => {
+  test(`${locale}: the landing first viewport keeps contact in reach and shows proof`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const [width, height] of [[1440, 900], [1280, 720], [1120, 720], [1366, 650], [820, 1180], [414, 896], [390, 844], [360, 740]] as const) {
       await page.setViewportSize({ width, height });
       await page.goto(`/${locale}/`);
       await page.evaluate(() => document.fonts.ready);
       const primaries = await filledPrimariesInView(page);
-      expect(primaries, `${width}x${height}: one dominant primary action`).toHaveLength(1);
-      await expect(page.locator('[data-fast-path] a.button--primary[href="#contact"]')).toBeVisible();
+      // Owner decision, 22 November 2026: the hero carries no buttons; Contact lives in the header.
+      expect(primaries, `${width}x${height}: no competing primaries`).toHaveLength(0);
+      await expect(page.locator(".site-header__hire")).toBeInViewport();
       await expect(page.locator(".site-header__hire")).not.toHaveClass(/button--primary/);
       const proof = await page.locator("[data-proof]").first().boundingBox();
       expect(proof, `${width}x${height}: proof exists`).not.toBeNull();
@@ -113,15 +114,19 @@ test("case files state the role and outcome once", async ({ page }) => {
 });
 
 for (const locale of locales) {
-  test(`${locale}: the hero keeps the English title and shows no track record or direct line`, async ({ page }) => {
+  test(`${locale}: the hero is the name alone, with no headline, buttons, track record or direct line`, async ({ page }) => {
     await page.goto(`/${locale}/`);
-    await expect(page.locator(".hero-panel h1")).toHaveText(/^Senior platform engineer/i);
-    // Owner decision, 22 November 2026: the hero carries no results list or direct-email line.
-    await expect(page.locator(".hero-impact, .hero-panel__direct")).toHaveCount(0);
+    await expect(page.locator(".hero-panel h1")).toHaveCount(1);
+    await expect(page.locator(".hero-panel h1")).toContainText("Suren");
+    await expect(page.locator(".hero-panel h1")).toContainText("Mouchsiadis");
+    // Owner decisions, 22 November 2026: no results list, direct-email line,
+    // headline, explanation or hero buttons, in either view.
+    await expect(page.locator(".hero-impact, .hero-panel__direct, .hero-panel__body, #overview .hero-panel__actions, [data-fast-path]")).toHaveCount(0);
+    await expect(page.locator("#overview")).not.toContainText(/products that have to work|обязаны работать|funktionieren müssen|უნდა მუშაობდეს/);
   });
 }
 
-test("the hero states availability under the actions", async ({ page }) => {
+test("the hero states availability", async ({ page }) => {
   await page.goto("/en/");
   await expect(page.locator(".hero-panel__status")).toContainText("available for systems work");
 });
@@ -197,7 +202,7 @@ test("reading surfaces never glow", async ({ page }) => {
 });
 
 for (const [locale, family] of [["en", "Montserrat"], ["ru", "Montserrat"], ["de", "Montserrat"], ["ge", "Noto Sans Georgian"]] as const) {
-  test(`${locale}: the display headline renders ${family}`, async ({ page, context }) => {
+  test(`${locale}: the display headings render ${family}`, async ({ page, context }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/${locale}/`);
     await page.evaluate(() => document.fonts.ready);
@@ -205,7 +210,7 @@ for (const [locale, family] of [["en", "Montserrat"], ["ru", "Montserrat"], ["de
     await session.send("DOM.enable");
     await session.send("CSS.enable");
     const { root } = await session.send("DOM.getDocument");
-    const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector: ".hero-panel h1" });
+    const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector: "#software-work h2" });
     const { fonts } = await session.send("CSS.getPlatformFontsForNode", { nodeId });
     expect(fonts.some((font) => font.isCustomFont && font.familyName.startsWith(family) && font.glyphCount > 0), fonts.map((font) => font.familyName).join(", ")).toBe(true);
   });

@@ -1,7 +1,7 @@
 ---
 // Public-source projects from the Tool records. One button opens the case file;
 // the product and source links stay as quieter inline links.
-import CoverArt from "./CoverArt.astro";
+import CardArt from "./CardArt.astro";
 import {
   cardSummary,
   casePath,
@@ -39,7 +39,7 @@ const copy = deckCopy[locale];
           aria-labelledby={`${id}-${entry.slug}`}
         >
           <div class="open-source-showcase__art" aria-hidden="true">
-            <CoverArt slug={entry.cover} record={entry.slug} />
+            <CardArt slug={entry.slug} cover={entry.cover} glint />
           </div>
           <div class="open-source-showcase__body">
             {entry.status && (

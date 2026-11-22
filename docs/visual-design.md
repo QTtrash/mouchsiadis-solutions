@@ -4,12 +4,69 @@
 
 Mouchsiadis Solutions is a field terminal: a code-drawn MS-86 console with a rounded CRT glass, P1-green phosphor and one amber action. Terminal character belongs to the chrome, the hero headline, navigation, cards and motion. Reading surfaces (body copy, case files, articles) stay calm and never glow.
 
-The site exists to turn visitors into contact requests, prospective clients first and hiring managers second. Within the first screen a visitor can tell who Suren is and what gets built, see live proof, and find one primary action. Optional play (cards, the reader, Backlog Breaker) never gates content.
+The site exists to turn visitors into contact requests, prospective clients first and hiring managers second. Within the first screen a visitor can tell who Suren is, see live proof and reach Contact in the header (the hero itself has no buttons since 22 November 2026). Optional play (cards, the reader, Backlog Breaker) never gates content.
 
 Two audiences share the same records:
 
 1. Clients and hiring visitors read the positioning, open live case files, and contact Suren or open the CV without learning an interaction.
 2. Technical visitors explore case files, public source, card backs, the card reader, and Backlog Breaker.
+
+## November 2026, second pass: "Datasheet + pixels" and PixelLab art
+
+This section supersedes the Simple-view and hero parts of the first November pass where they conflict.
+
+**Owner decisions (22 November 2026).**
+
+- The hero headline ("Senior platform engineer for products that have to work."), the general line ("I build scalable platforms…") and the three hero buttons (Contact me, CV, Explore projects) are removed from **both views and all four locales**. The name is the page's only `h1`. Contact stays in the header and the Contact section; the CV stays in the Contact section.
+- The black Simple view was "too generic". The owner chose **Datasheet + pixels**: the page reads like an engineering spec sheet, and each project's pixel illustration is its only picture on the landing page.
+- Art, UI icons and VFX are made with **PixelLab** (pixellab.ai, the owner's subscription, MCP server `pixellab`), in one palette for both views.
+- Motion level: effects on interaction plus a **small ambient** set (LIVE pings, three monitor glints), all compositor-only.
+
+**Palette (all PixelLab art).** 13 colours: `#000000 #0b0f0b #16201a #24382a #3d5e40 #5f9a5a #8dff7a #dfffd4` (black to phosphor), `#3a2600 #8a5a00 #ffb000 #ffcf66` (amber) and `#c2361f` (rust red, used sparingly). Every image was generated with this exact `palette`, so every pixel is one of these colours.
+
+**Artwork** (`src/assets/art/`, mapped by `src/lib/art.ts`).
+
+- `cards/<slug>.png`: one 128×64 scene per case record (15). Made with `create_image_pro` from the YPay scene as the style anchor (`style_copy`: outline, detail, shading), one call per record, best of 4 candidates picked by eye. No text, no logos, no third-party marks.
+- `icons/*.png`: a 32×32 UI kit (overview, work, games, experience, tooling, notes, contact, CV, live LED, pin, clock, download, lock) picked from one 64-candidate `create_1_direction_object` sheet.
+- `operator-room.png`: a 192×96 scene for the terminal overview panel.
+- `vfx/lever-sparks.png` (5 frames, 64×64) and `vfx/card-glint.png` (11 frames, 27×34): made in PixelLab's `vfx_workbench` (free for subscribers) and repacked as one-row strips with blank frames dropped.
+- Shown with `image-rendering: pixelated` at 1×, 1.5× or 2×. The PNGs ship as hashed files and are never inlined (`astro.config.mjs`, `assetsInlineLimit`). The whole set is about 75 KB and lazy-loaded below the fold.
+- `CardArt.astro` renders a record's art and falls back to the build-time SVG vignette (`CoverArt`) when a record has none, so experience entries and future records still render.
+
+**Simple view as a datasheet** (`simple.css`).
+
+- *Signal colour.* Phosphor green `#8dff7a` (`--sheet-signal`) replaces amber: LIVE lamps, section indices, the active nav underline, focus rings and the one filled primary (case-file "Email me about…"). Amber now belongs only to the lever.
+- *Type.* Plex Sans for names and titles; Plex Mono, uppercase and tracked, for every label: nav, buttons, sheet bar, spec terms, the eyebrow and the stack.
+- *Hero, the title block.*
+  - A sheet bar: `MS-86 / PORTFOLIO DATASHEET · REV 2026.11 · 48.14°N 11.58°E`.
+  - The name set very large in two lines (first name white, family name grey) with a green block cursor.
+  - The pixel portrait by default; pressing it shows the photo.
+  - A spec list: Base, Status (with a pinging lamp), Live (the count of live systems).
+  - A static engineering-paper grid that fades out behind the block.
+- *Sections.* Each starts with its pixel icon, a green `01…` index and a hairline rule, then the title.
+- *Work index.* A table head (No. / System / Status), then numbered rows: running number, the 2:1 card art, title, mono eyebrow, summary and stack, a LIVE status column, and an arrow. On hover the row tints green, the art plays its glint and the arrow moves. Screenshots now live only in the case files.
+- *Controls.* Square-cornered (2–3px), mono, uppercase. No pills.
+- *Case files.* The pixel card art is always shown as a small plate above the title, even when a hero screenshot follows.
+
+**Terminal view.**
+
+- Card art replaces the SVG vignettes on the cards, in the live list and in the showcase.
+- The side nav uses the pixel icons.
+- The overview is the name (large display type), the location, the status line and the operator-room scene with three looping monitor glints.
+
+**VFX** (`src/assets/styles/art.css`).
+
+- **Lever sparks.** An amber burst plays once when the switch is pulled, in both views.
+- **Card glint.** A four-point glint plays once on hover over cards, rows, the showcase and the case-file plate.
+- **Monitor glints.** Three glints loop over the operator room.
+- **LIVE pings.** A ring pings outward from each LIVE lamp in the Simple view.
+- Each effect is a sprite strip inside a one-frame window. `steps()` walks it with `transform`, and the windows are small, so nothing repaints the glass. Reduced motion and Effects: Reduced show still frames.
+
+**Regenerating art.** The PixelLab tools are listed in the `pixellab` MCP server. Use the palette above, pass the existing `cards/ypay.png` as the style image, and keep the canvas at 128×64 for cards. Pick candidates by eye, then copy the PNG into `src/assets/art/`. A new record needs no code change: `cardArt()` finds `cards/<slug>.png` by name.
+
+**New native-review copy (ru/de/ge):** the datasheet labels in `sheetCopy` (sheet title, No., System, Status, Base, systems live).
+
+**Verified, 22 November 2026 (second pass).** `npm run validate`: 0 Astro/TypeScript errors; budgets JS 8.9 KB, CSS 26.6 KB, inline art 7.3 KB gzipped; 298 of 298 browser tests passed on the release run. In an earlier run, a card flip at 768×1024 failed once and then passed 20 of 20 on repeat, so it is timing-flaky. Screenshots are in [design-audit/datasheet-pixels](./design-audit/datasheet-pixels/).
 
 ## November 2026: Simple view by default, terminal behind a rusty switch
 

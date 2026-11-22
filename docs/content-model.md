@@ -25,9 +25,17 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 The hero used to show a short results list (`impact`) and a "write directly" email line. The owner removed both on 22 November 2026, and their data and copy were deleted. Do not reintroduce them; results belong in the experience records and case files.
 
+### Hero
+
+Since 22 November 2026 the hero is the name alone: no headline, general line or buttons (owner decision, both views, every locale). `localeSeo` no longer has `heroTitle`, `heroBody` or the hero `cta` labels. The Simple view adds a datasheet spec list built from `profile` and the live count; its labels are in `sheetCopy`.
+
+### Card Art
+
+Each case record can have a PixelLab illustration at `src/assets/art/cards/<slug>.png` (128×64, MS-86 palette). `src/lib/art.ts` finds it by slug; `CardArt.astro` falls back to the SVG vignette when there is none. Art is decoration (`alt=""`); the record's title carries the meaning.
+
 ### Hero Proof
 
-The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true`, and the displayed count covers all of them (nine in November 2026). The list itself (`heroProofRecords`) shows at most five, ordered by each record's `featured` number; live records without `featured` count but are not listed. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof. The terminal view shows this list; the Simple view goes straight from the hero to the Selected work rows.
+The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true`, and the displayed count covers all of them (nine in November 2026). The list itself (`heroProofRecords`) shows at most five, ordered by each record's `featured` number; live records without `featured` count but are not listed. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof. The terminal view shows this list; the Simple view goes straight from the datasheet title block to the numbered Selected work rows.
 
 ### Software Work Entries
 

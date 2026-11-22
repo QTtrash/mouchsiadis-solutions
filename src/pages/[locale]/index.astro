@@ -3,14 +3,14 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchiveEntry from "../../components/ArchiveEntry.astro";
 import CardDeck from "../../components/CardDeck.astro";
-import CoverArt from "../../components/CoverArt.astro";
+import CardArt from "../../components/CardArt.astro";
+import { SCENE, VFX, cardGlint, icon, operatorRoom } from "../../lib/art";
 import OpenSourceShowcase from "../../components/OpenSourceShowcase.astro";
 import BacklogBreaker from "../../components/BacklogBreaker.astro";
 import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
 import TermPrompt from "../../components/TermPrompt.astro";
 import { avatarSprite } from "../../lib/avatar";
-import { navSprites } from "../../lib/sprites";
 import { experiences, profile } from "../../lib/content";
 import { EMAIL, mailto } from "../../lib/contact";
 import {
@@ -39,6 +39,7 @@ import {
   localeIntlCodes,
   localeSeo,
   navigationCopy,
+  sheetCopy,
   type Locale,
 } from "../../lib/i18n";
 import "../../assets/styles/deck.css";
@@ -57,6 +58,7 @@ const locale: Locale = localeParam;
 const copy = localeSeo[locale];
 const navigation = navigationCopy[locale];
 const deck = deckCopy[locale];
+const sheet = sheetCopy[locale];
 const mainExperiences = experiences.filter((entry) => !entry.early);
 const earlyExperiences = experiences.filter((entry) => entry.early);
 const alternates = buildLocaleAlternates();
@@ -108,48 +110,27 @@ const contactHref = mailto(copy.labels.mailSubject);
             href="#overview"
             data-terminal-tab
             aria-current="page"
-            ><PixelArt
-              grid={navSprites.overview}
-              class="terminal-side-nav__icon"
-            />{copy.nav.overview}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("overview")} alt="" width="32" height="32" />{copy.nav.overview}</a
           >
           <a href="#software-work" data-terminal-tab
-            ><PixelArt
-              grid={navSprites.work}
-              class="terminal-side-nav__icon"
-            />{copy.nav.work}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("work")} alt="" width="32" height="32" />{copy.nav.work}</a
           >
           <a href="#game-dev" data-terminal-tab
-            ><PixelArt
-              grid={navSprites.games}
-              class="terminal-side-nav__icon"
-            />{copy.nav.games}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("games")} alt="" width="32" height="32" />{copy.nav.games}</a
           >
           <a href="#experience" data-terminal-tab
-            ><PixelArt
-              grid={navSprites.experience}
-              class="terminal-side-nav__icon"
-            />{copy.nav.experience}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("experience")} alt="" width="32" height="32" />{copy.nav.experience}</a
           >
           <a
             class="tooling-portal-link"
             href={buildLocalePath(locale, "/tooling")}
-            ><PixelArt
-              grid={navSprites.tooling}
-              class="terminal-side-nav__icon"
-            />{navigation.tooling}<span aria-hidden="true">↗</span></a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("tooling")} alt="" width="32" height="32" />{navigation.tooling}<span aria-hidden="true">↗</span></a
           >
           <a href="#blog" data-terminal-tab
-            ><PixelArt
-              grid={navSprites.notes}
-              class="terminal-side-nav__icon"
-            />{copy.nav.blog}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("notes")} alt="" width="32" height="32" />{copy.nav.blog}</a
           >
           <a href="#contact" data-terminal-tab
-            ><PixelArt
-              grid={navSprites.contact}
-              class="terminal-side-nav__icon"
-            />{copy.nav.contact}</a
+            ><img class="terminal-side-nav__icon px-icon" src={icon("contact")} alt="" width="32" height="32" />{copy.nav.contact}</a
           >
         </nav>
 
@@ -179,33 +160,33 @@ const contactHref = mailto(copy.labels.mailSubject);
                   />
                   <span class="visually-hidden">{deck.avatarPhoto}</span>
                 </button>
-                <p>
-                  <span>Suren Mouchsiadis</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{localized(profile.location)}</span>
+                <h1 class="hero-panel__name">
+                  <span class="hero-panel__first">Suren</span>
+                  <span class="hero-panel__last">Mouchsiadis</span>
                   <span class="hero-panel__cursor" aria-hidden="true">▮</span>
-                </p>
+                </h1>
+                <p class="hero-panel__where">{localized(profile.location)}</p>
               </div>
-              <h1>{copy.heroTitle}</h1>
 
-              <div class="hero-panel__actions" data-fast-path>
-                <a
-                  class="button button--primary"
-                  href="#contact"
-                  data-terminal-jump>{copy.cta.contact}</a
-                >
-                <a
-                  class="button"
-                  href={cvHref}
-                  target="_blank"
-                  rel="noopener noreferrer">{copy.cta.cv}</a
-                >
-                <a
-                  class="button button--tertiary"
-                  href="#software-work"
-                  data-terminal-jump>{copy.cta.play}</a
-                >
-              </div>
+              <p class="sheet-bar" data-simple-only aria-hidden="true">
+                <span>MS-86 / {sheet.sheet}</span>
+                <span>REV 2026.11</span>
+                <span>48.14°N 11.58°E</span>
+              </p>
+              <dl class="hero-spec" data-simple-only>
+                <div>
+                  <dt><img class="px-icon px-icon--sm" src={icon("pin")} alt="" width="32" height="32" />{sheet.base}</dt>
+                  <dd>{localized(profile.location)}</dd>
+                </div>
+                <div>
+                  <dt><img class="px-icon px-icon--sm" src={icon("live")} alt="" width="32" height="32" />{sheet.status}</dt>
+                  <dd><span class="hero-spec__led live-ping" aria-hidden="true"></span>{localized(profile.availability)}</dd>
+                </div>
+                <div>
+                  <dt><img class="px-icon px-icon--sm" src={icon("work")} alt="" width="32" height="32" />{sheet.live}</dt>
+                  <dd><strong>{liveCount}</strong> {sheet.systemsLive}</dd>
+                </div>
+              </dl>
 
               <aside class="hero-proof" aria-labelledby="hero-proof-title">
                 <div class="hero-proof__head">
@@ -218,7 +199,7 @@ const contactHref = mailto(copy.labels.mailSubject);
                       <li data-suit={suit} data-cover={entry.cover} data-proof>
                         <a href={casePath(locale, entry.slug)}>
                           <span class="hero-proof__art" aria-hidden="true">
-                            <CoverArt slug={entry.cover} record={entry.slug} />
+                            <CardArt slug={entry.slug} cover={entry.cover} />
                           </span>
                           <span class="hero-proof__text">
                             <strong>{entry.title}</strong>
@@ -231,7 +212,27 @@ const contactHref = mailto(copy.labels.mailSubject);
                 </ul>
               </aside>
 
-              <p class="hero-panel__body">{copy.heroBody}</p>
+              <figure class="hero-scene" data-terminal-only aria-hidden="true">
+                <img
+                  src={operatorRoom}
+                  alt=""
+                  width={SCENE.width}
+                  height={SCENE.height}
+                  decoding="async"
+                />
+                {[0, 1, 2].map((index) => (
+                  <span class="vfx-glint vfx-glint--loop" style={`--glint-delay: ${index * 1.3}s`}>
+                    <img
+                      src={cardGlint}
+                      alt=""
+                      width={VFX.cardGlint.width * VFX.cardGlint.frames}
+                      height={VFX.cardGlint.height}
+                      decoding="async"
+                    />
+                  </span>
+                ))}
+              </figure>
+
               <p class="hero-panel__status">
                 <span class="hero-panel__led" aria-hidden="true"></span>
                 <span>{copy.labels.status}:</span>
@@ -247,6 +248,7 @@ const contactHref = mailto(copy.labels.mailSubject);
           >
             <TermPrompt cmd="ls ~/work --live" />
             <div class="section-heading">
+              <img class="px-icon section-heading__icon" src={icon("work")} alt="" width="32" height="32" />
               <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
               <h2>{copy.sections.work}</h2>
               <p class="section-heading__body">{copy.sectionBodies.work}</p>
@@ -269,6 +271,7 @@ const contactHref = mailto(copy.labels.mailSubject);
           >
             <TermPrompt cmd="ls ~/games" />
             <div class="section-heading">
+              <img class="px-icon section-heading__icon" src={icon("games")} alt="" width="32" height="32" />
               <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
               <h2>{copy.sections.games}</h2>
               <p class="section-heading__body">{copy.sectionBodies.games}</p>
@@ -286,6 +289,7 @@ const contactHref = mailto(copy.labels.mailSubject);
           >
             <TermPrompt cmd="cat experience.log" />
             <div class="section-heading">
+              <img class="px-icon section-heading__icon" src={icon("experience")} alt="" width="32" height="32" />
               <p class="section-heading__kicker">
                 {copy.sectionKickers.experience}
               </p>
@@ -348,6 +352,7 @@ const contactHref = mailto(copy.labels.mailSubject);
           >
             <TermPrompt cmd="tail -n 3 ~/notes" />
             <div class="section-heading">
+              <img class="px-icon section-heading__icon" src={icon("notes")} alt="" width="32" height="32" />
               <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
               <h2>{copy.sections.blog}</h2>
               <p class="section-heading__body">{copy.labels.blogBody}</p>
@@ -400,6 +405,7 @@ const contactHref = mailto(copy.labels.mailSubject);
           >
             <TermPrompt cmd="mail suren" />
             <div class="section-heading">
+              <img class="px-icon section-heading__icon" src={icon("contact")} alt="" width="32" height="32" />
               <p class="section-heading__kicker">
                 {copy.sectionKickers.contact}
               </p>
@@ -446,6 +452,7 @@ const contactHref = mailto(copy.labels.mailSubject);
 
             <div class="cv-panel" id="cv">
               <div class="cv-panel__copy">
+                <img class="px-icon section-heading__icon" src={icon("cv")} alt="" width="32" height="32" />
                 <p class="section-heading__kicker">{copy.sectionKickers.cv}</p>
                 <p class="cv-panel__education">
                   EDU REC / TUM / BS COMPUTER SCIENCE / DEC 2019

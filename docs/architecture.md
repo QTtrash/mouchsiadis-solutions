@@ -24,16 +24,18 @@ The site has four public concerns:
 ## Source Files
 
 - `src/pages/[locale]/index.astro`
-  One landing DOM for both views. In the Simple view the console chrome, hero proof, card hand and game are hidden; the hero (headline, general line, actions, availability), Selected work rows (`WorkRows.astro`), Games rows, Experience, Notes and Contact read as one column. In the terminal view it is the landing page inside the CRT glass, described below. Each panel opens with a decorative `TermPrompt` and the status line is a tmux bar (window list, LIVE count, Munich clock) driven by `terminal.ts`.
-  Terminal view: The hero names Suren and his location, states the positioning and offers one primary action (Contact), CV and Explore. Then come live proof (the `live: true` Work records) and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Notes, Contact. `#cv` is an alias for Contact.
+  One landing DOM for both views. In the Simple view the console chrome, hero proof, card hand and game are hidden; the datasheet title block (sheet bar, name, pixel portrait, spec list), the numbered Selected work rows (`WorkRows.astro`), Games rows, Experience, Notes and Contact read as one column. In the terminal view it is the landing page inside the CRT glass, described below. Each panel opens with a decorative `TermPrompt` and the status line is a tmux bar (window list, LIVE count, Munich clock) driven by `terminal.ts`.
+  Terminal view: The hero names Suren (the page's only `h1`), his location and availability, and shows the PixelLab operator-room scene; there is no headline and there are no hero buttons (owner, 22 November 2026). Then come live proof (the `live: true` Work records) and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Notes, Contact. `#cv` is an alias for Contact.
 - `src/pages/[locale]/work/[slug].astro`
   Case file per record. The header shows the numbered kicker, eyebrow, status and outcome; product and source links are secondary. Then the hero screenshot (`ShotFrame`), "At a glance" (role, status, year, stack, links), overview, problem and constraints, what was built, the architecture flow (`ArchDiagram`), collection parts (`parts`, for SurikMods), the gallery (`Gallery`, a `<dialog>` lightbox from `src/scripts/gallery.ts`), the full stack and previous/next case. The hero shot also becomes the page's `og:image`. It always ends with a contextual call to action (`Email me about {project}` with a subject, CV, visible address).
 - `src/components/ViewSwitch.astro`
   The rusty cartoon breaker lever (inline SVG) at the start of the header: `role="switch"`, stable name, `aria-checked`. `Header.astro` toggles `html[data-view]`, stores `interfaceView`, drops a `?view=` parameter from the address and dispatches `interface-view-change`; the Options drawer mirrors it.
 - `src/components/WorkRows.astro`
-  Simple-view rows for a set of records (`data-simple-only`): a 16:10 screenshot or the record's pixel glyph, title, LIVE, eyebrow, summary and stack, linking to the case file. Rendered by `CardDeck.astro` beside the card hand (`data-terminal-only`).
+  Simple-view datasheet index for a set of records (`data-simple-only`): a table head, then numbered rows with the record's PixelLab card art, title, eyebrow, summary, stack and a LIVE status column, linking to the case file. Rendered by `CardDeck.astro` beside the card hand (`data-terminal-only`).
 - `src/components/ShotFrame.astro`, `src/components/Gallery.astro`, `src/components/ArchDiagram.astro`, `src/components/TermPrompt.astro`
   Screenshot in browser, phone or plain chrome through Astro `<Picture>` (AVIF/WebP, several widths); the gallery and lightbox; the HTML architecture flow from `src/lib/diagrams.ts`; and the decorative shell prompt shown only in the terminal view.
+- `src/lib/art.ts`, `src/components/CardArt.astro`, `src/assets/styles/art.css`
+  PixelLab artwork: card art per slug, the 32×32 icon kit, the operator-room scene and the VFX strips (lever sparks, card glint). `CardArt` renders a record's art with an optional hover glint and falls back to `CoverArt`. `art.css` holds the pixelated rendering and the compositor-only sprite animations for both views.
 - `src/lib/gallery.ts`, `src/lib/diagrams.ts`
   Screenshots per slug (WebP masters in `src/assets/projects/<slug>/`, localized alt, frame) and mod icons; architecture stages, links and captions. Both stay out of `content.ts` so Node tests can import the content model.
 - `src/components/CardDeck.astro`, `src/components/CaseCard.astro`
@@ -65,7 +67,7 @@ The site has four public concerns:
 - `src/components/BaseHead.astro`
   Metadata and the blocking pre-paint script: `html.js`, `data-effects`, and `data-view` (`?view=` → stored `interfaceView` → `simple`).
 - `src/layouts/BaseLayout.astro`
-  Global shell (`<html data-view="simple">` for no-JS), metadata, header/footer, and shared stylesheet/font imports: `global.css`, `present.css`, `switch.css`, `crt.css`, `simple.css`. Georgian font imports are script subsets; language codes map the `/ge/` route to `ka-GE`.
+  Global shell (`<html data-view="simple">` for no-JS), metadata, header/footer, and shared stylesheet/font imports: `global.css`, `present.css`, `art.css`, `switch.css`, `crt.css`, `simple.css`. Georgian font imports are script subsets; language codes map the `/ge/` route to `ka-GE`.
 - `src/layouts/PostLayout.astro`
   Blog-post layout with metadata, original-language label, adjacent navigation, and a quiet contact line after the article.
 - `src/pages/404.astro`

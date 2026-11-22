@@ -57,16 +57,10 @@ async function assertLandingComposition(page: Page, width: number, height: numbe
       if (index) expect(panel.top).toBeGreaterThanOrEqual(panels[index - 1]!.bottom - 1);
     }
   }
-  // Short landscape is deliberately a scrolling composition. Every other
-  // documented viewport must expose the hiring actions before any interaction.
-  if (height >= 568) {
-    for (const selector of ['[data-fast-path] a[href="#contact"]', '[data-fast-path] a[href$=".pdf"]', '[data-fast-path] a[href="#software-work"]']) {
-      const box = await page.locator(selector).boundingBox();
-      expect(box, selector).not.toBeNull();
-      expect(box!.y, selector).toBeGreaterThanOrEqual(0);
-      expect(box!.y + box!.height, `${selector}: first viewport`).toBeLessThanOrEqual(height);
-    }
-  }
+  // Every documented viewport keeps Contact (the header) on the first screen.
+  const hire = await page.locator(".site-header__hire").boundingBox();
+  expect(hire, "header Contact").not.toBeNull();
+  expect(hire!.y + hire!.height, "header Contact: first viewport").toBeLessThanOrEqual(height);
 }
 
 for (const locale of locales) {

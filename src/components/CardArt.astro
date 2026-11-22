@@ -1,0 +1,49 @@
+---
+// A case record's PixelLab illustration (src/lib/art.ts), with an optional
+// hover glint sprite. Records without drawn art fall back to the build-time
+// SVG vignette (CoverArt), so experience entries and new records still render.
+import CoverArt from "./CoverArt.astro";
+import { CARD_ART, VFX, cardArt, cardGlint } from "../lib/art";
+
+interface Props {
+  slug: string;
+  cover: string;
+  class?: string;
+  eager?: boolean;
+  glint?: boolean;
+}
+
+const { slug, cover, class: className, eager = false, glint = false } = Astro.props;
+const src = cardArt(slug);
+---
+
+{
+  src ? (
+    <span class:list={["card-art", className]}>
+      <img
+        class="card-art__img"
+        src={src}
+        alt=""
+        width={CARD_ART.width}
+        height={CARD_ART.height}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        draggable="false"
+      />
+      {glint && (
+        <span class="vfx-glint" aria-hidden="true">
+          <img
+            src={cardGlint}
+            alt=""
+            width={VFX.cardGlint.width * VFX.cardGlint.frames}
+            height={VFX.cardGlint.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </span>
+      )}
+    </span>
+  ) : (
+    <CoverArt slug={cover} record={slug} />
+  )
+}

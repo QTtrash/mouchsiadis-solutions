@@ -6,6 +6,7 @@
 // alone. Behaviour lives in Header.astro; the pre-paint script in BaseHead sets
 // html[data-view] before first paint.
 import { viewCopy, type Locale } from "../lib/i18n";
+import { VFX, leverSparks } from "../lib/art";
 
 interface Props {
   locale: Locale;
@@ -65,10 +66,16 @@ const copy = viewCopy[locale];
       <circle cx="32" cy="7" r="6.4" fill="#c2361f" stroke="#1d0d05" stroke-width="2" />
       <circle cx="29.8" cy="4.8" r="1.9" fill="#ffb59d" />
     </g>
-    <g class="view-switch__spark" stroke="#ffd166" stroke-width="2" stroke-linecap="round">
-      <path d="M45 6l4-4M50 11h5M44 13l5 3M20 6l-4-4M15 11h-5" />
-    </g>
   </svg>
+  <span class="view-switch__vfx" aria-hidden="true">
+    <img
+      src={leverSparks}
+      alt=""
+      width={VFX.leverSparks.width * VFX.leverSparks.frames}
+      height={VFX.leverSparks.height}
+      decoding="async"
+    />
+  </span>
   <span class="view-switch__label" aria-hidden="true">
     <span class="view-switch__plate-text">{copy.plate}</span>
     <span class="view-switch__tag">{copy.tag}</span>

@@ -4,7 +4,7 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { Image, getImage } from "astro:assets";
 import ArchDiagram from "../../../components/ArchDiagram.astro";
-import CoverArt from "../../../components/CoverArt.astro";
+import CardArt from "../../../components/CardArt.astro";
 import TermPrompt from "../../../components/TermPrompt.astro";
 import Gallery from "../../../components/Gallery.astro";
 import ShotFrame from "../../../components/ShotFrame.astro";
@@ -113,7 +113,7 @@ const withTitle = (template: string) =>
         style={`view-transition-name: ${transitionName(entry.slug)};`}
         aria-hidden="true"
       >
-        <CoverArt slug={entry.cover} record={entry.slug} />
+        <CardArt slug={entry.slug} cover={entry.cover} eager glint />
       </div>
       <div class="case-file__lead">
         <p class="case-file__kicker">

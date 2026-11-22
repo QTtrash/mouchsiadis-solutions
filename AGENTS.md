@@ -16,11 +16,11 @@ These are standing owner decisions. Do not reverse them without asking.
 **Views**
 - First visits, no-JS and plain links get the **Simple view**. The terminal is opt-in through the rusty header lever (`ViewSwitch.astro`) or `?view=terminal`.
 - The lever should keep looking cartoonish, rusty and out of place.
+- The Simple view is a **datasheet + pixels** design: black, square-cornered, mono labels, one green signal colour (`--sheet-signal`), numbered work rows with each record's pixel card art. Do not drift back to a generic pill-button dark theme.
 
 **Copy**
 - Job titles stay in **English in every locale**, for example "Senior platform engineer".
-- The hero stays general: one line about what Suren builds, the actions and the availability line. Project depth belongs in case files.
-- The hero has **no track record list and no "write directly" email line** (owner decision, 22 November 2026). Do not bring them back in either view or any locale; the email address lives in Contact and the case-file calls to action.
+- The hero is **the name alone**: name (the page's only `h1`), location, availability, and in the Simple view the datasheet spec list. There is **no headline, no general line, no hero buttons, no track record list and no "write directly" email line** (owner decisions, 22 November 2026). Do not bring any of them back in either view or any locale. Contact lives in the header and the Contact section; the CV lives in Contact.
 - Every claim must be backed by the product, its source, the project's own docs or owner-provided facts. No testimonials, client logos, response times or new availability wording without the owner.
 
 **LIVE**
@@ -28,6 +28,11 @@ These are standing owner decisions. Do not reverse them without asking.
 
 **SurikMods**
 - Never mention AI assistance, and show no download counts. One entry covers the three mods.
+
+**Art**
+- Project illustrations, UI icons and VFX come from **PixelLab** (MCP server `pixellab`) in the fixed 13-colour MS-86 palette (`docs/visual-design.md`, "Datasheet + pixels"). Keep new art in that palette and style.
+- Art is shown pixelated at 1×, 1.5× or 2×, ships as hashed PNG files and is never inlined.
+- No text, logos or third-party marks in generated art.
 
 **Screenshots**
 - Use **public, signed-out pages only**. Never capture admin or internal screens.
@@ -41,7 +46,7 @@ These are standing owner decisions. Do not reverse them without asking.
 - Add new ru/de/ge copy to the native-review list in `docs/visual-design.md`.
 
 **Conversion**
-- Each view has exactly one filled primary (`.button--primary`). Case files end with "Email me about {project}". External product links are never primary.
+- At most one filled primary (`.button--primary`) is on screen. The landing hero has none. Case files end with "Email me about {project}". External product links are never primary.
 
 **Protected content**
 - Never edit blog post bodies.
@@ -50,7 +55,7 @@ These are standing owner decisions. Do not reverse them without asking.
 
 ## Code map (short)
 
-- **Content:** `src/lib/content.ts` holds the records. `src/lib/gallery.ts` maps slugs to screenshots and stays separate so Node tests can import `content.ts`. `src/lib/diagrams.ts` holds the architecture flows. `src/lib/i18n.ts` holds all interface copy.
+- **Content:** `src/lib/content.ts` holds the records. `src/lib/gallery.ts` maps slugs to screenshots and `src/lib/art.ts` maps slugs to PixelLab art; both stay separate so Node tests can import `content.ts`. `src/lib/diagrams.ts` holds the architecture flows. `src/lib/i18n.ts` holds all interface copy.
 - **Pages:** `src/pages/[locale]/index.astro` is the landing page, one DOM for both views. `src/pages/[locale]/work/[slug].astro` is the case file.
 - **View switch:**
   - The pre-paint script in `src/components/BaseHead.astro` sets `html[data-view]`.
@@ -61,10 +66,11 @@ These are standing owner decisions. Do not reverse them without asking.
   - `simple.css` is the Simple view, scoped to `:root[data-view="simple"]`. Keep it as flat selectors with no CSS nesting, because Vite ships nesting as written.
   - `present.css` holds the case-file pieces shared by both views.
   - `switch.css` styles the lever. `crt.css` holds the terminal realism layers.
+  - `art.css` holds the pixel art and sprite VFX for both views (`CardArt.astro` renders a record's art).
 
 ## Performance rule
 
-Decorative motion may animate only `transform` or `opacity`, on small elements. Never animate `background-position`, `filter`, gradients or other paint properties over the CRT glass or the panels. A moving refresh band did that in November 2026 and dropped the terminal to about 14 fps. In the fitted console, `.terminal-console__content` keeps its own compositor layer (`crt.css`), so panel switches and scrolling never repaint the glass. `tests/performance.spec.ts` traces an idle terminal and fails if it repaints. When you add motion, check it with a Chrome trace.
+Decorative motion may animate only `transform` or `opacity`, on small elements. Sprite VFX walk a strip with `transform` and `steps()` inside a small window (`art.css`). Never animate `background-position`, `filter`, gradients or other paint properties over the CRT glass or the panels. A moving refresh band did that in November 2026 and dropped the terminal to about 14 fps. In the fitted console, `.terminal-console__content` keeps its own compositor layer (`crt.css`), so panel switches and scrolling never repaint the glass. `tests/performance.spec.ts` traces an idle terminal and fails if it repaints. When you add motion, check it with a Chrome trace.
 
 ## Commands
 
@@ -74,6 +80,14 @@ npm run validate   # astro check + build + budgets + full Playwright suite (~9 m
 npm run budget     # gzipped budgets after a build: JS 15 KB, CSS 32 KB, inline art 20 KB, WebGL 6 KB
 node scripts/capture-project-shots.mjs <outDir> [slug…]   # public screenshots for case files
 ```
+
+**PixelLab (art, icons, VFX)**
+
+- The MCP server `pixellab` (`https://api.pixellab.ai/mcp`, HTTP, bearer key) is registered at local scope for this project in `~/.claude.json`; never commit the key. The owner's plan has 2000 generations a month (`get_balance`).
+- Card art: `create_image_pro`, 128×64, `no_background: false`, the 13-colour `palette` from `docs/visual-design.md`, `style_image_url` = `src/assets/art/cards/ypay.png` as a data URL with `style_copy` outline/detail/shading. One call costs 10 generations and returns 4 candidates. At most 8 jobs run at once; use `wait_for_jobs` instead of polling.
+- Icons: `create_1_direction_object` at size 32 with `item_descriptions` (64 candidates for 10 generations).
+- VFX: `vfx_workbench` (free). Export, then repack the sheet into a one-row strip without blank frames and add its geometry to `VFX` in `src/lib/art.ts`.
+- Review every candidate by eye: no text, logos or third-party marks. Copy the chosen PNG into `src/assets/art/`.
 
 **Testing notes**
 

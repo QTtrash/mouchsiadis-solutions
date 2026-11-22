@@ -11,18 +11,12 @@ async function openWorkPanel(page: Page): Promise<void> {
   await expect(page.locator("#software-work")).not.toHaveAttribute("inert", "");
 }
 
-test("fast path to contact and CV is in the first viewport without interaction", async ({ page }) => {
+test("Contact is in the first viewport without interaction", async ({ page }) => {
   await page.goto("/en/");
-  const viewport = page.viewportSize()!;
   const hire = page.locator(".site-header__hire");
   await expect(hire).toBeVisible();
+  await expect(hire).toBeInViewport();
   await expect(hire).toHaveAttribute("href", "/en/#contact");
-
-  for (const name of ["Contact me", "CV (PDF)"]) {
-    const box = await page.locator("[data-fast-path]").getByRole("link", { name }).boundingBox();
-    expect(box, name).not.toBeNull();
-    expect(box!.y + box!.height, `${name} bottom edge`).toBeLessThanOrEqual(viewport.height);
-  }
 });
 
 test("every card opens a localized case file", async ({ page, request }) => {
@@ -151,17 +145,19 @@ test("desktop console reaches Games, and old CV links land on Contact", async ({
   await expect(page.locator("#contact").getByRole("link", { name: "open pdf" })).toBeVisible();
 });
 
-test("cards carry suit-tinted pixel art and a pixel suit mark", async ({ page }) => {
+test("cards carry their PixelLab art, crisp and undraggable, and a pixel suit mark", async ({ page }) => {
   await page.goto("/en/");
   const card = (title: string) => page.locator(`[data-card][data-title="${title}"]`);
+  const sources = new Set<string>();
   for (const title of ["YPay", "Grindlike", "Alice Plays"]) {
-    await expect(card(title).locator(".deck-card__art svg.pixel-art path").first()).toBeAttached();
+    const art = card(title).locator(".deck-card__art .card-art__img");
+    await expect(art).toHaveAttribute("alt", "");
+    await expect(art).toHaveAttribute("draggable", "false");
+    await expect(art).toHaveCSS("image-rendering", "pixelated");
+    sources.add((await art.getAttribute("src"))!);
     await expect(card(title).locator(".deck-card__suit svg.pixel-art")).toBeAttached();
   }
-  const accent = (title: string) =>
-    card(title).locator(".deck-card__art .px-a").first().evaluate((node) => getComputedStyle(node).fill);
-  const [platform, tool, game] = await Promise.all([accent("YPay"), accent("Grindlike"), accent("Alice Plays")]);
-  expect(new Set([platform, tool, game]).size).toBe(3);
+  expect(sources.size).toBe(3);
 });
 
 test("the hero avatar flips between the pixel sprite and the photo", async ({ page }) => {

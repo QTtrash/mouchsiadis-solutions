@@ -13,6 +13,13 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: "hover",
   },
+  vite: {
+    build: {
+      // Pixel art is tiny but reused across cards, rows and case files: keep it
+      // as cacheable files instead of data: URIs repeated in every page.
+      assetsInlineLimit: (file) => (file.includes("/assets/art/") ? false : undefined),
+    },
+  },
   integrations: [
     mdx(),
     sitemap({
