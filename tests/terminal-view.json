@@ -1,0 +1,9 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:4322",
+      "localStorage": [{ "name": "interfaceView", "value": "terminal" }]
+    }
+  ]
+}

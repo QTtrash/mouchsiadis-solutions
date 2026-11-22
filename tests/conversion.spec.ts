@@ -1,15 +1,22 @@
 import { expect, test, type Page } from "@playwright/test";
 import { experiences, impact } from "../src/lib/content.ts";
+import { liveWorkRecords } from "../src/lib/cards.ts";
 
 const locales = ["en", "ru", "de", "ge"] as const;
 const slugs = [
   "ypay",
   "ydesk",
+  "ylead",
   "neopoints",
+  "neo-taxi-site",
+  "space",
+  "neouniverse",
   "grindlike",
   "raid-signal",
+  "last-standard",
   "flygod-studios",
   "alice-plays",
+  "surikmods",
   "rifle-revolver",
   "incendiary-revolver",
 ];
@@ -75,14 +82,15 @@ for (const locale of locales) {
   });
 }
 
-test("hero proof lists exactly the live work records and states their count", async ({ page }) => {
+test("hero proof lists the featured live records and counts every live one", async ({ page }) => {
   await page.goto("/en/");
   const proof = page.locator(".hero-proof");
   const items = proof.locator("[data-proof] a");
   await expect(items).toHaveCount(5);
   const hrefs = await items.evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-  expect(hrefs).toEqual(["/en/work/ypay/", "/en/work/ydesk/", "/en/work/neopoints/", "/en/work/grindlike/", "/en/work/raid-signal/"]);
-  await expect(proof.locator(".hero-proof__count")).toHaveText("05 LIVE");
+  expect(hrefs).toEqual(["/en/work/ypay/", "/en/work/neopoints/", "/en/work/ydesk/", "/en/work/ylead/", "/en/work/raid-signal/"]);
+  await expect(proof.locator(".hero-proof__count")).toHaveText(`${String(liveWorkRecords.length).padStart(2, "0")} LIVE`);
+  expect(liveWorkRecords.length).toBe(9);
 });
 
 test("every hero impact line is backed by the experience it cites", () => {
@@ -112,7 +120,8 @@ test("case files state the role and outcome once", async ({ page }) => {
   await page.goto("/en/work/neopoints/");
   const outcome = (await page.locator(".case-file__outcome").textContent())!.trim();
   await expect(page.locator(".case-file__body").getByText(outcome, { exact: true })).toHaveCount(0);
-  await expect(page.locator(".case-file__body .archive-entry__evidence dt")).toHaveText(["Contribution", "Constraints"]);
+  // The body adds what the header lacks: the problem and what was built.
+  await expect(page.locator(".case-file__body h2")).toContainText(["Overview", "Problem and constraints", "What was built"]);
 });
 
 for (const locale of locales) {

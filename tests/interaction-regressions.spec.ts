@@ -77,7 +77,9 @@ test("content and navigation remain usable without JavaScript", async ({ browser
     await expect(page.locator(".site-header__nav")).toBeVisible();
     await expect(page.locator(".site-header .locale-switcher")).toBeVisible();
     await expect(page.locator("[data-drawer-open]")).toBeHidden();
-    await expect(page.locator('[data-card][data-title="NeoPoints"] [data-card-open]')).toBeVisible();
+    // Without JavaScript the server-rendered Simple view applies: work rows, not cards.
+    await expect(page.locator("html")).toHaveAttribute("data-view", "simple");
+    await expect(page.locator(`#software-work .work-row a[href="/${locale}/work/neopoints/"]`)).toBeVisible();
     await page.locator(`.site-header__nav a[href="/${locale}/tooling/"]`).click();
     await expect(page.locator("h1")).toBeVisible();
   }
@@ -149,6 +151,10 @@ test("blocked storage still permits drawer preferences and the List view", async
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/en/#software-work");
+  // Without storage the Simple view applies; the switch still turns the terminal on for the page.
+  await expect(page.locator("html")).toHaveAttribute("data-view", "simple");
+  await page.locator(".site-header [data-view-switch]").click();
+  await expect(page.locator("html")).toHaveAttribute("data-view", "terminal");
   await page.locator("[data-drawer-open]").click();
   await page.locator("[data-effects-preference]").click();
   await expect(page.locator("html")).toHaveAttribute("data-effects", "reduced");
@@ -174,7 +180,7 @@ for (const locale of ["en", "ru", "de", "ge"]) {
     await page.goto(`/${locale}/work/raid-signal/`);
     await expect(page.locator("h1")).toHaveText("Raid Signal");
     await expect(page.locator("html")).toHaveAttribute("lang", locale === "ge" ? "ka-GE" : new RegExp(`^${locale}`));
-    await expect(page.locator('a[href="https://github.com/QTtrash/tarkov-map"]')).toBeAttached();
+    await expect(page.locator('a[href="https://github.com/QTtrash/tarkov-map"]').first()).toBeAttached();
   });
 }
 

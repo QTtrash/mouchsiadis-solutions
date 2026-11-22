@@ -151,6 +151,9 @@ test("scrolling during a pickup keeps the preview under the pointer and the dock
 });
 
 test("interrupted gestures clean up without flipping or navigating", async ({ page }) => {
+  // Eight full page loads and pick-up cycles against the fifteen-card deck:
+  // about 40 s alone, longer under the parallel suite.
+  test.slow();
   const reasons = ["escape", "blur", "pointercancel", "lostcapture", "resize", "breakpoint", "list", "panel"] as const;
   for (const reason of reasons) {
     await page.setViewportSize({ width: 1280, height: 720 });

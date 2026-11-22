@@ -7,6 +7,9 @@ export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4322",
     trace: "retain-on-failure",
+    // The suite predates the Simple view and checks the terminal view by
+    // default; tests/simple-view.spec.ts clears this to check the default view.
+    storageState: "tests/terminal-view.json",
   },
   projects: [
     { name: "mobile", use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },

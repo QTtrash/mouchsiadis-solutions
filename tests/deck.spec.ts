@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { caseRecords } from "../src/lib/cards.ts";
 
 const isDesktop = (width: number) => width >= 1120;
 
@@ -28,7 +29,8 @@ test("every card opens a localized case file", async ({ page, request }) => {
   await page.goto("/en/");
   const links = page.locator("[data-card-open]");
   const hrefs = await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  expect(hrefs).toHaveLength(9);
+  // Work (platforms and tools) plus games: every record with a case file.
+  expect(hrefs).toHaveLength(caseRecords.length);
   for (const href of hrefs) {
     expect(href).toMatch(/^\/en\/work\/[a-z-]+\/$/);
     for (const locale of ["en", "ru", "de", "ge"]) {
