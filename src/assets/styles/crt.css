@@ -1,0 +1,206 @@
+/* Terminal realism, November 2026. Ratios follow cool-retro-term's defaults
+   (bloom high, curvature and noise low, no continuous flicker). Every layer is
+   part of the glass background or a pseudo-element painted beneath the
+   content, so text is never covered, and all motion stops under reduced motion
+   or Effects: Reduced. Terminal view only. */
+
+:root[data-view="terminal"] {
+  /* phosphor bloom plus a faint red/cyan convergence fringe, titles only */
+  --glow-display:
+    -0.6px 0 rgba(255, 70, 90, 0.32), 0.6px 0 rgba(70, 210, 255, 0.28),
+    0 0 14px rgb(var(--phosphor-rgb) / 0.36),
+    0 0 46px rgb(var(--phosphor-rgb) / 0.15);
+}
+
+/* Curved glass: specular reflection at the upper left, edge falloff, film
+   grain, an aperture-grille stripe, scanlines, then the phosphor itself. */
+:root[data-view="terminal"] .terminal-glass {
+  background:
+    radial-gradient(
+      55% 38% at 16% 4%,
+      rgba(220, 255, 210, 0.07),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 125% 115% at 50% 48%,
+      transparent 56%,
+      rgba(0, 0, 0, 0.55) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 1 0 0 0 0 .58 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 70, 70, 0.022) 0 1px,
+      rgba(120, 255, 120, 0.018) 1px 2px,
+      rgba(70, 140, 255, 0.022) 2px 3px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.17) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(
+      120% 90% at 28% 0%,
+      rgb(var(--phosphor-rgb) / 0.1),
+      transparent 55%
+    ),
+    radial-gradient(140% 120% at 50% 50%, var(--glass-2), var(--glass) 70%);
+  box-shadow:
+    0 0 0 4px #020402,
+    0 0 0 8px var(--chassis-lo),
+    -4px -4px 0 8px var(--chassis-lo),
+    4px 4px 0 8px var(--chassis-hi),
+    inset 0 0 0 1px rgb(var(--olive-rgb) / 0.16),
+    inset 0 0 70px rgba(0, 0, 0, 0.72),
+    inset 0 0 160px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(200, 255, 190, 0.08);
+}
+
+/* ---- shell semantics: real prompts above each panel ---- */
+.term-prompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5ch;
+  margin: 0 0 0.875rem;
+  color: var(--text-subtle);
+  font: 400 0.75rem/1.5 var(--mono);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.term-prompt__user {
+  color: var(--phosphor);
+}
+.term-prompt__path {
+  color: #7fb4ff;
+}
+.term-prompt__cmd {
+  color: var(--text);
+}
+.term-prompt__cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.05em;
+  translate: 0 0.18em;
+  background: var(--phosphor);
+  box-shadow: 0 0 6px rgb(var(--phosphor-rgb) / 0.6);
+}
+
+/* ---- tmux-style status line ---- */
+:root[data-view="terminal"] .terminal-status--tmux {
+  align-items: center;
+  margin: -0.125rem -0.375rem 0.625rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px 6px 0 0;
+  background: rgb(var(--phosphor-rgb) / 0.11);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.terminal-status--tmux span:first-child::before {
+  content: none;
+}
+.tmux__session {
+  padding: 0 0.5rem;
+  background: var(--phosphor);
+  color: #041006;
+  font-weight: 600;
+}
+.tmux__windows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.1ch;
+  margin-left: 1ch;
+  margin-right: auto;
+}
+.tmux__window.is-active {
+  color: var(--amber-bright);
+}
+.tmux__window.is-active::after {
+  content: "*";
+}
+.tmux__right {
+  display: inline-flex;
+  gap: 1.2ch;
+}
+.tmux__live {
+  color: var(--phosphor);
+}
+.tmux__post {
+  display: none;
+  margin-right: auto;
+  color: var(--phosphor);
+}
+.terminal-console--booting .tmux__post {
+  display: inline;
+}
+.terminal-console--booting .tmux__windows {
+  display: none;
+}
+
+/* ---- motion: a slow refresh band and a richer power-on ---- */
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-view="terminal"]:not([data-effects="reduced"])
+    .terminal-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent,
+        rgb(var(--phosphor-rgb) / 0.045) 50%,
+        transparent
+      )
+      0 -30% / 100% 22% no-repeat;
+    animation: crt-refresh 9s linear infinite;
+  }
+  :root[data-view="terminal"]:not([data-effects="reduced"])
+    .term-prompt__cursor {
+    animation: cursor-blink 1.06s steps(1, end) infinite;
+  }
+  :root[data-view="terminal"]
+    .terminal-console--power-on
+    .terminal-glass::after {
+    background:
+      linear-gradient(
+        180deg,
+        transparent 47%,
+        rgba(230, 255, 220, 0.95) 50%,
+        transparent 53%
+      ),
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(214, 255, 204, 0.55),
+        transparent 60%
+      );
+    animation: crt-power-on-full 760ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes crt-refresh {
+  from {
+    background-position: 0 -30%;
+  }
+  to {
+    background-position: 0 130%;
+  }
+}
+@keyframes crt-power-on-full {
+  0% {
+    opacity: 1;
+    transform: scale(0.04, 0.004);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1, 0.006);
+  }
+  55% {
+    opacity: 0.75;
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1, 1);
+  }
+}

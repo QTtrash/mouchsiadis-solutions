@@ -1,0 +1,16 @@
+---
+// A real-looking shell prompt above a terminal panel. Decorative: the panel's
+// heading carries the meaning, so the prompt is hidden from assistive tech and
+// only shown in the terminal view.
+interface Props {
+  cmd: string;
+  path?: string;
+}
+
+const { cmd, path = "~" } = Astro.props;
+---
+
+<p class="term-prompt" aria-hidden="true" data-terminal-only>
+  <span><span class="term-prompt__user">suren@ms-86</span>:<span class="term-prompt__path">{path}</span>$</span>
+  <span class="term-prompt__cmd">{cmd}</span><span class="term-prompt__cursor"></span>
+</p>

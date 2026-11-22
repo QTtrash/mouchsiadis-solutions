@@ -6,6 +6,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CardDeck from "../../../components/CardDeck.astro";
 import PixelArt from "../../../components/PixelArt.astro";
 import TerminalChassis from "../../../components/TerminalChassis.astro";
+import TermPrompt from "../../../components/TermPrompt.astro";
 import { toolRecords } from "../../../lib/cards";
 import { buildLocalePath, buildLocaleAlternates } from "../../../lib/blog";
 import { navSprites } from "../../../lib/sprites";
@@ -95,6 +96,7 @@ const tabs = [
 
         <div class="terminal-console__content">
           <section id="tooling" class="section terminal-section is-active">
+            <TermPrompt cmd="ls --tools" path="~/tooling" />
             <div class="section-heading">
               <p class="section-heading__kicker">{kicker}</p>
               <h1>{copy.title}</h1>
