@@ -14,14 +14,23 @@ export interface ProjectEntry {
   details: LocalizedRecord<string[]>;
   stack: string[];
   meta: LocalizedRecord<string[]>;
-  link: string;
-  linkLabel: LocalizedString;
+  /** Product link; omitted when nothing public exists (private apps, infrastructure). */
+  link?: string;
+  linkLabel?: LocalizedString;
   status?: LocalizedString;
   sourceLink?: string;
   sourceLinkLabel?: LocalizedString;
   cover: string;
   /** Running in production: earns the LIVE foil on its card. */
   live?: boolean;
+  /** Position in the hero proof (lower first); records without it stay out of the hero. */
+  featured?: number;
+  /** Year the work started, shown in the case file's "At a glance". */
+  year?: string;
+  /** Code-drawn architecture diagram key (src/lib/diagrams.ts). */
+  diagram?: string;
+  /** Parts of a collection entry, such as the mods in a mod pack. */
+  parts?: Array<{ title: string; version?: string; link: string; icon?: string; summary: LocalizedString }>;
   evidence?: {
     role: LocalizedString;
     contribution: LocalizedString;
@@ -108,6 +117,8 @@ export const impact: ImpactEntry[] = [
 export const projects: ProjectEntry[] = [
   {
     slug: "ypay",
+    diagram: "ypay",
+    featured: 1,
     title: "YPay",
     cardSummary: {
       en: "Fleet payouts with tenant isolation, balance visibility and reconciliation.",
@@ -204,6 +215,7 @@ export const projects: ProjectEntry[] = [
   },
   {
     slug: "ydesk",
+    featured: 3,
     title: "YDesk",
     cardSummary: {
       en: "Dispatch and support with clear queues, case ownership and reliable notifications.",
@@ -277,7 +289,107 @@ export const projects: ProjectEntry[] = [
     },
   },
   {
+    slug: "ylead",
+    title: "YLead · YDesk Phone",
+    featured: 4,
+    cardSummary: {
+      en: "A native Android dialer that reports business calls to YDesk with consent, encryption and an offline queue.",
+      ru: "Нативная Android-звонилка: рабочие звонки попадают в YDesk с согласием, шифрованием и офлайн-очередью.",
+      de: "Eine native Android-Telefon-App, die Geschäftsanrufe mit Einwilligung, Verschlüsselung und Offline-Warteschlange an YDesk meldet.",
+      ge: "Android-ის აპლიკაცია, რომელიც სამსახურებრივ ზარებს YDesk-ს თანხმობით, დაშიფვრითა და ოფლაინ რიგით აწვდის.",
+    },
+    eyebrow: {
+      en: "Android business phone for YDesk",
+      ru: "Рабочий Android-телефон для YDesk",
+      de: "Android-Geschäftstelefon für YDesk",
+      ge: "Android-ის სამსახურებრივი ტელეფონი YDesk-ისთვის",
+    },
+    summary: {
+      en: "A native Kotlin and Compose dialer for managers' business phones. It places and receives cellular calls through Android Telecom, pairs with a YDesk tenant and delivers authorized call, SMS and location reports to YDesk Communications.",
+      ru: "Нативная звонилка на Kotlin и Compose для рабочих телефонов менеджеров. Она совершает и принимает звонки через Android Telecom, подключается к арендатору YDesk и передаёт разрешённые отчёты о звонках, SMS и местоположении в YDesk Communications.",
+      de: "Eine native Telefon-App in Kotlin und Compose für die Geschäftstelefone von Managern. Sie führt Mobilfunkanrufe über Android Telecom, koppelt sich mit einem YDesk-Mandanten und liefert freigegebene Anruf-, SMS- und Standortberichte an YDesk Communications.",
+      ge: "Kotlin-სა და Compose-ზე აწყობილი აპლიკაცია მენეჯერების სამსახურებრივი ტელეფონებისთვის. ის Android Telecom-ით რეკავს და იღებს ზარებს, უკავშირდება YDesk-ის ანგარიშს და ნებადართულ ზარების, SMS-ისა და მდებარეობის ანგარიშებს YDesk Communications-ს აწვდის.",
+    },
+    narrative: {
+      en: "YLead keeps a manager's business calls visible in YDesk without turning the phone into a black box. Nothing is collected before enrollment and consent, every consent change is versioned, pause stops collection, and reading message text or location in YDesk is audited.",
+      ru: "YLead делает рабочие звонки менеджера видимыми в YDesk, не превращая телефон в чёрный ящик. До подключения и согласия ничего не собирается, каждое изменение согласия версионируется, пауза останавливает сбор, а чтение текста сообщений или местоположения в YDesk фиксируется в аудите.",
+      de: "YLead macht die Geschäftsanrufe eines Managers in YDesk sichtbar, ohne das Telefon zur Blackbox zu machen. Vor Kopplung und Einwilligung wird nichts erfasst, jede Änderung der Einwilligung ist versioniert, Pause stoppt die Erfassung, und das Lesen von Nachrichtentexten oder Standorten in YDesk wird protokolliert.",
+      ge: "YLead მენეჯერის სამსახურებრივ ზარებს YDesk-ში ხილულს ხდის ისე, რომ ტელეფონი „შავ ყუთად“ არ იქცევა. დაკავშირებამდე და თანხმობამდე არაფერი გროვდება, თანხმობის ყოველი ცვლილება ვერსიონირებულია, პაუზა აჩერებს შეგროვებას, ხოლო YDesk-ში შეტყობინებების ან მდებარეობის ნახვა აუდიტში ფიქსირდება.",
+    },
+    details: {
+      en: [
+        "Kotlin and Jetpack Compose app (minimum API 29, target API 37) with dial, recents and contacts tabs on Android Telecom.",
+        "Numbers and event payloads stay encrypted in Room with an Android Keystore AES-GCM key; backup and device transfer are disabled.",
+        "WorkManager queues reports offline and uploads them with a network constraint and backoff; check-in delivers on-demand sync requests.",
+        "Signed in-place updates: the app checks a private manifest and verifies SHA-256, version, package and signer before Android's installer opens.",
+        "An emulator acceptance harness in Python drives the app against a disposable HTTPS tenant with PostgreSQL.",
+      ],
+      ru: [
+        "Приложение на Kotlin и Jetpack Compose (минимум API 29, целевой API 37) с вкладками набора, недавних и контактов на Android Telecom.",
+        "Номера и данные событий хранятся в Room в зашифрованном виде с ключом AES-GCM из Android Keystore; резервное копирование и перенос отключены.",
+        "WorkManager копит отчёты офлайн и отправляет их при наличии сети с повторными попытками; check-in доставляет запросы на синхронизацию.",
+        "Подписанные обновления на месте: приложение проверяет приватный манифест, SHA-256, версию, пакет и подпись до запуска установщика Android.",
+        "Приёмочный стенд на Python гоняет приложение в эмуляторе против одноразового HTTPS-арендатора с PostgreSQL.",
+      ],
+      de: [
+        "Kotlin- und Jetpack-Compose-App (mindestens API 29, Ziel-API 37) mit Wähl-, Verlaufs- und Kontakt-Tabs auf Android Telecom.",
+        "Nummern und Ereignisdaten bleiben in Room mit einem AES-GCM-Schlüssel aus dem Android Keystore verschlüsselt; Backup und Geräteübertragung sind deaktiviert.",
+        "WorkManager sammelt Berichte offline und lädt sie mit Netzwerkbedingung und Backoff hoch; der Check-in liefert Synchronisationsanfragen.",
+        "Signierte In-place-Updates: Die App prüft ein privates Manifest sowie SHA-256, Version, Paket und Signatur, bevor Androids Installer öffnet.",
+        "Ein Abnahme-Harness in Python steuert die App im Emulator gegen einen Wegwerf-HTTPS-Mandanten mit PostgreSQL.",
+      ],
+      ge: [
+        "Kotlin-ისა და Jetpack Compose-ის აპლიკაცია (მინიმუმ API 29, სამიზნე API 37) აკრეფის, ბოლო ზარებისა და კონტაქტების ჩანართებით Android Telecom-ზე.",
+        "ნომრები და მოვლენების მონაცემები Room-ში Android Keystore-ის AES-GCM გასაღებით დაშიფრული ინახება; სარეზერვო ასლი და გადატანა გამორთულია.",
+        "WorkManager ანგარიშებს ოფლაინ აგროვებს და ქსელის გამოჩენისას განმეორებითი ცდებით აგზავნის; check-in სინქრონიზაციის მოთხოვნებს აწვდის.",
+        "ხელმოწერილი განახლებები: აპლიკაცია ამოწმებს პირად მანიფესტს, SHA-256-ს, ვერსიას, პაკეტსა და ხელმოწერას, სანამ Android-ის ინსტალერი გაიხსნება.",
+        "Python-ის მიმღები სტენდი აპლიკაციას ემულატორში ერთჯერად HTTPS-ანგარიშსა და PostgreSQL-ზე ამოწმებს.",
+      ],
+    },
+    stack: ["Kotlin", "Jetpack Compose", "Android Telecom", "Room", "WorkManager", "Android Keystore", "Python", "PostgreSQL"],
+    meta: {
+      en: ["android app", "consent first", "offline-first"],
+      ru: ["android-приложение", "согласие прежде всего", "offline-first"],
+      de: ["Android-App", "Einwilligung zuerst", "Offline-first"],
+      ge: ["Android-აპლიკაცია", "თანხმობა", "ოფლაინ რეჟიმი"],
+    },
+    status: { en: "PRIVATE SOURCE", ru: "ЗАКРЫТЫЙ КОД", de: "PRIVATER CODE", ge: "დახურული კოდი" },
+    link: "https://ydesk.org",
+    linkLabel: { en: "open YDesk", ru: "открыть YDesk", de: "YDesk öffnen", ge: "YDesk-ის გახსნა" },
+    cover: "neopay",
+    diagram: "ylead",
+    live: true,
+    evidence: {
+      role: {
+        en: "Android and systems engineer",
+        ru: "Android- и системный инженер",
+        de: "Android- und Systementwickler",
+        ge: "Android-ისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Built the Android client, its encrypted offline storage and sync, the device API contract with YDesk, signed releases and the emulator acceptance suite.",
+        ru: "Создал Android-клиент, зашифрованное офлайн-хранилище и синхронизацию, контракт API устройства с YDesk, подписанные релизы и приёмочные тесты в эмуляторе.",
+        de: "Android-Client, verschlüsselte Offline-Speicherung und Synchronisation, den Geräte-API-Vertrag mit YDesk, signierte Releases und die Emulator-Abnahmetests gebaut.",
+        ge: "ავაწყე Android-კლიენტი, დაშიფრული ოფლაინ საცავი და სინქრონიზაცია, მოწყობილობის API-ის კონტრაქტი YDesk-თან, ხელმოწერილი რელიზები და ემულატორის მიმღები ტესტები.",
+      },
+      constraints: {
+        en: "Phone data is sensitive: collection needs explicit, revocable consent, data stays encrypted on the device and the server, and every read of text or location is audited.",
+        ru: "Данные телефона чувствительны: сбор требует явного отзываемого согласия, данные зашифрованы на устройстве и сервере, а каждое чтение текста или местоположения фиксируется.",
+        de: "Telefondaten sind sensibel: Die Erfassung braucht ausdrückliche, widerrufliche Einwilligung, Daten bleiben auf Gerät und Server verschlüsselt, und jeder Zugriff auf Text oder Standort wird protokolliert.",
+        ge: "ტელეფონის მონაცემები მგრძნობიარეა: შეგროვებას სჭირდება აშკარა, გაუქმებადი თანხმობა, მონაცემები მოწყობილობასა და სერვერზე დაშიფრულია, ტექსტის ან მდებარეობის ყოველი ნახვა კი აუდიტში ფიქსირდება.",
+      },
+      outcomes: {
+        en: "A live business phone for YDesk managers whose calls, approved SMS and latest location reach YDesk Communications reliably, even after time offline.",
+        ru: "Рабочий телефон менеджеров YDesk: звонки, разрешённые SMS и последнее местоположение надёжно доходят до YDesk Communications даже после работы офлайн.",
+        de: "Ein produktives Geschäftstelefon für YDesk-Manager: Anrufe, freigegebene SMS und der letzte Standort erreichen YDesk Communications zuverlässig, auch nach Offline-Phasen.",
+        ge: "მოქმედი სამსახურებრივი ტელეფონი YDesk-ის მენეჯერებისთვის: ზარები, ნებადართული SMS და ბოლო მდებარეობა საიმედოდ აღწევს YDesk Communications-მდე, ოფლაინ პერიოდის შემდეგაც.",
+      },
+    },
+  },
+  {
     slug: "neopoints",
+    diagram: "neopoints",
+    featured: 2,
     title: "NeoPoints",
     cardSummary: {
       en: "Driver loyalty with a points ledger, gift catalogue, ranks and missions per park.",
@@ -366,6 +478,284 @@ export const projects: ProjectEntry[] = [
       },
     },
   },
+  {
+    slug: "neo-taxi-site",
+    title: "Neo Taxi & Neo Delivery",
+    cardSummary: {
+      en: "Driver registration, login, referrals and tournaments for a Yandex fleet partner.",
+      ru: "Регистрация водителей, личный кабинет, рефералы и турниры для партнёра Yandex.",
+      de: "Fahrerregistrierung, Login, Empfehlungen und Turniere für einen Yandex-Flottenpartner.",
+      ge: "მძღოლების რეგისტრაცია, ავტორიზაცია, რეფერალები და ტურნირები Yandex-ის პარტნიორისთვის.",
+    },
+    eyebrow: {
+      en: "Driver recruiting and self-service site",
+      ru: "Сайт найма и самообслуживания водителей",
+      de: "Website für Fahrergewinnung und Self-Service",
+      ge: "მძღოლების მოზიდვისა და თვითმომსახურების საიტი",
+    },
+    summary: {
+      en: "The live public site of Neo Taxi and Neo Delivery: five registration forms with optional document-photo autofill, driver login with balances and points, referrals, an earnings calculator and tournament boards, in Georgian, English and Russian.",
+      ru: "Действующий публичный сайт Neo Taxi и Neo Delivery: пять форм регистрации с автозаполнением по фото документов, вход водителя с балансом и баллами, рефералы, калькулятор дохода и турнирные таблицы на грузинском, английском и русском.",
+      de: "Die produktive öffentliche Website von Neo Taxi und Neo Delivery: fünf Registrierungsformulare mit optionaler Ausfüllhilfe per Dokumentfoto, Fahrer-Login mit Saldo und Punkten, Empfehlungen, Verdienstrechner und Turniertabellen auf Georgisch, Englisch und Russisch.",
+      ge: "Neo Taxi-სა და Neo Delivery-ს მოქმედი საჯარო საიტი: რეგისტრაციის ხუთი ფორმა დოკუმენტის ფოტოთი ავტომატური შევსებით, მძღოლის ავტორიზაცია ბალანსითა და ქულებით, რეფერალები, შემოსავლის კალკულატორი და ტურნირების ცხრილები ქართულ, ინგლისურ და რუსულ ენებზე.",
+    },
+    narrative: {
+      en: "The site is the front door to the fleet's other systems. A registration is saved first, then independent outboxes deliver it to Telegram and the YDesk CRM, so retrying one channel never repeats another. YPay supplies identity and document reading; NeoPoints supplies tournament standings.",
+      ru: "Сайт — входная дверь ко всем системам автопарка. Сначала регистрация сохраняется, затем независимые outbox-очереди доставляют её в Telegram и CRM YDesk, поэтому повтор одного канала не дублирует другой. YPay отвечает за идентификацию и чтение документов, NeoPoints — за турнирные таблицы.",
+      de: "Die Website ist die Eingangstür zu den anderen Systemen der Flotte. Eine Registrierung wird zuerst gespeichert, dann liefern unabhängige Outboxes sie an Telegram und das YDesk-CRM, sodass ein erneuter Versuch auf einem Kanal keinen anderen wiederholt. YPay liefert Identität und Dokumentenerkennung, NeoPoints die Turnierstände.",
+      ge: "საიტი ავტოპარკის სხვა სისტემების შესასვლელია. რეგისტრაცია ჯერ ინახება, შემდეგ კი დამოუკიდებელი outbox-რიგები მას Telegram-სა და YDesk-ის CRM-ს აწვდის, ასე რომ ერთი არხის განმეორება მეორეს არ იმეორებს. იდენტიფიკაციასა და დოკუმენტების წაკითხვას YPay უზრუნველყოფს, ტურნირების ცხრილებს — NeoPoints.",
+    },
+    details: {
+      en: [
+        "Node HTTP server with React and TypeScript islands built by Vite; PostgreSQL on AWS RDS.",
+        "Five registration forms; after one consent, an optional guided capture reads the licence and vehicle certificate and fills only empty fields.",
+        "Signed-in drivers see their YPay balance, NeoPoints progress, tournament place and referrals, with their own car and phone change flows.",
+        "Independent Telegram, YDesk and document outboxes with retries, dead letters and alerts.",
+      ],
+      ru: [
+        "Node HTTP-сервер с островами на React и TypeScript, собранными Vite; PostgreSQL на AWS RDS.",
+        "Пять форм регистрации; после одного согласия необязательная пошаговая съёмка читает права и техпаспорт и заполняет только пустые поля.",
+        "Вошедший водитель видит баланс YPay, прогресс NeoPoints, место в турнире и рефералов, а также может сменить автомобиль и телефон.",
+        "Независимые outbox-очереди для Telegram, YDesk и документов с повторами, dead letter и оповещениями.",
+      ],
+      de: [
+        "Node-HTTP-Server mit React- und TypeScript-Inseln, gebaut mit Vite; PostgreSQL auf AWS RDS.",
+        "Fünf Registrierungsformulare; nach einer Einwilligung liest eine optionale geführte Aufnahme Führerschein und Fahrzeugschein und füllt nur leere Felder.",
+        "Angemeldete Fahrer sehen YPay-Saldo, NeoPoints-Fortschritt, Turnierplatz und Empfehlungen und können Auto und Telefonnummer ändern.",
+        "Unabhängige Outboxes für Telegram, YDesk und Dokumente mit Wiederholungen, Dead Letters und Alarmen.",
+      ],
+      ge: [
+        "Node HTTP-სერვერი React-ისა და TypeScript-ის კომპონენტებით, აწყობილი Vite-ით; PostgreSQL AWS RDS-ზე.",
+        "რეგისტრაციის ხუთი ფორმა; ერთი თანხმობის შემდეგ ფოტოგადაღება კითხულობს მართვის მოწმობასა და ტექპასპორტს და მხოლოდ ცარიელ ველებს ავსებს.",
+        "ავტორიზებული მძღოლი ხედავს YPay-ის ბალანსს, NeoPoints-ის პროგრესს, ტურნირში ადგილსა და რეფერალებს, შეუძლია მანქანისა და ტელეფონის შეცვლაც.",
+        "დამოუკიდებელი outbox-რიგები Telegram-ის, YDesk-ისა და დოკუმენტებისთვის, განმეორებითი ცდებით, dead letter-ითა და შეტყობინებებით.",
+      ],
+    },
+    stack: ["Node.js", "React", "TypeScript", "Vite", "PostgreSQL", "AWS RDS", "YPay", "YDesk", "NeoPoints"],
+    meta: {
+      en: ["live site", "driver recruiting", "integrations"],
+      ru: ["действующий сайт", "найм водителей", "интеграции"],
+      de: ["im Einsatz", "Fahrergewinnung", "Integrationen"],
+      ge: ["მოქმედი საიტი", "მძღოლების მოზიდვა", "ინტეგრაციები"],
+    },
+    link: "https://yandex-partner.ge",
+    linkLabel: { en: "open site", ru: "открыть сайт", de: "Website öffnen", ge: "საიტის გახსნა" },
+    cover: "neopay",
+    live: true,
+    evidence: {
+      role: {
+        en: "Product and systems engineer",
+        ru: "Продуктовый и системный инженер",
+        de: "Produkt- und Systementwickler",
+        ge: "პროდუქტისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Built the site, the registration and photo-autofill flow, driver login and profile, referrals, the calculator, tournament boards and the delivery outboxes.",
+        ru: "Создал сайт, регистрацию с автозаполнением по фото, вход и профиль водителя, рефералы, калькулятор, турнирные таблицы и очереди доставки.",
+        de: "Website, Registrierung mit Foto-Ausfüllhilfe, Fahrer-Login und Profil, Empfehlungen, Rechner, Turniertabellen und Zustell-Outboxes gebaut.",
+        ge: "ავაწყე საიტი, რეგისტრაცია ფოტოთი შევსებით, მძღოლის ავტორიზაცია და პროფილი, რეფერალები, კალკულატორი, ტურნირების ცხრილები და მიწოდების რიგები.",
+      },
+      constraints: {
+        en: "Every lead must reach the CRM exactly once even when a channel fails, documents are read only after consent, and pages must work on low-end phones in three languages.",
+        ru: "Каждая заявка должна попасть в CRM ровно один раз даже при сбое канала, документы читаются только после согласия, а страницы должны работать на недорогих телефонах на трёх языках.",
+        de: "Jeder Lead muss genau einmal im CRM ankommen, auch wenn ein Kanal ausfällt; Dokumente werden erst nach Einwilligung gelesen, und die Seiten müssen auf günstigen Telefonen in drei Sprachen funktionieren.",
+        ge: "ყოველი განაცხადი CRM-ში ზუსტად ერთხელ უნდა მოხვდეს არხის შეფერხების დროსაც, დოკუმენტები მხოლოდ თანხმობის შემდეგ იკითხება, გვერდები კი იაფ ტელეფონებზე სამ ენაზე უნდა მუშაობდეს.",
+      },
+      outcomes: {
+        en: "A live recruiting and self-service site whose leads land in YDesk and Telegram reliably, with each driver's balance, points and tournament place in one place.",
+        ru: "Действующий сайт найма и самообслуживания: заявки надёжно попадают в YDesk и Telegram, а баланс, баллы и место водителя в турнире собраны в одном месте.",
+        de: "Eine produktive Website für Gewinnung und Self-Service: Leads landen zuverlässig in YDesk und Telegram, und Saldo, Punkte und Turnierplatz jedes Fahrers stehen an einem Ort.",
+        ge: "მოქმედი საიტი, რომლის განაცხადებიც საიმედოდ აღწევს YDesk-სა და Telegram-ში, მძღოლის ბალანსი, ქულები და ტურნირში ადგილი კი ერთ სივრცეშია.",
+      },
+    },
+  },
+  {
+    slug: "space",
+    diagram: "space",
+    title: "Space (Movas)",
+    cardSummary: {
+      en: "Public site, driver earnings portal and manager CRM for a Bolt fleet partner in Tbilisi.",
+      ru: "Публичный сайт, портал заработка водителей и CRM для партнёра Bolt в Тбилиси.",
+      de: "Website, Fahrerportal für Verdienste und Manager-CRM für einen Bolt-Flottenpartner in Tiflis.",
+      ge: "საჯარო საიტი, მძღოლების შემოსავლის პორტალი და CRM Bolt-ის პარტნიორისთვის თბილისში.",
+    },
+    eyebrow: {
+      en: "Bolt fleet partner platform",
+      ru: "Платформа партнёра Bolt",
+      de: "Plattform für einen Bolt-Flottenpartner",
+      ge: "Bolt-ის პარტნიორის პლატფორმა",
+    },
+    summary: {
+      en: "A live platform for Space, a Bolt fleet partner in Tbilisi: a Georgian and English public site with driver registration, an SMS-login earnings portal and a manager CRM, fed by a read-only Bolt Fleet API sync.",
+      ru: "Действующая платформа для Space, партнёра Bolt в Тбилиси: публичный сайт на грузинском и английском с регистрацией водителей, портал заработка со входом по SMS и CRM для менеджеров на основе синхронизации с Bolt Fleet API только для чтения.",
+      de: "Eine produktive Plattform für Space, einen Bolt-Flottenpartner in Tiflis: eine georgisch-englische Website mit Fahrerregistrierung, ein Verdienstportal mit SMS-Login und ein Manager-CRM, gespeist aus einer lesenden Bolt-Fleet-API-Synchronisation.",
+      ge: "მოქმედი პლატფორმა Space-ისთვის, Bolt-ის პარტნიორისთვის თბილისში: ქართულ-ინგლისური საჯარო საიტი მძღოლების რეგისტრაციით, შემოსავლის პორტალი SMS-ით შესვლით და მენეჯერების CRM, რომელიც Bolt Fleet API-ის მხოლოდ წაკითხვით სინქრონიზაციით საზრდოობს.",
+    },
+    narrative: {
+      en: "One Next.js app serves three hosts: a host router maps the public site, the payments portal and management to their own route trees, layouts and themes. Bolt stays the source of truth for drivers, vehicles and rides; Space owns leads, CRM state, staff and audit.",
+      ru: "Одно приложение Next.js обслуживает три домена: роутер по хосту направляет публичный сайт, портал выплат и управление в собственные деревья маршрутов, макеты и темы. Bolt остаётся источником истины по водителям, машинам и поездкам; Space владеет заявками, CRM, сотрудниками и аудитом.",
+      de: "Eine Next.js-App bedient drei Hosts: Ein Host-Router ordnet Website, Zahlungsportal und Management eigenen Routenbäumen, Layouts und Themes zu. Bolt bleibt die Quelle für Fahrer, Fahrzeuge und Fahrten; Space verantwortet Leads, CRM-Zustand, Personal und Audit.",
+      ge: "ერთი Next.js აპლიკაცია სამ დომენს ემსახურება: ჰოსტის როუტერი საჯარო საიტს, გადახდების პორტალსა და მართვის პანელს საკუთარ მარშრუტებს, განლაგებასა და თემებს უკავშირებს. მძღოლების, მანქანებისა და მგზავრობების ჭეშმარიტების წყარო Bolt რჩება; განაცხადები, CRM, თანამშრომლები და აუდიტი Space-ს ეკუთვნის.",
+    },
+    details: {
+      en: [
+        "Next.js 16, React 19 and Tailwind 4 with Base UI; raw SQL through postgres.js on PostgreSQL 16 in AWS RDS.",
+        "A sync worker mirrors the read-only Bolt Fleet API with OAuth2 client credentials, links leads to drivers and sends lead alerts to Telegram.",
+        "Drivers sign in with an SMS code to see earnings, rides and profile; managers work leads, drivers and reports.",
+        "Georgian and English public site; portals are kept out of search, and unknown hosts return 404.",
+      ],
+      ru: [
+        "Next.js 16, React 19 и Tailwind 4 с Base UI; чистый SQL через postgres.js на PostgreSQL 16 в AWS RDS.",
+        "Воркер синхронизации зеркалирует Bolt Fleet API (только чтение) по OAuth2 client credentials, связывает заявки с водителями и шлёт оповещения в Telegram.",
+        "Водители входят по SMS-коду и видят заработок, поездки и профиль; менеджеры работают с заявками, водителями и отчётами.",
+        "Публичный сайт на грузинском и английском; порталы закрыты от поиска, неизвестные домены отдают 404.",
+      ],
+      de: [
+        "Next.js 16, React 19 und Tailwind 4 mit Base UI; reines SQL über postgres.js auf PostgreSQL 16 in AWS RDS.",
+        "Ein Sync-Worker spiegelt die lesende Bolt-Fleet-API per OAuth2 Client Credentials, verknüpft Leads mit Fahrern und meldet Leads an Telegram.",
+        "Fahrer melden sich per SMS-Code an und sehen Verdienste, Fahrten und Profil; Manager bearbeiten Leads, Fahrer und Berichte.",
+        "Georgisch-englische Website; die Portale bleiben aus Suchmaschinen heraus, unbekannte Hosts liefern 404.",
+      ],
+      ge: [
+        "Next.js 16, React 19 და Tailwind 4 Base UI-ით; სუფთა SQL postgres.js-ით PostgreSQL 16-ზე AWS RDS-ში.",
+        "სინქრონიზაციის worker-ი OAuth2-ით ასახავს Bolt Fleet API-ს (მხოლოდ წაკითხვა), განაცხადებს მძღოლებს უკავშირებს და შეტყობინებებს Telegram-ში აგზავნის.",
+        "მძღოლები SMS-კოდით შედიან და ხედავენ შემოსავალს, მგზავრობებსა და პროფილს; მენეჯერები განაცხადებზე, მძღოლებსა და ანგარიშებზე მუშაობენ.",
+        "ქართულ-ინგლისური საჯარო საიტი; პორტალები საძიებო სისტემებისგან დამალულია, უცნობი დომენები 404-ს აბრუნებს.",
+      ],
+    },
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind 4", "PostgreSQL", "AWS RDS", "Bolt Fleet API", "Telegram"],
+    meta: {
+      en: ["live platform", "fleet partner", "CRM"],
+      ru: ["действующая платформа", "партнёр Bolt", "CRM"],
+      de: ["im Einsatz", "Flottenpartner", "CRM"],
+      ge: ["მოქმედი პლატფორმა", "Bolt-ის პარტნიორი", "CRM"],
+    },
+    link: "https://spacepark.ge",
+    linkLabel: { en: "open site", ru: "открыть сайт", de: "Website öffnen", ge: "საიტის გახსნა" },
+    cover: "neopay",
+    live: true,
+    evidence: {
+      role: {
+        en: "Product and systems engineer",
+        ru: "Продуктовый и системный инженер",
+        de: "Produkt- und Systementwickler",
+        ge: "პროდუქტისა და სისტემების ინჟინერი",
+      },
+      contribution: {
+        en: "Designed and built the host-routed app, registration and CRM, the driver earnings portal, the Bolt sync worker and its place on the shared AWS platform.",
+        ru: "Спроектировал и создал приложение с маршрутизацией по хосту, регистрацию и CRM, портал заработка водителей, воркер синхронизации с Bolt и его место на общей AWS-платформе.",
+        de: "Host-geroutete App, Registrierung und CRM, Fahrerportal, Bolt-Sync-Worker und die Anbindung an die gemeinsame AWS-Plattform konzipiert und gebaut.",
+        ge: "დავაპროექტე და ავაწყე ჰოსტით მარშრუტიზებული აპლიკაცია, რეგისტრაცია და CRM, მძღოლების შემოსავლის პორტალი, Bolt-ის სინქრონიზაციის worker-ი და მისი ადგილი საერთო AWS-პლატფორმაზე.",
+      },
+      constraints: {
+        en: "Bolt data is read-only and is never corrected locally, the driver portal needs phone-only login, and leads must reach managers fast without exposing the portals to search engines.",
+        ru: "Данные Bolt доступны только для чтения и локально не исправляются, портал водителя требует входа только по телефону, а заявки должны быстро доходить до менеджеров без индексации порталов.",
+        de: "Bolt-Daten sind schreibgeschützt und werden lokal nie korrigiert, das Fahrerportal braucht einen reinen Telefon-Login, und Leads müssen Manager schnell erreichen, ohne die Portale für Suchmaschinen zu öffnen.",
+        ge: "Bolt-ის მონაცემები მხოლოდ წაკითხვადია და ადგილზე არ სწორდება, მძღოლის პორტალს მხოლოდ ტელეფონით შესვლა სჭირდება, განაცხადები კი მენეჯერებს სწრაფად უნდა მიუვიდეს ისე, რომ პორტალები საძიებოში არ მოხვდეს.",
+      },
+      outcomes: {
+        en: "A live recruiting and driver-support platform where leads, drivers and earnings sit in one place, mirrored from Bolt.",
+        ru: "Действующая платформа найма и поддержки водителей, где заявки, водители и заработок собраны в одном месте и синхронизированы с Bolt.",
+        de: "Eine produktive Plattform für Gewinnung und Fahrerbetreuung, auf der Leads, Fahrer und Verdienste an einem Ort liegen, gespiegelt aus Bolt.",
+        ge: "მოქმედი პლატფორმა მძღოლების მოზიდვისა და მხარდაჭერისთვის, სადაც განაცხადები, მძღოლები და შემოსავალი ერთ სივრცეშია, Bolt-იდან ასახული.",
+      },
+    },
+  },
+  {
+    slug: "neouniverse",
+    title: "NeoUniverse Platform",
+    cardSummary: {
+      en: "The shared AWS data platform, Yandex Fleet service and backups behind six services.",
+      ru: "Общая AWS-платформа данных, сервис Yandex Fleet и резервные копии для шести сервисов.",
+      de: "Die gemeinsame AWS-Datenplattform, der Yandex-Fleet-Dienst und Backups hinter sechs Diensten.",
+      ge: "საერთო AWS-პლატფორმა, Yandex Fleet-ის სერვისი და სარეზერვო ასლები ექვსი სერვისისთვის.",
+    },
+    eyebrow: {
+      en: "Shared cloud and fleet infrastructure",
+      ru: "Общая облачная и fleet-инфраструктура",
+      de: "Gemeinsame Cloud- und Flotteninfrastruktur",
+      ge: "საერთო ღრუბლოვანი ინფრასტრუქტურა",
+    },
+    summary: {
+      en: "The shared platform under YPay, YDesk, NeoPoints, the Neo Taxi site and Space: one encrypted PostgreSQL instance with a database per product, a shared Yandex Fleet service, daily backups, audited storage and redacted logs, defined in CloudFormation.",
+      ru: "Общая платформа под YPay, YDesk, NeoPoints, сайтом Neo Taxi и Space: один зашифрованный экземпляр PostgreSQL с отдельной базой для каждого продукта, общий сервис Yandex Fleet, ежедневные резервные копии, аудируемое хранилище и очищенные логи, описанные в CloudFormation.",
+      de: "Die gemeinsame Plattform unter YPay, YDesk, NeoPoints, der Neo-Taxi-Website und Space: eine verschlüsselte PostgreSQL-Instanz mit einer Datenbank pro Produkt, ein gemeinsamer Yandex-Fleet-Dienst, tägliche Backups, auditierter Speicher und bereinigte Logs, definiert in CloudFormation.",
+      ge: "საერთო პლატფორმა YPay-ის, YDesk-ის, NeoPoints-ის, Neo Taxi-ს საიტისა და Space-ის ქვეშ: ერთი დაშიფრული PostgreSQL ცალკე ბაზით თითოეული პროდუქტისთვის, საერთო Yandex Fleet-ის სერვისი, ყოველდღიური სარეზერვო ასლები, აუდიტირებადი საცავი და გასუფთავებული ლოგები, აღწერილი CloudFormation-ში.",
+    },
+    narrative: {
+      en: "Six services share infrastructure without sharing authority. Each keeps its own database and roles, runtime roles cannot migrate, and other products' data is reachable only through signed or read-only interfaces. Compute stays on a VPS behind a shared TLS proxy; persistent business data lives in AWS.",
+      ru: "Шесть сервисов делят инфраструктуру, но не полномочия. У каждого своя база и роли, рабочие роли не могут выполнять миграции, а данные других продуктов доступны только через подписанные интерфейсы или интерфейсы только для чтения. Вычисления остаются на VPS за общим TLS-прокси, бизнес-данные хранятся в AWS.",
+      de: "Sechs Dienste teilen Infrastruktur, aber keine Befugnisse. Jedes behält eigene Datenbank und Rollen, Laufzeitrollen können nicht migrieren, und Daten anderer Produkte sind nur über signierte oder lesende Schnittstellen erreichbar. Rechenleistung bleibt auf einem VPS hinter einem gemeinsamen TLS-Proxy; persistente Geschäftsdaten liegen in AWS.",
+      ge: "ექვსი სერვისი ინფრასტრუქტურას იზიარებს, უფლებამოსილებას კი — არა. თითოეულს საკუთარი ბაზა და როლები აქვს, სამუშაო როლებს მიგრაცია არ შეუძლიათ, სხვა პროდუქტების მონაცემები კი მხოლოდ ხელმოწერილი ან მხოლოდ წაკითხვადი ინტერფეისებით მიიღწევა. გამოთვლები VPS-ზე რჩება საერთო TLS-პროქსის უკან, ბიზნეს-მონაცემები კი AWS-შია.",
+    },
+    details: {
+      en: [
+        "A CloudFormation stack in Frankfurt: encrypted PostgreSQL 16 on RDS with seven-day point-in-time recovery and deletion protection, and six databases with separate runtime and migration roles.",
+        "A shared Fleet service is the single client of the Yandex Fleet API for YPay, NeoPoints and read-only YDesk, with a shared per-tenant pause after rate limits.",
+        "A daily systemd timer dumps all six databases and archives service state to KMS-encrypted S3; CloudTrail feeds a separate audit bucket.",
+        "Credentials only work from the VPS addresses, CloudWatch receives redacted application events, and budgets alert at USD 25, 40 and 50.",
+        "A shared Caddy proxy terminates TLS and routes every site to its container.",
+      ],
+      ru: [
+        "Стек CloudFormation во Франкфурте: зашифрованный PostgreSQL 16 на RDS с восстановлением на момент времени за семь дней и защитой от удаления; шесть баз с раздельными рабочими и миграционными ролями.",
+        "Общий Fleet-сервис — единственный клиент Yandex Fleet API для YPay, NeoPoints и YDesk (только чтение) с общей паузой для арендатора после ограничения запросов.",
+        "Ежедневный таймер systemd делает дампы всех шести баз и архивирует состояние сервисов в S3 с шифрованием KMS; CloudTrail пишет в отдельный бакет аудита.",
+        "Учётные данные работают только с адресов VPS, CloudWatch получает очищенные события приложений, бюджеты оповещают при 25, 40 и 50 USD.",
+        "Общий прокси Caddy завершает TLS и направляет каждый сайт в его контейнер.",
+      ],
+      de: [
+        "Ein CloudFormation-Stack in Frankfurt: verschlüsseltes PostgreSQL 16 auf RDS mit sieben Tagen Point-in-Time-Recovery und Löschschutz, dazu sechs Datenbanken mit getrennten Laufzeit- und Migrationsrollen.",
+        "Ein gemeinsamer Fleet-Dienst ist der einzige Client der Yandex-Fleet-API für YPay, NeoPoints und lesendes YDesk, mit gemeinsamer Pause pro Mandant nach Rate-Limits.",
+        "Ein täglicher systemd-Timer sichert alle sechs Datenbanken und archiviert den Dienstzustand in KMS-verschlüsseltes S3; CloudTrail schreibt in einen eigenen Audit-Bucket.",
+        "Zugangsdaten funktionieren nur von den VPS-Adressen, CloudWatch erhält bereinigte Anwendungsereignisse, und Budgets warnen bei 25, 40 und 50 USD.",
+        "Ein gemeinsamer Caddy-Proxy terminiert TLS und leitet jede Website an ihren Container.",
+      ],
+      ge: [
+        "CloudFormation-ის სტეკი ფრანკფურტში: დაშიფრული PostgreSQL 16 RDS-ზე შვიდდღიანი point-in-time აღდგენითა და წაშლისგან დაცვით; ექვსი ბაზა ცალკე სამუშაო და მიგრაციის როლებით.",
+        "საერთო Fleet-სერვისი Yandex Fleet API-ის ერთადერთი კლიენტია YPay-ის, NeoPoints-ისა და YDesk-ისთვის (მხოლოდ წაკითხვა), მოთხოვნების ლიმიტის შემდეგ საერთო პაუზით.",
+        "ყოველდღიური systemd-ტაიმერი ექვსივე ბაზის ასლს იღებს და სერვისების მდგომარეობას KMS-ით დაშიფრულ S3-ში ინახავს; CloudTrail ცალკე აუდიტის საცავში წერს.",
+        "წვდომის მონაცემები მხოლოდ VPS-ის მისამართებიდან მუშაობს, CloudWatch გასუფთავებულ მოვლენებს იღებს, ბიუჯეტი კი 25, 40 და 50 აშშ დოლარზე აფრთხილებს.",
+        "საერთო Caddy-პროქსი TLS-ს ასრულებს და ყოველ საიტს მის კონტეინერთან აკავშირებს.",
+      ],
+    },
+    stack: ["AWS CloudFormation", "RDS PostgreSQL", "S3", "KMS", "CloudWatch", "CloudTrail", "Docker", "Caddy", "systemd"],
+    meta: {
+      en: ["live infrastructure", "AWS", "backups"],
+      ru: ["действующая инфраструктура", "AWS", "резервные копии"],
+      de: ["im Einsatz", "AWS", "Backups"],
+      ge: ["მოქმედი ინფრასტრუქტურა", "AWS", "სარეზერვო ასლები"],
+    },
+    status: { en: "INFRASTRUCTURE", ru: "ИНФРАСТРУКТУРА", de: "INFRASTRUKTUR", ge: "ინფრასტრუქტურა" },
+    cover: "cloud",
+    diagram: "neouniverse",
+    live: true,
+    evidence: {
+      role: {
+        en: "Platform engineer",
+        ru: "Платформенный инженер",
+        de: "Plattformentwickler",
+        ge: "პლატფორმის ინჟინერი",
+      },
+      contribution: {
+        en: "Designed the shared data platform, the database authority model, the Fleet service boundary, the backup job, logging and cost alerts, and moved each product onto it.",
+        ru: "Спроектировал общую платформу данных, модель полномочий баз, границу Fleet-сервиса, задание резервного копирования, логирование и оповещения о расходах и перевёл на неё каждый продукт.",
+        de: "Gemeinsame Datenplattform, Befugnismodell der Datenbanken, Grenze des Fleet-Dienstes, Backup-Job, Logging und Kostenalarme entworfen und jedes Produkt darauf umgezogen.",
+        ge: "დავაპროექტე საერთო პლატფორმა, ბაზების უფლებამოსილების მოდელი, Fleet-სერვისის საზღვარი, სარეზერვო ასლების დავალება, ლოგირება და ხარჯების შეტყობინებები და თითოეული პროდუქტი მასზე გადავიტანე.",
+      },
+      constraints: {
+        en: "Financial and personal data needs encryption, backups and least privilege on a small budget, and no product may gain authority over another product's data.",
+        ru: "Финансовые и персональные данные требуют шифрования, резервных копий и минимальных привилегий при небольшом бюджете, и ни один продукт не должен получить власть над данными другого.",
+        de: "Finanz- und Personendaten brauchen Verschlüsselung, Backups und minimale Rechte bei kleinem Budget, und kein Produkt darf Befugnis über die Daten eines anderen erhalten.",
+        ge: "ფინანსურ და პერსონალურ მონაცემებს მცირე ბიუჯეტით სჭირდება დაშიფვრა, სარეზერვო ასლები და მინიმალური უფლებები, და არცერთ პროდუქტს არ უნდა ჰქონდეს სხვისი მონაცემების მართვის უფლება.",
+      },
+      outcomes: {
+        en: "Six live services on one audited, backed-up platform, planned at USD 38–48 a month, each with its own database and boundaries.",
+        ru: "Шесть действующих сервисов на одной аудируемой платформе с резервными копиями при плановых 38–48 USD в месяц, у каждого своя база и границы.",
+        de: "Sechs produktive Dienste auf einer auditierten, gesicherten Plattform für geplante 38–48 USD im Monat, jedes mit eigener Datenbank und eigenen Grenzen.",
+        ge: "ექვსი მოქმედი სერვისი ერთ აუდიტირებად, დაზღვეულ პლატფორმაზე, დაგეგმილი 38–48 აშშ დოლარად თვეში, თითოეული საკუთარი ბაზითა და საზღვრებით.",
+      },
+    },
+  },
 ];
 
 export const toolProjects: ProjectEntry[] = [
@@ -391,6 +781,8 @@ export const toolProjects: ProjectEntry[] = [
   },
   {
     slug: "raid-signal",
+    diagram: "raid-signal",
+    featured: 5,
     title: "Raid Signal",
     cardSummary: {
       en: "A Windows squad map with encrypted coordination between desktop and phone.",
@@ -440,6 +832,72 @@ export const toolProjects: ProjectEntry[] = [
 ];
 
 export const gameProjects: ProjectEntry[] = [
+  {
+    slug: "last-standard",
+    title: "Last Standard",
+    year: "2026",
+    cardSummary: {
+      en: "A tactical chess roguelite across the carcass of a god, free to play in the browser.",
+      ru: "Тактический шахматный рогалик на останках павшего бога, бесплатно в браузере.",
+      de: "Ein taktisches Schach-Roguelite auf dem Kadaver eines Gottes, kostenlos im Browser spielbar.",
+      ge: "ტაქტიკური საჭადრაკო როგლაიტი დაცემული ღმერთის ნაშთებზე, უფასოდ ბრაუზერში.",
+    },
+    eyebrow: {
+      en: "Tactical chess roguelite",
+      ru: "Тактический шахматный рогалик",
+      de: "Taktisches Schach-Roguelite",
+      ge: "ტაქტიკური საჭადრაკო როგლაიტი",
+    },
+    summary: {
+      en: "FlyGod Studios' first released game: a tactical chess roguelite in which a tiny court protects its king and captures each commander's reliquary standard. Free to play in the browser on itch.io.",
+      ru: "Первая выпущенная игра FlyGod Studios: тактический шахматный рогалик, где маленький двор защищает короля и захватывает реликварные штандарты вражеских командиров. Бесплатно в браузере на itch.io.",
+      de: "Das erste veröffentlichte Spiel von FlyGod Studios: ein taktisches Schach-Roguelite, in dem ein kleiner Hofstaat seinen König schützt und die Reliquienstandarten der feindlichen Kommandanten erobert. Kostenlos im Browser auf itch.io.",
+      ge: "FlyGod Studios-ის პირველი გამოშვებული თამაში: ტაქტიკური საჭადრაკო როგლაიტი, სადაც პატარა სამეფო კარი მეფეს იცავს და მტრის მეთაურების რელიქვიურ დროშებს იპყრობს. უფასოდ ბრაუზერში, itch.io-ზე.",
+    },
+    narrative: {
+      en: "The god fell. The king fled. A kingdom grew on the husk of a fallen fly god, and its kings learned to eat its flesh. One king refused his plate, and now the whole carcass hunts him: lead his court, protect him, and capture each commander's standard so the surviving guards withdraw.",
+      ru: "Бог пал. Король бежал. Королевство выросло на останках павшего бога-мухи, и его короли научились есть его плоть. Один король отказался от своей тарелки, и теперь на него охотится вся туша: ведите его двор, защищайте короля и захватывайте штандарты командиров, чтобы уцелевшая стража отступила.",
+      de: "Der Gott fiel. Der König floh. Auf der Hülle eines gefallenen Fliegengottes wuchs ein Königreich, und seine Könige lernten, sein Fleisch zu essen. Ein König verweigerte seinen Teller, und nun jagt ihn der ganze Kadaver: Führe seinen Hofstaat, schütze ihn und erobere die Standarte jedes Kommandanten, damit die übrigen Wachen abziehen.",
+      ge: "ღმერთი დაეცა. მეფე გაიქცა. დაცემული ბუზი-ღმერთის ნაშთებზე სამეფო აღმოცენდა და მისმა მეფეებმა მისი ხორცის ჭამა ისწავლეს. ერთმა მეფემ თეფში უარყო და ახლა მთელი ნაშთი მას ნადირობს: წაუძეხი მის კარს, დაიცავი მეფე და აიღე ყოველი მეთაურის დროშა, რომ გადარჩენილმა მცველებმა უკან დაიხიონ.",
+    },
+    details: {
+      en: [
+        "A campaign of three acts across three regions in about an hour, plus a twenty-minute skirmish.",
+        "A seeded road map of table stops; a seed replays everything a run generates, including the enemy's moves.",
+        "Twelve enemy families and five commanders, fourteen tactical cards, fifteen upgrades and eight grafts.",
+        "Built in Godot for the browser, with a save after every decision, rebindable keys and a recorded score.",
+      ],
+      ru: [
+        "Кампания из трёх актов в трёх регионах примерно на час и двадцатиминутная схватка.",
+        "Карта пути со стоянками, генерируемая по сиду; сид воспроизводит всё в забеге, включая ходы врага.",
+        "Двенадцать семейств врагов и пять командиров, четырнадцать тактических карт, пятнадцать улучшений и восемь прививок.",
+        "Сделано на Godot для браузера: сохранение после каждого решения, переназначаемые клавиши и записанная музыка.",
+      ],
+      de: [
+        "Eine Kampagne aus drei Akten in drei Regionen in etwa einer Stunde, dazu ein zwanzigminütiges Gefecht.",
+        "Eine per Seed erzeugte Wegkarte mit Stationen; ein Seed spielt alles erneut ab, was ein Lauf erzeugt, auch die Züge des Gegners.",
+        "Zwölf Gegnerfamilien und fünf Kommandanten, vierzehn taktische Karten, fünfzehn Upgrades und acht Pfropfungen.",
+        "In Godot für den Browser gebaut, mit Speichern nach jeder Entscheidung, frei belegbaren Tasten und eingespieltem Soundtrack.",
+      ],
+      ge: [
+        "სამაქტიანი კამპანია სამ რეგიონში დაახლოებით ერთ საათში და ოციწუთიანი შეტაკება.",
+        "seed-ით შექმნილი გზის რუკა გაჩერებებით; seed მთელ თამაშს იმეორებს, მტრის სვლების ჩათვლით.",
+        "მტრების თორმეტი ოჯახი და ხუთი მეთაური, თოთხმეტი ტაქტიკური ბარათი, თხუთმეტი გაუმჯობესება და რვა გადანერგვა.",
+        "აწყობილია Godot-ზე ბრაუზერისთვის: შენახვა ყოველი გადაწყვეტილების შემდეგ, კლავიშების გადაწყობა და ჩაწერილი მუსიკა.",
+      ],
+    },
+    stack: ["Godot", "HTML5", "Pixel art", "Original score", "itch.io"],
+    meta: {
+      en: ["released game", "tactics", "roguelite"],
+      ru: ["вышедшая игра", "тактика", "рогалик"],
+      de: ["veröffentlichtes Spiel", "Taktik", "Roguelite"],
+      ge: ["გამოშვებული თამაში", "ტაქტიკა", "როგლაიტი"],
+    },
+    link: "https://flygodstudios.itch.io/last-standard",
+    linkLabel: { en: "play on itch.io", ru: "играть на itch.io", de: "auf itch.io spielen", ge: "ითამაშე itch.io-ზე" },
+    cover: "sillybazaar",
+    live: true,
+  },
   {
     slug: "flygod-studios",
     title: "FlyGod Studios",
@@ -534,6 +992,108 @@ export const gameProjects: ProjectEntry[] = [
     },
     cover: "alice",
     live: true,
+  },
+  {
+    slug: "surikmods",
+    title: "SurikMods for Valheim",
+    cardSummary: {
+      en: "Three Valheim mods: drivable vehicles, wolves that grow with you, and runic firearms.",
+      ru: "Три мода для Valheim: машины, волки, которые растут вместе с вами, и рунное оружие.",
+      de: "Drei Valheim-Mods: fahrbare Fahrzeuge, mitwachsende Wölfe und runische Feuerwaffen.",
+      ge: "Valheim-ის სამი მოდი: მართვადი მანქანები, მზარდი მგლები და რუნული ცეცხლსასროლი იარაღი.",
+    },
+    eyebrow: {
+      en: "Valheim content mods",
+      ru: "Контентные моды для Valheim",
+      de: "Inhaltsmods für Valheim",
+      ge: "Valheim-ის კონტენტის მოდები",
+    },
+    summary: {
+      en: "A collection of three Valheim mods on Thunderstore: Ironroad Motorworks adds craftable vehicles, Hearthpack Oaths lets tamed wolves grow, and Stormrune Armory adds runic firearms with server-synced balance.",
+      ru: "Коллекция из трёх модов для Valheim на Thunderstore: Ironroad Motorworks добавляет создаваемые машины, Hearthpack Oaths даёт прирученным волкам расти, а Stormrune Armory добавляет рунное огнестрельное оружие с балансом, синхронизируемым сервером.",
+      de: "Eine Sammlung von drei Valheim-Mods auf Thunderstore: Ironroad Motorworks bringt herstellbare Fahrzeuge, Hearthpack Oaths lässt gezähmte Wölfe wachsen, und Stormrune Armory fügt runische Feuerwaffen mit serverseitig synchronisierter Balance hinzu.",
+      ge: "Valheim-ის სამი მოდის კოლექცია Thunderstore-ზე: Ironroad Motorworks ამატებს შესაქმნელ მანქანებს, Hearthpack Oaths მოშინაურებულ მგლებს ზრდის, Stormrune Armory კი ამატებს რუნულ ცეცხლსასროლ იარაღს სერვერით სინქრონიზებული ბალანსით.",
+    },
+    narrative: {
+      en: "Each mod adds a system that fits Valheim's own rules: recipes at the right crafting station and tier, ward permissions respected, and host-controlled configuration synced to every player.",
+      ru: "Каждый мод добавляет систему, которая следует правилам самой Valheim: рецепты на нужном верстаке и уровне, уважение к правам оберегов и настройки хоста, синхронизируемые со всеми игроками.",
+      de: "Jeder Mod fügt ein System hinzu, das Valheims eigenen Regeln folgt: Rezepte an der passenden Werkbank und Stufe, respektierte Schutzrechte und vom Host kontrollierte Einstellungen, die an alle Spieler synchronisiert werden.",
+      ge: "თითოეული მოდი ამატებს სისტემას, რომელიც Valheim-ის წესებს მიჰყვება: რეცეპტები სწორ სახელოსნოსა და დონეზე, დაცვის უფლებების პატივისცემა და ჰოსტის პარამეტრები, რომლებიც ყველა მოთამაშესთან სინქრონიზდება.",
+    },
+    details: {
+      en: [
+        "Ironroad Motorworks: three craftable cars with hill driving, a two-seat expedition jeep and a shared, persistent cargo stash.",
+        "Hearthpack Oaths: each tamed wolf keeps its own stars, experience and stat bonuses earned from meals, kills and travel.",
+        "Stormrune Armory: four runic firearms with biome-tier ammunition, magazines and reloads on the native Bows skill.",
+        "Built on BepInEx and Jötunn; code under MIT and original art under CC BY 4.0.",
+      ],
+      ru: [
+        "Ironroad Motorworks: три создаваемые машины с ездой по холмам, двухместный экспедиционный джип и общий сохраняемый багажник.",
+        "Hearthpack Oaths: каждый прирученный волк хранит свои звёзды, опыт и бонусы, полученные за еду, убийства и путешествия.",
+        "Stormrune Armory: четыре рунных ствола с боеприпасами по биомам, магазинами и перезарядкой на родном навыке луков.",
+        "Сделано на BepInEx и Jötunn; код под MIT, оригинальная графика под CC BY 4.0.",
+      ],
+      de: [
+        "Ironroad Motorworks: drei herstellbare Autos mit Bergfahrt, ein zweisitziger Expeditionsjeep und ein gemeinsamer, dauerhafter Laderaum.",
+        "Hearthpack Oaths: Jeder gezähmte Wolf behält eigene Sterne, Erfahrung und Werteboni aus Fütterung, Kämpfen und Reisen.",
+        "Stormrune Armory: vier runische Feuerwaffen mit Munition je Biom-Stufe, Magazinen und Nachladen über die native Bogen-Fertigkeit.",
+        "Gebaut auf BepInEx und Jötunn; Code unter MIT, eigene Grafik unter CC BY 4.0.",
+      ],
+      ge: [
+        "Ironroad Motorworks: სამი შესაქმნელი მანქანა მთაში სავლელად, ორადგილიანი საექსპედიციო ჯიპი და საერთო, შენახვადი საბარგული.",
+        "Hearthpack Oaths: ყოველი მოშინაურებული მგელი ინახავს საკუთარ ვარსკვლავებს, გამოცდილებასა და ბონუსებს საკვებიდან, ბრძოლებიდან და მოგზაურობიდან.",
+        "Stormrune Armory: ოთხი რუნული ცეცხლსასროლი იარაღი ბიომის დონის ტყვიებით, მჭიდებითა და მშვილდის უნარზე დაფუძნებული გადატენით.",
+        "აწყობილია BepInEx-სა და Jötunn-ზე; კოდი MIT ლიცენზიით, ორიგინალური გრაფიკა CC BY 4.0-ით.",
+      ],
+    },
+    stack: ["C#", "Unity", "BepInEx", "Jötunn", "Thunderstore"],
+    meta: {
+      en: ["thunderstore release", "modding", "multiplayer"],
+      ru: ["релиз на thunderstore", "моддинг", "мультиплеер"],
+      de: ["Thunderstore-Release", "Modding", "Mehrspieler"],
+      ge: ["Thunderstore", "მოდები", "მრავალმოთამაშიანი"],
+    },
+    link: "https://thunderstore.io/c/valheim/p/SurikMods/",
+    linkLabel: { en: "view on Thunderstore", ru: "открыть на Thunderstore", de: "auf Thunderstore ansehen", ge: "Thunderstore-ზე ნახვა" },
+    cover: "rifle",
+    parts: [
+      {
+        title: "Ironroad Motorworks",
+        version: "1.1.1",
+        link: "https://thunderstore.io/c/valheim/p/SurikMods/Ironroad_Motorworks/",
+        icon: "ironroad",
+        summary: {
+          en: "Three craftable vehicles, with hill driving, a two-seat expedition jeep and persistent cargo.",
+          ru: "Три создаваемые машины: езда по холмам, двухместный джип и сохраняемый груз.",
+          de: "Drei herstellbare Fahrzeuge mit Bergfahrt, zweisitzigem Expeditionsjeep und dauerhafter Ladung.",
+          ge: "სამი შესაქმნელი მანქანა: მთაში სიარული, ორადგილიანი ჯიპი და შენახვადი ტვირთი.",
+        },
+      },
+      {
+        title: "Hearthpack Oaths",
+        version: "1.0.1",
+        link: "https://thunderstore.io/c/valheim/p/SurikMods/Hearthpack_Oaths/",
+        icon: "hearthpack",
+        summary: {
+          en: "Persistent tamed-wolf training: wolves grow through meals, kills and travel.",
+          ru: "Постоянное обучение прирученных волков: они растут от еды, побед и путешествий.",
+          de: "Dauerhaftes Wolfstraining: gezähmte Wölfe wachsen durch Fütterung, Kämpfe und Reisen.",
+          ge: "მოშინაურებული მგლების მუდმივი წვრთნა: იზრდებიან საკვებით, ბრძოლითა და მოგზაურობით.",
+        },
+      },
+      {
+        title: "Stormrune Armory",
+        version: "1.0.1",
+        link: "https://thunderstore.io/c/valheim/p/SurikMods/Stormrune_Armory/",
+        icon: "stormrune",
+        summary: {
+          en: "Four craftable runic firearms with biome-tier ammunition, magazines and server-synced balance.",
+          ru: "Четыре рунных ствола с боеприпасами по биомам, магазинами и балансом от сервера.",
+          de: "Vier herstellbare runische Feuerwaffen mit Biom-Munition, Magazinen und servergesteuerter Balance.",
+          ge: "ოთხი რუნული იარაღი ბიომის ტყვიებით, მჭიდებითა და სერვერით სინქრონიზებული ბალანსით.",
+        },
+      },
+    ],
   },
   {
     slug: "rifle-revolver",

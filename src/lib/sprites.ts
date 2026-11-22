@@ -42,6 +42,63 @@ const projectArt: Record<string, Grid> = {
     c.glyph(31, 0, ["..y..", ".yyy.", ".yyy.", "yyyyy", "..y.."]);
   }),
 
+  // a business phone sends call waves, through a lock, to the desk
+  ylead: art((c) => {
+    c.rect(5, 1, 11, 18, "c").box(4, 0, 13, 20, "a").hline(8, 2, 5, "b").hline(9, 17, 3, "b");
+    c.glyph(7, 6, ["hh.....", "hhh....", ".hh....", "..hh...", "...hhh.", "....hhh", ".....hh"]);
+    [20, 23, 26].forEach((x, i) => c.vline(x, 7 - i, 6 + i * 2, i === 2 ? "a" : "b"));
+    c.glyph(29, 5, [".aaa.", "a...a", "a...a", "aaaaa", "ayyya", "aayaa", "aaaaa"]);
+    c.hline(28, 15, 10, "b").box(28, 13, 10, 5, "a").set(36, 15, "y");
+  }),
+
+  // a car on the road to a map pin, with an earnings bar rising beside it
+  space: art((c) => {
+    c.hline(0, 18, 40, "c");
+    for (let x = 2; x < 38; x += 5) c.hline(x, 16, 3, "b");
+    c.rect(5, 10, 14, 4, "b").rect(8, 7, 8, 3, "b").hline(9, 8, 2, "c").hline(13, 8, 2, "c").hline(5, 10, 14, "a");
+    c.disc(8, 14, 1.4, "a").disc(16, 14, 1.4, "a").set(19, 11, "y");
+    c.glyph(26, 1, [".aaaaa.", "aayyyaa", "aay.yaa", "aayyyaa", ".aaaaa.", "..aaa..", "...a..."]);
+    c.line(19, 12, 27, 9, "c", 2);
+    [[34, 5], [37, 9]].forEach(([x, h]) => c.rect(x!, 15 - h!, 2, h!, "b").hline(x!, 15 - h!, 2, "a"));
+  }),
+
+  // a sign-up form whose finished lead branches to two destinations
+  "neo-taxi-site": art((c) => {
+    c.rect(3, 2, 14, 16, "c").box(2, 1, 16, 18, "a");
+    for (const y of [5, 9, 13]) c.hline(5, y, 10, "b");
+    c.rect(5, 15, 6, 2, "y");
+    c.hline(19, 10, 5, "b").line(24, 10, 28, 5, "b").line(24, 10, 28, 15, "b");
+    c.box(29, 2, 8, 6, "a").hline(31, 4, 4, "h").box(29, 12, 8, 6, "a").hline(31, 14, 4, "h").set(35, 16, "y");
+  }),
+
+  // three products stand on one encrypted database under a shared cloud
+  neouniverse: art((c) => {
+    c.disc(15, 4, 2.5, "b").disc(20, 3, 3, "b").disc(25, 4, 2.5, "b").rect(13, 4, 15, 3, "b").hline(14, 1, 12, "a");
+    [6, 18, 30].forEach((x) => c.box(x, 9, 5, 4, "a").set(x + 2, 11, "h"));
+    [8, 20, 32].forEach((x) => c.vline(x, 7, 2, "c"));
+    c.hline(8, 14, 25, "c").vline(20, 13, 2, "c");
+    c.rect(15, 15, 11, 5, "b").hline(15, 15, 11, "a").hline(15, 17, 11, "a").hline(15, 19, 11, "a");
+    c.glyph(28, 15, [".y.", "y.y", "yyy", "yyy"]);
+  }),
+
+  // a crowned king stands on a chessboard under a torn standard
+  "last-standard": art((c) => {
+    for (let y = 13; y < 20; y += 1) for (let x = 2; x < 38; x += 1) if ((Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0) c.set(x, y, "c");
+    c.glyph(14, 1, ["y.y.y", "yyyyy", ".aaa.", ".aha.", ".aaa.", "..a..", ".aaa.", "aaaaa", "aaaaa", ".bbb.", "bbbbb"]);
+    c.vline(28, 1, 13, "a").rect(29, 2, 7, 5, "o").set(35, 6, ".").set(34, 6, ".").set(31, 4, "y");
+    c.glyph(4, 7, [".a.", "aaa", ".a.", "aaa", "aaa"]).glyph(8, 9, ["aa", "aa", "aa"]);
+  }),
+
+  // a rune-marked jeep, a starred wolf and a crossed pair of rifles
+  surikmods: art((c) => {
+    c.rect(2, 9, 13, 4, "b").rect(4, 6, 6, 3, "b").hline(5, 7, 3, "c").hline(2, 9, 13, "a").set(12, 10, "y");
+    c.disc(5, 13, 1.4, "a").disc(12, 13, 1.4, "a");
+    c.glyph(17, 6, ["a.....a.", "aa...aa.", "aaaaaaa.", "ahaaaha.", ".aaaaa..", "..aaa.aa", "..aaaaaa", "..a...a."]);
+    c.glyph(19, 2, ["..y..", ".yyy.", "..y.."]);
+    c.line(28, 4, 37, 14, "b").line(28, 14, 37, 4, "b").set(32, 9, "y").set(33, 9, "y");
+    c.hline(0, 17, 40, "c");
+  }),
+
   // completed orders drop points into a gift box; rank bars climb toward a star
   neopoints: art((c) => {
     c.rect(3, 9, 12, 9, "c").box(3, 9, 12, 9, "a").hline(2, 8, 14, "a").vline(8, 8, 10, "y").vline(9, 8, 10, "y");

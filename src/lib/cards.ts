@@ -26,6 +26,11 @@ export const toolRecords = caseRecords.filter((record) => record.suit === "tool"
 export const openSourceRecords = toolRecords.filter((record) => Boolean(record.entry.sourceLink));
 /** First-viewport proof: Work records that run in production (`live: true`). */
 export const liveWorkRecords = workRecords.filter((record) => record.entry.live === true);
+/** The hero shows at most five live records, in their `featured` order; the count covers all of them. */
+export const heroProofRecords = liveWorkRecords
+  .filter((record) => record.entry.featured !== undefined)
+  .sort((a, b) => a.entry.featured! - b.entry.featured!)
+  .slice(0, 5);
 
 export function localize<T>(record: { en: T } & Partial<Record<Locale, T>>, locale: Locale): T {
   return record[locale] ?? record.en;
