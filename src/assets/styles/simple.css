@@ -58,8 +58,25 @@
   color: #fff;
 }
 
-/* Quiet everywhere: no glow, no decorative motion. The switch keeps its wobble. */
-:root[data-view="simple"] *:not(.view-switch, .view-switch *) {
+/* Quiet everywhere: no decorative motion. Glow is already off through the
+   --glow-* tokens. Targeted selectors keep view switches cheap (a universal
+   rule here cost a full-page style recalc); the switch keeps its wobble. */
+:root[data-view="simple"]
+  :is(
+    .hero-panel__cursor,
+    .case-file__cursor,
+    .term-prompt__cursor,
+    .site-header__led,
+    .hero-panel__led,
+    .site-footer__led,
+    .terminal-chassis__led,
+    [data-terminal-panel],
+    .deck-card,
+    .deck-card__live,
+    .hero-proof__count,
+    .terminal-glass
+  ),
+:root[data-view="simple"] .terminal-glass::after {
   text-shadow: none !important;
   animation: none !important;
 }
@@ -187,9 +204,7 @@
     "title"
     "body"
     "actions"
-    "status"
-    "impact"
-    "direct";
+    "status";
   grid-template-rows: none;
 }
 :root[data-view="simple"] .hero-panel__kicker {
@@ -276,45 +291,6 @@
   height: 7px;
   background: var(--live);
   box-shadow: 0 0 0 3px rgba(141, 255, 122, 0.14);
-}
-:root[data-view="simple"] .hero-impact {
-  max-width: none;
-  margin-top: 3.5rem;
-}
-:root[data-view="simple"] .hero-impact h2 {
-  margin-bottom: 1rem;
-  color: var(--text-subtle);
-  font: 500 0.75rem/1.4 var(--mono);
-  letter-spacing: 0.08em;
-}
-:root[data-view="simple"] .hero-impact ul {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  gap: 1.5rem 2rem;
-}
-:root[data-view="simple"] .hero-impact li {
-  display: grid;
-  align-content: start;
-  gap: 0.25rem;
-  padding: 1rem 0 0;
-  border-top: 1px solid var(--line-strong);
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-}
-:root[data-view="simple"] .hero-impact li::before {
-  content: none;
-}
-:root[data-view="simple"] .hero-impact strong {
-  color: var(--text-strong);
-  font: 600 1.75rem/1.1 var(--body);
-  letter-spacing: -0.02em;
-}
-:root[data-view="simple"] .hero-panel__direct {
-  margin-top: 2.5rem;
-  color: var(--text-subtle);
-  font: 400 0.9375rem/1.6 var(--body);
-}
-:root[data-view="simple"] .hero-panel__direct a {
-  color: var(--text-strong);
 }
 
 /* ---- buttons: amber primary, hairline secondary, plain link tertiary ---- */
@@ -713,19 +689,6 @@
   }
   :root[data-view="simple"] .work-row__stack {
     display: none;
-  }
-  :root[data-view="simple"] .hero-impact {
-    margin-top: 2.5rem;
-  }
-  :root[data-view="simple"] .hero-impact ul {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem 1rem;
-  }
-  :root[data-view="simple"] .hero-impact strong {
-    font-size: 1.375rem;
-  }
-  :root[data-view="simple"] .hero-impact li {
-    font-size: 0.875rem;
   }
   :root[data-view="simple"] .work-row__cta {
     display: none;

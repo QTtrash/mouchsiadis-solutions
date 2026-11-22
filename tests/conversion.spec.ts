@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { experiences, impact } from "../src/lib/content.ts";
+import { experiences } from "../src/lib/content.ts";
 import { liveWorkRecords } from "../src/lib/cards.ts";
 
 const locales = ["en", "ru", "de", "ge"] as const;
@@ -93,20 +93,8 @@ test("hero proof lists the featured live records and counts every live one", asy
   expect(liveWorkRecords.length).toBe(9);
 });
 
-test("every hero impact line is backed by the experience it cites", () => {
-  for (const item of impact) {
-    const sources = item.sources.map((slug) => experiences.find((entry) => entry.slug === slug));
-    expect(sources.every(Boolean), item.text.en).toBe(true);
-    if (!item.figure) continue;
-    const evidence = sources.flatMap((entry) => [entry!.summary.en, ...entry!.details.en]).join(" ");
-    expect(evidence, item.text.en).toContain(item.figure.en);
-  }
-});
-
 test("experience folds internships and student roles below the main timeline", async ({ page }) => {
   const early = experiences.filter((entry) => entry.early);
-  const cited = new Set(impact.flatMap((item) => item.sources));
-  expect(early.filter((entry) => cited.has(entry.slug)), "roles cited in the hero stay visible").toEqual([]);
   await page.goto("/en/");
   const panel = page.locator("#experience");
   const fold = panel.locator("[data-early-roles]");
@@ -125,19 +113,17 @@ test("case files state the role and outcome once", async ({ page }) => {
 });
 
 for (const locale of locales) {
-  test(`${locale}: the hero keeps the English title and lists the track record`, async ({ page }) => {
+  test(`${locale}: the hero keeps the English title and shows no track record or direct line`, async ({ page }) => {
     await page.goto(`/${locale}/`);
     await expect(page.locator(".hero-panel h1")).toHaveText(/^Senior platform engineer/i);
-    await expect(page.locator(".hero-impact [data-impact]")).toHaveCount(impact.length);
+    // Owner decision, 22 November 2026: the hero carries no results list or direct-email line.
+    await expect(page.locator(".hero-impact, .hero-panel__direct")).toHaveCount(0);
   });
 }
 
-test("the hero states availability and a direct email next to the primary action", async ({ page }) => {
+test("the hero states availability under the actions", async ({ page }) => {
   await page.goto("/en/");
   await expect(page.locator(".hero-panel__status")).toContainText("available for systems work");
-  const direct = page.locator(".hero-panel__direct a");
-  await expect(direct).toHaveText("suren@mouchsiadis-solutions.com");
-  await expect(direct).toHaveAttribute("href", /^mailto:suren@mouchsiadis-solutions\.com\?subject=/);
 });
 
 for (const locale of locales) {
@@ -200,7 +186,7 @@ test("reading surfaces never glow", async ({ page }) => {
   const shadows = async (selectors: string[]) =>
     page.evaluate((list) => list.flatMap((selector) => [...document.querySelectorAll(selector)].map((element) => `${selector}: ${getComputedStyle(element).textShadow}`)), selectors);
   await page.goto("/en/");
-  const landing = await shadows([".hero-panel__body", ".hero-panel__direct", ".deck-card__outcome", ".section-heading__body", ".hero-proof__text > span"]);
+  const landing = await shadows([".hero-panel__body", ".deck-card__outcome", ".section-heading__body", ".hero-proof__text > span"]);
   await page.goto("/en/work/ypay/");
   const caseFile = await shadows([".case-file h1", ".case-file h2", ".case-file p", ".case-file li", ".case-file dd"]);
   await page.goto("/ru/blog/tonight-i-cry/");

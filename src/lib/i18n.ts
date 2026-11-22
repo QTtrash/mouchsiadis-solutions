@@ -182,9 +182,7 @@ export const localeSeo: Record<
     };
     labels: {
       status: string;
-      contactAudience: string;
       proofTitle: string;
-      impactTitle: string;
       emailMe: string;
       copyAddress: string;
       copied: string;
@@ -266,9 +264,7 @@ export const localeSeo: Record<
     },
     labels: {
       status: "status",
-      contactAudience: "For projects, contract work, consulting or a role. Or write directly:",
       proofTitle: "Live case files",
-      impactTitle: "Track record",
       emailMe: "Email me",
       copyAddress: "Copy address",
       copied: "Copied",
@@ -356,9 +352,7 @@ export const localeSeo: Record<
     },
     labels: {
       status: "статус",
-      contactAudience: "Для проектов, контрактов, консалтинга или работы в команде. Или напишите напрямую:",
       proofTitle: "Работающие проекты",
-      impactTitle: "Результаты",
       emailMe: "Написать на почту",
       copyAddress: "Скопировать адрес",
       copied: "Скопировано",
@@ -446,9 +440,7 @@ export const localeSeo: Record<
     },
     labels: {
       status: "Status",
-      contactAudience: "Für Projekte, Auftragsarbeit, Beratung oder eine Festanstellung. Oder direkt schreiben:",
       proofTitle: "Live-Fallakten",
-      impactTitle: "Ergebnisse",
       emailMe: "E-Mail schreiben",
       copyAddress: "Adresse kopieren",
       copied: "Kopiert",
@@ -536,9 +528,7 @@ export const localeSeo: Record<
     },
     labels: {
       status: "სტატუსი",
-      contactAudience: "პროექტებისთვის, კონტრაქტებისთვის, კონსულტაციისთვის ან სამუშაო შეთავაზებისთვის. ან მომწერეთ პირდაპირ:",
       proofTitle: "მოქმედი პროექტები",
-      impactTitle: "შედეგები",
       emailMe: "მომწერეთ ელფოსტით",
       copyAddress: "მისამართის კოპირება",
       copied: "დაკოპირდა",

@@ -64,56 +64,6 @@ export const profile: { location: LocalizedString; availability: LocalizedString
   },
 };
 
-export interface ImpactEntry {
-  figure?: LocalizedString;
-  text: LocalizedString;
-  /** Experience slugs whose details state this result. */
-  sources: string[];
-}
-
-/** Hero track record. Each line restates facts from the experiences named in `sources`. */
-export const impact: ImpactEntry[] = [
-  {
-    figure: { en: "10,000+", ru: "10 000+", de: "10.000+", ge: "10 000+" },
-    text: {
-      en: "active drivers on a fleet platform I led",
-      ru: "активных водителей на флот-платформе, которую я вёл",
-      de: "aktive Fahrer auf einer Flottenplattform unter meiner Leitung",
-      ge: "აქტიური მძღოლი ავტოპარკის პლატფორმაზე, რომელსაც ვხელმძღვანელობდი",
-    },
-    sources: ["neo-taxi"],
-  },
-  {
-    figure: { en: "10,000+", ru: "10 000+", de: "10.000+", ge: "10 000+" },
-    text: {
-      en: "patients in a multi-clinic monitoring system I led",
-      ru: "пациентов в системе мониторинга для нескольких клиник, которую я вёл",
-      de: "Patientinnen in einem Multi-Klinik-Monitoring unter meiner Leitung",
-      ge: "პაციენტი რამდენიმე კლინიკის მონიტორინგის სისტემაში, რომელსაც ვხელმძღვანელობდი",
-    },
-    sources: ["bits"],
-  },
-  {
-    figure: { en: "50+", ru: "50+", de: "50+", ge: "50+" },
-    text: {
-      en: "legacy Angular components modernized; a Java monolith rebuilt",
-      ru: "legacy-компонентов Angular модернизировано; Java-монолит перестроен",
-      de: "Legacy-Angular-Komponenten modernisiert; einen Java-Monolithen neu aufgebaut",
-      ge: "მოძველებული Angular-კომპონენტის მოდერნიზაცია; Java-მონოლითის ხელახლა აწყობა",
-    },
-    sources: ["june", "ingenics"],
-  },
-  {
-    text: {
-      en: "Cloud infrastructure owned end to end: Terraform, CI/CD, AI agents",
-      ru: "Облачная инфраструктура под мою ответственность: Terraform, CI/CD, AI-агенты",
-      de: "Cloud-Infrastruktur in voller Verantwortung: Terraform, CI/CD, AI-Agenten",
-      ge: "ღრუბლოვანი ინფრასტრუქტურა სრულად ჩემს პასუხისმგებლობაზე: Terraform, CI/CD, AI-აგენტები",
-    },
-    sources: ["june", "ocumeda"],
-  },
-];
-
 export const projects: ProjectEntry[] = [
   {
     slug: "ypay",
@@ -293,10 +243,10 @@ export const projects: ProjectEntry[] = [
     title: "YLead · YDesk Phone",
     featured: 4,
     cardSummary: {
-      en: "A native Android dialer that reports business calls to YDesk with consent, encryption and an offline queue.",
-      ru: "Нативная Android-звонилка: рабочие звонки попадают в YDesk с согласием, шифрованием и офлайн-очередью.",
-      de: "Eine native Android-Telefon-App, die Geschäftsanrufe mit Einwilligung, Verschlüsselung und Offline-Warteschlange an YDesk meldet.",
-      ge: "Android-ის აპლიკაცია, რომელიც სამსახურებრივ ზარებს YDesk-ს თანხმობით, დაშიფვრითა და ოფლაინ რიგით აწვდის.",
+      en: "An Android dialer that reports business calls to YDesk, encrypted and offline-first.",
+      ru: "Android-звонилка: рабочие звонки уходят в YDesk в зашифрованном виде, даже без сети.",
+      de: "Eine Android-Telefon-App, die Geschäftsanrufe verschlüsselt und offline-fähig an YDesk meldet.",
+      ge: "Android-ის აპლიკაცია, რომელიც სამსახურებრივ ზარებს YDesk-ს დაშიფრულად აწვდის.",
     },
     eyebrow: {
       en: "Android business phone for YDesk",

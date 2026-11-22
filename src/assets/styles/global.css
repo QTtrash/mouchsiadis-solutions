@@ -75,8 +75,8 @@
     format("woff2");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
@@ -176,7 +176,8 @@
   --cover-base: var(--glass);
   --cover-accent: var(--phosphor);
   --glow-display:
-    0 0 14px rgb(var(--phosphor-rgb) / 0.34), 0 0 46px rgb(var(--phosphor-rgb) / 0.14);
+    0 0 14px rgb(var(--phosphor-rgb) / 0.34),
+    0 0 46px rgb(var(--phosphor-rgb) / 0.14);
   --glow-title: 0 0 12px rgb(var(--phosphor-rgb) / 0.24);
   --glow-amber: 0 0 10px rgb(var(--amber-rgb) / 0.38);
   --display: "Montserrat", "Noto Sans Georgian", system-ui, sans-serif;
@@ -212,9 +213,13 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 14% 0%, rgb(var(--phosphor-rgb) / 0.07), transparent 30rem),
-    radial-gradient(rgb(var(--phosphor-rgb) / 0.03) 1px, transparent 1px) 0 0 / 16px
-      16px,
+    radial-gradient(
+      circle at 14% 0%,
+      rgb(var(--phosphor-rgb) / 0.07),
+      transparent 30rem
+    ),
+    radial-gradient(rgb(var(--phosphor-rgb) / 0.03) 1px, transparent 1px) 0 0 /
+      16px 16px,
     var(--bg);
   color: var(--text);
   font: 400 1rem/1.65 var(--body);
@@ -342,7 +347,11 @@ button {
   border: 0;
   border-left: 1px solid var(--control-line);
   background:
-    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.18) 0 1px,
+      transparent 1px 3px
+    ),
     linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.05), transparent 38%),
     var(--glass);
   color: var(--text);
@@ -740,7 +749,11 @@ button {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--text);
-  background: linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.07), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--phosphor-rgb) / 0.07),
+    rgba(0, 0, 0, 0.2)
+  );
   text-decoration: none;
   cursor: pointer;
 }
@@ -788,8 +801,16 @@ button {
   padding: 0.75rem;
   border-radius: 18px;
   background:
-    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
-    radial-gradient(120% 90% at 28% 0%, rgb(var(--phosphor-rgb) / 0.09), transparent 55%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.16) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(
+      120% 90% at 28% 0%,
+      rgb(var(--phosphor-rgb) / 0.09),
+      transparent 55%
+    ),
     radial-gradient(140% 120% at 50% 50%, var(--glass-2), var(--glass) 70%);
   box-shadow:
     0 0 0 4px #020402,
@@ -855,7 +876,11 @@ button {
   padding: 0.55rem 0.75rem;
   border: 1px solid rgb(var(--olive-rgb) / 0.24);
   border-radius: 5px;
-  background: linear-gradient(180deg, rgb(var(--olive-rgb) / 0.08), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--olive-rgb) / 0.08),
+    rgba(0, 0, 0, 0.25)
+  );
   box-shadow:
     inset 0 1px 0 rgba(200, 255, 190, 0.06),
     0 2px 0 rgba(0, 0, 0, 0.5);
@@ -883,7 +908,11 @@ button {
   padding-left: 1.375rem;
   color: var(--amber-bright);
   border-color: var(--amber-line);
-  background: linear-gradient(180deg, rgb(var(--amber-rgb) / 0.16), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--amber-rgb) / 0.16),
+    rgba(0, 0, 0, 0.25)
+  );
   box-shadow:
     inset 0 0 18px rgb(var(--amber-rgb) / 0.12),
     0 0 18px rgb(var(--amber-rgb) / 0.1);
@@ -914,11 +943,9 @@ button {
     "title proof"
     "actions proof"
     "body proof"
-    "impact proof"
-    "direct proof"
     "status proof"
     ". proof";
-  grid-template-rows: repeat(7, auto) 1fr;
+  grid-template-rows: repeat(5, auto) 1fr;
   column-gap: 2rem;
   align-items: start;
 }
@@ -940,12 +967,6 @@ button {
 .hero-panel__grid > .hero-panel__body {
   grid-area: body;
   margin-top: 1.25rem;
-}
-.hero-panel__grid > .hero-impact {
-  grid-area: impact;
-}
-.hero-panel__grid > .hero-panel__direct {
-  grid-area: direct;
 }
 .hero-panel__grid > .hero-panel__status {
   grid-area: status;
@@ -997,65 +1018,12 @@ button {
   color: var(--text-secondary);
   font-size: 1.0625rem;
 }
-/* A short track record: results restated from the experience log. */
-.hero-impact {
-  max-width: 60ch;
-  margin-top: 1.125rem;
-}
-.hero-impact h2 {
-  margin: 0 0 0.375rem;
-  color: var(--text-subtle);
-  font: 600 0.6875rem/1.5 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.hero-impact ul {
-  display: grid;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.hero-impact li {
-  position: relative;
-  padding-left: 1.125rem;
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-.hero-impact li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.45em;
-  width: 0.625rem;
-  height: 0.625rem;
-  background: var(--phosphor);
-  mask: var(--chevron) center / contain no-repeat;
-}
-.hero-impact strong {
-  color: var(--amber);
-  font: 700 0.9375rem/1.5 var(--mono);
-}
 .hero-panel__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.625rem;
   margin-top: 1.5rem;
-}
-.hero-panel__direct {
-  margin: 0.875rem 0 0;
-  max-width: 60ch;
-  color: var(--text-subtle);
-  font: 400 0.8125rem/1.6 var(--mono);
-}
-.hero-panel__direct a {
-  color: var(--text);
-  overflow-wrap: anywhere;
-}
-.hero-panel__direct a:hover {
-  color: var(--amber-bright);
 }
 .hero-panel__status {
   display: inline-flex;
@@ -1163,7 +1131,11 @@ button {
   padding: 0.875rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.05), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--phosphor-rgb) / 0.05),
+    rgba(0, 0, 0, 0.25)
+  );
 }
 .hero-proof__head {
   display: flex;
@@ -1279,7 +1251,11 @@ button {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   background:
-    radial-gradient(circle at 50% 40%, rgb(var(--phosphor-rgb) / 0.12), transparent 70%),
+    radial-gradient(
+      circle at 50% 40%,
+      rgb(var(--phosphor-rgb) / 0.12),
+      transparent 70%
+    ),
     #041006;
   cursor: pointer;
 }
@@ -1359,7 +1335,9 @@ html:not(.js) .avatar-card {
   padding: 1.25rem;
   border: 1px solid color-mix(in srgb, var(--atlas-copper) 34%, transparent);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(232, 147, 92, 0.08), transparent 45%), var(--panel);
+  background:
+    linear-gradient(180deg, rgba(232, 147, 92, 0.08), transparent 45%),
+    var(--panel);
   --cover-accent: var(--atlas-copper);
 }
 /* A lone project spans the row, with its actions beside the copy. */
@@ -1619,7 +1597,8 @@ html:not(.js) .avatar-card {
   padding: 1.25rem;
   border: 1px solid var(--amber-line);
   border-radius: 10px;
-  background: linear-gradient(180deg, var(--amber-soft), transparent 60%), var(--panel);
+  background:
+    linear-gradient(180deg, var(--amber-soft), transparent 60%), var(--panel);
 }
 .contact-panel__main {
   display: grid;
@@ -1985,8 +1964,6 @@ html:not(.js) .avatar-card {
       "title proof"
       "body proof"
       "actions proof"
-      "impact proof"
-      "direct proof"
       "status proof"
       ". proof";
   }
@@ -2048,7 +2025,9 @@ html:not(.js) .avatar-card {
     opacity: 0;
     transition: opacity 110ms linear;
   }
-  [data-view="terminal"].js .terminal-console--ready [data-terminal-panel].is-active {
+  [data-view="terminal"].js
+    .terminal-console--ready
+    [data-terminal-panel].is-active {
     visibility: visible;
     opacity: 1;
   }
@@ -2069,7 +2048,7 @@ html:not(.js) .avatar-card {
 @media (max-width: 900px) {
   .hero-panel__grid {
     grid-template-columns: 1fr;
-    grid-template-areas: "kicker" "title" "actions" "proof" "body" "impact" "direct" "status";
+    grid-template-areas: "kicker" "title" "actions" "proof" "body" "status";
     grid-template-rows: none;
   }
   .hero-panel__grid > .hero-proof {
@@ -2132,9 +2111,6 @@ html:not(.js) .avatar-card {
   }
   .hero-panel__actions .button--primary {
     flex: 1 1 100%;
-  }
-  .hero-panel__direct {
-    font-size: 0.75rem;
   }
   .hero-panel__kicker p {
     font-size: 0.6875rem;
@@ -2384,12 +2360,13 @@ html:not(.js) .terminal-chassis__knobs {
     opacity: 1;
   }
 }
+/* Opacity only: a filter here repainted the whole panel on every tab switch. */
 @keyframes phosphor-wake {
   from {
-    filter: brightness(1.35);
+    opacity: 0.6;
   }
   to {
-    filter: none;
+    opacity: 1;
   }
 }
 @keyframes crt-power-on {

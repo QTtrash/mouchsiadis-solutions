@@ -1,5 +1,5 @@
 /* Terminal realism, November 2026. Ratios follow cool-retro-term's defaults
-   (bloom high, curvature and noise low, no continuous flicker). Every layer is
+   (bloom high, curvature and noise low, no continuous flicker, no moving band). Every layer is
    part of the glass background or a pseudo-element painted beneath the
    content, so text is never covered, and all motion stops under reduced motion
    or Effects: Reduced. Terminal view only. */
@@ -53,6 +53,16 @@
     inset 0 0 70px rgba(0, 0, 0, 0.72),
     inset 0 0 160px rgba(0, 0, 0, 0.4),
     inset 0 2px 0 rgba(200, 255, 190, 0.08);
+}
+
+/* The fitted console's panel area gets its own compositor layer, so switching
+   or scrolling a panel repaints only the panel, never the layered glass behind
+   it (measured: tab-switch and scroll jank to zero, raster work cut ~10x).
+   Fitted sizes only: in the continuous layout this area is the whole page. */
+@media (min-width: 1120px) and (min-height: 720px) {
+  :root[data-view="terminal"].js .terminal-console__content {
+    will-change: transform;
+  }
 }
 
 /* ---- shell semantics: real prompts above each panel ---- */
@@ -137,25 +147,12 @@
   display: none;
 }
 
-/* ---- motion: a slow refresh band and a richer power-on ---- */
+/* ---- motion: a richer power-on ----
+   Performance rule: decorative motion animates only transform or opacity on
+   small elements. A moving background over the glass (a refresh band, tried in
+   November 2026) re-rasterized the whole screen every frame and dropped the
+   terminal to about 14 fps, so it was removed. */
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-view="terminal"]:not([data-effects="reduced"])
-    .terminal-glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-        180deg,
-        transparent,
-        rgb(var(--phosphor-rgb) / 0.045) 50%,
-        transparent
-      )
-      0 -30% / 100% 22% no-repeat;
-    animation: crt-refresh 9s linear infinite;
-  }
   :root[data-view="terminal"]:not([data-effects="reduced"])
     .term-prompt__cursor {
     animation: cursor-blink 1.06s steps(1, end) infinite;
@@ -176,14 +173,6 @@
         transparent 60%
       );
     animation: crt-power-on-full 760ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
-}
-@keyframes crt-refresh {
-  from {
-    background-position: 0 -30%;
-  }
-  to {
-    background-position: 0 130%;
   }
 }
 @keyframes crt-power-on-full {
