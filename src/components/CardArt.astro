@@ -3,7 +3,7 @@
 // hover glint sprite. Records without drawn art fall back to the build-time
 // SVG vignette (CoverArt), so experience entries and new records still render.
 import CoverArt from "./CoverArt.astro";
-import { CARD_ART, VFX, cardArt, cardGlint } from "../lib/art";
+import { CARD_ART, VFX, cardArt, cardGlint, experienceArt } from "../lib/art";
 
 interface Props {
   slug: string;
@@ -11,10 +11,12 @@ interface Props {
   class?: string;
   eager?: boolean;
   glint?: boolean;
+  /** Which art set to look in: case-record cards or experience roles. */
+  kind?: "card" | "experience";
 }
 
-const { slug, cover, class: className, eager = false, glint = false } = Astro.props;
-const src = cardArt(slug);
+const { slug, cover, class: className, eager = false, glint = false, kind = "card" } = Astro.props;
+const src = kind === "experience" ? experienceArt(slug) : cardArt(slug);
 ---
 
 {

@@ -160,6 +160,14 @@ test("cards carry their PixelLab art, crisp and undraggable, and a pixel suit ma
   expect(sources.size).toBe(3);
 });
 
+test("the terminal Experience panel shows role art and no duplicate section icon", async ({ page }) => {
+  await page.goto("/en/#experience");
+  const panel = page.locator("#experience");
+  const main = await panel.locator(".archive-grid--timeline").first().locator(".archive-entry").count();
+  await expect(panel.locator(".archive-grid--timeline").first().locator(".card-art__img")).toHaveCount(main);
+  await expect(panel.locator(".section-heading__icon")).toBeHidden();
+});
+
 test("the hero avatar flips between the pixel sprite and the photo", async ({ page }) => {
   await page.goto("/en/");
   const avatar = page.locator("[data-avatar-flip]");

@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { caseRecords } from "../src/lib/cards.ts";
+import { experiences } from "../src/lib/content.ts";
 
 // The default view for a first visit: no stored preference.
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -146,4 +147,17 @@ test("SurikMods lists its three mods with Thunderstore links", async ({ page }) 
   await expect(parts).toHaveCount(3);
   await expect(parts.locator("h3 a").first()).toHaveAttribute("href", /^https:\/\/thunderstore\.io\/c\/valheim\/p\/SurikMods\//);
   await expect(page.locator("body")).not.toContainText(/\bAI\b/);
+});
+
+test("every experience role carries its PixelLab art, early roles included", async ({ page }) => {
+  await page.goto("/en/");
+  const main = experiences.filter((entry) => !entry.early).length;
+  const art = page.locator("#experience .archive-entry .card-art__img");
+  await expect(page.locator("#experience .archive-grid--timeline").first().locator(".card-art__img")).toHaveCount(main);
+  await page.locator("[data-early-roles] > summary").click();
+  await expect(art).toHaveCount(experiences.length);
+  for (const image of await art.all()) {
+    await expect(image).toHaveAttribute("alt", "");
+    await expect(image).toHaveCSS("image-rendering", "pixelated");
+  }
 });

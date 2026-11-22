@@ -31,7 +31,7 @@ Since 22 November 2026 the hero is the name alone: no headline, general line or 
 
 ### Card Art
 
-Each case record can have a PixelLab illustration at `src/assets/art/cards/<slug>.png` (128×64, MS-86 palette). `src/lib/art.ts` finds it by slug; `CardArt.astro` falls back to the SVG vignette when there is none. Art is decoration (`alt=""`); the record's title carries the meaning.
+Each case record can have a PixelLab illustration at `src/assets/art/cards/<slug>.png` (128×64, MS-86 palette), and each experience role one at `src/assets/art/experience/<slug>.png` (`experienceArt()`). `src/lib/art.ts` finds it by slug; `CardArt.astro` falls back to the SVG vignette when there is none. Art is decoration (`alt=""`); the record's title carries the meaning.
 
 ### Hero Proof
 

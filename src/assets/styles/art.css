@@ -35,6 +35,20 @@
   height: 2rem;
   image-rendering: pixelated;
 }
+/* Section icons belong to the Simple view; the terminal's side nav carries them. */
+.px-icon.section-heading__icon {
+  display: none;
+}
+/* Experience and List entries: a 2:1 plate at 1x (128 px) when PixelLab art exists. */
+@media (min-width: 768px) {
+  .archive-entry__summary:has(.archive-entry__cover .card-art) {
+    grid-template-columns: 8rem minmax(0, 1fr);
+  }
+}
+.archive-entry__cover:has(.card-art) {
+  aspect-ratio: 2 / 1;
+  border: 1px solid rgb(var(--olive-rgb, 165 220 113) / 0.18);
+}
 .px-icon--sm {
   width: 1.5rem;
   height: 1.5rem;
@@ -101,14 +115,16 @@
   :root:not([data-effects="reduced"]) .work-row__link:hover .vfx-glint,
   :root:not([data-effects="reduced"]) .work-row__link:focus-visible .vfx-glint,
   :root:not([data-effects="reduced"]) .open-source-showcase__project:hover .vfx-glint,
-  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint {
+  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint,
+  :root:not([data-effects="reduced"]) .archive-entry__summary:hover .vfx-glint {
     opacity: 1;
   }
   :root:not([data-effects="reduced"]) .deck-card:hover .vfx-glint img,
   :root:not([data-effects="reduced"]) .work-row__link:hover .vfx-glint img,
   :root:not([data-effects="reduced"]) .work-row__link:focus-visible .vfx-glint img,
   :root:not([data-effects="reduced"]) .open-source-showcase__project:hover .vfx-glint img,
-  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint img {
+  :root:not([data-effects="reduced"]) .case-file__cover:hover .vfx-glint img,
+  :root:not([data-effects="reduced"]) .archive-entry__summary:hover .vfx-glint img {
     animation: vfx-glint 920ms steps(11) 1 both;
   }
   :root:not([data-effects="reduced"]) .view-switch.is-pulled .view-switch__vfx {

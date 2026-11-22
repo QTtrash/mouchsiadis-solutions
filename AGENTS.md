@@ -32,7 +32,7 @@ These are standing owner decisions. Do not reverse them without asking.
 **Art**
 - Project illustrations, UI icons and VFX come from **PixelLab** (MCP server `pixellab`) in the fixed 13-colour MS-86 palette (`docs/visual-design.md`, "Datasheet + pixels"). Keep new art in that palette and style.
 - Art is shown pixelated at 1×, 1.5× or 2×, ships as hashed PNG files and is never inlined.
-- No text, logos or third-party marks in generated art.
+- No text, logos or third-party marks in generated art. Experience art (`src/assets/art/experience/`) shows the work, never the employer's brand.
 
 **Screenshots**
 - Use **public, signed-out pages only**. Never capture admin or internal screens.

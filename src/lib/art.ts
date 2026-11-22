@@ -10,6 +10,11 @@ const cardFiles = import.meta.glob<string>("../assets/art/cards/*.png", {
   query: "?url",
   import: "default",
 });
+const experienceFiles = import.meta.glob<string>("../assets/art/experience/*.png", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 const iconFiles = import.meta.glob<string>("../assets/art/icons/*.png", {
   eager: true,
   query: "?url",
@@ -22,6 +27,7 @@ const byName = (files: Record<string, string>) =>
   ) as Record<string, string>;
 
 const cards = byName(cardFiles);
+const roles = byName(experienceFiles);
 const icons = byName(iconFiles);
 
 export const CARD_ART = { width: 128, height: 64 } as const;
@@ -30,6 +36,11 @@ export const ICON = { width: 32, height: 32 } as const;
 /** The card illustration for a case record, if one was drawn. */
 export function cardArt(slug: string): string | undefined {
   return cards[slug];
+}
+
+/** The illustration for an experience role (src/assets/art/experience/<slug>.png). */
+export function experienceArt(slug: string): string | undefined {
+  return roles[slug];
 }
 
 export type IconName =

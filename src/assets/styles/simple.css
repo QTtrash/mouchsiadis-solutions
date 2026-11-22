@@ -599,13 +599,15 @@
 /* ---- experience, notes, contact: hairline rows ---- */
 :root[data-view="simple"] .archive-entry {
   border-color: var(--line);
-  border-radius: 10px;
+  border-radius: 2px;
   background: none;
   box-shadow: none;
 }
 :root[data-view="simple"] .archive-entry__cover {
   --px-accent: #a3a3a3;
-  background: #0d0d0d;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: #050805;
 }
 :root[data-view="simple"] .archive-entry h3,
 :root[data-view="simple"] .archive-entry__title-link {
