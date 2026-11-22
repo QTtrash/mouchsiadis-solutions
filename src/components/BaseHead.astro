@@ -31,16 +31,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script is:inline>
-  try {
-    document.documentElement.classList.add("js");
-    document.documentElement.dataset.effects =
-      localStorage.getItem("interfaceEffects") === "reduced"
-        ? "reduced"
-        : "system";
-  } catch {
-    document.documentElement.classList.add("js");
-    document.documentElement.dataset.effects = "system";
-  }
+  // Pre-paint preferences. View: ?view= (shared links) → stored choice →
+  // the Simple view. Effects follow the OS unless explicitly reduced.
+  (function () {
+    var root = document.documentElement;
+    root.classList.add("js");
+    var view = "simple";
+    var effects = "system";
+    try {
+      var asked = new URLSearchParams(location.search).get("view");
+      var stored = localStorage.getItem("interfaceView");
+      if (asked === "terminal" || asked === "simple") {
+        view = asked;
+        localStorage.setItem("interfaceView", asked);
+      } else if (stored === "terminal") {
+        view = "terminal";
+      }
+      if (localStorage.getItem("interfaceEffects") === "reduced") effects = "reduced";
+    } catch (error) {
+      var match = /[?&]view=(terminal|simple)\b/.exec(location.search);
+      if (match) view = match[1];
+    }
+    root.dataset.view = view;
+    root.dataset.effects = effects;
+  })();
 </script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="canonical" href={canonicalURL} />

@@ -150,8 +150,11 @@
   --screen: var(--glass);
   --panel: #081409;
   --panel-strong: #0d1d0e;
-  --panel-soft: rgba(141, 255, 122, 0.06);
+  --panel-soft: rgb(var(--phosphor-rgb) / 0.06);
   --phosphor: #8dff7a;
+  --phosphor-rgb: 141 255 122;
+  --olive-rgb: 165 220 113;
+  --amber-rgb: 255 176 0;
   --signal: var(--phosphor);
   --signal-2: #5fb85a;
   --text-strong: #dfffd4;
@@ -160,22 +163,22 @@
   --text-subtle: #8fae88;
   --muted: var(--text-secondary);
   --dim: #5e7d57;
-  --line: rgba(141, 255, 122, 0.18);
-  --line-strong: rgba(141, 255, 122, 0.42);
-  --control-line: rgba(165, 220, 113, 0.3);
+  --line: rgb(var(--phosphor-rgb) / 0.18);
+  --line-strong: rgb(var(--phosphor-rgb) / 0.42);
+  --control-line: rgb(var(--olive-rgb) / 0.3);
   --amber: #ffb000;
   --amber-bright: #ffcf66;
   --amber-ink: #1d1300;
-  --amber-soft: rgba(255, 176, 0, 0.13);
-  --amber-line: rgba(255, 176, 0, 0.5);
+  --amber-soft: rgb(var(--amber-rgb) / 0.13);
+  --amber-line: rgb(var(--amber-rgb) / 0.5);
   --atlas-copper: #e8935c;
   --danger: #ff8278;
   --cover-base: var(--glass);
   --cover-accent: var(--phosphor);
   --glow-display:
-    0 0 14px rgba(141, 255, 122, 0.34), 0 0 46px rgba(141, 255, 122, 0.14);
-  --glow-title: 0 0 12px rgba(141, 255, 122, 0.24);
-  --glow-amber: 0 0 10px rgba(255, 176, 0, 0.38);
+    0 0 14px rgb(var(--phosphor-rgb) / 0.34), 0 0 46px rgb(var(--phosphor-rgb) / 0.14);
+  --glow-title: 0 0 12px rgb(var(--phosphor-rgb) / 0.24);
+  --glow-amber: 0 0 10px rgb(var(--amber-rgb) / 0.38);
   --display: "Montserrat", "Noto Sans Georgian", system-ui, sans-serif;
   --body: "IBM Plex Sans", "Noto Sans Georgian", system-ui, sans-serif;
   --heading: var(--body);
@@ -209,8 +212,8 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 14% 0%, rgba(141, 255, 122, 0.07), transparent 30rem),
-    radial-gradient(rgba(141, 255, 122, 0.03) 1px, transparent 1px) 0 0 / 16px
+    radial-gradient(circle at 14% 0%, rgb(var(--phosphor-rgb) / 0.07), transparent 30rem),
+    radial-gradient(rgb(var(--phosphor-rgb) / 0.03) 1px, transparent 1px) 0 0 / 16px
       16px,
     var(--bg);
   color: var(--text);
@@ -340,7 +343,7 @@ button {
   border-left: 1px solid var(--control-line);
   background:
     repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px),
-    linear-gradient(180deg, rgba(141, 255, 122, 0.05), transparent 38%),
+    linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.05), transparent 38%),
     var(--glass);
   color: var(--text);
   box-shadow: -24px 0 72px rgba(0, 0, 0, 0.58);
@@ -575,7 +578,7 @@ button {
   background: var(--signal);
   box-shadow:
     0 0 0 2px #030503,
-    0 0 10px 1px rgba(141, 255, 122, 0.8);
+    0 0 10px 1px rgb(var(--phosphor-rgb) / 0.8);
 }
 
 .terminal-chassis__knobs {
@@ -667,7 +670,7 @@ button {
   height: 7px;
   border-radius: 50%;
   background: var(--phosphor);
-  box-shadow: 0 0 8px rgba(141, 255, 122, 0.8);
+  box-shadow: 0 0 8px rgb(var(--phosphor-rgb) / 0.8);
 }
 .site-header__nav {
   display: flex;
@@ -705,7 +708,7 @@ button {
   padding: 0.125rem;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: rgba(141, 255, 122, 0.03);
+  background: rgb(var(--phosphor-rgb) / 0.03);
 }
 .locale-switcher a {
   display: grid;
@@ -737,7 +740,7 @@ button {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--text);
-  background: linear-gradient(180deg, rgba(141, 255, 122, 0.07), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.07), rgba(0, 0, 0, 0.2));
   text-decoration: none;
   cursor: pointer;
 }
@@ -775,7 +778,7 @@ button {
     inset -8px -8px 0 #0e130c,
     0 0 0 4px #030503,
     0 40px 120px -40px #000,
-    0 0 110px -30px rgba(141, 255, 122, 0.16);
+    0 0 110px -30px rgb(var(--phosphor-rgb) / 0.16);
 }
 /* The glass sits in a hard recess. Scanlines are part of its background, so
    nothing is painted above the content or blended with moving cards. */
@@ -786,14 +789,14 @@ button {
   border-radius: 18px;
   background:
     repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
-    radial-gradient(120% 90% at 28% 0%, rgba(141, 255, 122, 0.09), transparent 55%),
+    radial-gradient(120% 90% at 28% 0%, rgb(var(--phosphor-rgb) / 0.09), transparent 55%),
     radial-gradient(140% 120% at 50% 50%, var(--glass-2), var(--glass) 70%);
   box-shadow:
     0 0 0 4px #020402,
     0 0 0 8px var(--chassis-lo),
     -4px -4px 0 8px var(--chassis-lo),
     4px 4px 0 8px var(--chassis-hi),
-    inset 0 0 0 1px rgba(165, 220, 113, 0.16),
+    inset 0 0 0 1px rgb(var(--olive-rgb) / 0.16),
     inset 0 0 90px rgba(0, 0, 0, 0.7),
     inset 0 2px 0 rgba(200, 255, 190, 0.08);
 }
@@ -850,9 +853,9 @@ button {
   gap: 0.6rem;
   min-height: 44px;
   padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(165, 220, 113, 0.24);
+  border: 1px solid rgb(var(--olive-rgb) / 0.24);
   border-radius: 5px;
-  background: linear-gradient(180deg, rgba(165, 220, 113, 0.08), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(180deg, rgb(var(--olive-rgb) / 0.08), rgba(0, 0, 0, 0.25));
   box-shadow:
     inset 0 1px 0 rgba(200, 255, 190, 0.06),
     0 2px 0 rgba(0, 0, 0, 0.5);
@@ -874,16 +877,16 @@ button {
 }
 .terminal-side-nav a:hover {
   color: var(--text-strong);
-  border-color: rgba(165, 220, 113, 0.44);
+  border-color: rgb(var(--olive-rgb) / 0.44);
 }
 .terminal-side-nav a.is-active {
   padding-left: 1.375rem;
   color: var(--amber-bright);
   border-color: var(--amber-line);
-  background: linear-gradient(180deg, rgba(255, 176, 0, 0.16), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(180deg, rgb(var(--amber-rgb) / 0.16), rgba(0, 0, 0, 0.25));
   box-shadow:
-    inset 0 0 18px rgba(255, 176, 0, 0.12),
-    0 0 18px rgba(255, 176, 0, 0.1);
+    inset 0 0 18px rgb(var(--amber-rgb) / 0.12),
+    0 0 18px rgb(var(--amber-rgb) / 0.1);
   text-shadow: var(--glow-amber);
 }
 .terminal-side-nav a.is-active::before {
@@ -1091,7 +1094,7 @@ button {
   padding: 0.65rem 1rem;
   border: 1px solid var(--line-strong);
   border-radius: 5px;
-  background: rgba(141, 255, 122, 0.05);
+  background: rgb(var(--phosphor-rgb) / 0.05);
   color: var(--text);
   font: 600 0.8125rem/1.35 var(--mono);
   letter-spacing: 0.02em;
@@ -1121,7 +1124,7 @@ button {
   color: var(--amber-ink);
   box-shadow:
     0 0 0 1px var(--amber-bright) inset,
-    0 0 26px rgba(255, 176, 0, 0.26);
+    0 0 26px rgb(var(--amber-rgb) / 0.26);
 }
 .button--primary::before {
   opacity: 0.75;
@@ -1137,7 +1140,7 @@ button {
   background: transparent;
   color: var(--phosphor);
   text-decoration: underline;
-  text-decoration-color: rgba(141, 255, 122, 0.45);
+  text-decoration-color: rgb(var(--phosphor-rgb) / 0.45);
   text-underline-offset: 0.3em;
 }
 .button--tertiary::before {
@@ -1160,7 +1163,7 @@ button {
   padding: 0.875rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(141, 255, 122, 0.05), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(180deg, rgb(var(--phosphor-rgb) / 0.05), rgba(0, 0, 0, 0.25));
 }
 .hero-proof__head {
   display: flex;
@@ -1185,7 +1188,7 @@ button {
   align-items: center;
   gap: 0.4rem;
   color: var(--phosphor);
-  text-shadow: 0 0 8px rgba(141, 255, 122, 0.5);
+  text-shadow: 0 0 8px rgb(var(--phosphor-rgb) / 0.5);
 }
 .hero-proof__count::before {
   content: "";
@@ -1212,7 +1215,7 @@ button {
   align-items: center;
   min-height: 44px;
   padding: 0.5rem;
-  border: 1px solid rgba(165, 220, 113, 0.16);
+  border: 1px solid rgb(var(--olive-rgb) / 0.16);
   border-radius: 7px;
   background: rgba(0, 0, 0, 0.25);
   text-decoration: none;
@@ -1224,7 +1227,7 @@ button {
   position: relative;
   aspect-ratio: 2 / 1;
   overflow: hidden;
-  border: 1px solid rgba(165, 220, 113, 0.18);
+  border: 1px solid rgb(var(--olive-rgb) / 0.18);
   border-radius: 4px;
   background: #020a03;
 }
@@ -1276,7 +1279,7 @@ button {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   background:
-    radial-gradient(circle at 50% 40%, rgba(141, 255, 122, 0.12), transparent 70%),
+    radial-gradient(circle at 50% 40%, rgb(var(--phosphor-rgb) / 0.12), transparent 70%),
     #041006;
   cursor: pointer;
 }
@@ -1417,7 +1420,7 @@ html:not(.js) .avatar-card {
   min-height: 2rem;
   color: var(--phosphor);
   font: 600 0.8125rem/1.3 var(--mono);
-  text-decoration-color: rgba(141, 255, 122, 0.4);
+  text-decoration-color: rgb(var(--phosphor-rgb) / 0.4);
 }
 .open-source-showcase__links a:hover {
   color: var(--amber-bright);
@@ -1955,10 +1958,10 @@ html:not(.js) .avatar-card {
 
 /* Fitted console is an enhancement. These are the only fitted breakpoints. */
 @media (min-width: 1120px) and (min-height: 720px) {
-  .js .has-console .site-header__nav {
+  [data-view="terminal"].js .has-console .site-header__nav {
     visibility: hidden;
   }
-  .js .terminal-console {
+  [data-view="terminal"].js .terminal-console {
     display: flex;
     flex-direction: column;
     height: calc(100svh - 6.5rem);
@@ -1966,17 +1969,17 @@ html:not(.js) .avatar-card {
     padding: 1.5rem 1.5rem 2.75rem;
     overflow: hidden;
   }
-  .js .terminal-glass {
+  [data-view="terminal"].js .terminal-glass {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
     padding: 0.875rem 1rem 1rem;
   }
-  .js .terminal-status {
+  [data-view="terminal"].js .terminal-status {
     display: flex;
   }
-  .js .hero-panel__grid {
+  [data-view="terminal"].js .hero-panel__grid {
     grid-template-areas:
       "kicker proof"
       "title proof"
@@ -1987,50 +1990,50 @@ html:not(.js) .avatar-card {
       "status proof"
       ". proof";
   }
-  .js .hero-panel__grid > .hero-panel__body {
+  [data-view="terminal"].js .hero-panel__grid > .hero-panel__body {
     margin-top: 0;
   }
-  .terminal-console .section-heading {
+  [data-view="terminal"] .terminal-console .section-heading {
     display: grid;
     grid-template-columns: minmax(12rem, 0.85fr) minmax(0, 1.15fr);
     gap: 0.5rem 1.5rem;
     align-items: end;
     margin-bottom: 1.25rem;
   }
-  .terminal-console .section-heading__kicker {
+  [data-view="terminal"] .terminal-console .section-heading__kicker {
     grid-column: 1 / -1;
     margin-bottom: 0;
   }
-  .terminal-console .section-heading :is(h1, h2) {
+  [data-view="terminal"] .terminal-console .section-heading :is(h1, h2) {
     margin-bottom: 0;
     font-size: 2.125rem;
   }
-  .terminal-console .section-heading__body {
+  [data-view="terminal"] .terminal-console .section-heading__body {
     font-size: 0.9375rem;
   }
-  .js .terminal-console__body {
+  [data-view="terminal"].js .terminal-console__body {
     display: grid;
     grid-template-columns: 9.75rem minmax(0, 1fr);
     gap: 1.125rem;
     flex: 1;
     min-height: 0;
   }
-  .js .terminal-side-nav {
+  [data-view="terminal"].js .terminal-side-nav {
     display: grid;
     align-content: start;
     gap: 0.5rem;
   }
-  .js .terminal-console__content {
+  [data-view="terminal"].js .terminal-console__content {
     display: block;
     position: relative;
     height: 100%;
     min-height: 0;
   }
-  .js .terminal-section + .terminal-section {
+  [data-view="terminal"].js .terminal-section + .terminal-section {
     border-top: 0;
   }
-  .js .terminal-console--ready .terminal-section,
-  .js .tooling-console .terminal-section {
+  [data-view="terminal"].js .terminal-console--ready .terminal-section,
+  [data-view="terminal"].js .tooling-console .terminal-section {
     position: absolute;
     inset: 0;
     padding: 1.25rem 1.25rem 1.5rem;
@@ -2040,12 +2043,12 @@ html:not(.js) .avatar-card {
     scrollbar-width: thin;
     scrollbar-color: var(--line-strong) transparent;
   }
-  .js .terminal-console--ready [data-terminal-panel] {
+  [data-view="terminal"].js .terminal-console--ready [data-terminal-panel] {
     visibility: hidden;
     opacity: 0;
     transition: opacity 110ms linear;
   }
-  .js .terminal-console--ready [data-terminal-panel].is-active {
+  [data-view="terminal"].js .terminal-console--ready [data-terminal-panel].is-active {
     visibility: visible;
     opacity: 1;
   }

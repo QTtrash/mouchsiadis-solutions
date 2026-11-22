@@ -8,6 +8,7 @@ import OpenSourceShowcase from "../../components/OpenSourceShowcase.astro";
 import BacklogBreaker from "../../components/BacklogBreaker.astro";
 import PixelArt from "../../components/PixelArt.astro";
 import TerminalChassis from "../../components/TerminalChassis.astro";
+import TermPrompt from "../../components/TermPrompt.astro";
 import { avatarSprite } from "../../lib/avatar";
 import { navSprites } from "../../lib/sprites";
 import { experiences, impact, profile } from "../../lib/content";
@@ -16,6 +17,7 @@ import {
   cardSummary,
   casePath,
   gameRecords,
+  heroProofRecords,
   liveWorkRecords,
   localize,
   workRecords,
@@ -74,10 +76,29 @@ const contactHref = mailto(copy.labels.mailSubject);
   >
     <TerminalChassis />
     <div class="terminal-glass">
-      <div class="terminal-status" aria-hidden="true">
-        <span>Mouchsiadis // field terminal</span>
-        <span>LANG {localeLabels[locale]}</span>
-        <span>STATION MUC-01</span>
+      <div class="terminal-status terminal-status--tmux" aria-hidden="true" data-tmux>
+        <span class="tmux__session">[ms-86]</span>
+        <span class="tmux__post">MS-86 BIOS 1.0 · MEM 640K OK · P1 PHOSPHOR OK · LANG {localeLabels[locale]}</span>
+        <span class="tmux__windows">
+          {
+            [
+              ["overview", copy.nav.overview],
+              ["software-work", copy.nav.work],
+              ["game-dev", copy.nav.games],
+              ["experience", copy.nav.experience],
+              ["blog", copy.nav.blog],
+              ["contact", copy.nav.contact],
+            ].map(([id, label], index) => (
+              <span class:list={["tmux__window", index === 0 && "is-active"]} data-tmux-window={id}>
+                {index}:{label!.toLowerCase()}
+              </span>
+            ))
+          }
+        </span>
+        <span class="tmux__right">
+          <span class="tmux__live">● LIVE {liveCount}</span>
+          <span>MUC <span data-tmux-clock>--:--</span></span>
+        </span>
       </div>
 
       <div class="terminal-console__body">
@@ -138,6 +159,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="hero-panel terminal-section is-active"
             data-terminal-panel="overview"
           >
+            <TermPrompt cmd="whoami --long" />
             <div class="hero-panel__grid">
               <div class="hero-panel__kicker">
                 <button
@@ -192,7 +214,7 @@ const contactHref = mailto(copy.labels.mailSubject);
                 </div>
                 <ul role="list">
                   {
-                    liveWorkRecords.map(({ entry, suit }) => (
+                    heroProofRecords.map(({ entry, suit }) => (
                       <li data-suit={suit} data-cover={entry.cover} data-proof>
                         <a href={casePath(locale, entry.slug)}>
                           <span class="hero-proof__art" aria-hidden="true">
@@ -240,6 +262,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="section terminal-section"
             data-terminal-panel="software-work"
           >
+            <TermPrompt cmd="ls ~/work --live" />
             <div class="section-heading">
               <p class="section-heading__kicker">{copy.sectionKickers.work}</p>
               <h2>{copy.sections.work}</h2>
@@ -261,6 +284,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="section terminal-section"
             data-terminal-panel="game-dev"
           >
+            <TermPrompt cmd="ls ~/games" />
             <div class="section-heading">
               <p class="section-heading__kicker">{copy.sectionKickers.games}</p>
               <h2>{copy.sections.games}</h2>
@@ -277,6 +301,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="section terminal-section"
             data-terminal-panel="experience"
           >
+            <TermPrompt cmd="cat experience.log" />
             <div class="section-heading">
               <p class="section-heading__kicker">
                 {copy.sectionKickers.experience}
@@ -338,6 +363,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="section terminal-section"
             data-terminal-panel="blog"
           >
+            <TermPrompt cmd="tail -n 3 ~/notes" />
             <div class="section-heading">
               <p class="section-heading__kicker">{copy.sectionKickers.blog}</p>
               <h2>{copy.sections.blog}</h2>
@@ -389,6 +415,7 @@ const contactHref = mailto(copy.labels.mailSubject);
             class="section terminal-section"
             data-terminal-panel="contact"
           >
+            <TermPrompt cmd="mail suren" />
             <div class="section-heading">
               <p class="section-heading__kicker">
                 {copy.sectionKickers.contact}

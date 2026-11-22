@@ -3,6 +3,10 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../assets/styles/global.css";
+import "../assets/styles/present.css";
+import "../assets/styles/switch.css";
+import "../assets/styles/crt.css";
+import "../assets/styles/simple.css";
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/600.css";
 import "@fontsource/noto-sans-georgian/georgian-400.css";
@@ -40,7 +44,7 @@ const {
 ---
 
 <!doctype html>
-<html lang={localeIntlCodes[locale]}>
+<html lang={localeIntlCodes[locale]} data-view="simple">
   <head>
     <BaseHead
       locale={locale}

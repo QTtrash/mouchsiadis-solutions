@@ -7,19 +7,47 @@ const POWER_KEY = "terminalPowered";
 
 // One decorative power-on beam per session. It overlays the already rendered
 // glass, so content and actions are never delayed or hidden.
-function powerOn(terminal: HTMLElement): void {
+// Pulling the header switch always boots the glass (force), even if this session
+// already saw the power-on. The Simple view never powers on.
+function powerOn(terminal: HTMLElement, force = false): void {
+  const root = document.documentElement;
   const reduced =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-    document.documentElement.dataset.effects === "reduced";
-  if (reduced) return;
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches || root.dataset.effects === "reduced";
+  if (reduced || root.dataset.view !== "terminal") return;
   try {
-    if (sessionStorage.getItem(POWER_KEY)) return;
+    if (!force && sessionStorage.getItem(POWER_KEY)) return;
     sessionStorage.setItem(POWER_KEY, "1");
   } catch {
-    return;
+    if (!force) return;
   }
-  terminal.classList.add("terminal-console--power-on");
-  window.setTimeout(() => terminal.classList.remove("terminal-console--power-on"), 500);
+  terminal.classList.remove("terminal-console--power-on");
+  void terminal.offsetWidth;
+  terminal.classList.add("terminal-console--power-on", "terminal-console--booting");
+  window.setTimeout(() => terminal.classList.remove("terminal-console--power-on"), 900);
+  // The status line shows a short POST before the window list returns.
+  window.setTimeout(() => terminal.classList.remove("terminal-console--booting"), 1400);
+}
+
+// tmux-style status line: the active window follows the panel; a clock in
+// Munich time updates each minute. Decorative and hidden from assistive tech.
+function initStatusLine(terminal: HTMLElement): void {
+  const status = terminal.querySelector<HTMLElement>("[data-tmux]");
+  if (!status) return;
+  const windows = Array.from(status.querySelectorAll<HTMLElement>("[data-tmux-window]"));
+  const clock = status.querySelector<HTMLElement>("[data-tmux-clock]");
+  const sync = () => {
+    const active = terminal.querySelector<HTMLAnchorElement>("[data-terminal-tab].is-active");
+    const id = active?.hash.slice(1) ?? "overview";
+    windows.forEach((item) => item.classList.toggle("is-active", item.dataset.tmuxWindow === id));
+  };
+  const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Berlin" });
+  const tick = () => {
+    if (clock) clock.textContent = format.format(new Date());
+  };
+  terminal.addEventListener("terminal-panel-change", sync);
+  tick();
+  window.setInterval(tick, 30_000);
+  sync();
 }
 
 export function initTerminal(): void {
@@ -28,7 +56,13 @@ export function initTerminal(): void {
   const tabs = Array.from(terminal.querySelectorAll<HTMLAnchorElement>("[data-terminal-tab]"));
   const panels = Array.from(terminal.querySelectorAll<HTMLElement>("[data-terminal-panel]"));
   const validIds = new Set(panels.map((panel) => panel.id));
-  const fitted = window.matchMedia("(min-width: 1120px) and (min-height: 720px)");
+  // The fitted console is a terminal-view enhancement; the Simple view always flows.
+  const fittedQuery = window.matchMedia("(min-width: 1120px) and (min-height: 720px)");
+  const fitted = {
+    get matches(): boolean {
+      return fittedQuery.matches && document.documentElement.dataset.view === "terminal";
+    },
+  };
   const sound = new SoundEngine();
   const resolve = (id: string): string => {
     const target = PANEL_ALIASES[id] ?? id;
@@ -95,7 +129,14 @@ export function initTerminal(): void {
     showPanel(location.hash.slice(1), fitted.matches);
     if (fitted.matches) window.scrollTo({ top: 0, behavior: "instant" });
   });
-  fitted.addEventListener("change", () => syncLayout(true));
+  fittedQuery.addEventListener("change", () => syncLayout(true));
+  window.addEventListener("interface-view-change", (event) => {
+    syncLayout(true);
+    if ((event as CustomEvent<string>).detail === "terminal") {
+      powerOn(terminal, true);
+      sound.play("boot");
+    }
+  });
   tabs.forEach((tab) => {
     tab.addEventListener("mouseenter", () => sound.play("key"));
     tab.addEventListener("focus", () => sound.play("key"));
@@ -104,6 +145,7 @@ export function initTerminal(): void {
     summary.addEventListener("click", () => sound.play("detail"));
   });
   syncLayout();
+  initStatusLine(terminal);
   powerOn(terminal);
   // A direct fragment URL selects a panel; it must not scroll the outer frame
   // to the absolute-positioned panel after the document finishes loading.

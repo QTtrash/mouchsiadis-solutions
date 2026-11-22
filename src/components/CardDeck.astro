@@ -4,6 +4,7 @@
 // Cards/List switch, flipping, and drag-to-reader on fine pointers.
 import ArchiveEntry from "./ArchiveEntry.astro";
 import CaseCard from "./CaseCard.astro";
+import WorkRows from "./WorkRows.astro";
 import { casePath, localize, type CaseRecord } from "../lib/cards";
 import { deckCopy, evidenceLabels, localeSeo, type Locale } from "../lib/i18n";
 
@@ -18,7 +19,9 @@ const seo = localeSeo[locale];
 const labels = evidenceLabels[locale];
 ---
 
-<div class="card-deck" data-deck>
+<WorkRows records={records} locale={locale} />
+
+<div class="card-deck" data-deck data-terminal-only>
   <div class="card-deck__toolbar">
     <div class="card-deck__view" role="group" aria-label={copy.viewLabel}>
       <button type="button" data-deck-view="cards" aria-pressed="true"

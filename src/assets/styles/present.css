@@ -1,0 +1,390 @@
+/* Presentation pieces shared by both views: screenshot frames, the case-file
+   "At a glance" facts, architecture flows, mod parts, the gallery lightbox and
+   the view-only blocks. Everything reads tokens, so the terminal and Simple
+   views theme them without duplicating layout. */
+
+/* Each view shows only its own variant of a block. Unscoped by default (no JS,
+   first paint) the Simple view applies. */
+:root[data-view="terminal"] [data-simple-only],
+:root:not([data-view="terminal"]) [data-terminal-only] {
+  display: none !important;
+}
+
+/* ---- screenshot frames ---- */
+.shot {
+  --shot-frame: var(--frame-line, var(--line-strong));
+  --shot-bg: var(--frame-bg, var(--panel-strong));
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--shot-frame);
+  border-radius: 12px;
+  background: var(--shot-bg);
+  box-shadow: var(--frame-shadow, 0 24px 60px -36px #000);
+}
+.shot picture,
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shot__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--shot-frame);
+}
+.shot__dots {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+.shot__dots i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--frame-dot, var(--line-strong));
+}
+.shot__url {
+  flex: 1;
+  max-width: 22rem;
+  overflow: hidden;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--frame-url-bg, rgba(0, 0, 0, 0.3));
+  color: var(--text-subtle);
+  font: 400 0.6875rem/1.6 var(--mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.shot--phone {
+  position: relative;
+  width: min(100%, 16.25rem);
+  margin-inline: auto;
+  padding: 0.5rem;
+  border-width: 2px;
+  border-radius: 2rem;
+}
+.shot--phone img {
+  border-radius: 1.5rem;
+}
+.shot__notch {
+  position: absolute;
+  z-index: 1;
+  top: 0.95rem;
+  left: 50%;
+  width: 4.5rem;
+  height: 1rem;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #000;
+}
+.shot--plain {
+  border-radius: 8px;
+}
+
+.case-file__hero-shot {
+  max-width: 62rem;
+}
+.case-file__hero-shot .shot--phone {
+  width: min(100%, 18rem);
+}
+
+/* ---- at a glance ---- */
+.case-file__glance {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+.case-file .case-file__section-label {
+  margin: 0 0 0.875rem;
+}
+.glance {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 1rem 1.5rem;
+  margin: 0;
+}
+.glance div {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.glance dt {
+  color: var(--text-subtle);
+  font: 600 0.6875rem/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.glance dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.glance__live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--phosphor);
+  box-shadow: 0 0 6px rgb(var(--phosphor-rgb) / 0.6);
+}
+.glance__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--text);
+}
+.glance__links a:hover {
+  color: var(--amber-bright);
+}
+
+.case-file__contribution,
+.case-file__result {
+  margin: 0 0 0.75rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.case-file__body > section > p:not([class]) {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* ---- architecture flow ---- */
+.arch {
+  margin: 0;
+}
+.arch__flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.arch__stage {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.875rem 1rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+.arch__index {
+  color: var(--text-subtle);
+  font: 400 0.6875rem/1 var(--mono);
+}
+.case-file .arch__title {
+  margin: 0;
+  color: var(--text-strong);
+  font: 600 0.9375rem/1.3 var(--body);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.arch__items {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+  font: 400 0.75rem/1.45 var(--mono);
+}
+.arch__items li::before {
+  content: "› ";
+  color: var(--text-subtle);
+}
+.arch__link {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.375rem;
+  width: 6.5rem;
+  text-align: center;
+}
+.arch__arrow {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: var(--line-strong);
+}
+.arch__arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  border-left: 7px solid var(--line-strong);
+  border-block: 4.5px solid transparent;
+}
+.arch__link-label {
+  color: var(--text-subtle);
+  font: 400 0.6875rem/1.35 var(--mono);
+}
+.arch__caption {
+  margin-top: 0.875rem;
+  max-width: 68ch;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+@media (max-width: 899px) {
+  .arch__flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .arch__link {
+    width: auto;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    padding-left: 1rem;
+  }
+  .arch__arrow {
+    width: 1px;
+    height: 1.25rem;
+  }
+  .arch__arrow::after {
+    top: auto;
+    right: auto;
+    bottom: -1px;
+    left: -4px;
+    border-left: 4.5px solid transparent;
+    border-right: 4.5px solid transparent;
+    border-top: 7px solid var(--line-strong);
+    border-bottom: 0;
+  }
+}
+
+/* ---- collection parts (mods) ---- */
+.parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.part {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.875rem;
+  align-items: start;
+  padding: 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-soft);
+}
+.part__icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 8px;
+}
+.case-file .part h3 {
+  margin: 0;
+  font: 600 1rem/1.3 var(--body);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.part h3 a {
+  display: inline-flex;
+  min-height: 24px;
+  color: var(--text-strong);
+}
+.part h3 a:hover {
+  color: var(--amber-bright);
+}
+.part__version {
+  margin: 0.125rem 0 0.375rem;
+  color: var(--text-subtle);
+  font: 400 0.6875rem/1.4 var(--mono);
+}
+.part p:not(.part__version) {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ---- gallery and lightbox ---- */
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  align-items: start;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gallery__item--phone .shot--phone {
+  width: min(100%, 13rem);
+}
+.gallery__open {
+  display: block;
+  border-radius: 12px;
+  text-decoration: none;
+}
+.gallery__open:hover .shot {
+  border-color: var(--amber-line);
+}
+.lightbox {
+  width: min(96vw, 1400px);
+  max-height: 94vh;
+  padding: 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--panel-strong);
+  color: var(--text);
+}
+.lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.82);
+}
+.lightbox__bar,
+.lightbox__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.lightbox__count {
+  margin: 0;
+  color: var(--text-subtle);
+  font: 400 0.75rem/1.4 var(--mono);
+}
+.lightbox__image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: calc(94vh - 8rem);
+  margin: 0.75rem auto;
+  border-radius: 6px;
+}
+.lightbox__button {
+  min-height: 44px;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: 600 0.8125rem/1.2 var(--mono);
+  cursor: pointer;
+}
+.lightbox__button:hover {
+  border-color: var(--amber-line);
+  color: var(--amber-bright);
+}
+
+@media (max-width: 767px) {
+  .case-file__glance {
+    padding: 1rem;
+  }
+}

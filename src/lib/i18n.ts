@@ -259,7 +259,7 @@ export const localeSeo: Record<
       work: "Production platforms and tools. Every card opens a case file with role, constraints, and outcome.",
       experience:
         "Roles, responsibilities, and the systems I helped deliver.",
-      games: "An independent game studio, a puzzle platform, and RimWorld mods. Every card opens a case file.",
+      games: "An independent game studio and its first released game, a puzzle platform, and mods for Valheim and RimWorld. Every card opens a case file.",
       cv: "Experience and education in a downloadable PDF.",
       blog: "A personal writing archive, preserved in its original languages.",
       contact: "Tell me about the project, contract, consulting work or role. Email reaches me directly.",
@@ -349,7 +349,7 @@ export const localeSeo: Record<
       work: "Платформы и инструменты. В каждом проекте — роль, ограничения и результат.",
       experience:
         "Роли, обязанности и системы, над которыми я работал.",
-      games: "Независимая игровая студия, платформа головоломок и моды для RimWorld. Каждая карта открывает дело проекта.",
+      games: "Независимая игровая студия и её первая вышедшая игра, платформа головоломок и моды для Valheim и RimWorld. Каждая карта открывает дело проекта.",
       cv: "Опыт и образование в PDF.",
       blog: "Архив личных записей. Тексты сохранены на языке оригинала.",
       contact: "Расскажите о проекте, контракте, консультации или вакансии. Письмо приходит напрямую мне.",
@@ -439,7 +439,7 @@ export const localeSeo: Record<
       work: "Produktive Plattformen und Werkzeuge. Jede Karte öffnet eine Fallakte mit Rolle, Rahmenbedingungen und Ergebnis.",
       experience:
         "Rollen, Verantwortung und die Systeme, an denen ich gearbeitet habe.",
-      games: "Ein unabhängiges Spielestudio, eine Puzzle-Plattform und RimWorld-Mods. Jede Karte öffnet eine Fallakte.",
+      games: "Ein unabhängiges Spielestudio und sein erstes veröffentlichtes Spiel, eine Puzzle-Plattform sowie Mods für Valheim und RimWorld. Jede Karte öffnet eine Fallakte.",
       cv: "Erfahrung und Ausbildung als PDF.",
       blog: "Ein persönliches Textarchiv. Alle Beiträge bleiben in ihrer Originalsprache.",
       contact: "Erzählen Sie mir von Projekt, Auftrag, Beratung oder Rolle. Die E-Mail erreicht mich direkt.",
@@ -529,7 +529,7 @@ export const localeSeo: Record<
       work: "პლატფორმები და ინსტრუმენტები. თითოეულ პროექტში: როლი, შეზღუდვები და შედეგი.",
       experience:
         "სამუშაო გამოცდილება, პასუხისმგებლობები და გამოყენებული ტექნოლოგიები.",
-      games: "დამოუკიდებელი სტუდია, თავსატეხების პლატფორმა და RimWorld-ის მოდები. გაეცანით თითოეულ პროექტს.",
+      games: "დამოუკიდებელი სტუდია და მისი პირველი გამოშვებული თამაში, თავსატეხების პლატფორმა და მოდები Valheim-ისა და RimWorld-ისთვის. გაეცანით თითოეულ პროექტს.",
       cv: "სამუშაო გამოცდილება და განათლება PDF ფორმატში.",
       blog: "პირადი ჩანაწერების არქივი. ტექსტები შენარჩუნებულია ორიგინალის ენაზე.",
       contact: "მომწერეთ პროექტის, კონტრაქტის, კონსულტაციის ან ვაკანსიის შესახებ. წერილი პირდაპირ მე მომდის.",
@@ -869,3 +869,187 @@ export const arcadeCopy: Record<
 export function isLocale(value: string): value is Locale {
   return LOCALES.includes(value as Locale);
 }
+
+/** The two interface views: the clean Simple view (default) and the opt-in terminal. */
+export const viewCopy: Record<
+  Locale,
+  { switchName: string; plate: string; tag: string; hint: string; simpleLabel: string; drawerLabel: string; on: string; off: string }
+> = {
+  en: {
+    switchName: "Terminal mode",
+    plate: "TERMINAL",
+    tag: "do not pull",
+    hint: "Pull to boot the MS-86 terminal. Pull again to come back.",
+    simpleLabel: "Simple view",
+    drawerLabel: "Terminal mode",
+    on: "ON",
+    off: "OFF",
+  },
+  ru: {
+    switchName: "Режим терминала",
+    plate: "TERMINAL",
+    tag: "не дёргать",
+    hint: "Потяните, чтобы загрузить терминал MS-86. Потяните снова, чтобы вернуться.",
+    simpleLabel: "Простой вид",
+    drawerLabel: "Режим терминала",
+    on: "ВКЛ",
+    off: "ВЫКЛ",
+  },
+  de: {
+    switchName: "Terminalmodus",
+    plate: "TERMINAL",
+    tag: "nicht ziehen",
+    hint: "Ziehen, um das MS-86-Terminal zu starten. Erneut ziehen, um zurückzukehren.",
+    simpleLabel: "Einfache Ansicht",
+    drawerLabel: "Terminalmodus",
+    on: "AN",
+    off: "AUS",
+  },
+  ge: {
+    switchName: "ტერმინალის რეჟიმი",
+    plate: "TERMINAL",
+    tag: "არ გამოსწიოთ",
+    hint: "გამოსწიეთ MS-86 ტერმინალის ჩასართავად. კიდევ ერთხელ გამოსწიეთ დასაბრუნებლად.",
+    simpleLabel: "მარტივი ხედი",
+    drawerLabel: "ტერმინალის რეჟიმი",
+    on: "ჩართ.",
+    off: "გამორთ.",
+  },
+};
+
+/** Case-file presentation headings and gallery controls. */
+export const caseCopy: Record<
+  Locale,
+  {
+    glance: string;
+    role: string;
+    status: string;
+    year: string;
+    links: string;
+    product: string;
+    source: string;
+    overview: string;
+    problem: string;
+    architecture: string;
+    gallery: string;
+    parts: string;
+    openImage: string;
+    close: string;
+    previous: string;
+    next: string;
+    imageCount: string;
+    live: string;
+    released: string;
+    privateSource: string;
+    version: string;
+    selected: string;
+    more: string;
+    open: string;
+  }
+> = {
+  en: {
+    glance: "At a glance",
+    role: "Role",
+    status: "Status",
+    year: "Year",
+    links: "Links",
+    product: "Product",
+    source: "Source",
+    overview: "Overview",
+    problem: "Problem and constraints",
+    architecture: "Architecture",
+    gallery: "Screens",
+    parts: "The mods",
+    openImage: "Enlarge image",
+    close: "Close",
+    previous: "Previous image",
+    next: "Next image",
+    imageCount: "Image {n} of {total}",
+    live: "Live in production",
+    released: "Released",
+    privateSource: "Private source",
+    version: "Version",
+    selected: "Selected work",
+    more: "More work",
+    open: "Read case study",
+  },
+  ru: {
+    glance: "Коротко",
+    role: "Роль",
+    status: "Статус",
+    year: "Год",
+    links: "Ссылки",
+    product: "Продукт",
+    source: "Код",
+    overview: "Обзор",
+    problem: "Задача и ограничения",
+    architecture: "Архитектура",
+    gallery: "Экраны",
+    parts: "Моды",
+    openImage: "Увеличить изображение",
+    close: "Закрыть",
+    previous: "Предыдущее изображение",
+    next: "Следующее изображение",
+    imageCount: "Изображение {n} из {total}",
+    live: "Работает в продакшене",
+    released: "Выпущено",
+    privateSource: "Закрытый код",
+    version: "Версия",
+    selected: "Избранные работы",
+    more: "Другие работы",
+    open: "Читать кейс",
+  },
+  de: {
+    glance: "Auf einen Blick",
+    role: "Rolle",
+    status: "Status",
+    year: "Jahr",
+    links: "Links",
+    product: "Produkt",
+    source: "Quellcode",
+    overview: "Überblick",
+    problem: "Aufgabe und Rahmenbedingungen",
+    architecture: "Architektur",
+    gallery: "Ansichten",
+    parts: "Die Mods",
+    openImage: "Bild vergrößern",
+    close: "Schließen",
+    previous: "Vorheriges Bild",
+    next: "Nächstes Bild",
+    imageCount: "Bild {n} von {total}",
+    live: "Produktiv im Einsatz",
+    released: "Veröffentlicht",
+    privateSource: "Privater Code",
+    version: "Version",
+    selected: "Ausgewählte Arbeiten",
+    more: "Weitere Arbeiten",
+    open: "Fallstudie lesen",
+  },
+  ge: {
+    glance: "მოკლედ",
+    role: "როლი",
+    status: "სტატუსი",
+    year: "წელი",
+    links: "ბმულები",
+    product: "პროდუქტი",
+    source: "კოდი",
+    overview: "მიმოხილვა",
+    problem: "ამოცანა და შეზღუდვები",
+    architecture: "არქიტექტურა",
+    gallery: "ეკრანები",
+    parts: "მოდები",
+    openImage: "სურათის გადიდება",
+    close: "დახურვა",
+    previous: "წინა სურათი",
+    next: "შემდეგი სურათი",
+    imageCount: "სურათი {n} / {total}",
+    live: "მუშაობს production-ში",
+    released: "გამოშვებულია",
+    privateSource: "დახურული კოდი",
+    version: "ვერსია",
+    selected: "რჩეული ნამუშევრები",
+    more: "სხვა ნამუშევრები",
+    open: "პროექტის ნახვა",
+  },
+};
+

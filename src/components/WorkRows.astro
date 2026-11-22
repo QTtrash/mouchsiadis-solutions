@@ -1,0 +1,61 @@
+---
+// The Simple view of a set of records: scannable rows with a screenshot (or
+// the record's pixel glyph), title, status, outcome and stack. The terminal
+// view shows the card hand instead; both link to the same case files.
+import { Picture } from "astro:assets";
+import CoverArt from "./CoverArt.astro";
+import { cardSummary, casePath, localize, type CaseRecord } from "../lib/cards";
+import { shotsFor } from "../lib/gallery";
+import { caseCopy, deckCopy, type Locale } from "../lib/i18n";
+
+interface Props {
+  records: CaseRecord[];
+  locale: Locale;
+}
+
+const { records, locale } = Astro.props;
+const copy = caseCopy[locale];
+const deck = deckCopy[locale];
+---
+
+<ul class="work-rows" role="list" data-simple-only>
+  {
+    records.map(({ entry, suit }) => {
+      const shot = shotsFor(entry.slug).find((item) => item.frame !== "phone");
+      return (
+        <li class="work-row" data-suit={suit}>
+          <a class="work-row__link" href={casePath(locale, entry.slug)}>
+            <span class:list={["work-row__media", !shot && "work-row__media--glyph"]} aria-hidden="true">
+              {shot ? (
+                <Picture
+                  src={shot.src}
+                  alt=""
+                  widths={[320, 640]}
+                  sizes="(min-width: 768px) 15rem, 92vw"
+                  formats={["avif", "webp"]}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <CoverArt slug={entry.cover} record={entry.slug} />
+              )}
+            </span>
+            <span class="work-row__text">
+              <span class="work-row__head">
+                <strong class="work-row__title">{entry.title}</strong>
+                {entry.live && <span class="work-row__live">{deck.live}</span>}
+              </span>
+              <span class="work-row__eyebrow">{localize(entry.eyebrow, locale)}</span>
+              <span class="work-row__summary">{cardSummary(entry, locale)}</span>
+              <span class="work-row__stack">{entry.stack.slice(0, 4).join(" · ")}</span>
+            </span>
+            <span class="work-row__cta">
+              {copy.open}
+              <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

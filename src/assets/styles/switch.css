@@ -1,0 +1,230 @@
+/* The rusty breaker lever in the header. It is meant to look bolted on from
+   another machine: crooked, cartoonish and a little worn, so it invites a pull.
+   Off: lever leans left, lamp dark. On (terminal): lever thrown right, lamp lit. */
+
+.site-header__start {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.view-switch {
+  --lever: -32deg;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  /* room for the crooked plate and tag, so nothing spills past the button */
+  padding: 0.375rem 0.625rem 0.375rem 0.125rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: grab;
+  rotate: -5deg;
+  transform-origin: 30% 70%;
+  -webkit-tap-highlight-color: transparent;
+}
+.view-switch:active {
+  cursor: grabbing;
+}
+.view-switch[aria-checked="true"] {
+  --lever: 32deg;
+}
+.view-switch:focus-visible {
+  outline: 2px dashed #e9b52c;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.view-switch__art {
+  display: block;
+  width: 3.25rem;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.55));
+}
+.view-switch__lever {
+  transform-box: view-box;
+  transform-origin: 32px 39px;
+  transform: rotate(var(--lever));
+  transition: transform 260ms cubic-bezier(0.5, 1.8, 0.4, 0.8);
+}
+.view-switch__lamp {
+  fill: #3a1a0b;
+  transition: fill 200ms;
+}
+.view-switch[aria-checked="true"] .view-switch__lamp {
+  fill: #ff6a1f;
+  filter: drop-shadow(0 0 3px #ff8a3d);
+}
+.view-switch__spark {
+  opacity: 0;
+}
+
+.view-switch__label {
+  display: grid;
+  justify-items: start;
+  gap: 0.1rem;
+  rotate: 3deg;
+  pointer-events: none;
+}
+.view-switch__plate-text {
+  padding: 0.15rem 0.4rem 0.1rem;
+  border: 2px solid #1d0d05;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #e9b52c, #c98b1d 70%, #8a5a12);
+  color: #1d0d05;
+  font:
+    800 0.6875rem/1.1 "IBM Plex Mono",
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.16em;
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.55);
+}
+.view-switch__tag {
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 2px 6px 6px 2px;
+  background: #f3ead3;
+  color: #5a2a10;
+  font:
+    italic 600 0.6875rem/1.2 "IBM Plex Mono",
+    ui-monospace,
+    monospace;
+  rotate: -7deg;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+.view-switch[aria-checked="true"] .view-switch__tag {
+  text-decoration: line-through;
+}
+
+.view-switch:hover .view-switch__plate-text,
+.view-switch:focus-visible .view-switch__plate-text {
+  background: linear-gradient(160deg, #ffd25a, #e0a22a 70%, #9a6614);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-effects="reduced"]) .view-switch {
+    animation: view-switch-wobble 7s ease-in-out 2s infinite;
+  }
+  :root:not([data-effects="reduced"]) .view-switch:hover {
+    animation: view-switch-nudge 420ms ease-in-out;
+  }
+  :root:not([data-effects="reduced"]) .view-switch.is-pulled {
+    animation: view-switch-clunk 420ms cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  :root:not([data-effects="reduced"])
+    .view-switch.is-pulled
+    .view-switch__spark {
+    animation: view-switch-spark 520ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-switch__lever {
+    transition: none;
+  }
+}
+:root[data-effects="reduced"] .view-switch__lever {
+  transition: none;
+}
+
+@keyframes view-switch-wobble {
+  0%,
+  86%,
+  100% {
+    rotate: -5deg;
+  }
+  89% {
+    rotate: -9deg;
+  }
+  92% {
+    rotate: -2deg;
+  }
+  95% {
+    rotate: -6.5deg;
+  }
+}
+@keyframes view-switch-nudge {
+  0%,
+  100% {
+    rotate: -5deg;
+  }
+  35% {
+    rotate: -8deg;
+  }
+  70% {
+    rotate: -3deg;
+  }
+}
+@keyframes view-switch-clunk {
+  0% {
+    rotate: -5deg;
+    translate: 0 0;
+  }
+  30% {
+    rotate: -1deg;
+    translate: 0 2px;
+  }
+  60% {
+    rotate: -7deg;
+    translate: 0 -1px;
+  }
+  100% {
+    rotate: -5deg;
+    translate: 0 0;
+  }
+}
+@keyframes view-switch-spark {
+  0% {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+.view-switch__spark {
+  transform-box: view-box;
+  transform-origin: 32px 10px;
+}
+
+/* Narrow phones keep the lever and drop the plate so the header still fits. */
+@media (max-width: 479px) {
+  .view-switch__label {
+    display: none;
+  }
+  .view-switch__art {
+    width: 2.75rem;
+  }
+}
+
+/* The lever takes header room: drop its plate before the nav collides, and
+   with JavaScript (the Options drawer repeats the links) let the inline nav
+   step aside where it cannot fit, including the longer Georgian labels. */
+@media (max-width: 1279px) {
+  .view-switch__label {
+    display: none;
+  }
+}
+@media (max-width: 1199px) {
+  .js .site-header__nav {
+    display: none;
+  }
+}
+@media (max-width: 1599px) {
+  .js:lang(ka) .site-header__nav {
+    display: none;
+  }
+}
+/* With the nav stepped aside, the controls keep their place at the end. */
+.site-header__controls {
+  grid-column: -2;
+  justify-self: end;
+}

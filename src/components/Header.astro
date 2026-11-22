@@ -4,8 +4,10 @@ import {
   localeIntlCodes,
   localeLabels,
   navigationCopy,
+  viewCopy,
   type Locale,
 } from "../lib/i18n";
+import ViewSwitch from "./ViewSwitch.astro";
 import { buildLocalePath } from "../lib/blog";
 import "@awesome.me/webawesome/dist/styles/themes/default.css";
 
@@ -17,6 +19,7 @@ interface Props {
 
 const { locale, active = "home", localePathSuffix = "" } = Astro.props;
 const nav = navigationCopy[locale];
+const view = viewCopy[locale];
 const home = buildLocalePath(locale);
 const contactHref = `${home}#contact`;
 const cvHref = "/cv/Suren_Mouchsiadis_CV.pdf";
@@ -32,13 +35,16 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
 
 <header class="site-header">
   <div class="site-header__inner">
+    <div class="site-header__start">
+    <ViewSwitch locale={locale} />
     <a class="site-header__brand" href={home} aria-label="Mouchsiadis Solutions" data-astro-prefetch>
       <span class="site-header__prefix">
         <span class="site-header__led" aria-hidden="true"></span>
         suren@ms-86:~$
       </span>
-      <span>Mouchsiadis Solutions</span>
+      <span class="site-header__name">Mouchsiadis Solutions</span>
     </a>
+    </div>
 
     <nav class="site-header__nav" aria-label={nav.primaryLabel}>
       {
@@ -130,6 +136,15 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
 
     <section class="navigation-drawer__preferences" aria-labelledby="drawer-options-title">
       <h2 id="drawer-options-title">{nav.preferences}</h2>
+      <button
+        type="button"
+        data-view-preference
+        data-on={view.on}
+        data-off={view.off}
+        aria-pressed="false"
+      >
+        <span>{view.drawerLabel}</span><b data-view-label>{view.off}</b>
+      </button>
       <button type="button" data-sound-preference aria-pressed="false">
         <span>{nav.sound}</span><b>OFF</b>
       </button>
@@ -171,6 +186,48 @@ const drawerLinks = [...links, { key: "contact", label: nav.contact, href: conta
       drawer.open = false;
     });
   });
+
+  // ---- view: Simple (default) or the opt-in terminal ----
+  const VIEW_KEY = "interfaceView";
+  const root = document.documentElement;
+  const viewSwitches = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-view-switch]"));
+  const viewPreference = drawer?.querySelector<HTMLButtonElement>("[data-view-preference]");
+  const viewLabel = viewPreference?.querySelector<HTMLElement>("[data-view-label]");
+  const syncView = () => {
+    const terminal = root.dataset.view === "terminal";
+    viewSwitches.forEach((button) => button.setAttribute("aria-checked", String(terminal)));
+    viewPreference?.setAttribute("aria-pressed", String(terminal));
+    if (viewLabel && viewPreference) {
+      viewLabel.textContent = terminal ? viewPreference.dataset.on || "ON" : viewPreference.dataset.off || "OFF";
+    }
+  };
+  const setView = (view: "terminal" | "simple", source?: HTMLElement) => {
+    root.dataset.view = view;
+    try {
+      localStorage.setItem(VIEW_KEY, view);
+    } catch {
+      /* The choice still applies to this page. */
+    }
+    // A shared ?view= link must not pin the old choice on reload.
+    const url = new URL(location.href);
+    if (url.searchParams.has("view")) {
+      url.searchParams.delete("view");
+      history.replaceState(history.state, "", url);
+    }
+    syncView();
+    if (source) {
+      source.classList.remove("is-pulled");
+      void source.offsetWidth;
+      source.classList.add("is-pulled");
+      window.setTimeout(() => source.classList.remove("is-pulled"), 700);
+    }
+    window.dispatchEvent(new CustomEvent("interface-view-change", { detail: view }));
+  };
+  const toggleView = (source?: HTMLElement) =>
+    setView(root.dataset.view === "terminal" ? "simple" : "terminal", source);
+  viewSwitches.forEach((button) => button.addEventListener("click", () => toggleView(button)));
+  viewPreference?.addEventListener("click", () => toggleView());
+  syncView();
 
   const SOUND_KEY = "terminalSound";
   const EFFECTS_KEY = "interfaceEffects";
