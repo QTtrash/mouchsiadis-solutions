@@ -41,7 +41,7 @@ This section supersedes the October direction wherever they conflict. The rest o
 
 - **Palette and type.** Pure black, `#e5e5e5` text and `#1c1c1c` hairlines. Amber appears only on the one primary action per view, and a small P1-green dot marks LIVE. Type is IBM Plex Sans 600 for headings and Plex Mono for labels and indices, so the Plex superfamily is the brand link between the views. Montserrat never loads in this view.
 - **Landing order.** One column of about 54rem:
-  1. hero: photo avatar, name and location, the English title headline, general line, actions, availability, track record as a 2×2 grid
+  1. hero: photo avatar, name and location, the English title headline, general line, actions, availability (the track record and direct email line were removed by the owner on 22 November 2026)
   2. Selected work as rows (16:10 screenshot or the record's pixel glyph, title, LIVE, eyebrow, summary, stack)
   3. open source
   4. Games rows
@@ -63,7 +63,19 @@ This section supersedes the October direction wherever they conflict. The rest o
    - Every panel and case file opens with a real prompt (`suren@ms-86:~$ ls ~/work --live`, `cat ypay/README.md`) and a blinking block cursor. The prompts are `aria-hidden`.
    - The status line is now a tmux bar: session, window list following the active panel, LIVE count, and a Munich clock.
 4. **Background texture.** Film grain (an SVG turbulence data URI) and a faint aperture-grille stripe.
-5. **Refresh and boot.** A slow 9s refresh band runs behind the content. The power-on now opens as a dot, then a line, then a bloom (760ms), and the status bar shows a three-part POST line for about 1.4s.
+5. **Boot.** The power-on opens as a dot, then a line, then a bloom (760ms), and the status bar shows a three-part POST line for about 1.4s.
+
+**Performance fix (22 November 2026).**
+
+- The first release also had a slow refresh band, which animated `background-position` across the glass. In a Chrome trace it re-rasterized the whole screen every frame: the idle terminal ran at 14 fps, and more than 90% of frames dropped during scroll, card hover, drag and tab switches. The band was removed.
+- The tab-switch "phosphor wake" now fades opacity instead of animating `filter: brightness`.
+- In the fitted console, the panel area has its own compositor layer.
+- Measured on a local build at 1440×900:
+  - idle at 60 fps;
+  - 0 dropped frames during scroll, tab switches and hover;
+  - 1 dropped frame during a card drag;
+  - raster work about 10× lower.
+- `tests/performance.spec.ts` guards against regressions. The rule is that decorative motion animates only `transform` or `opacity` on small elements.
 
 **References for this pass.**
 
@@ -84,9 +96,9 @@ This section supersedes the October direction wherever they conflict. The rest o
 
 **Verified, 22 November 2026.**
 
-- `npm run validate`: 0 Astro/TypeScript errors, 297 browser tests passed, 0 failed.
+- `npm run validate`: 0 Astro/TypeScript errors, 298 browser tests passed, 0 failed (after the performance fix and track-record removal).
 - The existing suite runs in the terminal view through `tests/terminal-view.json`. `tests/simple-view.spec.ts` covers the default view, the switch, `?view=`, axe, a 6-viewport × 4-locale fit and primary matrix, the case-file images and the lightbox.
-- Budgets: JS 8.9 KB, CSS 25.8 KB and inline art 8.1 KB gzipped.
+- Budgets: JS 8.9 KB, CSS 25.4 KB and inline art 8.1 KB gzipped.
 - Screenshots of both views and the new case files are in [design-audit/simple-view](./design-audit/simple-view/).
 - New native-review copy (ru/de/ge): the switch tag and hint, the case-file headings, all six new records, the Last Standard alt text and the architecture captions.
 
@@ -130,7 +142,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 - **Direction.** Three concepts were built as mockups at 1440×900 and 390×844: A "Phosphor Restore", B "Instrument Console" (keycaps, dot-matrix registers, a 1.48 KB WebGL scope) and C "Field Dossier" (greenbar printouts, index cards, manila folders). The owner chose A. B's WebGL scope was not shipped.
 - **The hand.** The four-up tilted row cannot return without breaking two real fixes: the 13rem reader lane and the 230px minimum card width. At 1440 the fitted deck shows three cards per row and at 1120–1280 two. The tilt returns as a static alternating fan (±0.8° and a 6px stagger) when motion is allowed. Cards never overlap, never move under the pointer, and lie flat under reduced motion.
 - **Headline.** The owner approved "Senior platform engineer for products that have to work." The job title stays in English in every locale (owner decision); only the rest of the sentence is translated, and Georgian uses a colon form.
-- **Body and track record.** One general line ("I build scalable platforms and the cloud infrastructure that keeps them running.") replaces a project-specific description; no single project is described in depth in the hero. A short "Track record" list follows the actions. It comes from `impact` in `src/lib/content.ts`, where each line names the experience entries that state its facts, and a test checks every figure against them.
+- **Body and track record.** *(Track record and direct email line removed by the owner on 22 November 2026; the rest stands.)* One general line ("I build scalable platforms and the cloud infrastructure that keeps them running.") replaces a project-specific description; no single project is described in depth in the hero. A short "Track record" list follows the actions. It comes from `impact` in `src/lib/content.ts`, where each line names the experience entries that state its facts, and a test checks every figure against them.
 - **Proof.** The first-viewport proof is the Work records with `live: true` (YPay, YDesk, NeoPoints, Grindlike, Raid Signal), linked to their case files, with the count derived from the content model. Only the count carries LIVE; rows do not repeat it. On phones each row shows art and title, so the intro and track record follow within the first scroll. The owner preferred projects to numbers, so the 10,000+ driver figure stays in Experience.
 - **Facts.** Location and availability are owner-confirmed and live in `profile` in `src/lib/content.ts`. No testimonials, client logos, response times or booking links are shown; none were provided.
 - **Contact.** Every email action uses one address and a subject that names its origin. The address is always visible as text beside a copy button, because `mailto:` can do nothing without a mail client.
@@ -151,7 +163,7 @@ Earlier references from the October 2026 audit still apply: [Practical Typograph
 ## Fast Path and Conversion
 
 - **One primary per view.** The hero has one filled amber action, "Contact me". "CV (PDF)" is outlined and "Explore projects" is a link. The header "Contact" key and Backlog Breaker's "Start" stay secondary. The contact panel's primary is "Email me" and a case file's primary is "Email me about {project}".
-- **Hero.** It names Suren and the location (from `profile`), states the approved positioning in one general line, offers the actions, lists the track record, and shows live proof. A direct email line names every engagement ("projects, contract work, consulting or a role") and shows the address. The owner-confirmed availability sits beneath as a status line.
+- **Hero.** It names Suren and the location (from `profile`), states the approved positioning in one general line, offers the actions and shows live proof. The owner-confirmed availability sits beneath as a status line. (The track record and the direct email line were removed on 22 November 2026; the address stays in Contact and the case-file calls to action.)
 - **Contact panel.** An "Email me" action with a subject, the visible address with a copy button, a short "useful to include" list, then LinkedIn, GitHub and the CV.
 - **Case files.** The header shows evidence: cover, number, suit, LIVE, outcome, role and stack. Its product and source links are secondary, plus a link down to the call to action. Previous/next navigation follows the body. The file always ends with the contextual call to action.
 - **Open-source showcase.** One "Open case file" button per project; the product and source links are quiet inline links.

@@ -19,9 +19,9 @@ These are standing owner decisions. Do not reverse them without asking.
 
 **Copy**
 - Job titles stay in **English in every locale**, for example "Senior platform engineer".
-- The hero stays general: one line about what Suren builds, plus the track record from `impact`. Project depth belongs in case files.
+- The hero stays general: one line about what Suren builds, the actions and the availability line. Project depth belongs in case files.
+- The hero has **no track record list and no "write directly" email line** (owner decision, 22 November 2026). Do not bring them back in either view or any locale; the email address lives in Contact and the case-file calls to action.
 - Every claim must be backed by the product, its source, the project's own docs or owner-provided facts. No testimonials, client logos, response times or new availability wording without the owner.
-- `impact` lines cite experience slugs, and a test checks every figure.
 
 **LIVE**
 - `live: true` means the system runs in production. YLead is LIVE by owner decision.
@@ -61,6 +61,10 @@ These are standing owner decisions. Do not reverse them without asking.
   - `simple.css` is the Simple view, scoped to `:root[data-view="simple"]`. Keep it as flat selectors with no CSS nesting, because Vite ships nesting as written.
   - `present.css` holds the case-file pieces shared by both views.
   - `switch.css` styles the lever. `crt.css` holds the terminal realism layers.
+
+## Performance rule
+
+Decorative motion may animate only `transform` or `opacity`, on small elements. Never animate `background-position`, `filter`, gradients or other paint properties over the CRT glass or the panels. A moving refresh band did that in November 2026 and dropped the terminal to about 14 fps. In the fitted console, `.terminal-console__content` keeps its own compositor layer (`crt.css`), so panel switches and scrolling never repaint the glass. `tests/performance.spec.ts` traces an idle terminal and fails if it repaints. When you add motion, check it with a Chrome trace.
 
 ## Commands
 

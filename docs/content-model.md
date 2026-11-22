@@ -21,9 +21,9 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 `profile` holds owner-confirmed facts shown in the hero: `location` and `availability`, localized for all four locales. Interface copy in `src/lib/i18n.ts` may label them (for example "status"), but claims about Suren live here. Do not add testimonials, client logos, response times or availability wording without the owner's confirmation.
 
-### Track Record
+### No Track Record
 
-`impact` holds the short results list shown in the hero. Each entry has an optional localized `figure`, localized `text`, and `sources`: the `experiences` slugs whose summary or details state the fact. Add a line only when its source entry already states it; `tests/conversion.spec.ts` checks every figure against its sources.
+The hero used to show a short results list (`impact`) and a "write directly" email line. The owner removed both on 22 November 2026, and their data and copy were deleted. Do not reintroduce them; results belong in the experience records and case files.
 
 ### Hero Proof
 
