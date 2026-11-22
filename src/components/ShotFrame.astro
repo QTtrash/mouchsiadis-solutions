@@ -1,0 +1,45 @@
+---
+// One screenshot in its device treatment: browser chrome for desktop pages, a
+// phone body for phone pages, and a plain bezel for game art. The chrome is
+// CSS-drawn, so both views theme it with their own tokens.
+import { Picture } from "astro:assets";
+import type { Shot } from "../lib/gallery";
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  shot: Shot;
+  locale: Locale;
+  /** Above-the-fold hero image: eager and high priority. */
+  priority?: boolean;
+  sizes?: string;
+}
+
+const { shot, locale, priority = false, sizes } = Astro.props;
+const alt = shot.alt[locale] ?? shot.alt.en;
+const widths = shot.frame === "phone" ? [240, 390, 780] : [480, 960, 1440];
+const defaultSizes =
+  shot.frame === "phone" ? "(min-width: 768px) 260px, 60vw" : "(min-width: 1120px) 880px, 92vw";
+---
+
+<figure class:list={["shot", `shot--${shot.frame}`]}>
+  {
+    shot.frame === "browser" && (
+      <div class="shot__chrome" aria-hidden="true">
+        <span class="shot__dots"><i /><i /><i /></span>
+        {shot.url && <span class="shot__url">{shot.url}</span>}
+      </div>
+    )
+  }
+  {shot.frame === "phone" && <span class="shot__notch" aria-hidden="true" />}
+  <Picture
+    class="shot__image"
+    src={shot.src}
+    alt={alt}
+    widths={widths.filter((w) => w <= shot.src.width)}
+    sizes={sizes ?? defaultSizes}
+    formats={["avif", "webp"]}
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : "auto"}
+    decoding={priority ? "sync" : "async"}
+  />
+</figure>

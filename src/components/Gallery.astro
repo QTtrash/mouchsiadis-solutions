@@ -1,0 +1,56 @@
+---
+// Screenshot gallery with a native <dialog> lightbox. Without JavaScript each
+// tile links to the full image; src/scripts/gallery.ts upgrades it to a modal
+// with previous/next, Escape and focus return.
+import { getImage } from "astro:assets";
+import ShotFrame from "./ShotFrame.astro";
+import type { Shot } from "../lib/gallery";
+import { caseCopy, type Locale } from "../lib/i18n";
+
+interface Props {
+  shots: Shot[];
+  locale: Locale;
+}
+
+const { shots, locale } = Astro.props;
+const copy = caseCopy[locale];
+const full = await Promise.all(
+  shots.map((shot) => getImage({ src: shot.src, format: "webp", width: Math.min(shot.src.width, 1600) })),
+);
+---
+
+<div class="gallery" data-gallery>
+  <ul class="gallery__grid" role="list">
+    {
+      shots.map((shot, index) => (
+        <li class:list={["gallery__item", `gallery__item--${shot.frame}`]}>
+          <a
+            class="gallery__open"
+            href={full[index]!.src}
+            data-gallery-open={index}
+            data-full={full[index]!.src}
+            data-alt={shot.alt[locale] ?? shot.alt.en}
+          >
+            <ShotFrame shot={shot} locale={locale} />
+            <span class="visually-hidden">{copy.openImage}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <dialog class="lightbox" data-lightbox aria-label={copy.gallery}>
+    <div class="lightbox__bar">
+      <p class="lightbox__count" data-lightbox-count data-template={copy.imageCount} aria-live="polite"></p>
+      <button class="lightbox__button" type="button" data-lightbox-close>{copy.close}</button>
+    </div>
+    <img class="lightbox__image" data-lightbox-image alt="" />
+    <div class="lightbox__nav">
+      <button class="lightbox__button" type="button" data-lightbox-prev>← {copy.previous}</button>
+      <button class="lightbox__button" type="button" data-lightbox-next>{copy.next} →</button>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  import "../scripts/gallery.ts";
+</script>

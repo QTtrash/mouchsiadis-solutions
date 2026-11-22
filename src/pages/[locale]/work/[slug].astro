@@ -2,7 +2,13 @@
 // Case file: the shareable, full record behind each card. It ends with a
 // contextual call to action; the product link stays a secondary action.
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { Image, getImage } from "astro:assets";
+import ArchDiagram from "../../../components/ArchDiagram.astro";
 import CoverArt from "../../../components/CoverArt.astro";
+import TermPrompt from "../../../components/TermPrompt.astro";
+import Gallery from "../../../components/Gallery.astro";
+import ShotFrame from "../../../components/ShotFrame.astro";
+import { partIcons, shotsFor } from "../../../lib/gallery";
 import { buildLocalePath } from "../../../lib/blog";
 import { EMAIL, mailto } from "../../../lib/contact";
 import {
@@ -14,6 +20,7 @@ import {
 } from "../../../lib/cards";
 import {
   LOCALES,
+  caseCopy,
   deckCopy,
   evidenceLabels,
   isLocale,
@@ -67,6 +74,23 @@ const evidence = entry.evidence
     ]
   : [];
 const fileNumber = String(index + 1).padStart(2, "0");
+const cc = caseCopy[locale];
+const shots = shotsFor(entry.slug);
+const heroShot = shots[0];
+const moreShots = shots.slice(1);
+// Social previews use the hero screenshot when there is one.
+const ogImage = heroShot
+  ? (await getImage({ src: heroShot.src, format: "png", width: 1200, height: 630, fit: "cover" })).src
+  : undefined;
+// Facts state the production status; a record's own status label stays in the header.
+const statusText =
+  suit === "game"
+    ? cc.released
+    : entry.live
+      ? cc.live
+      : entry.status
+        ? t(entry.status)
+        : undefined;
 const withTitle = (template: string) =>
   template.replace("{title}", entry.title);
 ---
@@ -77,9 +101,11 @@ const withTitle = (template: string) =>
   description={t(entry.summary)}
   alternates={alternates}
   localePathSuffix={`/work/${entry.slug}`}
+  image={ogImage}
 >
   <article class="case-file" data-suit={suit} data-cover={entry.cover}>
     <a class="case-file__back" href={back.href}>← {back.label}</a>
+    <TermPrompt cmd={`cat ${entry.slug}/README.md`} path="~/work" />
 
     <header class="case-file__header">
       <div
@@ -108,27 +134,17 @@ const withTitle = (template: string) =>
         <p class="case-file__eyebrow">{t(entry.eyebrow)}</p>
         {entry.status && <p class="project-status">{t(entry.status)}</p>}
         <p class="case-file__outcome">{cardOutcome(entry, locale)}</p>
-        <dl class="case-file__facts">
+        <div class="case-file__actions">
           {
-            entry.evidence && (
-              <div>
-                <dt>{labels[0]}</dt>
-                <dd>{t(entry.evidence.role)}</dd>
-              </div>
+            entry.link && entry.linkLabel && (
+              <a
+                class="button"
+                href={entry.link}
+                target="_blank"
+                rel="noopener noreferrer">{t(entry.linkLabel)} ↗</a
+              >
             )
           }
-          <div>
-            <dt>{copy.stack}</dt>
-            <dd>{entry.stack.slice(0, 4).join(" · ")}</dd>
-          </div>
-        </dl>
-        <div class="case-file__actions">
-          <a
-            class="button"
-            href={entry.link}
-            target="_blank"
-            rel="noopener noreferrer">{t(entry.linkLabel)} ↗</a
-          >
           {
             entry.sourceLink && entry.sourceLinkLabel && (
               <a
@@ -148,28 +164,140 @@ const withTitle = (template: string) =>
       </div>
     </header>
 
+    {
+      heroShot && (
+        <div class="case-file__hero-shot">
+          <ShotFrame shot={heroShot} locale={locale} priority={true} />
+        </div>
+      )
+    }
+
+    <section class="case-file__glance" aria-labelledby="case-glance">
+      <h2 id="case-glance" class="case-file__section-label">{cc.glance}</h2>
+      <dl class="glance">
+        {
+          entry.evidence && (
+            <div>
+              <dt>{cc.role}</dt>
+              <dd>{t(entry.evidence.role)}</dd>
+            </div>
+          )
+        }
+        {
+          statusText && (
+            <div>
+              <dt>{cc.status}</dt>
+              <dd>
+                {entry.live && <span class="glance__live" aria-hidden="true" />}
+                {statusText}
+              </dd>
+            </div>
+          )
+        }
+        {
+          entry.year && (
+            <div>
+              <dt>{cc.year}</dt>
+              <dd>{entry.year}</dd>
+            </div>
+          )
+        }
+        <div>
+          <dt>{copy.stack}</dt>
+          <dd>{entry.stack.slice(0, 5).join(" · ")}</dd>
+        </div>
+        {
+          (entry.link || entry.sourceLink) && (
+            <div>
+              <dt>{cc.links}</dt>
+              <dd class="glance__links">
+                {entry.link && (
+                  <a href={entry.link} target="_blank" rel="noopener noreferrer">
+                    {new URL(entry.link).hostname.replace(/^www\./, "")} ↗
+                  </a>
+                )}
+                {entry.sourceLink && (
+                  <a href={entry.sourceLink} target="_blank" rel="noopener noreferrer">
+                    {cc.source} ↗
+                  </a>
+                )}
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+    </section>
+
     <div class="case-file__body">
-      <p class="case-file__narrative">{t(entry.narrative)}</p>
+      <section aria-labelledby="case-overview">
+        <h2 id="case-overview">{cc.overview}</h2>
+        <p class="case-file__narrative">{t(entry.narrative)}</p>
+      </section>
 
       {
-        evidence.length > 0 && (
-          <dl class="archive-entry__evidence">
-            {evidence.map((item) => (
-              <div>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+        entry.evidence && (
+          <section aria-labelledby="case-problem">
+            <h2 id="case-problem">{cc.problem}</h2>
+            <p>{t(entry.evidence.constraints)}</p>
+          </section>
         )
       }
 
       <section aria-labelledby="case-built">
         <h2 id="case-built">{copy.built}</h2>
+        {entry.evidence && <p class="case-file__contribution">{t(entry.evidence.contribution)}</p>}
         <ul class="case-file__details">
           {t(entry.details).map((item) => <li>{item}</li>)}
         </ul>
       </section>
+
+      {
+        entry.diagram && (
+          <section class="case-file__wide" aria-labelledby="case-architecture">
+            <h2 id="case-architecture">{cc.architecture}</h2>
+            <ArchDiagram name={entry.diagram} locale={locale} />
+          </section>
+        )
+      }
+
+      {
+        entry.parts && (
+          <section class="case-file__wide" aria-labelledby="case-parts">
+            <h2 id="case-parts">{cc.parts}</h2>
+            <ul class="parts" role="list">
+              {entry.parts.map((part) => (
+                <li class="part">
+                  {part.icon && partIcons[part.icon] && (
+                    <Image class="part__icon" src={partIcons[part.icon]!} alt="" width={96} height={96} loading="lazy" />
+                  )}
+                  <div class="part__text">
+                    <h3>
+                      <a href={part.link} target="_blank" rel="noopener noreferrer">
+                        {part.title} ↗
+                      </a>
+                    </h3>
+                    {part.version && (
+                      <p class="part__version">
+                        {cc.version} {part.version}
+                      </p>
+                    )}
+                    <p>{t(part.summary)}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        moreShots.length > 0 && (
+          <section class="case-file__wide" aria-labelledby="case-gallery">
+            <h2 id="case-gallery">{cc.gallery}</h2>
+            <Gallery shots={moreShots} locale={locale} />
+          </section>
+        )
+      }
 
       <section aria-labelledby="case-stack">
         <h2 id="case-stack">{copy.stack}</h2>

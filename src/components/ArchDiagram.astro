@@ -1,0 +1,44 @@
+---
+// A code-drawn architecture flow (src/lib/diagrams.ts) as an ordered list:
+// stages left to right on wide screens, top to bottom on phones.
+import { diagrams } from "../lib/diagrams";
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  name: string;
+  locale: Locale;
+}
+
+const { name, locale } = Astro.props;
+const diagram = diagrams[name];
+const t = (text: { en: string } & Partial<Record<Locale, string>>) => text[locale] ?? text.en;
+---
+
+{
+  diagram && (
+    <figure class="arch">
+      <ol class="arch__flow" role="list">
+        {diagram.stages.map((stage, index) => (
+          <>
+            <li class="arch__stage">
+              <span class="arch__index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <h3 class="arch__title">{t(stage.title)}</h3>
+              <ul class="arch__items" role="list">
+                {stage.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </li>
+            {diagram.links[index] && (
+              <li class="arch__link">
+                <span class="arch__arrow" aria-hidden="true" />
+                <span class="arch__link-label">{t(diagram.links[index]!)}</span>
+              </li>
+            )}
+          </>
+        ))}
+      </ol>
+      <figcaption class="arch__caption">{t(diagram.caption)}</figcaption>
+    </figure>
+  )
+}
