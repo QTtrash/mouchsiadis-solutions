@@ -62,16 +62,35 @@ The `web` service is a static site build served by `nginx` in Docker.
 
 ## Routine Deploy
 
-1. Pull the latest code.
-2. Run:
+Releases are owner-requested; [../AGENTS.md](../AGENTS.md) has the release checklist.
+
+1. Validate on the release commit (it builds, checks budgets and runs the browser suite):
    ```bash
-   npm run build
+   npm run validate
+   ```
+2. Commit, push the branch, fast-forward `main` and push it.
+3. Keep the running image as a rollback (manual retention, not cleanup authority):
+   ```bash
+   docker tag mouchsiadis-solutions-web:latest mouchsiadis-solutions-web:rollback-<previous-sha>
+   ```
+4. Deploy (builds the image with `npm ci && npm run build` and recreates only the `web` container):
+   ```bash
    ./ops/deploy
    ```
-3. Check:
+5. Check:
    ```bash
    ./ops/status
+   curl -sI https://mouchsiadis-solutions.com/en/
    ```
+   Also open `/en/` (Simple view), `/en/?view=terminal` and one case file in a browser.
+6. Record the release in `~/VPS_README.md` and the pointer list in `~/AGENTS.md`.
+
+### Rollback
+
+```bash
+docker tag mouchsiadis-solutions-web:rollback-<sha> mouchsiadis-solutions-web:latest
+docker compose --project-name mouchsiadis-solutions --env-file ~/envs/mouchsiadis-solutions.env -f deploy/compose.yaml up -d --no-build
+```
 
 ## Environment Variables
 

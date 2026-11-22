@@ -11,6 +11,85 @@ Two audiences share the same records:
 1. Clients and hiring visitors read the positioning, open live case files, and contact Suren or open the CV without learning an interaction.
 2. Technical visitors explore case files, public source, card backs, the card reader, and Backlog Breaker.
 
+## November 2026: Simple view by default, terminal behind a rusty switch
+
+This section supersedes the October direction wherever they conflict. The rest of this document describes the terminal view, which is unchanged unless noted here.
+
+**Owner decisions (22 November 2026).**
+
+- A first visit, no-JS visitors and shared links without `?view=` all get the **Simple view**: black, quiet and scannable for recruiters.
+- The terminal is opt-in through a header switch on the left. It is meant to look rusty, cartoonish and out of place, so people get curious and pull it.
+- New case files: YLead · YDesk Phone (badged LIVE by the owner), Neo Taxi & Neo Delivery, Space (Movas), NeoUniverse Platform, Last Standard, and a single SurikMods entry. SurikMods never mentions AI assistance.
+- Screenshots: public, signed-out pages only.
+
+**The view switch.**
+
+- `html[data-view]` is `simple` or `terminal`.
+- The server renders `simple`. The pre-paint script in `BaseHead.astro` applies the first of: `?view=terminal|simple` (stored), `localStorage.interfaceView`, then `simple`.
+- `present.css` hides `[data-terminal-only]` blocks in the Simple view and `[data-simple-only]` blocks in the terminal.
+- The fitted console is scoped to `[data-view="terminal"]`, and `terminal.ts` only fits panels in the terminal view. The header switch fires `interface-view-change`, which re-lays the console and plays the power-on (forced, even if this session already saw it). With sound on, the boot sound plays too.
+
+**The rusty switch** (`ViewSwitch.astro`, `switch.css`).
+
+- Art: a 64×56 inline SVG breaker lever with a rust gradient, `feTurbulence` grit, steel rivets, a hazard-stripe band, a red ball knob and a lamp.
+- Labels: a stencilled "TERMINAL" plate and a paper "do not pull" tag. The tag is translated; the word TERMINAL stays in English. Both are hidden below 480px.
+- Placement: bolted on crooked (−5°).
+- Motion: an idle wobble every 7s, a nudge on hover, and a clunk plus spark on pull. All of it stops under reduced motion or Effects: Reduced.
+- Semantics: `role="switch"` with a stable name ("Terminal mode") and `aria-checked`. State shows in the lever angle and the lamp, not in colour alone. The target is at least 44px, it is never a primary action, and the Options drawer mirrors it as a pressed toggle.
+
+**Simple view** (`simple.css`, all rules scoped to `:root[data-view="simple"]`, written without nesting so older browsers still get it).
+
+- **Palette and type.** Pure black, `#e5e5e5` text and `#1c1c1c` hairlines. Amber appears only on the one primary action per view, and a small P1-green dot marks LIVE. Type is IBM Plex Sans 600 for headings and Plex Mono for labels and indices, so the Plex superfamily is the brand link between the views. Montserrat never loads in this view.
+- **Landing order.** One column of about 54rem:
+  1. hero: photo avatar, name and location, the English title headline, general line, actions, availability, track record as a 2×2 grid
+  2. Selected work as rows (16:10 screenshot or the record's pixel glyph, title, LIVE, eyebrow, summary, stack)
+  3. open source
+  4. Games rows
+  5. Experience
+  6. Notes
+  7. Contact
+
+  Sections carry mono indices (01–05) instead of the terminal kickers. The hero proof, card hand, reader and Backlog Breaker are hidden.
+- **Case files.** The hero screenshot replaces the CRT cover when one exists. Below it: an "At a glance" row, then overview, problem and constraints, what was built, an architecture flow, the mods, the gallery with a `<dialog>` lightbox, and the full stack. The contextual call to action remains the only filled primary.
+- **Long locales.** Russian, German and Georgian headlines are set smaller, so the actions reach the first viewport at every tested size of at least 568px height.
+
+**Header.** The lever sits before the brand. Its plate and tag hide below 1280px. With JavaScript the inline nav steps aside below 1200px (all locales) and below 1600px in Georgian, where its labels would collide with the brand; the Options drawer carries the same links. The controls stay pinned to the end of the header.
+
+**Terminal realism pass** (`crt.css`, terminal view only). The layers are ranked by impact against cost. All of them sit in the glass background or beneath the content, and all motion stops under reduced motion or Effects: Reduced. No WebGL was added.
+
+1. **Curved glass.** A specular reflection at the upper left, edge falloff and a deeper inset vignette.
+2. **Convergence fringe.** A ±0.6px red/cyan fringe added to `--glow-display`, so it appears only on the hero headline and section titles.
+3. **Shell semantics.**
+   - Every panel and case file opens with a real prompt (`suren@ms-86:~$ ls ~/work --live`, `cat ypay/README.md`) and a blinking block cursor. The prompts are `aria-hidden`.
+   - The status line is now a tmux bar: session, window list following the active panel, LIVE count, and a Munich clock.
+4. **Background texture.** Film grain (an SVG turbulence data URI) and a faint aperture-grille stripe.
+5. **Refresh and boot.** A slow 9s refresh band runs behind the content. The power-on now opens as a dot, then a line, then a bloom (760ms), and the status bar shows a three-part POST line for about 1.4s.
+
+**References for this pass.**
+
+- *Terminal realism.* The CRT references above still apply. Added:
+  - [cool-retro-term's default profile](https://github.com/Swordfish90/cool-retro-term): bloom 0.6, burn-in 0.3, curvature 0.2, flicker 0.1, noise 0.1.
+  - [Alec Lownes, CRT display in CSS](http://aleclownes.com/2017/02/01/crt-display.html): scanlines, an RGB stripe and colour fringing.
+  - [ekeijl, retro CRT terminal](https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh): the rolling scan bar; flicker was dropped because it strains the eyes.
+  - [Charm](https://charm.land): real prompts and output instead of faked chrome.
+- *Recruiter scanning.*
+  - [The Ladders eye-tracking study](https://www.hrdive.com/news/eye-tracking-study-shows-recruiters-look-at-resumes-for-7-seconds/541582/): about 7.4s per scan, with simple layouts and clear headings doing best.
+  - [NN/g on the F-shaped pattern](https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/).
+  - [Brittany Chiang](https://brittanychiang.com): name and role first, experience with chips, a résumé link, and projects with thumbnails.
+- *Toggle.*
+  - [Josh Comeau on a flash-free mode switch](https://www.joshwcomeau.com/react/dark-mode/): set the attribute before paint, with precedence.
+  - [WAI-ARIA switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/).
+- *Fonts.*
+  - No open-source monospace covers Georgian, and IBM Plex Sans Georgian does not exist (see the [IBM Plex packages](https://github.com/IBM/plex)). The existing Plex + Noto Sans Georgian stack therefore stays, with no new font bytes.
+
+**Verified, 22 November 2026.**
+
+- `npm run validate`: 0 Astro/TypeScript errors, 297 browser tests passed, 0 failed.
+- The existing suite runs in the terminal view through `tests/terminal-view.json`. `tests/simple-view.spec.ts` covers the default view, the switch, `?view=`, axe, a 6-viewport × 4-locale fit and primary matrix, the case-file images and the lightbox.
+- Budgets: JS 8.9 KB, CSS 25.8 KB and inline art 8.1 KB gzipped.
+- Screenshots of both views and the new case files are in [design-audit/simple-view](./design-audit/simple-view/).
+- New native-review copy (ru/de/ge): the switch tag and hint, the case-file headings, all six new records, the Last Standard alt text and the architecture captions.
+
 ## Research and Adapted Principles
 
 The October 2026 terminal-identity pass used these references as principles only. No layouts, assets or code were copied. The site uses no Fallout assets or logos and implies no affiliation.

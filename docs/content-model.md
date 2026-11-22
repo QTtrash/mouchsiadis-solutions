@@ -27,7 +27,7 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 ### Hero Proof
 
-The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true` and links each to its case file. The displayed count comes from that list. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof.
+The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true`, and the displayed count covers all of them (nine in November 2026). The list itself (`heroProofRecords`) shows at most five, ordered by each record's `featured` number; live records without `featured` count but are not listed. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof. The terminal view shows this list; the Simple view goes straight from the hero to the Selected work rows.
 
 ### Software Work Entries
 
@@ -42,30 +42,45 @@ Each project entry includes:
 - localized `details`
 - `stack`
 - localized `meta`
-- `link`
-- localized `linkLabel`
+- optional `link` and localized `linkLabel` — omitted when nothing public exists (NeoUniverse); a private app may link the product it serves (YLead links YDesk)
 - optional localized `status`
 - optional `sourceLink` and localized `sourceLinkLabel` for public-source projects
 - optional localized `evidence` with `role`, `contribution`, `constraints`, and `outcomes`
 - `cover`
-- optional `live` — the system runs in production; it earns the LIVE foil on its card and case file
+- optional `live` — the system runs in production; it earns the LIVE foil on its card and case file. YLead is LIVE by owner decision (November 2026).
+- optional `featured` — position in the hero proof (1 first)
+- optional `year` — shown under "At a glance"
+- optional `diagram` — key into `src/lib/diagrams.ts`, rendered as an architecture flow
+- optional `parts` — the items of a collection entry (the three SurikMods mods), each with title, version, link, icon key and localized summary
 
-Selected professional entries:
+Selected professional entries, in card order:
 
 - `YPay`
 - `YDesk`
+- `YLead · YDesk Phone` (private source)
 - `NeoPoints`
+- `Neo Taxi & Neo Delivery` (the public site, `neo-taxi-site`)
+- `Space (Movas)` (spacepark.ge; bolttaxi.ge redirects there)
+- `NeoUniverse Platform` (shared AWS and Fleet infrastructure; no product link)
 
 Tools are stored separately as `toolProjects` and rendered as Tool cards on the landing Work deck and the Tooling page. This collection includes production systems and prereleases; membership does not imply LIVE status. The Tooling count is the record count. Game entries are stored as `gameProjects` and render as the Games deck.
 
+- `Last Standard` (facts only from the itch.io page, as mirrored in `flygod/src/lib/last-standard.ts`)
 - `FlyGod Studios`
 - `Alice Plays`
+- `SurikMods for Valheim` (one entry for the three Thunderstore mods; owner decision: no mention of AI assistance and no download counts)
 - `Rifle Revolver`
 - `Incendiary Revolver`
 
+### Screenshots
+
+Case-file images live in `src/lib/gallery.ts`, keyed by slug, separate from `content.ts` so Node tests can import the content model. The first image is the case-file hero; the rest form the gallery. Each has a localized `alt` and a `frame` (`browser`, `phone` or `plain`). Sources are WebP masters under `src/assets/projects/<slug>/`; Astro renders AVIF/WebP at several widths.
+
+Owner rule (November 2026): **public, signed-out pages only**, never admin or internal screens. `node scripts/capture-project-shots.mjs <outDir> [slug…]` captures them against the live sites with a built-in banner dismissal and language choice. Review every capture by eye for personal data (names, phone numbers, plates, leaderboard rows) before converting and committing it; crop or skip anything that shows some. Game art comes from the owner's own copies (Last Standard from the flygod repository; mod icons from Thunderstore). Never hotlink third-party image hosts. YLead and NeoUniverse have no public pages, so they show a pixel cover and an architecture diagram instead. The RimWorld Workshop previews were reviewed and left out: their joke captions do not suit the portfolio.
+
 ### Cards and Case Files
 
-Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files show the outcome and role once in the header; the body carries narrative, contribution, constraints and details.
+Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and a case file at `/<locale>/work/<slug>/`; `src/lib/cards.ts` does the mapping. Suits follow the collection: `projects` are Platform, `toolProjects` are Tool, `gameProjects` are Game. Cards, homepage proof links, and the showcase use `cardSummary` when supplied, falling back to `evidence.outcomes` and then `summary`. Concise copy is authored rather than visually truncated. List view uses the full localized `summary` and exposes narrative, details, and evidence through its disclosure. Case files show the outcome once in the header, then the hero screenshot, an "At a glance" fact row (role, status, year, stack, links), and a body in a fixed order: overview, problem and constraints, what was built, architecture, mods, gallery and full stack. Prev/next and the contextual call to action close the file.
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 

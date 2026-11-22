@@ -2,11 +2,13 @@
 
 ## Overview
 
+Agents start with [../AGENTS.md](../AGENTS.md).
+
 `mouchsiadis-solutions` is a multilingual static site that ships behind the shared VPS proxy pattern used by sibling projects.
 
 The site has four public concerns:
 
-- multilingual portfolio landing experience
+- multilingual portfolio landing experience in two views of the same DOM: the default **Simple view** and the opt-in **terminal view** (`html[data-view]`)
 - integrated blog using imported AF Blog MDX content
 - independent Tooling collection for production and prerelease tools
 - static production runtime behind the shared `vps-proxy` repo
@@ -22,9 +24,18 @@ The site has four public concerns:
 ## Source Files
 
 - `src/pages/[locale]/index.astro`
-  Source for the terminal landing page inside the CRT glass. The hero names Suren and his location, states the positioning and offers one primary action (Contact), CV and Explore. Then come live proof (the `live: true` Work records), a direct email line and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Notes, Contact. `#cv` is an alias for Contact.
+  One landing DOM for both views. In the Simple view the console chrome, hero proof, card hand and game are hidden; the hero, track record, Selected work rows (`WorkRows.astro`), Games rows, Experience, Notes and Contact read as one column. In the terminal view it is the landing page inside the CRT glass, described below. Each panel opens with a decorative `TermPrompt` and the status line is a tmux bar (window list, LIVE count, Munich clock) driven by `terminal.ts`.
+  Terminal view: The hero names Suren and his location, states the positioning and offers one primary action (Contact), CV and Explore. Then come live proof (the `live: true` Work records), a direct email line and the owner-confirmed availability, followed by the open-source showcase and Backlog Breaker. The page also holds the Work and Games card decks, experience, notes, and contact. Contact has an email action with a subject, the visible address and a copy button, a "useful to include" list, and the CV. Desktop panels: Overview, Work, Games, Experience, Notes, Contact. `#cv` is an alias for Contact.
 - `src/pages/[locale]/work/[slug].astro`
-  Case file per record. The header shows the numbered kicker, outcome, role and stack; its product and source links are secondary. Then come the evidence, what was built, stack and previous/next case. It always ends with a contextual call to action (`Email me about {project}` with a subject, CV, visible address).
+  Case file per record. The header shows the numbered kicker, eyebrow, status and outcome; product and source links are secondary. Then the hero screenshot (`ShotFrame`), "At a glance" (role, status, year, stack, links), overview, problem and constraints, what was built, the architecture flow (`ArchDiagram`), collection parts (`parts`, for SurikMods), the gallery (`Gallery`, a `<dialog>` lightbox from `src/scripts/gallery.ts`), the full stack and previous/next case. The hero shot also becomes the page's `og:image`. It always ends with a contextual call to action (`Email me about {project}` with a subject, CV, visible address).
+- `src/components/ViewSwitch.astro`
+  The rusty cartoon breaker lever (inline SVG) at the start of the header: `role="switch"`, stable name, `aria-checked`. `Header.astro` toggles `html[data-view]`, stores `interfaceView`, drops a `?view=` parameter from the address and dispatches `interface-view-change`; the Options drawer mirrors it.
+- `src/components/WorkRows.astro`
+  Simple-view rows for a set of records (`data-simple-only`): a 16:10 screenshot or the record's pixel glyph, title, LIVE, eyebrow, summary and stack, linking to the case file. Rendered by `CardDeck.astro` beside the card hand (`data-terminal-only`).
+- `src/components/ShotFrame.astro`, `src/components/Gallery.astro`, `src/components/ArchDiagram.astro`, `src/components/TermPrompt.astro`
+  Screenshot in browser, phone or plain chrome through Astro `<Picture>` (AVIF/WebP, several widths); the gallery and lightbox; the HTML architecture flow from `src/lib/diagrams.ts`; and the decorative shell prompt shown only in the terminal view.
+- `src/lib/gallery.ts`, `src/lib/diagrams.ts`
+  Screenshots per slug (WebP masters in `src/assets/projects/<slug>/`, localized alt, frame) and mod icons; architecture stages, links and captions. Both stay out of `content.ts` so Node tests can import the content model.
 - `src/components/CardDeck.astro`, `src/components/CaseCard.astro`
   Wrapping card rows and a List view of the same records. Cards/List and the optional card reader (a recessed slot with its status below) share a compact toolbar. Each card joins its Flip and Open case file tab to the top of the faces, so long cards can be flipped before reading, and repeats its suit as a turned corner pip. Server-rendered HTML; `src/scripts/deck.ts` adds behaviour.
 - `src/lib/cards.ts`
@@ -42,7 +53,7 @@ The site has four public concerns:
 - `src/scripts/deck.ts`
   Cards/List switch (persisted as `deckView` in localStorage), flip, drag-to-reader on fine pointers (the preview keeps the card's layout size and resting fan angle), and back/forward-cache reset.
 - `src/scripts/terminal.ts`
-  Fitted-console panels, hash/back navigation and focus handling, plus one decorative CRT power-on per session (skipped under reduced motion, Effects: Reduced, or blocked storage).
+  Fitted-console panels (terminal view only), hash/back navigation and focus handling, the tmux status line, and one decorative CRT power-on per session with a short POST line (skipped under reduced motion, Effects: Reduced, or blocked storage). Pulling the view lever re-lays the console and forces a power-on.
 - `src/scripts/copy-email.ts`
   Reveals a copy button beside each visible address and copies it (falling back to selecting the text).
 - `src/pages/[locale]/blog/index.astro`
@@ -51,8 +62,10 @@ The site has four public concerns:
   Source for blog-post pages under each post’s original language, read from frontmatter.
 - `src/pages/[locale]/tooling/index.astro`
   The Tool collection as a field-terminal panel: wrapping Tool cards, optional reader/drag, flip, and List view, with navigation back into the landing panels. Counts include production tools and prereleases; they are not a count of LIVE systems.
+- `src/components/BaseHead.astro`
+  Metadata and the blocking pre-paint script: `html.js`, `data-effects`, and `data-view` (`?view=` → stored `interfaceView` → `simple`).
 - `src/layouts/BaseLayout.astro`
-  Global shell, metadata, header/footer, decorative terminal layer, and shared stylesheet/font imports. Georgian font imports are script subsets; language codes map the `/ge/` route to `ka-GE`.
+  Global shell (`<html data-view="simple">` for no-JS), metadata, header/footer, and shared stylesheet/font imports: `global.css`, `present.css`, `switch.css`, `crt.css`, `simple.css`. Georgian font imports are script subsets; language codes map the `/ge/` route to `ka-GE`.
 - `src/layouts/PostLayout.astro`
   Blog-post layout with metadata, original-language label, adjacent navigation, and a quiet contact line after the article.
 - `src/pages/404.astro`
@@ -60,7 +73,7 @@ The site has four public concerns:
 - `src/components/ArchiveEntry.astro`
   Expandable archive record used across work and experience, including optional product evidence.
 - `src/components/Header.astro`
-  Five-link mono navigation (Work, Games, Tooling, Experience, Notes), the secondary amber-outlined Contact key, locale keys (in the drawer below 1120px), and a wrapped Web Awesome drawer for navigation, CV, and preferences.
+  The view lever and brand at the start, then five-link navigation (hidden with JavaScript below 1200px, and below 1600px in Georgian, where the Options drawer carries it) (Work, Games, Tooling, Experience, Notes), the secondary amber-outlined Contact key, locale keys (in the drawer below 1120px), and a wrapped Web Awesome drawer for navigation, CV, and preferences.
 
 ## Build Path
 
@@ -75,6 +88,8 @@ The site has four public concerns:
   Locale-level shell copy, labels, SEO metadata, and language constants.
 - `src/lib/content.ts`
   Typed portfolio/project/game/experience content used by the landing page.
+- `src/lib/gallery.ts`, `src/lib/diagrams.ts`, `src/assets/projects/`
+  Case-file screenshots and architecture flows (see docs/content-model.md, "Screenshots").
 - `src/content/blog/*.mdx`
   Blog posts migrated from `af-blog-v2`. Post bodies were preserved as-is.
 
