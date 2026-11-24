@@ -6,7 +6,7 @@ Suren Mouchsiadis's multilingual portfolio, blog and CV site (`mouchsiadis-solut
 | --- | --- |
 | Pages, components, scripts, styles | [docs/architecture.md](docs/architecture.md) |
 | Content records, screenshots, locales | [docs/content-model.md](docs/content-model.md) |
-| Look, views, motion, budgets, references | [docs/visual-design.md](docs/visual-design.md) (the "November 2026" section supersedes older direction) |
+| Look, views, motion, budgets, references | [docs/visual-design.md](docs/visual-design.md) |
 | Releases and the VPS | [docs/deployment.md](docs/deployment.md), [docs/proxy-integration.md](docs/proxy-integration.md), and the host guide `~/VPS_README.md` with `~/AGENTS.md` |
 
 ## Owner rules
@@ -20,7 +20,7 @@ These are standing owner decisions. Do not reverse them without asking.
 
 **Copy**
 - Job titles stay in **English in every locale**, for example "Senior platform engineer".
-- The hero is **the name alone**: name (the page's only `h1`), location, availability, and in the Simple view the datasheet spec list. There is **no headline, no general line, no hero buttons, no track record list and no "write directly" email line** (owner decisions, 22 November 2026). Do not bring any of them back in either view or any locale. Contact lives in the header and the Contact section; the CV lives in Contact.
+- The hero is **the name alone**: name (the page's only `h1`), location, availability, and in the Simple view the datasheet spec list. There is **no headline, no general line, no hero buttons, no track record list and no "write directly" email line** (owner decisions). Do not bring any of them back in either view or any locale. Contact lives in the header and the Contact section; the CV lives in Contact.
 - Every claim must be backed by the product, its source, the project's own docs or owner-provided facts. No testimonials, client logos, response times or new availability wording without the owner.
 
 **LIVE**
@@ -30,7 +30,7 @@ These are standing owner decisions. Do not reverse them without asking.
 - Never mention AI assistance, and show no download counts. One entry covers the three mods.
 
 **Art**
-- Project illustrations, UI icons and VFX come from **PixelLab** (MCP server `pixellab`) in the fixed 13-colour MS-86 palette (`docs/visual-design.md`, "Datasheet + pixels"). Keep new art in that palette and style.
+- Project illustrations, UI icons and VFX come from **PixelLab** (MCP server `pixellab`) in the fixed 13-colour MS-86 palette (`docs/visual-design.md`, "Pixel art (PixelLab)"). Keep new art in that palette and style.
 - Art is shown pixelated at 1×, 1.5× or 2×, ships as hashed PNG files and is never inlined.
 - No text, logos or third-party marks in generated art. Experience art (`src/assets/art/experience/`) shows the work, never the employer's brand.
 
@@ -70,7 +70,7 @@ These are standing owner decisions. Do not reverse them without asking.
 
 ## Performance rule
 
-Decorative motion may animate only `transform` or `opacity`, on small elements. Sprite VFX walk a strip with `transform` and `steps()` inside a small window (`art.css`). Never animate `background-position`, `filter`, gradients or other paint properties over the CRT glass or the panels. A moving refresh band did that in November 2026 and dropped the terminal to about 14 fps. In the fitted console, `.terminal-console__content` keeps its own compositor layer (`crt.css`), so panel switches and scrolling never repaint the glass. `tests/performance.spec.ts` traces an idle terminal and fails if it repaints. When you add motion, check it with a Chrome trace.
+Decorative motion may animate only `transform` or `opacity`, on small elements. Sprite VFX walk a strip with `transform` and `steps()` inside a small window (`art.css`). Never animate `background-position`, `filter`, gradients or other paint properties over the CRT glass or the panels. A moving refresh band once did that and dropped the terminal to about 14 fps. In the fitted console, `.terminal-console__content` keeps its own compositor layer (`crt.css`), so panel switches and scrolling never repaint the glass. `tests/performance.spec.ts` traces an idle terminal and fails if it repaints. When you add motion, check it with a Chrome trace.
 
 ## Commands
 
@@ -105,6 +105,10 @@ Commit and push only when the owner asks. When they do:
 3. Tag the running image as a rollback: `docker tag mouchsiadis-solutions-web:latest mouchsiadis-solutions-web:rollback-<old-sha>`. Rollback tags are manual retention, not cleanup authority.
 4. Deploy with `./ops/deploy`. It builds the image and recreates only `mouchsiadis-solutions-web-1`.
 5. Verify the live site: `/en/` and a case file return 200, both views render, and there are no console errors.
-6. Record the release in `~/VPS_README.md` as a new dated section, and update the pointer list in `~/AGENTS.md`.
+6. Release evidence goes to `~/state/mouchsiadis-solutions/releases/` and the commit message. `~/VPS_README.md` is not updated per release.
 
-Do not change `../vps-proxy` without reading its own AGENTS.md. Keep review screenshots out of `public/`; use `docs/design-audit/` or the scratchpad.
+Do not change `../vps-proxy` without reading its own AGENTS.md. Keep review screenshots out of `public/` and out of the repository; write them to the scratchpad or `~/state/mouchsiadis-solutions/`.
+
+## Documentation
+
+Follow [the host documentation rules](../../AGENTS.md#documentation-rules). Docs describe current state: update the owning section in place, never append dated release sections. Release evidence goes to `~/state/mouchsiadis-solutions/releases/` and the commit message. Unverified production behaviour is an undated "Not yet verified in production" line in the owning doc. Owner rules above are the accepted decisions; change them only with the owner.

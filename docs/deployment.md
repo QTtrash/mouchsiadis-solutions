@@ -83,7 +83,8 @@ Releases are owner-requested; [../AGENTS.md](../AGENTS.md) has the release check
    curl -sI https://mouchsiadis-solutions.com/en/
    ```
    Also open `/en/` (Simple view), `/en/?view=terminal` and one case file in a browser.
-6. Record the release in `~/VPS_README.md` and the pointer list in `~/AGENTS.md`.
+6. Release evidence goes to `~/state/mouchsiadis-solutions/releases/` and the commit message; `~/VPS_README.md` is not
+   updated per release. Rollback tags are manual retention, not cleanup authority: keep them until the owner decides.
 
 ### Rollback
 

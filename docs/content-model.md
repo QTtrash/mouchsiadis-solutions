@@ -21,13 +21,9 @@ The content model only stores portfolio data. Visual palette choices live in `sr
 
 `profile` holds owner-confirmed facts shown in the hero: `location` and `availability`, localized for all four locales. Interface copy in `src/lib/i18n.ts` may label them (for example "status"), but claims about Suren live here. Do not add testimonials, client logos, response times or availability wording without the owner's confirmation.
 
-### No Track Record
-
-The hero used to show a short results list (`impact`) and a "write directly" email line. The owner removed both on 22 November 2026, and their data and copy were deleted. Do not reintroduce them; results belong in the experience records and case files.
-
 ### Hero
 
-Since 22 November 2026 the hero is the name alone: no headline, general line or buttons (owner decision, both views, every locale). `localeSeo` no longer has `heroTitle`, `heroBody` or the hero `cta` labels. The Simple view adds a datasheet spec list built from `profile` and the live count; its labels are in `sheetCopy`.
+The hero is the name alone: no headline, general line, buttons, results list or direct email line (owner decision, both views, every locale). `localeSeo` has no hero title, body or call-to-action labels. Results belong in the experience records and case files. The Simple view adds a datasheet spec list built from `profile` and the live count; its labels are in `sheetCopy`.
 
 ### Card Art
 
@@ -35,7 +31,7 @@ Each case record can have a PixelLab illustration at `src/assets/art/cards/<slug
 
 ### Hero Proof
 
-The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true`, and the displayed count covers all of them (nine in November 2026). The list itself (`heroProofRecords`) shows at most five, ordered by each record's `featured` number; live records without `featured` count but are not listed. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof. The terminal view shows this list; the Simple view goes straight from the datasheet title block to the numbered Selected work rows.
+The hero's proof list is derived, not authored: `liveWorkRecords` in `src/lib/cards.ts` selects Work records with `live: true`, and the displayed count covers all of them. The list itself (`heroProofRecords`) shows at most five, ordered by each record's `featured` number; live records without `featured` count but are not listed. Records without `live: true` appear in Work, Tooling and the showcase, not in the live proof. The terminal view shows this list; the Simple view goes straight from the datasheet title block to the numbered Selected work rows.
 
 ### Software Work Entries
 
@@ -55,7 +51,7 @@ Each project entry includes:
 - optional `sourceLink` and localized `sourceLinkLabel` for public-source projects
 - optional localized `evidence` with `role`, `contribution`, `constraints`, and `outcomes`
 - `cover`
-- optional `live` — the system runs in production; it earns the LIVE foil on its card and case file. YLead is LIVE by owner decision (November 2026).
+- optional `live` — the system runs in production; it earns the LIVE foil on its card and case file. YLead is LIVE by owner decision.
 - optional `featured` — position in the hero proof (1 first)
 - optional `year` — shown under "At a glance"
 - optional `diagram` — key into `src/lib/diagrams.ts`, rendered as an architecture flow
@@ -84,7 +80,7 @@ Tools are stored separately as `toolProjects` and rendered as Tool cards on the 
 
 Case-file images live in `src/lib/gallery.ts`, keyed by slug, separate from `content.ts` so Node tests can import the content model. The first image is the case-file hero; the rest form the gallery. Each has a localized `alt` and a `frame` (`browser`, `phone` or `plain`). Sources are WebP masters under `src/assets/projects/<slug>/`; Astro renders AVIF/WebP at several widths.
 
-Owner rule (November 2026): **public, signed-out pages only**, never admin or internal screens. `node scripts/capture-project-shots.mjs <outDir> [slug…]` captures them against the live sites with a built-in banner dismissal and language choice. Review every capture by eye for personal data (names, phone numbers, plates, leaderboard rows) before converting and committing it; crop or skip anything that shows some. Game art comes from the owner's own copies (Last Standard from the flygod repository; mod icons from Thunderstore). Never hotlink third-party image hosts. YLead and NeoUniverse have no public pages, so they show a pixel cover and an architecture diagram instead. The RimWorld Workshop previews were reviewed and left out: their joke captions do not suit the portfolio.
+Owner rule: **public, signed-out pages only**, never admin or internal screens. `node scripts/capture-project-shots.mjs <outDir> [slug…]` captures them against the live sites with a built-in banner dismissal and language choice. Review every capture by eye for personal data (names, phone numbers, plates, leaderboard rows) before converting and committing it; crop or skip anything that shows some. Game art comes from the owner's own copies (Last Standard from the flygod repository; mod icons from Thunderstore). Never hotlink third-party image hosts. YLead and NeoUniverse have no public pages, so they show a pixel cover and an architecture diagram instead. The RimWorld Workshop previews were reviewed and left out: their joke captions do not suit the portfolio.
 
 ### Cards and Case Files
 
@@ -92,7 +88,7 @@ Every entry in `projects`, `toolProjects`, and `gameProjects` becomes a card and
 
 Project technology lists support scanning, but evidence fields carry the hiring/client story. Only add claims that can be supported by the public product, source, or owner-provided facts.
 
-German copy uses proper umlauts and ß (the October 2026 pass replaced ASCII transliterations such as "fuer" and "oeffnen"). The product formerly called Neopay is YPay in every locale; its Russian and German summaries follow the English meaning.
+German copy uses proper umlauts and ß, never ASCII transliterations such as "fuer" or "oeffnen". The product formerly called Neopay is YPay in every locale; its Russian and German summaries follow the English meaning.
 
 ## Professional Experience
 
@@ -110,7 +106,9 @@ Each entry includes:
 - `cover`
 - optional `early` — internships and student roles, folded under the main timeline in a closed disclosure
 
-The CV source, `cv/Suren_Mouchsiadis_CV.tex`, is the source of truth: companies, titles, ranges and locations match it, and freelance work is one entry like on the CV. Job titles stay in English in every locale. Do not mark a role `early` while the hero's `impact` cites it.
+The CV source, `cv/Suren_Mouchsiadis_CV.tex`, is the source of truth: companies, titles, ranges and locations match it, and freelance work is one entry like on the CV. Job titles stay in English in every locale.
+
+The CV does not list the newer case records (YLead · YDesk Phone, Neo Taxi & Neo Delivery, Space, NeoUniverse Platform, Last Standard, SurikMods). Updating it is an owner decision; rebuild the PDF as described in `cv/`.
 
 ## Blog Content
 
@@ -129,7 +127,7 @@ Rules used in this implementation:
 
 New English or Georgian posts need the corresponding frontmatter value; no filename inference or translation pass is required.
 
-Navigation, preferences, hero positioning, evidence labels, and all card, reader, and case-file copy (`deckCopy`, `evidenceLabels` in `src/lib/i18n.ts`) are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.
+Navigation, preferences, evidence labels, and all card, reader, and case-file copy (`deckCopy`, `evidenceLabels` in `src/lib/i18n.ts`) are complete in all four locales. Localized records use English as an explicit final fallback where a historical entry has not yet received a translation. New featured work should supply all four locale values before release.
 
 ## Open-Source Showcase
 
